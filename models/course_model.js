@@ -25,7 +25,7 @@ const courseSchema = new mongoose.Schema({
     },
     teachingSlotsNumber: {
         type: Number,
-        required: true
+        //required: true
     }
 })
 
