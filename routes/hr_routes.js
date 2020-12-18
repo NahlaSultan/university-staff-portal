@@ -87,38 +87,47 @@ router.route('/deleteLocation')
       
 })
 
-// router.route('/addFaculty')
-// .post(async (req, res) => {
-//     console.log("adding fac")
-//     const faculty = await faculty_model.findOne({ facultyName: req.body.name })
+router.route('/addFaculty')
+.post(async (req, res) => {
+    console.log("adding fac")
+    const faculty = await faculty_model.findOne({ facultyName: req.body.name })
      
-//         if (!faculty) {
-//     const newFaculty = new faculty_model({
-//         type: req.body.type,
-//         name: req.body.name,
-//         capacity: req.body.capacity,
-
-//     })
-
-//     if(req.body.type=="office"){
-//         newLocation.officeMembers=0
-//     }
-//     try {
+        if (!faculty) {
+            const newFaculty = new faculty_model({
+            facultyName: req.body.name,
+            })
+            console.log(req.body.departments)
+    if(req.body.departments!="null"){
+        console.log("dep not null")
+        newFaculty.departments=req.body.departments
+    }
+    try {
         
-//         await newLocation.save()
-//     }
-//     catch (Err) {
-//         console.log(Err)
-//         res.send("error adding location")
-//     }
-//     return res.send(newLocation)    
-//         }
+        await newFaculty.save()
+    }
+    catch (Err) {
+        console.log(Err)
+        res.send("error adding faculty")
+    }
+    return res.send(newFaculty)    
+        }
 
-//         res.send('location '+ req.body.name+' is already there')
+        res.send('faculty '+ req.body.name+' is already there')
 
 
-// })
+})
 
+router.route('/deleteLocation')
+.delete(async (req,res)=>{
+    await faculty_model.remove({ facultyName:  req.body.name}, function(err, result) {
+        if (err) {
+          console.err(err);
+        } else {
+          res.json(result);
+        }
+      });
+      
+})
 // const facultySchema = new mongoose.Schema({
 //     facultyName: {
 //         type: String,

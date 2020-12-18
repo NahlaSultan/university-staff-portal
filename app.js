@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 app.use('',staff_member_routes )
 
 
-app.use((req, res, next) => {
+app.use('/hr',(req, res, next) => {
     try {
         console.log("\nWe entered")
 
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 
     }
 })
-app.use('',hr_routes )
+app.use('/hr',hr_routes )
 
 
 app.use((req, res, next) => {

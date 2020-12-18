@@ -15,5 +15,5 @@ const facultySchema = new mongoose.Schema({
         default: []
     }
 })
-module.exports = mongoose.model('faculty', facultySchema)
+module.exports.model = mongoose.model('faculty', facultySchema)
 module.exports.facultySchema = facultySchema
