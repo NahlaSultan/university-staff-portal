@@ -19,6 +19,9 @@ require('dotenv').config()
 // – All HR members have Saturday as their day off, and they can’t change it.
 //$in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
 
+//try to merge hr routes
+
+
 function genID( role){
     switch(role){
         case "HR members":
