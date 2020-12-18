@@ -103,20 +103,20 @@ router.route('/addLocation')
 //     type: int,
 // },
 
-// router.route('/updateLocation')
-// .post(async (req,res)=>{
+router.route('/updateLocation')
+.post(async (req,res)=>{
 
-//     const name = req.body.name
-//     location_model.findOneAndUpdate(query,{ "attendance": {"signOutTime": new Date()}}, {upsert: true}, function(err, doc) {
-//         if (err) return res.send(500, {error: err});
-//         return res.send('Succesfully saved.');
-//     const newLocation = new location_model({
-//         type: req.body.type,
-//         capacity: req.body.capacity,
-//         name: req.body.name,
+    const name = req.body.name
+    location_model.findOneAndUpdate(query,{ "attendance": {"signOutTime": new Date()}}, {upsert: true}, function(err, doc) {
+        if (err) return res.send(500, {error: err});
+        return res.send('Succesfully saved.');
+    const newLocation = new location_model({
+        type: req.body.type,
+        capacity: req.body.capacity,
+        name: req.body.name,
         
-//     })
-// })
+    })
+})
 
 router.route('/deleteLocation')
 .delete(async (req,res)=>{

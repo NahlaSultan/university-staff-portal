@@ -57,7 +57,11 @@ const staffSchema = new mongoose.Schema(
         requestReplacementSent:
         //the ones I send
         {
-            type:[]
+            type: []
+        },
+        requestReplacmentReceived:
+        {
+            type: []
         }
         // },
         // requestReplacement:{

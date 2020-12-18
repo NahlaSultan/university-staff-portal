@@ -20,6 +20,11 @@ const slotSchema = new mongoose.Schema({
     location: {
         type: String,
         required: true
+    },
+    id:{
+        type:Number,
+        unique:true,
+        required:true
     }
     // ,
     // academicMember: {
