@@ -10,45 +10,71 @@ const { workingScheduleSchema } = require('../models/workingSchedule_model')
 require('dotenv').config()
 
 
-
-
-router.route('/homePage')
-    .get((req, res) => {
-
-        res.send('/home')
-    })
-
-
+//signin
+router.route('/signIn')
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+    var query = {'_id': staffId}; 
+    staff_members_models.findOneAndUpdate(query,{ "attendance": {"signInTime": new Date()}}, {upsert: true}, function(err, doc) {
+      if (err) return res.send(500, {error: err});
+      return res.send('Succesfully saved.');
+  });
+    }
+    res.send('/homepage')
+})
+//signout
 router.route('/signOut')
-    .get((req, res) => {
-        res.send('/login')
-    })
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+    var query = {'_id': staffId}; 
+    staff_members_models.findOneAndUpdate(query,{ "attendance": {"signOutTime": new Date()}}, {upsert: true}, function(err, doc) {
+      if (err) return res.send(500, {error: err});
+      return res.send('Succesfully saved.');
+  });
+    }
+    res.send('/login')
+})
+//view attendance
+router.route('/viewAttendance')
+.get(async(req,res)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+ 
+})
+
 
 router.route('/homePage')
     .get((req, res) => {
         res.send('/login')
     })
-
+//resetpassword
 router.route('/resetPassword')
-    .post(async (req, res) => {
-        // console.log(req.user)
-        const staffId = req.user._id;
-        const staff = await staff_members_models.findOne({ _id: staffId })
-        if (staff) {
-
-            res.send('Hi')
-        }
-    })
-
-router.route('/viewSchedule')
-    .get(async(req, res) => {
+    .post( async (req, res) => {
+       // console.log(req.user)
         const staffId=req.user._id;
-        const staff=await staff_members_models.findOne({ _id: staffId })
-        if(staff){
-            //mafrood redirect
-            res.send(staff.workingSchedule)
-        }
-    })
+        //console.log("/n in req")
+        const staff = await staff_members_models.findOne({ _id: staffId })
+      if(staff){
+      const salt= await bcrypt.genSalt(10)
+     const newpass=await bcrypt.hash(req.body.password,salt) 
+     const document={
+         $set:{
+             password:newpass,
+         },
+     };
    
+    var query = {'_id': staffId}; 
+    staff_members_models.findOneAndUpdate(query,document, {upsert: true}, function(err, doc) {
+      if (err) return res.send(500, {error: err});
+    
+      return res.send('Succesfully saved.');
+  });
+      }
+     
+    })
 
 module.exports = router

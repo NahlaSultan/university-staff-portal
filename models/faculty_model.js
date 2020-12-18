@@ -10,8 +10,8 @@ const facultySchema = new mongoose.Schema({
         required: true
     },
     department: {
-        type: String,
-        required: true
+        type: departmentSchema
+
     },
     headOfDepartment: {
         type: staffSchema,

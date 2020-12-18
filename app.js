@@ -11,6 +11,11 @@ const staff_member_routes = require('./routes/staff_member_routes')
 const authentication_routes = require('./routes/authentication_routes')
 const academic_members_routes = require('./routes/academic_members_routes')
 
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.use('',authentication_routes)
 
