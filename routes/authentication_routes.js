@@ -8,8 +8,12 @@ const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
 
 
-
-var firstPass = ""
+//var firstPass = "$2b$10$eT3Pex54hQL8IALM8MPl3O4oYnZqLjmzpltfTpc7xS8iyHErUrx3S"
+async function defaultPassword(){
+    const salt = await bcrypt.genSalt(10)
+    const newPassword = await bcrypt.hash("123456", salt)
+    return newPassword
+}
 
 require('dotenv').config()
 
@@ -18,24 +22,25 @@ router.route('/login')
         // const arr = JSON.parse(req.body)
         // console.log(arr)
         console.log(req.body.password == null)
-        const firstLogin = false
+        var firstLogin = false
 
         const staff = await staff_members_models.findOne({ email: req.body.email })
         if (staff) {
-            //const correctPassword=await bcrypt.compare(req.body.password,staff.password)
+            const correctPassword=await bcrypt.compare(req.body.password,staff.password)
 
             console.log("correct password: ", staff.password)
             console.log("entered password: ", req.body.password)
-            if (bcrypt.compare(req.body.password,firstPass)) {
+            if (req.body.password=="123456") {
                 firstLogin=true
             }
             
-            //if(correctPassword){
-            if (bcrypt.compare(req.body.password,staff.password)) {
+            if(correctPassword){
                 const token = jwt.sign({ _id: staff._id, role: staff.role }, process.env.TOKEN_SECRET)
                 res.header('token', token)
+                
                 if(firstLogin){
-                    res.send('/resetPassword')
+                    console.log("first login")
+                    res.send('reset your password')
                 }
 
                 res.send("Success")
@@ -59,9 +64,7 @@ router.route('/addStaff')
         //doing anything in the database takes time so we should await and async
         if (!user) {
             console.log("if not user")
-            const salt = await bcrypt.genSalt(10)
-            const newPassword = await bcrypt.hash("123456", salt)
-            firstPass = newPassword
+            newPassword = defaultPassword()
             var staffType,memberID
             if(req.body.role=="HR members"){
                 staffType = "hr"
