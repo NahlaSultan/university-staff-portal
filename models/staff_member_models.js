@@ -15,6 +15,7 @@
     
     const staffSchema = new mongoose.Schema(
         {
+
             name: {
                 type: String,
                 minlength: 5
@@ -42,6 +43,7 @@
                 type: String,
                 required: true,
                 $in: ["hr", "academic"]
+
 
             },
             memberID: {
@@ -109,3 +111,4 @@
     module.exports.staffSchema = staffSchema
         //table is lowercase and plural of 'user' insterted above
     
+
