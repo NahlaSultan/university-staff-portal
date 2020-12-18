@@ -131,16 +131,16 @@ router.route('/deleteLocation')
 //     }
 // })
 
-router.route('/deleteFaculty')
-.delete(async (req,res)=>{
-    await faculty_model.remove({ name:  req.body.name.toLowerCase()}, function(err, result) {
-        if (err) {
-          console.err(err);
-        } else {
-          res.json(result);
-        }
-      });
-})
+// router.route('/deleteFaculty')
+// .delete(async (req,res)=>{
+//     await faculty_model.remove({ name:  req.body.name.toLowerCase()}, function(err, result) {
+//         if (err) {
+//           console.err(err);
+//         } else {
+//           res.json(result);
+//         }
+//       });
+// })
 
 
     module.exports = router
