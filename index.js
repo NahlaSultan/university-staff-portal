@@ -8,9 +8,11 @@ console.log(process.env.DB_URL)
 
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true , useUnifiedTopology:true})
 
+
 authentication_routes.route('')
 staff_member_routes.route('')
 academic_members_routes.route('')
 
 
 app.listen(process.env.PORT)
+

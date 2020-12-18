@@ -8,11 +8,13 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    instructor: {
-        type: staffSchema
+    instructors: {
+        type: [],
+        default: []
     },
-    teachingAssistant: {
-        type: staffSchema
+    teachingAssistants: {
+        type: [] ,
+        default: []   
     },
     courseCoordinator: {
         type: staffSchema,

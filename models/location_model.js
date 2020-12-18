@@ -16,12 +16,12 @@ const locationSchema = new mongoose.Schema({
     },
 
     capacity: {
-        type: int,
+        type: Number,
         required: true
     },
 
     officeMembers: {
-        type: int,
+        type: Number,
     }
 
    
