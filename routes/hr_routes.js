@@ -22,6 +22,7 @@ require('dotenv').config()
 //try to merge hr routes
 
 
+
 router.route('/addLocation')
 .post(async (req,res)=>{
     const newLocation = new location_model({
@@ -39,6 +40,8 @@ router.route('/addLocation')
     
 
 })
+
+
 
 
 
