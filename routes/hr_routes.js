@@ -119,7 +119,7 @@ router.route('/addLocation')
 //         name: req.body.name,
         
 //     })
-// }
+
 // })
 
 router.route('/deleteLocation')

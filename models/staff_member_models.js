@@ -10,7 +10,7 @@ const staffSchema = new mongoose.Schema(
             type: String,
             minlength: 5
         },
-        ID: {
+        Id: {
             type: String,
             // unique: true,
             required: true
