@@ -64,7 +64,7 @@ router.route('/addStaff')
         //doing anything in the database takes time so we should await and async
         if (!user) {
             console.log("if not user")
-            newPassword = defaultPassword()
+            newPassword = await defaultPassword()
             var staffType,memberID
             if(req.body.role=="HR members"){
                 staffType = "hr"
