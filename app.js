@@ -10,6 +10,7 @@ app.use(express.json())
 const staff_member_routes = require('./routes/staff_member_routes')
 const authentication_routes = require('./routes/authentication_routes')
 const academic_members_routes = require('./routes/academic_members_routes')
+const hr_routes = require('./routes/hr_routes')
 
 var bodyParser = require('body-parser');
 
@@ -39,9 +40,31 @@ app.use((req, res, next) => {
 
     }
 })
-
-
 app.use('',staff_member_routes )
+
+
+app.use((req, res, next) => {
+    try {
+        console.log("\nWe entered")
+
+        const token = req.headers.token;
+
+
+        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        console.log(verified);
+       if(verified.role !="HR members"){
+            return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
+        }
+        req.user = verified;
+        next();
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+
+    }
+})
+app.use('',hr_routes )
+
 
 app.use((req, res, next) => {
     try {
@@ -56,7 +79,7 @@ app.use((req, res, next) => {
             return res.status(401).json({ msg: "authorization failed" });
         }
         else if(verified.role =="HR members"){
-            return res.status(401).json({ msg: "authorization failed" });
+            return res.status(401).json({ msg: "authorization failed, must be an academic member to perform this task" });
         }
         req.user = verified;
         next();
@@ -67,5 +90,7 @@ app.use((req, res, next) => {
     }
 })
 app.use('',academic_members_routes )
+
+
 
 module.exports.app = app

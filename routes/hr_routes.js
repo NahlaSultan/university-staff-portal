@@ -1,48 +1,78 @@
-const staff_members_models = require('../models/staff_member_models')
-const location_model = require('../models/location_model')
+const staff_members_models = require('../models/staff_member_models').model
+const location_model = require('../models/location_model').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const faculty_model = require('../models/faculty_model')
+const faculty_model = require('../models/faculty_model').model
 require('dotenv').config()
-
-// HR can add a new staff member to the system. For all staff members,
-// HR should add id, name, email, salary and office location.
-// – Any extra personal information details is acceptable.
-// – Emails should be unique.
-// – Staff member ids are unique. The first academic staff member should have id “ac-1”, and the first hr member should have id “hr-1”. The system should automatically increment ids when adding a new staff member.
-// – Once a staff member is added to the system, his/her password should be set to a default value: “123456”. The system must prompt new users to change their passwords on their first login to the system.
-// – HR can’t assign an office location that already has full capacity.
-// – HR does not assign a course to a new academic staff member.
-// – All HR members have Saturday as their day off, and they can’t change it.
-//$in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
-
-//try to merge hr routes
-
 
 
 router.route('/addLocation')
-.post(async (req,res)=>{
+.post(async (req, res) => {
+    console.log("adding loc")
+    const location = await location_model.findOne({ name: req.body.name })
+     
+        if (!location) {
     const newLocation = new location_model({
         type: req.body.type,
-        capacity: req.body.capacity,
         name: req.body.name,
-        
+        capacity: req.body.capacity,
+
     })
-    try{
-        await newLocation.save()}
-        catch(Err){
-            console.log(Err)
+
+    if(req.body.type=="office"){
+        newLocation.officeMembers=0
+    }
+    try {
+        
+        await newLocation.save()
+    }
+    catch (Err) {
+        console.log(Err)
+        res.send("error adding location")
+    }
+    return res.send(newLocation)    
         }
-        return res.send(newLocation)
-    
+
+        res.send('location '+ req.body.name+' is already there')
+
 
 })
 
+router.route('/updateLocation')
+.post(async (req, res) => {
+    console.log("adding loc")
+    const location = await location_model.findOne({ name: req.body.name })
+     
+    if (location) {
+        const name = req.body.name
+
+        if(req.body.type!=null){
+            location.type = req.body.type
+        }
+        if(req.body.capacity!=null){
+                location.capacity = req.body.capacity
+        }
+        if(req.body.officeMembers!=null){
+            location.officeMembers = req.body.officeMembers
+        }
+        try {
+            
+            await location.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            res.send("error saving location")
+        }
+        return res.send(location)    
+    }
+
+        res.send('location '+ req.body.name+' doesnt exist')
 
 
+})
 
 
 router.route('/deleteLocation')
@@ -75,14 +105,16 @@ router.route('/addFaculty')
 
 })
 
-// router.route('/updateFacutly')
-// .post(async (req,res)=>{
-//     const newLocation = new location_model({
-//         type: req.body.type,
-//         capacity: req.body.capacity,
-//         name: req.body.name,
-        
-//     })
+// const facultySchema = new mongoose.Schema({
+//     facultyName: {
+//         type: String,
+//         required: true
+//     },
+//     departments: {
+//       //  type: departmentSchema
+//         type: [],
+//         default: []
+//     }
 // })
 
 router.route('/deleteFaculty')
