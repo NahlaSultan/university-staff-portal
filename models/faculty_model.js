@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { courseSchema } = require('./course_model')
 const { staffSchema } = require('./staff_member_models')
-
+const { departmentSchema } = require('./department_model')
 
 
 const facultySchema = new mongoose.Schema({
@@ -9,17 +9,11 @@ const facultySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    department: {
-        type: departmentSchema
-
-    },
-    headOfDepartment: {
-        type: staffSchema,
-        unique: true
-    },
-    course: {
-        type: courseSchema
+    departments: {
+      //  type: departmentSchema
+        type: [],
+        default: []
     }
-
 })
 module.exports = mongoose.model('faculty', facultySchema)
+module.exports.facultySchema = facultySchema
