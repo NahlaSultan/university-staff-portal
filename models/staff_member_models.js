@@ -100,9 +100,15 @@ const staffSchema = new mongoose.Schema(
             type: locationSchema,
         },
         staffLinkingRequests: {
-            //if coordinator only view ,accept or reject else send
-            type: slotLinkingSchema
+            //array of _id of slotLinking requests
+            type: [],
+            default: []
 
+        },
+        coordinatorLinkingRequests: {
+            //for coordinators
+            type: [],
+            default: []
         },
         course: {
 

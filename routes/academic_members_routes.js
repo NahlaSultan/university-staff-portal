@@ -74,20 +74,20 @@ router.route('/sendReplacementRequest')
 
     }
     )
-//Inputs:slotId
-//(nnot tested yet)
+//Inputs:slotId(slot I want to be assigned to)
 router.route('/sendSlotLinkingRequest')
     .post(async (req, res) => {
         //I am sending a request to someone ,i Will create a new request object and add it to the replacementRequest table of this user
         const senderId = req.user._id;
         // const receiver = req.body.receiverId;
-        const slotReplacement = req.body.slot;
-        const slot = await slot_model.findeOne({ id: slotReplacement })
+        const slotReplacement = req.body.slotId;
+        const slot = await slot_model.findOne({ numberID: slotReplacement })
         if (slot) {
             const coordinatorID = slot.courseCoordinatorID
             const staff = await staff_members_models.findOne({ _id: senderId })
+            const coordinator = await staff_members_models.findOne({ memberID: coordinatorID })
 
-            if (staff) {
+            if (staff && coordinator) {
                 var request = new newSlotlinking(
                     {
                         pending: true,
@@ -103,9 +103,16 @@ router.route('/sendSlotLinkingRequest')
                 catch (Err) {
                     console.log(Err)
                 }
-                staff.staffLinkingRequests = request
-                await staff.save()
-                res.send("Successfully sent")
+                staff.staffLinkingRequests.push(request._id)
+                coordinator.coordinatorLinkingRequests.push(request._id)
+                try {
+                    await staff.save()
+                    await coordinator.save()
+                }
+                catch (Err) {
+                    return res.send("Mongoose Error")
+                }
+                res.send("Successfully sent to coordinator")
 
             }
         }
@@ -167,42 +174,91 @@ router.route('/acceptReplacementRequest')
                     console.log("found the request")
                     requstTemp = await newReplacement.findOne({ _id: slotID })
                     if (requstTemp) {
-                        
-                        requstTemp.pending = false
-                        requstTemp.accepted = true
-                        try {
-                            requstTemp.save()
+                        if (requstTemp.pending == false && requstTemp.accepted == true) {
+                            return res.send("already accepted")
                         }
-                        catch (Err) {
-                            return res.send("Mongoose error")
+                        else {
+                            requstTemp.pending = false
+                            requstTemp.accepted = true
+                            try {
+                                requstTemp.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
+                            const sender = await staff_members_models.findOne({ memberID: requstTemp.senderId })
+                            if (sender) {
+                                sender.slotsReplaced.push(slotID)
+                                staff.slotsToReplace.push(slotID)
+                            }
+                            try {
+                                sender.save()
+                                staff.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
+
+                            // try {
+                            //     staff.save()
+                            // }
+                            // catch (Err) {
+                            //     return res.send("Mongoose error")
+                            // }
+                            return res.send("Successfully accepted")
                         }
-                        const sender = await staff_members_models.findOne({ memberID: requstTemp.senderId })
-                        if (sender) {
-                            sender.slotsReplaced.push(slotID)
-                        }
-                        try {
-                            sender.save()
-                        }
-                        catch (Err) {
-                            return res.send("Mongoose error")
-                        }
-                        staff.slotsToReplace.push(slotID)
-                        try {
-                            staff.save()
-                        }
-                        catch (Err) {
-                            return res.send("Mongoose error")
-                        }
-                        return res.send("Successfully accepted")
                     }
-                }
-                else{
-                    return res.send("This request is not found")
+                    else {
+                        return res.send("This request is not found")
+                    }
                 }
             }
         }
         else {
             return res.send("Something wrong has occured")
         }
+
+    })
+//inputs the slotID of the request he wished to accept(_id) 
+router.route('/rejectReplacementRequest')
+    .post(async (req, res) => {
+        console.log("I entered")
+        const slotID = req.body.slotID
+        const senderId = req.user._id;
+        var requstTemp;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            console.log("in staff")
+            for (let index = 0; index < staff.requestReplacmentReceived.length; index++) {
+                if (staff.requestReplacmentReceived[index] == slotID) {
+                    console.log("found the request")
+                    requstTemp = await newReplacement.findOne({ _id: slotID })
+                    if (requstTemp) {
+                        if (requstTemp.pending == false && requstTemp.accepted == false) {
+                            return res.send("already rejected")
+                        }
+                        else {
+                            requstTemp.pending = false
+                            requstTemp.accepted = false
+                            try {
+                                requstTemp.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
+
+                            return res.send("Successfully rejected")
+                        }
+                    }
+                    else {
+                        return res.send("This request is not found")
+                    }
+                }
+            }
+        }
+        else {
+            return res.send("Something wrong has occured")
+        }
+
     })
 module.exports = router
