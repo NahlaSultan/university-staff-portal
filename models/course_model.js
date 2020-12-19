@@ -16,11 +16,11 @@ const courseSchema = new mongoose.Schema({
         default: []   
     },
     courseCoordinator: {
-        type: staffSchema,
+        type: String,
         unique: true
     },
     teachingSlots: {
-        type: []
+        type: [] // array of slot ids
     },
     teachingSlotsNumber: {
         type: Number,

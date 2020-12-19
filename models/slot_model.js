@@ -24,16 +24,16 @@ const slotSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    slotID:{
-        type:String,
-        unique:true
-    },
     courseCoordinatorID:{
         type:String,
     } ,
     numberID:
     {
         type:Number
+    },
+    assignedFlag:{
+         type:Boolean,
+         default:false
     }
     // ,
     // academicMember: {
