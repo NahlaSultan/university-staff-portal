@@ -2,6 +2,7 @@ const staff_members_models = require('../models/staff_member_models').model
 const staff_member_routes = require('./staff_member_routes')
 const slot_model = require('../models/slot_model').model
 const course_model = require('../models/course_model').model
+const newSlotLinking = require('../models/slotLinking_request').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
@@ -40,39 +41,41 @@ router.route('/addSlot')
                 if (!office) {
                     return res.send("Invalid location")
                 }
-                if (findTime && findLocation) {
-                    res.send("overlapping slots")
-                }
                 else {
-                    console.log("started adding new values")
-                    var slot = new slot_model(
-                        {
-                            type: req.body.type,
-                            time: req.body.time,
-                            courseTaught: req.body.courseTaught,
-                            location: req.body.location,
-                            courseCoordinatorID: staff.memberID
-                        }
-                    )
-
-                    try {
-                        // await slot.save()
-                        // const slotId="-" + slot.numberID
-                        // staff.slotID=slotID
-                        await slot.save()
-                        const course = await course_model.findOne({ courseName: req.body.courseTaught })
-                        if (course) {
-                            await course.teachingSlots.push(slot.numberID)
-                            await course.save()
-                            res.send("Successfully added")
-                        }
+                    if (findTime && findLocation) {
+                        res.send("overlapping slots")
                     }
-                    catch (Err) {
-                        console.log(Err)
-                        res.send("Mongo error")
+                    else {
+                        console.log("started adding new values")
+                        var slot = new slot_model(
+                            {
+                                type: req.body.type,
+                                time: req.body.time,
+                                courseTaught: req.body.courseTaught,
+                                location: req.body.location,
+                                courseCoordinatorID: staff.memberID
+                            }
+                        )
+
+                        try {
+                            // await slot.save()
+                            // const slotId="-" + slot.numberID
+                            // staff.slotID=slotID
+                            await slot.save()
+                            const course = await course_model.findOne({ courseName: req.body.courseTaught })
+                            if (course) {
+                                await course.teachingSlots.push(slot.numberID)
+                                await course.save()
+                                res.send("Successfully added")
+                            }
+                        }
+                        catch (Err) {
+                            console.log(Err)
+                            res.send("Mongo error")
+                        }
+
+
                     }
-
-
                 }
             }
             res.send("This course does not exist")
@@ -214,5 +217,75 @@ router.route('/updateSlot')
             }
         }
     })
-    
+router.route('/viewSlotLinkingRequest')
+    .get(async (req, res) => {
+        var sentArray = [];
+        var temp;
+        var tempDate;
+        var requstTemp;
+        sentArray[0] = "Slot linking requests are:"
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            console.log("In staff")
+            var lastIndex = 1;
+            var startIndex = 0
+            for (let index = 0; index < staff.coordinatorLinkingRequests.length; index++) {
+                console.log("I entered here")
+                temp = staff.coordinatorLinkingRequests[index]
+                requstTemp = await newSlotLinking.findOne({ _id: temp })
+                if (requstTemp) {
+                    sentArray[lastIndex] = requstTemp
+                }
+                lastIndex++
+            }
+
+            res.send(sentArray)
+
+        }
+        res.send("Invalid staff member")
+
+    })
+//inputs the requestID that he wishes to reject
+router.route('/rejectSlotLinkingRequest')
+    .post(async (req, res) => {
+        console.log("I entered")
+        const slotID = req.body.requestID
+        const senderId = req.user._id;
+        var requstTemp;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            console.log("in staff")
+            for (let index = 0; index < staff.coordinatorLinkingRequests.length; index++) {
+                if (staff.coordinatorLinkingRequests[index] == slotID) {
+                    console.log("found the request")
+                    requstTemp = await newSlotLinking.findOne({ _id: slotID })
+                    if (requstTemp) {
+                        if (requstTemp.pending == false && requstTemp.accepted == false) {
+                            return res.send("already rejected")
+                        }
+                        else {
+                            requstTemp.pending = false
+                            requstTemp.accepted = false
+                            try {
+                                requstTemp.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
+
+                            return res.send("Successfully rejected")
+                        }
+                    }
+                    else {
+                        return res.send("This request is not found")
+                    }
+                }
+            }
+        }
+        else {
+            return res.send("Something wrong has occured")
+        }
+
+    })
 module.exports = router
