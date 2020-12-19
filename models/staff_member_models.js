@@ -106,12 +106,16 @@ const staffSchema = new mongoose.Schema(
         },
         course:{
             //in case of coordinator
-            type:String 
+            type:[]
         }
         ,
         courseCoverage:{
             type: Number,
             default: 0
+        },
+        slotsAssigned:{
+            type: []//slot ids
+            
         }
     })
 
