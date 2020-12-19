@@ -1,10 +1,12 @@
 const staff_members_models = require('../models/staff_member_models').model
+const course_model = require('../models/course_model').model
 const staff_member_routes=require('./staff_member_routes')
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { ReplSet } = require('mongodb')
 require('dotenv').config()
 
 
@@ -42,6 +44,22 @@ router.route('/viewCourseStaff')
         const result =  await staff_members_models.find({course:staff.course})
         console.log(result)
         res.send(result)
+    
+}
+
+})
+//view staff who gives same course
+router.route('/assignCourseCoordinator')
+.post(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    const coordinator = await staff_members_models.findOne({ email: req.body.email })
+    if(staff){  
+        const course = await course_model.findOne({ courseName: req.body.courseName })
+       // if(staff.course==cou)
+        course.courseCoordinator=coordinator
+        course.save()
+        res.send("successfully assigned")
     
 }
 
