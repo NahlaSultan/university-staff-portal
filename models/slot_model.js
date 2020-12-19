@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
-const { staffSchema } = require('./staff_member_models')
 
 const AutoIncrementFactory = require('mongoose-sequence');
-const connection =  mongoose.createConnection(process.env.DB_URL);
+const connection = mongoose.createConnection(process.env.DB_URL);
 const AutoIncrement = AutoIncrementFactory(connection);
+
 
 const slotSchema = new mongoose.Schema({
    
@@ -24,10 +24,16 @@ const slotSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    id:{
-        type:Number,
-        unique:true,
-        //required:true
+    slotID:{
+        type:String,
+        unique:true
+    },
+    courseCoordinatorID:{
+        type:String,
+    } ,
+    numberID:
+    {
+        type:Number
     }
     // ,
     // academicMember: {
@@ -36,10 +42,6 @@ const slotSchema = new mongoose.Schema({
     
    
 })
-slotSchema.plugin(AutoIncrement, {inc_field: 'id'});
-
-// const Model = mongoose.model('slof', slotSchema)
-// Model.counterReset('id_seq', function(err) {
-// });    
+slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID', reference_fields: ['slotID'] });
 module.exports.model = mongoose.model('slot', slotSchema)
 module.exports.slotSchema = slotSchema
