@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const { staffSchema } = require('./staff_member_models')
-const { slotSchema } = require('./slot_model')
 
 
 const courseSchema = new mongoose.Schema({
@@ -21,13 +20,15 @@ const courseSchema = new mongoose.Schema({
         unique: true
     },
     teachingSlots: {
-        type: slotSchema
+        type: []
     },
     teachingSlotsNumber: {
         type: Number,
         //required: true
     }
 })
+
+
 
 module.exports.model = mongoose.model('course', courseSchema)
 module.exports.courseSchema = courseSchema

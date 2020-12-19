@@ -81,9 +81,6 @@ router.route('/viewProfile')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     if(staff){ 
-    // res.send(staff.name, staff.numberID, staff.email,staff.salary,staff.role,
-    // staff.memberID,staff.dayOff,staff.annualLeavesBalance, staff.Leaves,staff.workingSchedule
-    // ,staff.faculty,staff.department, staff.officeLocation )
     res.send(staff)
 }
 })
@@ -94,6 +91,37 @@ router.route('/viewAttendance')
     const staff = await staff_members_models.findOne({ _id: staffId })
     if(staff){ 
         res.send(staff.attendance)
+        }
+})
+//view month attendance
+router.route('/viewMonthAttendance')
+.post(async(req,res)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+        console.log(staff.attendance[0].signInTime.getMonth())
+        const arr=[]
+        for(let index=0;index<staff.attendance.length;index++){
+          if(req.body.month-1==staff.attendance[index].signInTime.getMonth()){
+             arr.push(staff.attendance[index])
+          }
+          
+        }
+        res.send(arr)
+        }
+})
+//updatprofile
+router.route('/updateProfile')
+.post(async(req,res)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+        if(staff.staffType==academic){
+
+        }
+        else{
+
+        }
         }
 })
 

@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
-const { slotSchema } = require('./slot_model')
-const { staffSchema } = require('./staff_member_models')
 
-const replacementSchema = new mongoose.Schema({
+
+const slotLinkingSchema = new mongoose.Schema({
     pending:{
         type:Boolean,
         required:true
@@ -11,22 +10,20 @@ const replacementSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    slot:{
+    slotID:{
         type:String,
         require:true
     },
-    receiverId:
+    coordinatorId:
     {
         type:String,
         required:true
     },
-    senderId:
-    {
+    senderId:{
         type:String,
         required:true
     }
 
-
 })
-module.exports.model = mongoose.model('replacment_requests', replacementSchema)
-module.exports.replacementSchema=replacementSchema
+module.exports.model = mongoose.model('slotLinking_request', slotLinkingSchema)
+module.exports.slotLinkingSchema=slotLinkingSchema

@@ -10,6 +10,7 @@ app.use(express.json())
 const staff_member_routes = require('./routes/staff_member_routes')
 const authentication_routes = require('./routes/authentication_routes')
 const academic_members_routes = require('./routes/academic_members_routes')
+const coordinator=require('./routes/coordinator_routes')
 const hr_routes = require('./routes/hr_routes')
 
 var bodyParser = require('body-parser');
@@ -48,11 +49,11 @@ app.use('/hr',(req, res, next) => {
         console.log("\nWe entered")
 
         const token = req.headers.token;
-
-
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(verified);
+        console.log("hr")
        if(verified.role !="HR members"){
+        console.log(" not hr")
+
             return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
         }
         req.user = verified;
@@ -65,31 +66,50 @@ app.use('/hr',(req, res, next) => {
 })
 app.use('/hr',hr_routes )
 
+// app.use('/academicMembers',(req, res, next) => {
+//     try {
+//         console.log("\nWe entered academic")
 
-app.use((req, res, next) => {
-    try {
-        console.log("\nWe entered")
-
-        const token = req.headers.token;
+//         const token = req.headers.token;
 
 
-        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(verified);
-        if (!verified) {
-            return res.status(401).json({ msg: "authorization failed" });
-        }
-        else if(verified.role =="HR members"){
-            return res.status(401).json({ msg: "authorization failed, must be an academic member to perform this task" });
-        }
-        req.user = verified;
-        next();
-    }
-    catch (error) {
-        res.status(500).json({ error: error.message });
+//         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+//         console.log(verified);
+//        if(verified.role =="HR members"){
+//             return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
+//         }
+//         req.user = verified;
+//         next();
+//     }
+//     catch (error) {
+//         res.status(500).json({ error: error.message });
 
-    }
-})
+//     }
+// })
+
 app.use('',academic_members_routes )
+
+// app.use('/coordinator',(req, res, next) => {
+//     try {
+//         console.log("\nWe entered ")
+
+//         const token = req.headers.token;
+
+
+//         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+//         console.log(verified);
+//        if(verified.role !="courseCoordinators"){
+//             return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
+//         }
+//         req.user = verified;
+//         next();
+//     }
+//     catch (error) {
+//         res.status(500).json({ error: error.message });
+
+//     }
+// })
+app.use('/coordinator',coordinator)
 
 
 
