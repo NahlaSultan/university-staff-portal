@@ -36,7 +36,10 @@ router.route('/addSlot')
                     res.send("missing inputs")
                 const findTime = await slot_model.findOne({ time: req.body.time })
                 const findLocation = await slot_model.findOne({ location: req.body.location })
-
+                const office = await location_model.findOne({ name: req.body.location })
+                if (!office) {
+                    return res.send("Invalid location")
+                }
                 if (findTime && findLocation) {
                     res.send("overlapping slots")
                 }
@@ -155,6 +158,10 @@ router.route('/updateSlot')
                     else {
                         if (req.body.location != null) {
                             const newLocation = req.body.location
+                            const office = await location_model.findOne({ name: newLocation })
+                            if (!office) {
+                                return res.send("Invalid location")
+                            }
                             slotToUpdate.location = newLocation
                             try {
                                 slotToUpdate.save()
@@ -166,6 +173,9 @@ router.route('/updateSlot')
                         }
                         if (req.body.type != null) {
                             const newType = req.body.type
+                            if (newType != "lab" && newType != "tutorial" && newType != "lecture") {
+                                return res.send("Invalid type;should be a lab,lecture or tutorial")
+                            }
                             slotToUpdate.type = newType
                             try {
                                 slotToUpdate.save()
@@ -204,4 +214,5 @@ router.route('/updateSlot')
             }
         }
     })
+    
 module.exports = router
