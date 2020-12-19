@@ -1,3 +1,4 @@
+const { Timestamp } = require('mongodb');
 const mongoose = require('mongoose')
 
 const AutoIncrementFactory = require('mongoose-sequence');
@@ -13,8 +14,9 @@ const slotSchema = new mongoose.Schema({
         $in: ["lecture", "tutorial", "lab"]
     },
     time: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        $in: ["First Slot", "Second Slot", "Third Slot","Fourth Slot","Fifth Slot"]
     },
     courseTaught: {
         type: String,

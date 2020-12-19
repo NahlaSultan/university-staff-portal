@@ -74,8 +74,7 @@ const staffSchema = new mongoose.Schema(
             default: []
         },
         workingSchedule: {
-            type: [],
-            default: []
+            type: workingScheduleSchema
         },
         requestReplacementSent:
         //the ones I send
@@ -121,6 +120,16 @@ const staffSchema = new mongoose.Schema(
         slotsAssigned: {
             type: []//slot ids
 
+        },
+        slotsReplaced: {
+            //slots that will be replaced for me
+            type: [],
+            default: []
+        },
+        slotsToReplace: {
+            //slots I will replace
+            type: [],
+            default: []
         }
     })
 
