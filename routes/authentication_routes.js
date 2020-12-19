@@ -6,6 +6,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
+const course_model=require('../models/course_model').model
 
 
 //var firstPass = "$2b$10$eT3Pex54hQL8IALM8MPl3O4oYnZqLjmzpltfTpc7xS8iyHErUrx3S"
@@ -185,7 +186,21 @@ router.route('/addSampleOffice').post(async (req, res) => {
 
 
 })
-
+router.route('/addCourse').post(async (req, res) => {
+    const newCourse=new course_model({
+    
+        courseName:req.body.name
+    })
+    try{
+        await newCourse.save()
+    }
+    catch(Err){
+        console.log(Err)
+        res.send("error adding office")
+    }
+    res.send("Successfully added")
+    
+    })
 
 
 
