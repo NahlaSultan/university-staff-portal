@@ -74,8 +74,7 @@ const staffSchema = new mongoose.Schema(
             default: []
         },
         workingSchedule: {
-            type: [],
-            default: []
+            type: workingScheduleSchema
         },
         requestReplacementSent:
         //the ones I send
@@ -91,6 +90,7 @@ const staffSchema = new mongoose.Schema(
         },
         requestReplacmentReceived:
         {
+            //the ones I received
             type: [],
             default: []
         },
@@ -100,22 +100,42 @@ const staffSchema = new mongoose.Schema(
             type: locationSchema,
         },
         staffLinkingRequests: {
-            //if coordinator only view ,accept or reject else send
-            type: slotLinkingSchema
+            //array of _id of slotLinking requests
+            type: [],
+            default: []
 
         },
-        course:{
-            //in case of coordinator
-            type:[]
+        coordinatorLinkingRequests: {
+            //for coordinators
+            type: [],
+            default: []
+        },
+        course: {
+
+            type: []
         }
         ,
-        courseCoverage:{
+        coordinatorCourse: {
+            type: [],
+            default: []
+        },
+        courseCoverage: {
             type: Number,
             default: 0
         },
-        slotsAssigned:{
+        slotsAssigned: {
             type: []//slot ids
-            
+
+        },
+        slotsReplaced: {
+            //slots that will be replaced for me
+            type: [],
+            default: []
+        },
+        slotsToReplace: {
+            //slots I will replace
+            type: [],
+            default: []
         }
     })
 

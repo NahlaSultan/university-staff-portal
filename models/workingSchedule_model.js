@@ -4,27 +4,31 @@ const { daySchema } = require('./day_model')
 
 const workingScheduleSchema = new mongoose.Schema({
 
-    day1: {
+    Saturday: {
         type: daySchema,
         required: true
     },
 
-    day2: {
+    Sunday: {
         type: daySchema,
         required: true
     },
 
-    day3: {
+    Monday: {
         type: daySchema,
         required: true
     },
 
-    day4: {
+    Tuesday: {
         type: daySchema,
         required: true
     },
 
-    day5: {
+    Wednesday: {
+        type: daySchema,
+        required: true
+    },
+    Thursday: {
         type: daySchema,
         required: true
     }

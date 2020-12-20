@@ -1,3 +1,4 @@
+const { Timestamp } = require('mongodb');
 const mongoose = require('mongoose')
 
 const AutoIncrementFactory = require('mongoose-sequence');
@@ -6,15 +7,16 @@ const AutoIncrement = AutoIncrementFactory(connection);
 
 
 const slotSchema = new mongoose.Schema({
-   
+
     type: {
         type: String,
         required: true,
         $in: ["lecture", "tutorial", "lab"]
     },
     time: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        $in: ["First Slot", "Second Slot", "Third Slot", "Fourth Slot", "Fifth Slot"]
     },
     courseTaught: {
         type: String,
@@ -24,20 +26,26 @@ const slotSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    courseCoordinatorID:{
-        type:String,
-    } ,
+    courseCoordinatorID: {
+        type: String,
+    },
     numberID:
     {
-        type:Number
+        type: Number,
+        unique: true
+    },
+    assignedFlag: {
+        type: Boolean,
+        default: false
     }
     // ,
     // academicMember: {
     //     type: staffSchema
     // }
-    
-   
+
+
 })
 slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID' });
-module.exports.model = mongoose.model('slot', slotSchema)
+
+module.exports.model = mongoose.model('slots', slotSchema)
 module.exports.slotSchema = slotSchema

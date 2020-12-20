@@ -18,6 +18,7 @@ const courseSchema = new mongoose.Schema({
     courseCoordinator: {
         type: String,
         //unique: true
+
     },
     teachingSlots: {
         type: []
