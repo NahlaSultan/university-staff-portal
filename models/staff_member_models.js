@@ -139,12 +139,12 @@ const staffSchema = new mongoose.Schema(
             type: [],
             default: []
         },
-        dayOffRequestsHOD:{
-            type:[],
-            default:[]
+        dayOffRequestsHOD: {
+            type: [],
+            default: []
         },
-        dayOffRequestsSent:{
-            type:String
+        dayOffRequestSent: {
+            type: String
         }
     })
 
