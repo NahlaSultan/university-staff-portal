@@ -33,8 +33,10 @@ router.route('/signIn')
         }
         if(staff.attendance.length==0)
         {
-            await staff.attendance.push(currentTime)
-            await staff.save()
+            staff.markModified('attendance');
+           await staff.attendance.push(currentTime)
+           await staff.save()
+           res.send(staff)
         }else{
         if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
             console.log("i entered herrrrre")
@@ -164,6 +166,206 @@ router.route('/resetPassword')
       }}
      
     })
+//helper for missing days
+function checkMonth(month,day){
+    switch(month) {
+        case 1:
+          if (day==31)
+          return true
+          else 
+          return false
+          break;
+        case 2:
+          if (day==29)
+          return true
+          else 
+          return false
+          break;
+        case 3:
+          if (day==31)
+          return true
+          else 
+          return false
+          break;
+        case 4:
+          if (day==30)
+          return true
+          else 
+          return false
+          break;
+        case 5:
+          if (day==31)
+          return true
+          else 
+          return false
+          break;
+        case 6:
+          if (day==30)
+          return true
+          else 
+          return false
+          break;
+        case 7:
+            if (day==31)
+            return true
+            else 
+            return false
+            break;
+          case 8:
+            if (day==31)
+            return true
+            else 
+            return false
+            break;
+          case 9:
+            if (day==30)
+            return true
+            else 
+            return false
+            break;
+          case 10:
+            if (day==31)
+            return true
+            else 
+            return false
+            break;
+          case 11:
+            if (day==30)
+            return true
+            else 
+            return false
+            break;
+          case 12:
+            if (day==31)
+            return true
+            else 
+            return false
+            break;
+          default:
+          return false
+      }
+    }
 
+//missing days
+router.route('/viewMissingDays')
+.get(async(req,res,)=>{
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+        staff.missingDays=[]
+        staff.save()
+        //add missing days from 11 to next day attended
+        for(let i=0;i<staff.attendance.length-1;i++){
+        var day1=staff.attendance[i].signInTime.getDate()
+        var day2=staff.attendance[i+1].signInTime.getDate()
+        const month1=staff.attendance[i].signInTime.getMonth()+1
+        const month2=staff.attendance[i+1].signInTime.getMonth()+1
+        const year1=staff.attendance[i].signInTime.getFullYear()
+        const year2=staff.attendance[i+1].signInTime.getFullYear()
+        console.log(checkMonth(month1,day1))
+         if(checkMonth(month1,day1)==false && day1+1!=day2 && month1==month2 && year1==year2 ){
+         var missingDay=day1+1
+         for(let j=missingDay;j<day2;j++){
+         var d=new Date(month1+"/"+j+"/"+year1)
+             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+             staff.missingDays.push(d)
+         
+        }
+        }
+        else if( day1+1!=day2 && month1==month2-1 && year1==year2 ){
+            if(checkMonth(month1,day1)==true){
+               
+                    for(let j=1;j<day2;j++){
+                    var d=new Date(month2+"/"+j+"/"+year1)
+                    if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+                    staff.missingDays.push(d) 
+                }
+            }
+            else{
+            var missingDay=day1+1
+            for(let j=missingDay;checkMonth(month1,j-1)==false;j++){
+                var d=new Date(month1+"/"+j+"/"+year1)
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+             staff.missingDays.push(d)
+             }
+            
+           
+           for(let j=1;j<day2;j++){
+            var d=new Date(month2+"/"+j+"/"+year1)
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+            staff.missingDays.push(d)
+            }}
+    
+          }
+        
+        
+        }
+        res.send(staff.missingDays)
+        staff.save()
+        
+}
+})
+//missing hours
+router.route('/viewMissingHours')
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+        //8x5=40 ,24x5=120/60=2 total 42 hours per month
+        for(let i=0;i<staff.attendance.length-1;i++){
+         var day1=staff.attendance[i].signInTime.getDate()
+        var day2=staff.attendance[i+1].signInTime.getDate()
+        const month1=staff.attendance[i].signInTime.getMonth()+1
+        const month2=staff.attendance[i+1].signInTime.getMonth()+1
+         while(month1==month2|| (month1+1==month2 && day1<=10))
+           var signIn=staff.attendance[i].signInTime
+           var signOut=staff.attendance[i].signOutTime
+           var milliseconds = milliseconds+ Math.abs(signOut.getTime() - signIn.getTime());
+           
+        }
+        var hours = milliseconds / 36e5;
+        milliseconds=0//to start a new month
+           if(hours<42){
+               staff.missingHours.push(42-hours)}
+           else{
+            staff.missingHours.push(0)
+           }
+            } 
+            staff.save()
+            res.send(staff.missingHours)
+
+})
+//extra hours
+router.route('/viewExtraHours')
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+        //8x5=40 ,24x5=120/60=2 total 42 hours per month
+        for(let i=0;i<staff.attendance.length-1;i++){
+         var day1=staff.attendance[i].signInTime.getDate()
+        var day2=staff.attendance[i+1].signInTime.getDate()
+        const month1=staff.attendance[i].signInTime.getMonth()+1
+        const month2=staff.attendance[i+1].signInTime.getMonth()+1
+         var milliseconds=0//to start new month
+         while(month1==month2|| (month1+1==month2 && day1<=10))
+           var signIn=staff.attendance[i].signInTime
+           var signOut=staff.attendance[i].signOutTime
+           milliseconds = milliseconds+ Math.abs(signOut.getTime() - signIn.getTime());
+           
+        }
+        var hours = milliseconds / 36e5;
+        milliseconds=0//to start a new month
+           if(hours>42){
+               staff.extraHours.push(hours-42)}
+           else{
+            staff.extraHours.push(0)
+           }
+            } 
+            staff.save()
+            res.send(staff.extraHours)
+
+})
 
 module.exports = router
