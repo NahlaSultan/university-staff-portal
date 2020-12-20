@@ -87,6 +87,7 @@ router.route('/addStaff')
             if(office.capacity==office.officeMembers){
                 res.send('this office is already full')
             }
+            
             office.officeMembers =  office.officeMembers +1
             try {
                 console.log('saving office')
@@ -138,7 +139,10 @@ router.route('/addStaff')
             if(req.body.faculty!= null){
                 newUser.faculty = req.body.faculty
             }
-            
+            if(req.body.course!= null){
+                //enter in array form 
+                newUser.course = req.body.course
+            }
 
 
             try {

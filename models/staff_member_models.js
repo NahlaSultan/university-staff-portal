@@ -21,7 +21,7 @@ const staffSchema = new mongoose.Schema(
             minlength: 5
         },
         numberID: {
-            type: Number,
+            type: Number
             //unique: true
             // required: true
 
