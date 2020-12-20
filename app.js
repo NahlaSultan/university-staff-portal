@@ -54,7 +54,7 @@ app.use('/hr',(req, res, next) => {
         const token = req.headers.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         console.log("hr")
-       if(verified.role !="HR members"){
+       if(verified.role[0]!="HR members"){
         console.log(" not hr")
 
             return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
@@ -78,7 +78,7 @@ app.use('/ci',(req, res, next) => {
         if (!verified) {
             return res.status(401).json({ msg: "authorization failed" });
         }
-        else if(verified.role!="course Instructor"){
+        else if(!verified.role.includes("course Instructor")){
             return res.status(401).json({ msg: "authorization failed" });
         }
         req.user = verified;
@@ -99,7 +99,7 @@ app.use('/academicMembers',(req, res, next) => {
 
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         console.log(verified);
-       if(verified.role =="HR members"){
+       if(verified.role.includes("HR members")){
             return res.status(401).json({ msg: "authorization failed, must not be an HR member to perform this task" });
         }
         req.user = verified;
@@ -122,7 +122,7 @@ app.use('/coordinator',(req, res, next) => {
 
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         console.log(verified);
-       if(verified.role !="courseCoordinators"){
+       if(!verified.role.includes("courseCoordinators")){
             return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
         }
         req.user = verified;

@@ -618,73 +618,82 @@ router.route('/deleteStaffMember')
       
 })
 
-// router.route('/updateStaff')
-// .post(async (req, res) => {
-//     console.log("updating staff")
-//     const staff = await location_model.findOne({ memberID: req.body.id })
+router.route('/updateStaff')
+.post(async (req, res) => {
+    console.log("updating staff")
+    const staff = await staff_members_models.findOne({ memberID: req.body.id })
      
-//     if (location) {
-//         const name = req.body.name
+    if (staff) {
 
-//         if(req.body.type!=null){
-//             location.type = req.body.type
-//         }
-//         if(req.body.capacity!=null){
-//                 location.capacity = req.body.capacity
-//         }
-//         if(req.body.officeMembers!=null){
-//             location.officeMembers = req.body.officeMembers
-//         }
-//         if(req.body.newName!=null){
-//             const usedName = await location_model.findOne({ name: req.body.newName })
-//             if(usedName)
-//                 res.send('name ' + req.body.newName+'is already in use')
+        if(req.body.name!=null){
+            staff.name = req.body.name
+        }
+        if(req.body.email!=null){
 
-//             location.name = req.body.newName
-//         }
-//         try {
+            const found = await staff_members_models.findOne({ email: req.body.email })
+            if(found){
+                res.send("email taken, try with another email")
+            }
+            staff.email = req.body.email
+
+        }
+        if(req.body.password!=null){
+            const salt = await bcrypt.genSalt(10)
+            const newPassword = await bcrypt.hash(req.body.password, salt)
+            staff.password = newPassword
+        }
+       
+        if(req.body.dayOff!=null){
+            staff.dayOff = req.body.dayOff
+        }
+        if(req.body.annualLeavesBalance!=null){
+            staff.annualLeavesBalance = req.body.annualLeavesBalance
+        }
+        if(req.body.office!=null){
+
+            const newoffice = await location_model.findOne({ name: req.body.office })
+            if(!newoffice || newoffice.type!="office"){
+                res.send('this is not a valid office')
+            }
+            if(newoffice.capacity<=newoffice.officeMembers){
+                res.send('this office is already full')
+            }
+            const oldofficeName = staff.officeLocation
+            const oldoffice = await location_model.findOne({ name: oldofficeName })
+            oldoffice.officeMembers = oldoffice.officeMembers -1
+
+            newoffice.officeMembers =  newoffice.officeMembers +1
+
+            try {
+                console.log('saving office')
+                await newoffice.save()
+                await oldoffice.save()
+
+
+            }catch (Err) {
+                console.log(Err)
+                res.send("error saving office")
+            }
+
+            staff.officeLocation = req.body.office
+        }
+        
+        try {
             
-//             await location.save()
-//         }
-//         catch (Err) {
-//             console.log(Err)
-//             res.send("error saving location")
-//         }
-//         return res.send(location)    
-//     }
+            await staff.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            res.send("error saving staff member")
+        }
+        return res.send(staff)    
+    }
 
-//         res.send('location '+ req.body.name+' doesnt exist')
+        res.send('staff member with id '+ req.body.id+' doesnt exist')
 
 
-// })
+})
 
-// name: {
-//     type: String,
-//     minlength: 5
-// },
-// numberID: {
-//     type: Number
-//     //unique: true
-//     // required: true
 
-// },
-// email: {
-//     type: String,
-//     unique: true,
-//     required: true
-// },
-// password: {
-//     type: String,
-//     default: "123456"
-// },
-// salary: {
-//     type: Number,
-//     required: true
-// },
-// staffType: {
-//     type: String,
-//     required: true,
-//     $in: ["hr", "academic"]
 
-// },
     module.exports = router
