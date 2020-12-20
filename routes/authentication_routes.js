@@ -68,7 +68,7 @@ router.route('/addStaff')
             console.log("if not user")
             newPassword = await defaultPassword()
             var staffType,memberID
-            if(req.body.role=="HR members"){
+            if(req.body.role==("HR members")){
                 staffType = "hr"
             }
             else{
@@ -77,39 +77,42 @@ router.route('/addStaff')
 
             const officeName = req.body.office
 
-
             if (req.body.office == null){
                 res.send('must specify an office (try c2.110)')
             }
             const office = await location_model.findOne({ name: req.body.office })
-            if(!office){
+            if(!office || office.type!="office"){
                 res.send('this is not a valid office')
             }
-            if(office.capacity<=office.officeMembers){
-                res.send('this office is already full')
-            }
-            
-            office.officeMembers =  office.officeMembers +1
-            try {
-                console.log('saving office')
-                await office.save()
+            if(office.officeMembers<office.capacity){
+                office.officeMembers =  office.officeMembers +1
+                try {
+                    console.log('saving office')
+                    await office.save()
+    
+                }
+                catch (Err) {
+                    console.log(Err)
+                    res.send("error saving office")
+                }
 
             }
-            catch (Err) {
-                console.log(Err)
-                res.send("error saving office")
-            }
-            
+            else
+            res.send('this office is already full')
+
+           
+            const arr = []
+            arr.push(req.body.role)
 
             const newUser = new staff_members_models({
                 name: req.body.name,
                 email: req.body.email,
                 password: newPassword,
-                role: req.body.role,
+                role: arr,
                 dayOff:req.body.dayOff,
                 salary:req.body.salary,
                 staffType: staffType,
-                officeLocation: office 
+                officeLocation: req.body.office 
             })
 
             if(req.body.dayOff!=null){
@@ -119,8 +122,6 @@ router.route('/addStaff')
                 newUser.dayOff = "Saturday"
             }
            
-       
-
             if(req.body.attendance!=null){
                 newUser.attendance = req.body.attendance
             }
@@ -151,17 +152,16 @@ router.route('/addStaff')
                 await newUser.save()
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
-                var schedule;
                 if(staffType!="hr"){
 
-                    schedule = new workingSchedule_model({
-                        staffID: memberID
-                })
+                const schedule = new workingSchedule_model({
+                        staffID: memberID })
+                await schedule.save()
+
 
                 }
-
+                console.log("seconf save")
                 await newUser.save()
-                await schedule.save()
 
             }
             catch (Err) {
