@@ -45,40 +45,89 @@ router.route('/addSlot')
                     return res.send("Invalid location")
                 }
                 else {
-                    if (findTime && findLocation) {
-                        res.send("overlapping slots")
+                    const dayName = req.body.day
+                    if (dayName.toLowerCase() != "saturday" && dayName.toLowerCase() != "sunday" && dayName.toLowerCase() != "monday" && dayName.toLowerCase() != "tuesday" && dayName.toLowerCase() != "wednesday" && dayName.toLowerCase() != "thursday") {
+                        return res.send("not a valid day name")
                     }
                     else {
-                        console.log("started adding new values")
-                        var slot = new slot_model(
-                            {
-                                type: req.body.type,
-                                time: req.body.time,
-                                courseTaught: req.body.courseTaught,
-                                location: req.body.location,
-                                courseCoordinatorID: staff.memberID,
-                                day: req.body.day
+                        const timing = req.body.time
+                        if ((timing.toLowerCase()).trim() != "first slot" && (timing.toLowerCase()).trim() != "second slot" && (timing.toLowerCase()).trim() != "third slot" && (timing.toLowerCase()).trim() != "fourth slot" && (timing.toLowerCase()).trim() != "fifth slot") {
+                            return res.send("not a valid timing")
+                        }
+                        else {
+                            if (findTime && findLocation) {
+                                res.send("overlapping slots")
                             }
-                        )
 
-                        try {
-                            // await slot.save()
-                            // const slotId="-" + slot.numberID
-                            // staff.slotID=slotID
-                            await slot.save()
-                            const course = await course_model.findOne({ courseName: req.body.courseTaught })
-                            if (course) {
-                                await course.teachingSlots.push(slot.numberID)
-                                await course.save()
-                                res.send("Successfully added")
+                            else {
+                                var DayToAdd;
+                                var timeToAdd;
+                                if (dayName.toLowerCase() == "saturday") {
+                                    DayToAdd = "Saturday"
+                                }
+                                if (dayName.toLowerCase() == "sunday") {
+                                    DayToAdd = "Sunday"
+                                }
+                                if (dayName.toLowerCase() == "monday") {
+                                    DayToAdd = "Monday"
+                                }
+                                if (dayName.toLowerCase() == "tuesday") {
+                                    DayToAdd = "Tuesday"
+                                }
+                                if (dayName.toLowerCase() == "wednesday") {
+                                    DayToAdd = "Wednesday"
+                                }
+                                if (dayName.toLowerCase() == "thursday") {
+                                    DayToAdd = "Thursday"
+                                }
+                                if ((timing.toLowerCase()).trim() == "first slot")
+                                    timeToAdd = "First Slot"
+
+                                if ((timing.toLowerCase()).trim() == "second slot")
+                                    timeToAdd = "Second Slot"
+
+                                if ((timing.toLowerCase()).trim() == "third slot")
+                                    timeToAdd = "Third Slot"
+
+                                if ((timing.toLowerCase()).trim() == "fourth slot")
+                                    timeToAdd = "Fourth Slot"
+
+                                if ((timing.toLowerCase()).trim() == "fifth slot")
+                                    timeToAdd = "Fifth Slot"
+
+
+                                console.log("started adding new values")
+                                var slot = new slot_model(
+                                    {
+                                        type: req.body.type,
+                                        time: timeToAdd,
+                                        courseTaught: req.body.courseTaught,
+                                        location: req.body.location,
+                                        courseCoordinatorID: staff.memberID,
+                                        day: DayToAdd
+                                    }
+                                )
+
+                                try {
+                                    // await slot.save()
+                                    // const slotId="-" + slot.numberID
+                                    // staff.slotID=slotID
+                                    await slot.save()
+                                    const course = await course_model.findOne({ courseName: req.body.courseTaught })
+                                    if (course) {
+                                        await course.teachingSlots.push(slot.numberID)
+                                        await course.save()
+                                        res.send("Successfully added")
+                                    }
+                                }
+                                catch (Err) {
+                                    console.log(Err)
+                                    res.send("Mongo error")
+                                }
+
+
                             }
                         }
-                        catch (Err) {
-                            console.log(Err)
-                            res.send("Mongo error")
-                        }
-
-
                     }
                 }
             }
@@ -204,14 +253,19 @@ router.route('/updateSlot')
                             }
                         }
                         if (req.body.day != null) {
-                            const newDay = req.body.day
-                            slotToUpdate.day = newDay
-                            try {
-                                slotToUpdate.save()
+                            const dayName = req.body.day
+                            if (dayName.toLowerCase() != "saturday" && dayName.toLowerCase() != "sunday" && dayName.toLowerCase() != "monday" && dayName.toLowerCase() != "tuesday" && dayName.toLowerCase() != "wednesday" && dayName.toLowerCase() != "thursday") {
+                                return res.send("not a valid day name")
                             }
-                            catch (Err) {
-                                console.log(Err)
-                                res.send("Mongoose problem while updating time")
+                            else {
+                                slotToUpdate.day = dayName
+                                try {
+                                    slotToUpdate.save()
+                                }
+                                catch (Err) {
+                                    console.log(Err)
+                                    res.send("Mongoose problem while updating time")
+                                }
                             }
                         }
                         if (req.body.courseTaught != null) {
@@ -330,11 +384,52 @@ router.route('/acceptSlotLinkingRequest')
                             catch (Err) {
                                 return res.send("Mongoose error")
                             }
+
+                            const senderStaff = await staff_members_models.findOne({ memberID: requstTemp.senderId })
                             const slotNumberId = requstTemp.slotID
                             const slotCurrent = slot_model.findOne({ numberID: slotNumberId })
+                            const courseName = slotCurrent.courseTaught
+                            var flag = "false"
+                            for (let index = 0; index < senderStaff.course.length; index++) {
+                                if (senderStaff.course[index] == courseName)
+                                    flag = "true"
+                            }
+                            if (flag == "false") {
+                                senderStaff.course.push(courseName)
+                            }
+                            senderStaff.slotsAssigned.push(slotNumberId)
+                            try {
+                                senderStaff.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
                             const dayName = slotCurrent.day
-                            const senderStaff=await staff_members_models.findOne({memberID:requstTemp.senderId})
-                            const staffSchedule=senderStaff.wor
+                            const senderSchedule = await newWorkingSchedule.findOne({ staffID: requstTemp.senderId })
+                            if (dayName.toLowerCase() == "saturday") {
+                                senderSchedule.Saturday.push(slotNumberId)
+                            }
+                            if (dayName.toLowerCase() == "sunday") {
+                                senderSchedule.Sunday.push(slotNumberId)
+                            }
+                            if (dayName.toLowerCase() == "monday") {
+                                senderSchedule.Monday.push(slotNumberId)
+                            }
+                            if (dayName.toLowerCase() == "tuesday") {
+                                senderSchedule.Tuesday.push(slotNumberId)
+                            }
+                            if (dayName.toLowerCase() == "wednesday") {
+                                senderSchedule.Wednesday.push(slotNumberId)
+                            }
+                            if (dayName.toLowerCase() == "thursday") {
+                                senderSchedule.Thursday.push(slotNumberId)
+                            }
+                            try {
+                                senderSchedule.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
 
                             return res.send("Successfully accepted")
                         }

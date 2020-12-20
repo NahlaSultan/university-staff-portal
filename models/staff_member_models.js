@@ -138,6 +138,14 @@ const staffSchema = new mongoose.Schema(
             //slots I will replace
             type: [],
             default: []
+        },
+        dayOffRequestsHOD:{
+            type:[],
+            default:[]
+        },
+        dayOffRequestSent:{
+            type:String,
+            default:[]
         }
     })
 
