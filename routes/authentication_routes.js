@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
 const course_model=require('../models/course_model').model
+const workingSchedule_model=require('../models/workingSchedule_model').model
 
 
 //var firstPass = "$2b$10$eT3Pex54hQL8IALM8MPl3O4oYnZqLjmzpltfTpc7xS8iyHErUrx3S"
@@ -110,16 +111,15 @@ router.route('/addStaff')
                 staffType: staffType,
                 officeLocation: office 
             })
+
+            if(req.body.dayOff!=null){
+                newUser.dayOff = req.body.dayOff
+            }
             if(staffType=="hr"){
                 newUser.dayOff = "Saturday"
             }
-            else if(req.body.dayOff!=null){
-                newUser.dayOff = req.body.dayOff
-            }
-            
-
-
-
+           
+       
 
             if(req.body.attendance!=null){
                 newUser.attendance = req.body.attendance
@@ -151,7 +151,17 @@ router.route('/addStaff')
                 await newUser.save()
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
+                var schedule;
+                if(staffType!="hr"){
+
+                    schedule = new workingSchedule_model({
+                        staffID: memberID
+                })
+
+                }
+
                 await newUser.save()
+                await schedule.save()
 
             }
             catch (Err) {

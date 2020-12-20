@@ -409,33 +409,29 @@ router.route('/addCourse')
         teachingSlotsNumber: req.body.teachingSlotsNumber
     
         })
-        // if(req.body.instructors!=null){
-        //     console.log("instructors not null")
-        //     //array form
-        //     course.instructors = req.body.instructors         
-        // } 
-        // if(req.body.teachingAssistants!=null){
-        //     console.log("teachingAssistants not null")
-        //     //array form
-        //     course.teachingAssistants = req.body.teachingAssistants         
-        // } 
-        // if(req.body.courseCoordinator!=null){
-        //     console.log("courseCoordinator not null")
-        //     //string form
-        //     course.courseCoordinator = req.body.courseCoordinator         
-        // }
+         if(req.body.teachingSlotsNumber==null){
+            res.send("each course must have a number of teaching slots, please specify in req.body.teachingSlotsNumber ")        
+        } 
+       // hr cannot assign course to academic member, so we dont add anything in the instructor/ta/coordinator arrays
         
         faculty.markModified('departments.'+depIndex+'.courses');
         faculty.departments[depIndex].courses.push(req.body.courseName)
     
         try {
             await course.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            res.send("error adding course")
+        }
+        try {
             await faculty.save()
         }
         catch (Err) {
             console.log(Err)
             res.send("error adding faculty")
         }
+
     res.send(faculty)    
     
     }
@@ -613,5 +609,45 @@ router.route('/deleteStaffMember')
         }
       });
       
+})
+
+router.route('/updateStaff')
+.post(async (req, res) => {
+    console.log("updating staff")
+    const staff = await location_model.findOne({ memberID: req.body.id })
+     
+    if (location) {
+        const name = req.body.name
+
+        if(req.body.type!=null){
+            location.type = req.body.type
+        }
+        if(req.body.capacity!=null){
+                location.capacity = req.body.capacity
+        }
+        if(req.body.officeMembers!=null){
+            location.officeMembers = req.body.officeMembers
+        }
+        if(req.body.newName!=null){
+            const usedName = await location_model.findOne({ name: req.body.newName })
+            if(usedName)
+                res.send('name ' + req.body.newName+'is already in use')
+
+            location.name = req.body.newName
+        }
+        try {
+            
+            await location.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            res.send("error saving location")
+        }
+        return res.send(location)    
+    }
+
+        res.send('location '+ req.body.name+' doesnt exist')
+
+
 })
     module.exports = router
