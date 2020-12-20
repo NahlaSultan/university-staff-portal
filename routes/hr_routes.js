@@ -533,7 +533,17 @@ router.route('/updateCourse')
         if(req.body.newName!=null){
             console.log("newName not null")
             //array form
-            course.courseName = req.body.newName         
+            course.courseName = req.body.newName  
+            faculty.departments[depIndex].courses[courseIndex] = course.courseName 
+            faculty.markModified('departments.'+depIndex+'.courses');
+            try {
+                await faculty.save()
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("error saving faculty")
+            }   
+       
         } 
        
         if(req.body.teachingSlotsNumber!=null){
@@ -541,18 +551,15 @@ router.route('/updateCourse')
             //string form
             course.teachingSlotsNumber = req.body.teachingSlotsNumber         
         }
-        faculty.departments[depIndex].courses[courseIndex] = course    
 
-        faculty.markModified('departments.'+depIndex+'.courses');
         try {
             await course.save()
-            await faculty.save()
         }
         catch (Err) {
             console.log(Err)
             res.send("error adding faculty")
         }
-    res.send(faculty)    
+    res.send(course)    
     
     }
     res.send('faculty '+ req.body.facultyName+' isnt there')
@@ -611,43 +618,73 @@ router.route('/deleteStaffMember')
       
 })
 
-router.route('/updateStaff')
-.post(async (req, res) => {
-    console.log("updating staff")
-    const staff = await location_model.findOne({ memberID: req.body.id })
+// router.route('/updateStaff')
+// .post(async (req, res) => {
+//     console.log("updating staff")
+//     const staff = await location_model.findOne({ memberID: req.body.id })
      
-    if (location) {
-        const name = req.body.name
+//     if (location) {
+//         const name = req.body.name
 
-        if(req.body.type!=null){
-            location.type = req.body.type
-        }
-        if(req.body.capacity!=null){
-                location.capacity = req.body.capacity
-        }
-        if(req.body.officeMembers!=null){
-            location.officeMembers = req.body.officeMembers
-        }
-        if(req.body.newName!=null){
-            const usedName = await location_model.findOne({ name: req.body.newName })
-            if(usedName)
-                res.send('name ' + req.body.newName+'is already in use')
+//         if(req.body.type!=null){
+//             location.type = req.body.type
+//         }
+//         if(req.body.capacity!=null){
+//                 location.capacity = req.body.capacity
+//         }
+//         if(req.body.officeMembers!=null){
+//             location.officeMembers = req.body.officeMembers
+//         }
+//         if(req.body.newName!=null){
+//             const usedName = await location_model.findOne({ name: req.body.newName })
+//             if(usedName)
+//                 res.send('name ' + req.body.newName+'is already in use')
 
-            location.name = req.body.newName
-        }
-        try {
+//             location.name = req.body.newName
+//         }
+//         try {
             
-            await location.save()
-        }
-        catch (Err) {
-            console.log(Err)
-            res.send("error saving location")
-        }
-        return res.send(location)    
-    }
+//             await location.save()
+//         }
+//         catch (Err) {
+//             console.log(Err)
+//             res.send("error saving location")
+//         }
+//         return res.send(location)    
+//     }
 
-        res.send('location '+ req.body.name+' doesnt exist')
+//         res.send('location '+ req.body.name+' doesnt exist')
 
 
-})
+// })
+
+// name: {
+//     type: String,
+//     minlength: 5
+// },
+// numberID: {
+//     type: Number
+//     //unique: true
+//     // required: true
+
+// },
+// email: {
+//     type: String,
+//     unique: true,
+//     required: true
+// },
+// password: {
+//     type: String,
+//     default: "123456"
+// },
+// salary: {
+//     type: Number,
+//     required: true
+// },
+// staffType: {
+//     type: String,
+//     required: true,
+//     $in: ["hr", "academic"]
+
+// },
     module.exports = router
