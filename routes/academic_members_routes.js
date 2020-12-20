@@ -2,6 +2,7 @@ const staff_members_models = require('../models/staff_member_models').model
 const staff_member_routes = require('./staff_member_routes')
 const newReplacement = require('../models/replacement_requests').model
 const newSlotlinking = require('../models/slotLinking_request').model
+const newWorkingSchedule = require('../models/workingSchedule_model').model
 const slot_model = require('../models/slot_model').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
@@ -13,11 +14,42 @@ require('dotenv').config()
 router.route('/viewSchedule')
     //do not forget to view the replacement slots(if it was accepted,sender will be notified that the slot on the specific date will be changed)and vice versa
     .get(async (req, res) => {
+        var array = []
         const staffId = req.user._id;
         const staff = await staff_members_models.findOne({ _id: staffId })
         if (staff) {
             //mafrood redirect
-            res.send(staff.workingSchedule)
+            const schedule = newWorkingSchedule.findOne({ staffID: staff.memberID })
+            const lastIndex = 0;
+            array[lastIndex] = "You weekly schedule:"
+            lastIndex++;
+            array[lastIndex] = schedule
+            lastIndex++
+            var slotReplac;
+            var slotIDReplac;
+            var dateToReplace;
+            array[lastIndex] = "Slots to replace:"
+            for (let index = 0; index < staff.slotsToReplace.length; index++) {
+                dateToReplace = staff.slotsToReplace[index].date
+                array[lastIndex] = dateToReplace
+                lastIndex++;
+                slotIDReplac = staff.slotsToReplace[index].slot;
+                slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
+                array[lastIndex] = slotReplac
+                lastIndex++;
+            }
+            array[lastIndex] = "Slots replaced for you:"
+            for (let index = 0; index < staff.slotsReplaced.length; index++) {
+                dateToReplace = staff.slotsReplaced[index].date
+                array[lastIndex] = dateToReplace
+                lastIndex++;
+                slotIDReplac = staff.slotsReplaced[index].slot;
+                slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
+                array[lastIndex] = slotReplac
+                lastIndex++;
+            }
+
+            res.send(array)
         }
     })
 //inputs : slot(the slotID I want someone to replace),receiverId(the id of the staff member I want to send it to)
