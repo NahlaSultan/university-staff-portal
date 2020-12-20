@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         console.log(verified);
+        //|| blackListed.includes(token)
         if (!verified) {
             return res.status(401).json({ msg: "authorization failed" });
         }

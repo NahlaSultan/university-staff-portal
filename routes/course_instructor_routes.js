@@ -59,8 +59,10 @@ router.route('/assignCourseCoordinator')
         if(staff.course.includes(req.body.courseName)){
             if(coordinator.course.includes(req.body.courseName) ){
         course.courseCoordinator=coordinator._id
-        console.log(coordinator._id)
+        //console.log(coordinator._id)
+        courseCoordinator.role="courseCoordinators"
         course.save()
+        staff.save()
         res.send("successfully assigned")}
         else{
              res.send("this academic member is not assigned to this course")
@@ -114,6 +116,7 @@ router.route('/updateAssignedCourse')
                 if(!academicMember.course.includes(req.body.courseName)){
                 academicMember.course.push(req.body.courseName)
         academicMember.save()
+        course.save()
         res.send("successfully added")}
         else{
             res.send("this course is already assigned to this academic member")
