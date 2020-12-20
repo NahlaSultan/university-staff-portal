@@ -74,7 +74,9 @@ const staffSchema = new mongoose.Schema(
             default: []
         },
         workingSchedule: {
-            type: workingScheduleSchema
+            type: String
+            //referenced the id of the schedule
+            //has the same id of the staff member
         },
         requestReplacementSent:
         //the ones I send

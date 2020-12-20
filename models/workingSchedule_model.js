@@ -3,34 +3,46 @@ const { daySchema } = require('./day_model')
 
 
 const workingScheduleSchema = new mongoose.Schema({
-
-    Saturday: {
-        type: daySchema,
+    //each day is an array of slots of max length 5
+    staffID: {
+        //the id of the staff member 
+        type: String,
+        unique: true,
         required: true
+    },
+    Saturday: {
+        type: [],
+        maxlength: 5,
+        default: []
     },
 
     Sunday: {
-        type: daySchema,
-        required: true
+        type: [],
+        maxlength: 5,
+        default: []
     },
 
     Monday: {
-        type: daySchema,
-        required: true
+        type: [],
+        maxlength: 5,
+        default: []
     },
 
     Tuesday: {
-        type: daySchema,
-        required: true
+        type: [],
+        maxlength: 5,
+        default: []
     },
 
     Wednesday: {
-        type: daySchema,
-        required: true
+        type: [],
+        maxlength: 5,
+        default: []
     },
     Thursday: {
-        type: daySchema,
-        required: true
+        type: [],
+        maxlength: 5,
+        default: []
     }
 
 })
