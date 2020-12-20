@@ -23,6 +23,8 @@ router.route('/signIn')
         var currentTime=new newAttendance(
             {"signInTime": new Date()}
         )
+
+        console.log(new Date())
         try{
             await currentTime.save()
         }
