@@ -10,27 +10,32 @@ const daySchema = new mongoose.Schema({
         type: String,
         required: true,
         $in: ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
-     }
-     ,
+    }
+    ,
 
     slot1: {
-        type: slotSchema
+        type: Number,
+        default: 0
     },
 
     slot2: {
-        type: slotSchema
+        type: Number,
+        default: 0
     },
 
     slot3: {
-        type: slotSchema
+        type: Number,
+        default: 0
     },
 
     slot4: {
-        type: slotSchema
+        type: Number,
+        default: 0
     },
 
     slot5: {
-        type: slotSchema
+        type: Number,
+        default: 0
     }
 
 })

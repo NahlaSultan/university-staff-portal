@@ -18,6 +18,11 @@ const slotSchema = new mongoose.Schema({
         required: true,
         $in: ["First Slot", "Second Slot", "Third Slot", "Fourth Slot", "Fifth Slot"]
     },
+    day: {
+        type: String,
+        required: true,
+        $in: ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    },
     courseTaught: {
         type: String,
         required: true

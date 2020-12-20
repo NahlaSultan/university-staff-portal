@@ -3,6 +3,8 @@ const staff_member_routes = require('./staff_member_routes')
 const slot_model = require('../models/slot_model').model
 const course_model = require('../models/course_model').model
 const newSlotLinking = require('../models/slotLinking_request').model
+const newWorkingSchedule = require('../models/workingSchedule_model').model
+const newDayModel = require('../models/day_model').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
@@ -13,7 +15,7 @@ const { Query } = require('mongoose')
 const { staffSchema } = require('../models/staff_member_models')
 const e = require('express')
 const location_model = require('../models/location_model').model
-
+//inputs are type,time,courseTaught,location and date and it is obligatory to enter them all
 router.route('/addSlot')
     .post(async (req, res) => {
         const staffId = req.user._id;
@@ -30,14 +32,15 @@ router.route('/addSlot')
             }
             if (isfound == "false") {
                 console.log("wrong course")
-                res.send("You are not the coordinator of this course")
+                return res.send("You are not the coordinator of this course")
             }
             else {
-                if (req.body.type == null || req.body.time == null || req.body.courseTaught == null || req.body.location == null)
+                if (req.body.type == null || req.body.time == null || req.body.courseTaught == null || req.body.location == null || req.body.day == null)
                     res.send("missing inputs")
                 const findTime = await slot_model.findOne({ time: req.body.time })
                 const findLocation = await slot_model.findOne({ location: req.body.location })
                 const office = await location_model.findOne({ name: req.body.location })
+
                 if (!office) {
                     return res.send("Invalid location")
                 }
@@ -53,7 +56,8 @@ router.route('/addSlot')
                                 time: req.body.time,
                                 courseTaught: req.body.courseTaught,
                                 location: req.body.location,
-                                courseCoordinatorID: staff.memberID
+                                courseCoordinatorID: staff.memberID,
+                                day: req.body.day
                             }
                         )
 
@@ -199,6 +203,17 @@ router.route('/updateSlot')
                                 res.send("Mongoose problem while updating time")
                             }
                         }
+                        if (req.body.day != null) {
+                            const newDay = req.body.day
+                            slotToUpdate.day = newDay
+                            try {
+                                slotToUpdate.save()
+                            }
+                            catch (Err) {
+                                console.log(Err)
+                                res.send("Mongoose problem while updating time")
+                            }
+                        }
                         if (req.body.courseTaught != null) {
 
                             const newcourseTaught = req.body.courseTaught
@@ -275,6 +290,53 @@ router.route('/rejectSlotLinkingRequest')
                             }
 
                             return res.send("Successfully rejected")
+                        }
+                    }
+                    else {
+                        return res.send("This request is not found")
+                    }
+                }
+            }
+        }
+        else {
+            return res.send("Something wrong has occured")
+        }
+
+    })
+//inputs the requestID that he wishes to reject
+router.route('/acceptSlotLinkingRequest')
+    .post(async (req, res) => {
+        console.log("I entered")
+        const slotID = req.body.requestID
+        const senderId = req.user._id;
+        var requstTemp;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            console.log("in staff")
+            for (let index = 0; index < staff.coordinatorLinkingRequests.length; index++) {
+                if (staff.coordinatorLinkingRequests[index] == slotID) {
+                    console.log("found the request")
+                    requstTemp = await newSlotLinking.findOne({ _id: slotID })
+                    if (requstTemp) {
+                        if (requstTemp.pending == false && requstTemp.accepted == true) {
+                            return res.send("already acceoted")
+                        }
+                        else {
+                            requstTemp.pending = false
+                            requstTemp.accepted = true
+                            try {
+                                requstTemp.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
+                            const slotNumberId = requstTemp.slotID
+                            const slotCurrent = slot_model.findOne({ numberID: slotNumberId })
+                            const dayName = slotCurrent.day
+                            const senderStaff=await staff_members_models.findOne({memberID:requstTemp.senderId})
+                            const staffSchedule=senderStaff.wor
+
+                            return res.send("Successfully accepted")
                         }
                     }
                     else {
