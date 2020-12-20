@@ -91,6 +91,7 @@ const staffSchema = new mongoose.Schema(
         },
         requestReplacmentReceived:
         {
+            //the ones I received
             type: [],
             default: []
         },
@@ -104,18 +105,22 @@ const staffSchema = new mongoose.Schema(
             type: slotLinkingSchema
 
         },
-        course:{
-            //in case of coordinator
-            type:[]
+        course: {
+
+            type: []
         }
         ,
-        courseCoverage:{
+        coordinatorCourse: {
+            type: [],
+            default: []
+        },
+        courseCoverage: {
             type: Number,
             default: 0
         },
-        slotsAssigned:{
+        slotsAssigned: {
             type: []//slot ids
-            
+
         }
     })
 

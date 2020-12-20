@@ -29,11 +29,20 @@ const slotSchema = new mongoose.Schema({
     } ,
     numberID:
     {
+<<<<<<< HEAD
         type:Number
     },
     assignedFlag:{
          type:Boolean,
          default:false
+=======
+        type:Number,
+        unique:true
+    },
+    assignedFlag:{
+        type:Boolean,
+        default:false
+>>>>>>> ed1bfcb24a2e271af2d31e9ae6367facaf04f4a7
     }
     // ,
     // academicMember: {
@@ -42,6 +51,6 @@ const slotSchema = new mongoose.Schema({
     
    
 })
-slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID', reference_fields: ['slotID'] });
+slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID'});
 module.exports.model = mongoose.model('slot', slotSchema)
 module.exports.slotSchema = slotSchema
