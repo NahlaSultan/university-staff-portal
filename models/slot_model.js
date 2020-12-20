@@ -38,6 +38,6 @@ const slotSchema = new mongoose.Schema({
     
    
 })
-slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID', reference_fields: ['slotID'] });
+slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID' });
 module.exports.model = mongoose.model('slot', slotSchema)
 module.exports.slotSchema = slotSchema
