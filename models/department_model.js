@@ -9,7 +9,8 @@ const departmentSchema = new mongoose.Schema({
         required: true
     },
     headOfDepartment: {
-        type: staffSchema,
+        //memberID of this staff member
+        type: String,
         unique: true
     },
     courses:{
