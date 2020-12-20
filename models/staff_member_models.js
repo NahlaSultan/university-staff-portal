@@ -21,7 +21,7 @@ const staffSchema = new mongoose.Schema(
             minlength: 5
         },
         numberID: {
-            type: Number,
+            type: Number
             //unique: true
             // required: true
 
@@ -74,8 +74,9 @@ const staffSchema = new mongoose.Schema(
             default: []
         },
         workingSchedule: {
-            type: [],
-            default: []
+            type: String
+            //referenced the id of the schedule
+            //has the same id of the staff member
         },
         requestReplacementSent:
         //the ones I send
@@ -101,9 +102,15 @@ const staffSchema = new mongoose.Schema(
             type: locationSchema,
         },
         staffLinkingRequests: {
-            //if coordinator only view ,accept or reject else send
-            type: slotLinkingSchema
+            //array of _id of slotLinking requests
+            type: [],
+            default: []
 
+        },
+        coordinatorLinkingRequests: {
+            //for coordinators
+            type: [],
+            default: []
         },
         course: {
 
@@ -121,6 +128,23 @@ const staffSchema = new mongoose.Schema(
         slotsAssigned: {
             type: []//slot ids
 
+        },
+        slotsReplaced: {
+            //slots that will be replaced for me
+            type: [],
+            default: []
+        },
+        slotsToReplace: {
+            //slots I will replace
+            type: [],
+            default: []
+        },
+        dayOffRequestsHOD: {
+            type: [],
+            default: []
+        },
+        dayOffRequestSent: {
+            type: String
         }
     })
 

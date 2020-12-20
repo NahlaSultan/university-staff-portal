@@ -23,7 +23,7 @@ const courseSchema = new mongoose.Schema({
         type: [] // array of slot ids
     },
     teachingSlotsNumber: {
-        type: Number,
+        type: Number
         //required: true
     }
 })
@@ -31,4 +31,3 @@ const courseSchema = new mongoose.Schema({
 
 
 module.exports.model = mongoose.model('course', courseSchema)
-module.exports.courseSchema = courseSchema

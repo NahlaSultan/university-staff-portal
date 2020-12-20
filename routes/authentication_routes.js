@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
 const course_model=require('../models/course_model').model
+const workingSchedule_model=require('../models/workingSchedule_model').model
 
 
 //var firstPass = "$2b$10$eT3Pex54hQL8IALM8MPl3O4oYnZqLjmzpltfTpc7xS8iyHErUrx3S"
@@ -84,9 +85,10 @@ router.route('/addStaff')
             if(!office){
                 res.send('this is not a valid office')
             }
-            if(office.capacity==office.officeMembers){
+            if(office.capacity<=office.officeMembers){
                 res.send('this office is already full')
             }
+            
             office.officeMembers =  office.officeMembers +1
             try {
                 console.log('saving office')
@@ -109,16 +111,15 @@ router.route('/addStaff')
                 staffType: staffType,
                 officeLocation: office 
             })
+
+            if(req.body.dayOff!=null){
+                newUser.dayOff = req.body.dayOff
+            }
             if(staffType=="hr"){
                 newUser.dayOff = "Saturday"
             }
-            else if(req.body.dayOff!=null){
-                newUser.dayOff = req.body.dayOff
-            }
-            
-
-
-
+           
+       
 
             if(req.body.attendance!=null){
                 newUser.attendance = req.body.attendance
@@ -138,7 +139,10 @@ router.route('/addStaff')
             if(req.body.faculty!= null){
                 newUser.faculty = req.body.faculty
             }
-            
+            if(req.body.course!= null){
+                //enter in array form 
+                newUser.course = req.body.course
+            }
 
 
             try {
@@ -147,7 +151,17 @@ router.route('/addStaff')
                 await newUser.save()
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
+                var schedule;
+                if(staffType!="hr"){
+
+                    schedule = new workingSchedule_model({
+                        staffID: memberID
+                })
+
+                }
+
                 await newUser.save()
+                await schedule.save()
 
             }
             catch (Err) {
