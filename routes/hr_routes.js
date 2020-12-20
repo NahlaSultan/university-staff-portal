@@ -563,8 +563,55 @@ router.route('/updateCourse')
 
 
 })
+router.route('/updateSalary')
+.post(async (req, res) => {
+    console.log("udating salary")
+    const staff = await staff_members_models.findOne({ memberID: req.body.id })
+     
+    if (staff) {
+        staff.salary = req.body.salary
+        
+        try {
+            
+            await staff.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            res.send("error saving staff mem in update salary ")
+        }
+        return res.send(staff)    
+    }
+
+        res.send('staff member with id '+ req.body.id+' doesnt exist')
 
 
+})
+
+router.route('/viewAttendance')
+.get(async (req, res) => {
+    console.log("veiwing attendance")
+    const staff = await staff_members_models.findOne({ memberID: req.body.id })
+     
+    if (staff) {
+        
+
+        return res.send(staff.attendance )    
+    }
+
+        res.send('staff member with id '+ req.body.id+' doesnt exist')
 
 
+})
+
+router.route('/deleteStaffMember')
+.delete(async (req,res)=>{
+    await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
+        if (err) {
+          console.err(err);
+        } else {
+          res.json(result);
+        }
+      });
+      
+})
     module.exports = router

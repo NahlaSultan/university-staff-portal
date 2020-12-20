@@ -84,7 +84,7 @@ router.route('/addStaff')
             if(!office){
                 res.send('this is not a valid office')
             }
-            if(office.capacity==office.officeMembers){
+            if(office.capacity<=office.officeMembers){
                 res.send('this office is already full')
             }
             
