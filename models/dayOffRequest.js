@@ -24,7 +24,7 @@ const dayOffSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    reason: {
+    comment: {
         type: String,
         required: false
     }

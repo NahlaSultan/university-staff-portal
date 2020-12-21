@@ -139,7 +139,8 @@ const staffSchema = new mongoose.Schema(
             default: []
         },
         dayOffRequestSent: {
-            type: String
+            type: String,
+            default:""
         }
     })
 
