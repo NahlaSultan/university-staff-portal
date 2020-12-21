@@ -23,8 +23,6 @@ router.route('/signIn')
         var currentTime=new newAttendance(
             {"signInTime": new Date()}
         )
-
-        console.log(new Date())
         try{
             await currentTime.save()
         }
@@ -312,29 +310,39 @@ router.route('/viewMissingHours')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     if(staff){ 
+        staff.missingHours=[]
+        var i=0
+        var milliseconds=0
         //8x5=40 ,24x5=120/60=2 total 42 hours per month
-        for(let i=0;i<staff.attendance.length-1;i++){
-         var day1=staff.attendance[i].signInTime.getDate()
-        var day2=staff.attendance[i+1].signInTime.getDate()
+       while(i<staff.attendance.length){
+        var day1=staff.attendance[i].signInTime.getDate()
         const month1=staff.attendance[i].signInTime.getMonth()+1
-        const month2=staff.attendance[i+1].signInTime.getMonth()+1
-         while(month1==month2|| (month1+1==month2 && day1<=10))
-           var signIn=staff.attendance[i].signInTime
-           var signOut=staff.attendance[i].signOutTime
-           var milliseconds = milliseconds+ Math.abs(signOut.getTime() - signIn.getTime());
-           
-        }
-        var hours = milliseconds / 36e5;
-        milliseconds=0//to start a new month
-           if(hours<42){
-               staff.missingHours.push(42-hours)}
-           else{
+        var month2=0
+        if( i!=staff.attendance.length-1){
+        var day2=staff.attendance[i+1].signInTime.getDate()
+         month2=staff.attendance[i+1].signInTime.getMonth()+1}
+        var signIn=staff.attendance[i].signInTime
+        var signOut=staff.attendance[i].signOutTime
+         milliseconds = milliseconds+ Math.abs(signOut.getTime() - signIn.getTime());
+         console.log(i)
+         console.log(staff.attendance.length-1)
+         //console.log((month1!=month2 && day2>10 ))
+           if(( i==staff.attendance.length-1)||(month1!=month2 && day2>10 )){
+               console.log("heyy")
+            var hours = milliseconds / 36e5;
+            if(hours<42)
+               staff.missingHours.push(42-hours)
+            else 
             staff.missingHours.push(0)
+               milliseconds=0
            }
-            } 
-            staff.save()
-            res.send(staff.missingHours)
+            
 
+      i++
+    }
+    staff.save()
+    res.send(staff.missingHours)
+}
 })
 //extra hours
 router.route('/viewExtraHours')
@@ -342,30 +350,35 @@ router.route('/viewExtraHours')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     if(staff){ 
+        staff.missingHours=[]
+        var i=0
+        var milliseconds=0
         //8x5=40 ,24x5=120/60=2 total 42 hours per month
-        for(let i=0;i<staff.attendance.length-1;i++){
-         var day1=staff.attendance[i].signInTime.getDate()
-        var day2=staff.attendance[i+1].signInTime.getDate()
+       while(i<staff.attendance.length){
+        var day1=staff.attendance[i].signInTime.getDate()
         const month1=staff.attendance[i].signInTime.getMonth()+1
-        const month2=staff.attendance[i+1].signInTime.getMonth()+1
-         var milliseconds=0//to start new month
-         while(month1==month2|| (month1+1==month2 && day1<=10))
-           var signIn=staff.attendance[i].signInTime
-           var signOut=staff.attendance[i].signOutTime
-           milliseconds = milliseconds+ Math.abs(signOut.getTime() - signIn.getTime());
-           
-        }
-        var hours = milliseconds / 36e5;
-        milliseconds=0//to start a new month
-           if(hours>42){
-               staff.extraHours.push(hours-42)}
-           else{
+        var month2=0
+        if( i!=staff.attendance.length-1){
+        var day2=staff.attendance[i+1].signInTime.getDate()
+         month2=staff.attendance[i+1].signInTime.getMonth()+1}
+        var signIn=staff.attendance[i].signInTime
+        var signOut=staff.attendance[i].signOutTime
+         milliseconds = milliseconds+ Math.abs(signOut.getTime() - signIn.getTime());
+           if(( i==staff.attendance.length-1)||(month1!=month2 && day2>10 )){
+            var hours = milliseconds / 36e5;
+            if(hours>42)
+               staff.extraHours.push(hours-42)
+            else 
             staff.extraHours.push(0)
+               milliseconds=0
            }
-            } 
-            staff.save()
-            res.send(staff.extraHours)
+            
 
+      i++
+    }
+    staff.save()
+    res.send(staff.extraHours)
+}
 })
 
 module.exports = router
