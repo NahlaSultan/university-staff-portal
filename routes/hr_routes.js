@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken')
 const faculty_model = require('../models/faculty_model').model
 const department_model = require('../models/department_model').model
 const course_model = require('../models/course_model').model
+const newAttendance=require ('../models/attendance_record').model
 
 require('dotenv').config()
 
@@ -236,7 +237,15 @@ router.route('/addDepartment')
             console.log("hod not null")
             const hod = await staff_members_models.findOne({ memberID: req.body.hod })
             if(hod){
-                department.headOfDepartment = hod
+                department.headOfDepartment = hod.memberID
+                hod.role.push("headOfdepartments")
+                try {
+                    await hod.save()
+                }
+                catch (Err) {
+                    console.log(Err)
+                    res.send("error saving hod")
+                }
             }
             else{
                 res.send("the hod's id doesn't exist, add this staff member first")
@@ -343,10 +352,41 @@ router.route('/updateDepartment')
                 dep.name = req.body.newName
         }
         if(req.body.hod!=null){
-            const staff = await staff_members_models.findOne({ memberID: req.body.hod })
-            if(!staff)
+
+
+            const hod = await staff_members_models.findOne({ memberID: req.body.hod })
+            if(!hod)
                 res.send('this hod is not a staff member')
-                dep.headOfDepartment = staff
+                
+            hod.role.push("headOfdepartments")
+            try {
+              await hod.save()
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("error saving hod")
+            }
+            const oldhodID = dep.headOfDepartment 
+            if(oldhodID){
+                const oldhod = await staff_members_models.findOne({ memberID: oldhodID })
+                for(var i=0; i<oldhod.role.length; i++){
+                    if(oldhod.role[i] == "headOfdepartments"){
+                        oldhod.role.splice(i, 1)
+                    }
+                }
+            try {
+              await oldhod.save()
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("error saving oldhod")
+            }
+
+            }            
+
+            dep.headOfDepartment = hod.memberID
+
+               
         }
         try {
             faculty.departments[indexOfDep]= dep
@@ -642,8 +682,11 @@ router.route('/updateStaff')
             const newPassword = await bcrypt.hash(req.body.password, salt)
             staff.password = newPassword
         }
-       
+        var message = ""
         if(req.body.dayOff!=null){
+            if(staff.staffType=="hr"){
+                message = "you can't change hr's day off, it must remain as Saturday"
+            }
             staff.dayOff = req.body.dayOff
         }
         if(req.body.annualLeavesBalance!=null){
@@ -686,7 +729,9 @@ router.route('/updateStaff')
             console.log(Err)
             res.send("error saving staff member")
         }
-        return res.send(staff)    
+        return res.send({
+            "staff": staff,
+            "message": message})    
     }
 
         res.send('staff member with id '+ req.body.id+' doesnt exist')
@@ -694,6 +739,111 @@ router.route('/updateStaff')
 
 })
 
+// router.route('/addSignIn')
+// .post(async (req, res) => {
+//     const staffId = req.user._id;
+//     const staff = await staff_members_models.findOne({ _id: staffId })
+//     if (staff) {
+//         if(req.body.id == staff.memberID){
+//             res.send("cannot add sign in for yourself")
+//         }
+
+//  const event = new Date('August 19, 1975 23:15:30');
+
+
+// console.log(event);
+// // Sat Apr 19 1975 23:15:30 GMT+0100 (CET)
+// // (note: your timezone may vary)
+
+// res.send()
+//     // console.log("adding sign in")
+//     // const staffId=res.body.id;
+//     // const staff = await staff_members_models.findOne({ memberID: id })
+   
+//     // if(staff){ 
+        
+//     //     var currentTime=new newAttendance(
+//     //         {"signInTime": new Date()}
+//     //     )
+//     //     try{
+//     //         await currentTime.save()
+//     //     }
+//     //     catch(Err){
+//     //         console.log(Err)
+//     //     }
+//     //     if(staff.attendance.length==0)
+//     //     {
+//     //         await staff.attendance.push(currentTime)
+//     //         await staff.save()
+//     //     }else{
+//     //     if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
+//     //         console.log("i entered herrrrre")
+
+//     //     staff.markModified('attendance');
+
+//     //   await staff.attendance.push(currentTime)
+//     //   await staff.save()
+//     //   res.send(staff)
+//     // }
+//     //   else res.send("you cannot sign in without signing out")
+//     // }}
+//     // res.send('/homepage')
+
+
+// })
+
+// router.route('/addSignOut')
+// .post(async (req, res) => {
+//     const staffId = req.user._id;
+//     const staff = await staff_members_models.findOne({ _id: staffId })
+//     if (staff) {
+//         if(req.body.id == staff.memberID){
+//             res.send("cannot add sign out for yourself")
+//         }
+
+//  const event = new Date('August 19, 1975 23:15:30');
+
+
+// console.log(event);
+// // Sat Apr 19 1975 23:15:30 GMT+0100 (CET)
+// // (note: your timezone may vary)
+
+// res.send()
+//     // console.log("adding sign in")
+//     // const staffId=res.body.id;
+//     // const staff = await staff_members_models.findOne({ memberID: id })
+   
+//     // if(staff){ 
+        
+//     //     var currentTime=new newAttendance(
+//     //         {"signInTime": new Date()}
+//     //     )
+//     //     try{
+//     //         await currentTime.save()
+//     //     }
+//     //     catch(Err){
+//     //         console.log(Err)
+//     //     }
+//     //     if(staff.attendance.length==0)
+//     //     {
+//     //         await staff.attendance.push(currentTime)
+//     //         await staff.save()
+//     //     }else{
+//     //     if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
+//     //         console.log("i entered herrrrre")
+
+//     //     staff.markModified('attendance');
+
+//     //   await staff.attendance.push(currentTime)
+//     //   await staff.save()
+//     //   res.send(staff)
+//     // }
+//     //   else res.send("you cannot sign in without signing out")
+//     // }}
+//     // res.send('/homepage')
+
+
+// })
 
 
     module.exports = router
