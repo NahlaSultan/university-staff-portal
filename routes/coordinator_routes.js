@@ -21,9 +21,9 @@ router.route('/addSlot')
         const staffId = req.user._id;
         const staff = await staff_members_models.findOne({ _id: staffId })
         if (staff) {
-            if (staff.role != "courseCoordinators") {
-                res.send("Must be a coordinator to add a slot")
-            }
+            // if (staff.role != "courseCoordinators") {
+            //     res.send("Must be a coordinator to add a slot")
+            // }
             var isfound = "false"
             for (let index = 0; index < staff.coordinatorCourse.length; index++) {
                 if (staff.coordinatorCourse[index] == req.body.courseTaught) {
@@ -357,7 +357,7 @@ router.route('/rejectSlotLinkingRequest')
         }
 
     })
-//inputs the requestID that he wishes to reject
+//inputs the requestID that he wishes to accept
 router.route('/acceptSlotLinkingRequest')
     .post(async (req, res) => {
         console.log("I entered")
@@ -387,7 +387,15 @@ router.route('/acceptSlotLinkingRequest')
 
                             const senderStaff = await staff_members_models.findOne({ memberID: requstTemp.senderId })
                             const slotNumberId = requstTemp.slotID
-                            const slotCurrent = slot_model.findOne({ numberID: slotNumberId })
+                            const slotCurrent = await slot_model.findOne({ numberID: requstTemp.slotID })
+                            slotCurrent.assignedFlag = true
+                            try {
+                                slotCurrent.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongoose error")
+                            }
+                            console.log("current slotId", slotCurrent)
                             const courseName = slotCurrent.courseTaught
                             var flag = "false"
                             for (let index = 0; index < senderStaff.course.length; index++) {
@@ -398,6 +406,7 @@ router.route('/acceptSlotLinkingRequest')
                                 senderStaff.course.push(courseName)
                             }
                             senderStaff.slotsAssigned.push(slotNumberId)
+
                             try {
                                 senderStaff.save()
                             }
@@ -443,6 +452,11 @@ router.route('/acceptSlotLinkingRequest')
         else {
             return res.send("Something wrong has occured")
         }
-
+        //                     res.send("hi")
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     })
 module.exports = router

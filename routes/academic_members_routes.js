@@ -4,6 +4,8 @@ const newReplacement = require('../models/replacement_requests').model
 const newSlotlinking = require('../models/slotLinking_request').model
 const newWorkingSchedule = require('../models/workingSchedule_model').model
 const slot_model = require('../models/slot_model').model
+const dayOffRequest_model = require('../models/dayOffRequest').model
+const department_model = require('../models/department_model').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
@@ -19,18 +21,69 @@ router.route('/viewSchedule')
         const staff = await staff_members_models.findOne({ _id: staffId })
         if (staff) {
             //mafrood redirect
-            const schedule = newWorkingSchedule.findOne({ staffID: staff.memberID })
-            const lastIndex = 0;
+            const schedule = await newWorkingSchedule.findOne({ staffID: staff.memberID })
+            var lastIndex = 0;
+            var currentSlot;
             array[lastIndex] = "You weekly schedule:"
             lastIndex++;
-            array[lastIndex] = schedule
-            lastIndex++
+            var firstDay = schedule.Saturday
+            array[lastIndex++] = "Saturday:"
+            for (let i = 0; i < firstDay.length; i++) {
+                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
+                if (currentSlot) {
+                    array[lastIndex++] = currentSlot
+                }
+            }
+            firstDay = schedule.Sunday
+            array[lastIndex++] = "Sunday:"
+            for (let i = 0; i < firstDay.length; i++) {
+                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
+                if (currentSlot) {
+                    array[lastIndex++] = currentSlot
+                }
+            }
+            firstDay = schedule.Monday
+            array[lastIndex++] = "Monday:"
+            for (let i = 0; i < firstDay.length; i++) {
+                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
+                if (currentSlot) {
+                    array[lastIndex++] = currentSlot
+                }
+            }
+            firstDay = schedule.Tuesday
+            array[lastIndex++] = "Tuesday:"
+            for (let i = 0; i < firstDay.length; i++) {
+                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
+                if (currentSlot) {
+                    array[lastIndex++] = currentSlot
+                }
+            }
+            firstDay = schedule.Wednesday
+            array[lastIndex++] = "Wednesday:"
+            for (let i = 0; i < firstDay.length; i++) {
+                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
+                if (currentSlot) {
+                    array[lastIndex++] = currentSlot
+                }
+            }
+            firstDay = schedule.Thursday
+            array[lastIndex++] = "Thursday:"
+            for (let i = 0; i < firstDay.length; i++) {
+                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
+                if (currentSlot) {
+                    array[lastIndex++] = currentSlot
+                }
+            }
+            // array[lastIndex] = schedule
+            // lastIndex++
             var slotReplac;
             var slotIDReplac;
             var dateToReplace;
-            array[lastIndex] = "Slots to replace:"
+            var slotRequest;
+            array[lastIndex++] = "Slots to replace:"
             for (let index = 0; index < staff.slotsToReplace.length; index++) {
-                dateToReplace = staff.slotsToReplace[index].date
+                slotRequest = await newReplacement.findOne({ _id: staff.slotToReplace[index] })
+                dateToReplace = slotRequest.date
                 array[lastIndex] = dateToReplace
                 lastIndex++;
                 slotIDReplac = staff.slotsToReplace[index].slot;
@@ -38,19 +91,24 @@ router.route('/viewSchedule')
                 array[lastIndex] = slotReplac
                 lastIndex++;
             }
-            array[lastIndex] = "Slots replaced for you:"
+            array[lastIndex++] = "Slots replaced for you:"
             for (let index = 0; index < staff.slotsReplaced.length; index++) {
-                dateToReplace = staff.slotsReplaced[index].date
-                array[lastIndex] = dateToReplace
-                lastIndex++;
-                slotIDReplac = staff.slotsReplaced[index].slot;
-                slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
-                array[lastIndex] = slotReplac
-                lastIndex++;
+                slotRequest = await newReplacement.findOne({ _id: staff.slotsReplaced[index] })
+                console.log(slotRequest)
+                if (slotRequest) {
+                    dateToReplace = slotRequest.date
+                    array[lastIndex] = dateToReplace
+                    lastIndex++;
+                    slotIDReplac = slotRequest.slot;
+                    slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
+                    array[lastIndex] = slotReplac
+                    lastIndex++;
+                }
             }
 
-            res.send(array)
+
         }
+        res.send(array)
     })
 //inputs : slot(the slotID I want someone to replace),receiverId(the id of the staff member I want to send it to)
 //,dateReplace:the day on which I need this replacement
@@ -75,35 +133,37 @@ router.route('/sendReplacementRequest')
         }
         if (flag == "false")
             return res.send("This slot is not assigned to you")
-        if (staff && receiverStaff) {
+        else {
+            if (staff && receiverStaff) {
 
-            var request = new newReplacement(
-                {
-                    pending: true,
-                    accepted: false,
-                    slot: slotReplacement,
-                    receiverId: receiver,
-                    senderId: staff.memberID,
-                    date: slotDate
+                var request = new newReplacement(
+                    {
+                        pending: true,
+                        accepted: false,
+                        slot: slotReplacement,
+                        receiverId: receiver,
+                        senderId: staff.memberID,
+                        date: slotDate
+                    }
+                )
+                try {
+                    await request.save()
                 }
-            )
-            try {
-                await request.save()
-            }
-            catch (Err) {
-                console.log(Err)
-            }
-            await staff.requestReplacementSent.push(request._id)
-            await staff.save()
-            await receiverStaff.requestReplacmentReceived.push(request._id)
-            await receiverStaff.save()
-            return res.send("Successfully sent")
+                catch (Err) {
+                    console.log(Err)
+                }
+                await staff.requestReplacementSent.push(request._id)
+                await staff.save()
+                await receiverStaff.requestReplacmentReceived.push(request._id)
+                await receiverStaff.save()
+                return res.send("Successfully sent")
 
+
+            }
+            res.send("Invalid inputs")
+            //add it to the table of requests in staff member
 
         }
-        res.send("Invalid inputs")
-        //add it to the table of requests in staff member
-
     }
     )
 //Inputs:slotId(slot I want to be assigned to)
@@ -293,4 +353,72 @@ router.route('/rejectReplacementRequest')
         }
 
     })
+//enter the day they want to update to
+//optionally enter a reason
+router.route('/sendChangeDayOff')
+    .post(async (req, res) => {
+        if (req.body.day == null) {
+            return res.send("Should input the day")
+        }
+        else {
+            const senderId = req.user._id;
+            const staff = await staff_members_models.findOne({ _id: senderId })
+            if (staff) {
+                var dayArray = ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday"]
+                const day = req.body.day
+                if (!(dayArray.includes(day.toLowerCase()))) {
+                    return res.send("Invalid input")
+                }
+                else {
+                    console.log(staff.department)
+                    var request;
+                    const hod = await staff_members_models.findOne({ department: staff.department })
+                    console.log(hod)
+                    if (!hod) {
+                        return res.send("This hod is not found")
+                    }
+                    else {
+                        const hodID = hod.memberID
+                        console.log("ID is" + hodID)
+                        console.log("I entered here")
+                        request = new dayOffRequest_model(
+                            {
+                                pending: true,
+                                accepted: false,
+                                day: day,
+                                HODId: hodID,
+                                senderId: staff.memberID
+                            }
+                        )
+                        if (req.body.reason != null) {
+                            request.comment = req.body.reason
+                        }
+
+
+                        try {
+                            await request.save()
+                        }
+                        catch (Err) {
+                            return res.send("Mongo error")
+                        }
+
+                        hod.dayOffRequestsHOD.push(staff.memberID)
+                        staff.dayOffRequestSent = staff.memberID
+                        try {
+                            await hod.save()
+                            await staff.save()
+                        }
+                        catch (Err) {
+                            return res.send("Mongo error")
+                        }
+
+                    }
+                }
+                return res.send("Successfully sent")
+            }
+
+        }
+
+    })
+
 module.exports = router
