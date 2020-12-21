@@ -49,7 +49,7 @@ const staffSchema = new mongoose.Schema(
             type: String,
         },
         role: {
-            type: [],
+            type: String,
             required: true,
             //operators start with $, to specify constraints
             $in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
@@ -73,6 +73,11 @@ const staffSchema = new mongoose.Schema(
             type: [],
             default: []
         },
+        workingSchedule: {
+            type: String
+            //referenced the id of the schedule
+            //has the same id of the staff member
+        },
         requestReplacementSent:
         //the ones I send
         {
@@ -94,7 +99,7 @@ const staffSchema = new mongoose.Schema(
 
         officeLocation:
         {
-            type: String,
+            type: locationSchema,
         },
         staffLinkingRequests: {
             //array of _id of slotLinking requests
@@ -147,6 +152,11 @@ const staffSchema = new mongoose.Schema(
         default:[]
         },
         missingHours:{
+            type:[],
+        default:[]
+
+        },
+        extraHours:{
             type:[],
         default:[]
 
