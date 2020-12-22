@@ -79,10 +79,11 @@ app.use('/ci',(req, res, next) => {
         const token = req.headers.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         console.log(verified);
+        
         if (!verified) {
             return res.status(401).json({ msg: "authorization failed" });
         }
-        else if(!verified.role.includes("course Instructor")){
+        else if(!verified.role.includes("courseInstructors")){
             return res.status(401).json({ msg: "authorization failed" });
         }
         req.user = verified;

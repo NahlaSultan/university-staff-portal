@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { ReplSet } = require('mongodb')
 require('dotenv').config()
-const slot_model = require('../models/slot_model').model
+const slots_model = require('../models/slot_model').model
 
 
 //viewcoverage
@@ -40,10 +40,14 @@ router.route('/viewCourseStaff')
 .get(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
+    var array=[]
     if(staff){  
          for(let i=0;i<staff.course.length;i++){
         const result =  await staff_members_models.find({course:staff.course[i]})
-        res.send(result)}
+        array.push(result)
+        res.send(result)
+    }
+    res.send(array)
     
 }
 
@@ -137,10 +141,13 @@ router.route('/viewSlots')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     if(staff){ 
+        var array=[]
         for(let i=0;i<staff.slotsAssigned.length;i++){
-            const result =  await slots_model.find({_id:staff.slotsAssigned[i]})
-            res.send(result)
+            const result =  await slots_model.find({numberID:staff.slotsAssigned[i]})
+            array.push(result)
+           
         }
+        res.send(array)
     }
 
 
