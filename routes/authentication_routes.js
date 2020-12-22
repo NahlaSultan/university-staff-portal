@@ -6,9 +6,11 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
-const course_model = require('../models/course_model').model
-const workingSchedule_model = require('../models/workingSchedule_model').model
-//var blackListed=[]
+
+const course_model=require('../models/course_model').model
+const workingSchedule_model=require('../models/workingSchedule_model').model
+const tokens_model=require('../models/tokens_model').model
+
 
 
 //var firstPass = "$2b$10$eT3Pex54hQL8IALM8MPl3O4oYnZqLjmzpltfTpc7xS8iyHErUrx3S"
@@ -30,15 +32,7 @@ router.route('/login')
         const staff = await staff_members_models.findOne({ email: req.body.email })
         if (staff) {
             const correctPassword = await bcrypt.compare(req.body.password, staff.password)
-            // let birthday = new Date(2020, 12, 21).setHours(0, 0, 0, 0)
-            // console.log(birthday)
-            // let now = new Date().setHours(0, 0, 0, 0)
-            // const n = now - birthday
-            // console.log(birthday.getDate())
-            // const a = new Date("2017-02-01"),
-            //     b = new Date("2017-01-26"),
-            //     difference = dateDiffInDays(a, b);
-            // console.log(difference)
+       
             console.log("correct password: ", staff.password)
             console.log("entered password: ", req.body.password)
             if (req.body.password == "123456") {
@@ -64,13 +58,18 @@ router.route('/login')
         return res.status(401).send('Invalid email')
     })
 
-// //logout
-// router.route('/logOut')
-// .get(async (req, res) => {
-//     const token =req.headers.token;
-//     blackListed.push(token)
-//     res.send("loggedOut")
-// })
+
+    //logout
+    router.route('/logOut')
+    .get(async (req, res) => {
+        const token =req.headers.token;
+        const t =new tokens_model({
+          "blackList":token
+        })
+      await  t.save()
+        res.send("loggedOut")
+    })
+
 router.route('/addStaff')
     .post(async (req, res) => {
         const email = req.body.email
@@ -166,7 +165,9 @@ router.route('/addStaff')
                 await newUser.save()
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
-                if (staffType != "hr") {
+
+                
+                if(staffType!="hr"){
 
                     const schedule = new workingSchedule_model({
                         staffID: memberID
