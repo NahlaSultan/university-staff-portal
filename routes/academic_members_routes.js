@@ -420,5 +420,83 @@ router.route('/sendChangeDayOff')
         }
 
     })
+//inputs the id of the request he wants to cancel
+router.route('cancelReplacementRequest')
+    .post(async (req, res) => {
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            if (req.body.requestID == null) {
+                return res.send("You should enter an id")
+            }
+            else {
+                //check it is pending or its date is yet to come
+                const request = await newReplacement.findOne({ _id: req.body.requestID })
+                today = new Date();
+
+                // moment(today).isAfter(request.date, 'day');
+                if (request.pending == true || moment(today).isAfter(request.date, 'day')) {
+                    console.log("Can remove it")
+                    //remove it from the array of sent requests
+                    for (let i = 0; i < staff.requestReplacementSent.length; i++) {
+                        if (staff.requestReplacementSent[i] == req.body.requestID) {
+                            staff.requestReplacementSent.splice(i, 1)
+                            break
+                        }
+                    }
+                    //remove it from the array of slot replaced in case it was accepted
+                    for (let j = 0; j < staff.slotsReplaced.length; j++) {
+                        if (staff.slotsReplaced[i] == req.body.requestID) {
+                            staff.slotsReplaced.splice(i, 1)
+                            break
+                        }
+                        try {
+                            await staff.save()
+                        }
+                        catch (Err) {
+                            return res.send("Mongo error")
+                        }
+                    }
+                    //get the receiver to delete the request from its corresponding array
+                    const receiverID = request.receiverId
+                    const receiver = await staff_members_models.findOne({ memberID: receiverID })
+                    if (receiver) {
+                        //delete from requests received
+                        for (let i = 0; i < receiver.requestReplacementReceived.length; i++) {
+                            if (receiver.requestReplacementReceived[i] == req.body.requestID) {
+                                receiver.requestReplacementReceived.splice(i, 1)
+                                break
+                            }
+                        }
+                        //delete from slots to replace
+                        for (let j = 0; j < receiver.slotsToReplace.length; j++) {
+                            if (receiver.slotsToReplace[i] == req.body.requestID) {
+                                receiver.slotsToReplace.splice(i, 1)
+                                break
+                            }
+                        }
+                        try {
+                            await receiver.save()
+                        }
+                        catch (Err) {
+                            return res.send("Mongo error")
+                        }
+                        //delete the request
+                        try {
+                            request.delete()
+                        }
+                        catch (Err) {
+                            return res.send("Mongo error")
+                        }
+
+                    }
+                }
+                else {
+                    return res.send("The request has already been accepted and replaced by someone else")
+                }
+            }
+
+        }
+    })
 
 module.exports = router
