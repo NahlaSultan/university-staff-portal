@@ -49,8 +49,9 @@ const staffSchema = new mongoose.Schema(
             type: String,
         },
         role: {
-            type: String,
+            type: [],
             required: true,
+            default:[],
             //operators start with $, to specify constraints
             $in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
         },
