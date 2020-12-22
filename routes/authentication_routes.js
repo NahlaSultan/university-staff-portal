@@ -161,6 +161,8 @@ router.route('/addStaff')
                 await newUser.save()
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
+
+                
                 if(staffType!="hr"){
 
                 const schedule = new workingSchedule_model({

@@ -739,111 +739,143 @@ router.route('/updateStaff')
 
 })
 
-// router.route('/addSignIn')
-// .post(async (req, res) => {
-//     const staffId = req.user._id;
-//     const staff = await staff_members_models.findOne({ _id: staffId })
-//     if (staff) {
-//         if(req.body.id == staff.memberID){
-//             res.send("cannot add sign in for yourself")
-//         }
+router.route('/addSignIn')
+.post(async (req, res) => {
+    const staffId = req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if (staff) {
+        if(req.body.id == staff.memberID){
+            res.send("cannot add sign in for yourself")
+        }
 
-//  const event = new Date('August 19, 1975 23:15:30');
+        const manualTime = new Date('August 19, 1975 23:15:00');
+        manualTime.setMonth( req.body.month -1)
+        manualTime.setDate(req.body.day)
+        manualTime.setFullYear(req.body.year)
+        manualTime.setHours(req.body.hour)
+        manualTime.setMinutes(req.body.minute)
+    
+        var currentTime=new newAttendance(
+            {"signInTime":manualTime}
+        )
+        try{
+            await currentTime.save()
+        }
+        catch(Err){
+            console.log(Err)
+        }
+        if(staff.attendance.length==0)
+        {
+            await staff.attendance.push(currentTime)
+            try{
+                await staff.save()
+            }
+            catch(Err){
+                res.send("error saving sign in")
+                console.log(Err)
+            }
+        }else{
+            if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
 
+                staff.markModified('attendance');
 
-// console.log(event);
-// // Sat Apr 19 1975 23:15:30 GMT+0100 (CET)
-// // (note: your timezone may vary)
+                await staff.attendance.push(currentTime)
+                await staff.save()
+                res.send(staff)
+            }
+            else res.send("you cannot sign in without signing out")
+    }
+    res.send(staff.attendance)
+    }
 
-// res.send()
-//     // console.log("adding sign in")
-//     // const staffId=res.body.id;
-//     // const staff = await staff_members_models.findOne({ memberID: id })
-   
-//     // if(staff){ 
+})
+
+router.route('/signOut')
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){ 
+        if(staff.attendance[staff.attendance.length-1].signOutTime==null ){
+        var currentTime2=new newAttendance(
+            {"signInTime":staff.attendance[staff.attendance.length-1].signInTime,
+            "signOutTime": new Date() }
+        )
+        try{
+            await currentTime2.save()
+        }
+        catch(Err){
+            console.log(Err)
+        }
+
+        const array = []
+        for(let index=0;index<staff.attendance.length-1;index++){
+         
+         array.push(staff.attendance[index])
+        }
+        array.push(currentTime2)
+        staff.attendance=array
+        await staff.save()
+        res.send('/login')}
+        else res.send("you cannot sign out without signing in")
+    }
+    
+})
+
+router.route('/addSignOut')
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){
+        if(req.body.id == staff.memberID){
+            res.send("cannot add sign in for yourself")
+        }
+        if(staff.attendance[staff.attendance.length-1].signOutTime==null ){
+
+        const manualTime = new Date('August 19, 1975 23:15:00');
+        manualTime.setMonth( req.body.month -1)
+        manualTime.setDate(req.body.day)
+        manualTime.setFullYear(req.body.year)
+        manualTime.setHours(req.body.hour)
+        manualTime.setMinutes(req.body.minute)
+
+        if(staff.attendance[staff.attendance.length-1].signOutTime==null ){
+        var currentTime2=new newAttendance(
+            {"signInTime":staff.attendance[staff.attendance.length-1].signInTime,
+            "signOutTime": manualTime }
+        )
+        try{
+            await currentTime2.save()
+        }
+        catch(Err){
+            console.log(Err)
+        }
+
+        const array = []
+        for(let index=0;index<staff.attendance.length-1;index++){
+         
+         array.push(staff.attendance[index])
+        }
+        array.push(currentTime2)
+        staff.attendance=array
+
+        try{
+        await staff.save()
+        }
+        catch(Err){
+            console.log(Err)
+            res.send("error saving staff")
+        }
+
         
-//     //     var currentTime=new newAttendance(
-//     //         {"signInTime": new Date()}
-//     //     )
-//     //     try{
-//     //         await currentTime.save()
-//     //     }
-//     //     catch(Err){
-//     //         console.log(Err)
-//     //     }
-//     //     if(staff.attendance.length==0)
-//     //     {
-//     //         await staff.attendance.push(currentTime)
-//     //         await staff.save()
-//     //     }else{
-//     //     if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
-//     //         console.log("i entered herrrrre")
+        res.send(staff.attendance)
+    }
+    }
+        else res.send("you cannot sign out without signing in")
+    }
 
-//     //     staff.markModified('attendance');
-
-//     //   await staff.attendance.push(currentTime)
-//     //   await staff.save()
-//     //   res.send(staff)
-//     // }
-//     //   else res.send("you cannot sign in without signing out")
-//     // }}
-//     // res.send('/homepage')
-
-
-// })
-
-// router.route('/addSignOut')
-// .post(async (req, res) => {
-//     const staffId = req.user._id;
-//     const staff = await staff_members_models.findOne({ _id: staffId })
-//     if (staff) {
-//         if(req.body.id == staff.memberID){
-//             res.send("cannot add sign out for yourself")
-//         }
-
-//  const event = new Date('August 19, 1975 23:15:30');
-
-
-// console.log(event);
-// // Sat Apr 19 1975 23:15:30 GMT+0100 (CET)
-// // (note: your timezone may vary)
-
-// res.send()
-//     // console.log("adding sign in")
-//     // const staffId=res.body.id;
-//     // const staff = await staff_members_models.findOne({ memberID: id })
-   
-//     // if(staff){ 
-        
-//     //     var currentTime=new newAttendance(
-//     //         {"signInTime": new Date()}
-//     //     )
-//     //     try{
-//     //         await currentTime.save()
-//     //     }
-//     //     catch(Err){
-//     //         console.log(Err)
-//     //     }
-//     //     if(staff.attendance.length==0)
-//     //     {
-//     //         await staff.attendance.push(currentTime)
-//     //         await staff.save()
-//     //     }else{
-//     //     if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
-//     //         console.log("i entered herrrrre")
-
-//     //     staff.markModified('attendance');
-
-//     //   await staff.attendance.push(currentTime)
-//     //   await staff.save()
-//     //   res.send(staff)
-//     // }
-//     //   else res.send("you cannot sign in without signing out")
-//     // }}
-//     // res.send('/homepage')
-
-
-// })
+    res.send("staff member with this id doesnt exist")
+})
+//////////////
 
 
     module.exports = router
