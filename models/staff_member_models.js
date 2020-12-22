@@ -1,4 +1,3 @@
-
 //table is lowercase and plural of 'user' insterted above
 const mongoose = require('mongoose')
 
@@ -49,7 +48,7 @@ const staffSchema = new mongoose.Schema(
             type: String,
         },
         role: {
-            type: String,
+            type: [],
             required: true,
             //operators start with $, to specify constraints
             $in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
@@ -99,7 +98,7 @@ const staffSchema = new mongoose.Schema(
 
         officeLocation:
         {
-            type: locationSchema,
+            type: String,
         },
         staffLinkingRequests: {
             //array of _id of slotLinking requests
@@ -154,12 +153,12 @@ const staffSchema = new mongoose.Schema(
         missingHours:{
             type:[],
         default:[]
-
-        },
+        ,
         extraHours:{
             type:[],
         default:[]
 
+        }
         }
     })
 
@@ -170,4 +169,3 @@ staffSchema.plugin(AutoIncrement, { id: 'id_seq', inc_field: 'numberID', referen
 module.exports.model = mongoose.model('staff', staffSchema)
 module.exports.staffSchema = staffSchema
         //table is lowercase and plural of 'user' insterted above
-
