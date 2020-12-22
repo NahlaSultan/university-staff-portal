@@ -33,21 +33,30 @@ router.route('/signIn')
         {
             staff.markModified('attendance');
            await staff.attendance.push(currentTime)
-           await staff.save()
-           res.send(staff)
+          //  res.send(staff)
         }else{
         if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
             console.log("i entered herrrrre")
 
-        staff.markModified('attendance');
 
       await staff.attendance.push(currentTime)
-      await staff.save()
-      res.send(staff)
+     
+      
     }
       else res.send("you cannot sign in without signing out")
-    }}
-    res.send('/homepage')
+    }}   
+    staff.markModified('attendance');
+
+    try{ 
+      await staff.save()
+    }
+    catch(err){
+      res.send(err)
+    }
+     res.send(staff)
+     
+
+    // res.send('/homepage')
 })
 //signout
 router.route('/signOut')

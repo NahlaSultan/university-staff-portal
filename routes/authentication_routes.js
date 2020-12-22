@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
 const course_model=require('../models/course_model').model
 const workingSchedule_model=require('../models/workingSchedule_model').model
-//var blackListed=[]
+const tokens_model=require('../models/tokens_model').model
 
 
 //var firstPass = "$2b$10$eT3Pex54hQL8IALM8MPl3O4oYnZqLjmzpltfTpc7xS8iyHErUrx3S"
@@ -56,13 +56,16 @@ router.route('/login')
         return res.status(401).send('Invalid email')
     })
 
-    // //logout
-    // router.route('/logOut')
-    // .get(async (req, res) => {
-    //     const token =req.headers.token;
-    //     blackListed.push(token)
-    //     res.send("loggedOut")
-    // })
+    //logout
+    router.route('/logOut')
+    .get(async (req, res) => {
+        const token =req.headers.token;
+        const t =new tokens_model({
+          "blackList":token
+        })
+      await  t.save()
+        res.send("loggedOut")
+    })
 router.route('/addStaff')
     .post(async (req, res) => {
         const email = req.body.email
