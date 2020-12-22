@@ -3,7 +3,7 @@ const { slotSchema } = require('./slot_model')
 const { staffSchema } = require('./staff_member_models')
 
 const replacementSchema = new mongoose.Schema({
-   
+
     pending: {
         type: Boolean,
         required: true
@@ -27,10 +27,9 @@ const replacementSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: String,
+        type: Date,
         // required: true
     }
-
 
 })
 module.exports.model = mongoose.model('replacment_requests', replacementSchema)

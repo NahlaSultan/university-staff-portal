@@ -6,12 +6,24 @@ const newWorkingSchedule = require('../models/workingSchedule_model').model
 const slot_model = require('../models/slot_model').model
 const dayOffRequest_model = require('../models/dayOffRequest').model
 const department_model = require('../models/department_model').model
+const newLeave_model = require('../models/leaves_model').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+
+function dateDiffInDays(a, b) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
+
 
 router.route('/viewSchedule')
     //do not forget to view the replacement slots(if it was accepted,sender will be notified that the slot on the specific date will be changed)and vice versa
@@ -80,11 +92,20 @@ router.route('/viewSchedule')
             var slotIDReplac;
             var dateToReplace;
             var slotRequest;
+            var dateToPrint;
+            var day;
+            var month;
+            var year;
             array[lastIndex++] = "Slots to replace:"
             for (let index = 0; index < staff.slotsToReplace.length; index++) {
                 slotRequest = await newReplacement.findOne({ _id: staff.slotToReplace[index] })
+                array[lastIndex++] = "Replaced on date:"
                 dateToReplace = slotRequest.date
-                array[lastIndex] = dateToReplace
+                day = dateToReplace.getDay();
+                month = dateToReplace.getMonth() + 1;
+                year = dateToReplace.getFullYear();
+                dateToPrint = day + "," + month + "," + year
+                array[lastIndex] = dateToPrint
                 lastIndex++;
                 slotIDReplac = staff.slotsToReplace[index].slot;
                 slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
@@ -96,8 +117,13 @@ router.route('/viewSchedule')
                 slotRequest = await newReplacement.findOne({ _id: staff.slotsReplaced[index] })
                 console.log(slotRequest)
                 if (slotRequest) {
+                    array[lastIndex++] = "Replaced on date:"
                     dateToReplace = slotRequest.date
-                    array[lastIndex] = dateToReplace
+                    day = dateToReplace.getDay();
+                    month = dateToReplace.getMonth() + 1;
+                    year = dateToReplace.getFullYear();
+                    dateToPrint = day + "," + month + "," + year
+                    array[lastIndex] = dateToPrint
                     lastIndex++;
                     slotIDReplac = slotRequest.slot;
                     slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
@@ -118,12 +144,18 @@ router.route('/sendReplacementRequest')
         const senderId = req.user._id;
         const receiver = req.body.receiverId;
         const slotReplacement = req.body.slot;
-        const slotDate = req.body.dateReplace;
+        const slotDate = new Date(req.body.dateReplace);
+        slotDate.setHours(0, 0, 0, 0)
         if (receiver == null || slotReplacement == null || slotDate == null) {
             return res.send("Incomplete inputs")
         }
         const staff = await staff_members_models.findOne({ _id: senderId })
         const receiverStaff = await staff_members_models.findOne({ memberID: receiver })
+        const staffDepartment = staff.department
+        const recevierDepartment = staff.department
+        if (staffDepartment != recevierDepartment) {
+            return res.send("Must choose someone of the same department to replace you")
+        }
         console.log(receiverStaff)
         console.log(staff)
         var flag = "false"
@@ -278,18 +310,18 @@ router.route('/acceptReplacementRequest')
                             catch (Err) {
                                 return res.send("Mongoose error")
                             }
-                            const sender = await staff_members_models.findOne({ memberID: requstTemp.senderId })
-                            if (sender) {
-                                sender.slotsReplaced.push(slotID)
-                                staff.slotsToReplace.push(slotID)
-                            }
-                            try {
-                                sender.save()
-                                staff.save()
-                            }
-                            catch (Err) {
-                                return res.send("Mongoose error")
-                            }
+                            // const sender = await staff_members_models.findOne({ memberID: requstTemp.senderId })
+                            // if (sender) {
+                            //     sender.slotsReplaced.push(slotID)
+                            //     staff.slotsToReplace.push(slotID)
+                            // }
+                            // try {
+                            //     sender.save()
+                            //     staff.save()
+                            // }
+                            // catch (Err) {
+                            //     return res.send("Mongoose error")
+                            // }
 
                             // try {
                             //     staff.save()
@@ -421,7 +453,7 @@ router.route('/sendChangeDayOff')
 
     })
 //inputs the id of the request he wants to cancel
-router.route('cancelReplacementRequest')
+router.route('/cancelReplacementRequest')
     .post(async (req, res) => {
         const senderId = req.user._id;
         const staff = await staff_members_models.findOne({ _id: senderId })
@@ -433,7 +465,6 @@ router.route('cancelReplacementRequest')
                 //check it is pending or its date is yet to come
                 const request = await newReplacement.findOne({ _id: req.body.requestID })
                 today = new Date();
-
                 // moment(today).isAfter(request.date, 'day');
                 if (request.pending == true || moment(today).isAfter(request.date, 'day')) {
                     console.log("Can remove it")
@@ -498,5 +529,178 @@ router.route('cancelReplacementRequest')
 
         }
     })
+//submit a leave request
+//Enter a type
+//Enter a replacement request in case of annual leave(_id of this request that has been already sent to someone and can be accepted by then)
+//start and end of the leave
+router.route('/submitLeave')
+    .post(async (req, res) => {
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (req.body.type == null) {
+            return res.send("Incomplete input")
+        }
+        // || req.body.end == null || req.body.start == null
+        else {
 
+            if (staff) {
+                const department = staff.department
+                const deModel = await department_model.findOne({ name: department })
+                const hodID = deModel.headOfDepartment
+                const hod = await staff_members_models.findOne({ memberID: hodID })
+                switch (req.body.type) {
+                    case "Annual":
+                        //one day at a time
+                        if (staff.annualLeavesBalance < 1) {
+                            return res.send("Your annual balance does not allow you to take a day off")
+                        }
+                        else {
+                            var leave = new newLeave_model({
+                                staffID: staff.memberID,
+                                hodID: hodID,
+                                type: "Annual",
+                                submission: Date().setHours(0, 0, 0, 0),
+                                pending: true,
+                                accepted: false
+                            })
+
+                            //check the date of the request is yet to come
+                            if (req.body.start == null) {
+                                return res.send("Incomplete inputs")
+
+                            }
+                            else {
+
+                                let now = Date()
+                                const replacementDate = new Date(req.body.start)
+                                if (now - replacementDate > 0) {
+                                    return res.send("leaves should be submitted before the targeted day.")
+                                }
+                                else {
+                                    leave.start = replacementDate.setHours(0, 0, 0, 0)
+                                    if (req.body.replacementRequestID != null) {
+                                        leave.replacementRequest = req.body.replacementRequestID
+                                    }
+                                    if (req.body.description != null) {
+                                        leave.description = req.body.description
+                                    }
+                                    try {
+                                        await leave.save()
+                                    }
+                                    catch (Err) {
+                                        return res.send("Mongo error")
+                                    }
+                                    hod.leaveRequestsHOD.push(leave._id)
+                                    staff.leaves.push(leave._id)
+                                    staff.annualLeavesBalance = annualLeavesBalance - 1
+                                    try {
+                                        await staff.save()
+                                        await hod.save()
+                                    }
+                                    catch (Err) {
+                                        return res.send("Mongo error")
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case "Accidental":
+                        //one day at a time
+                        if (req.body.start == null) {
+                            return res.send("Must enter the start and end dates of your leave")
+                        }
+                        else {
+                            var leave = new newLeave_model({
+                                staffID: staff.memberID,
+                                hodID: hodID,
+                                type: "Accidental",
+                                submission: Date().setHours(0, 0, 0, 0),
+                                pending: true,
+                                accepted: false,
+                                start: req.body.start
+                            })
+                            //check the difference between start and end is not greater than 6
+                            // const difference = dateDiffInDays(req.body.start, req.body.end);
+                            //const test = Math.abs(difference);
+
+                            if (staff.annualLeavesBalance < 1) {
+                                return res.send("Your annual balance does not allow you to submit this leave")
+                            }
+                            else {
+                                if (staff.totalAccidentalLeave + 1 > 6) {
+                                    return res.send("Rejected,you have used up all your allowed number of days for accidental leaves")
+                                }
+                                else {
+                                    staff.totalAccidentalLeave = staff.totalAccidentalLeave + 1
+
+                                    if (req.body.description != null)
+                                        leave.description = req.body.description
+                                    hod.leaveRequestsHOD.push(leave._id)
+                                    staff.leaves.push(leave._id)
+                                    staff.annualLeavesBalance = annualLeavesBalance - 1
+                                    try {
+                                        await leave.save()
+                                        await staff.save()
+                                        await hod.save()
+                                    }
+                                    catch (Err) {
+                                        return res.send("Mongo error")
+                                    }
+                                }
+
+
+                            }
+                        }
+                        break;
+                    case "Sick":
+                        if (req.body.start == null) {
+                            return res.send("Must enter the start and end dates of your leave")
+                        }
+                        else {
+                            var leave = new newLeave_model({
+                                staffID: staff.memberID,
+                                hodID: hodID,
+                                type: "Sick",
+                                submission: Date().setHours(0, 0, 0, 0),
+                                pending: true,
+                                accepted: false,
+                                start: req.body.start,
+                                end: req.body.end
+                            })
+                            const difference = dateDiffInDays(leave.submission, req.body.start);
+                            const test = Math.abs(difference);
+                            if (leave.submission - req.body.start > 0 && test > 3) {
+                                return res.send("Must be submitted by maximum three days after the sick day.")
+                            }
+                            else {
+                                if (req.body.documentLinks == null) {
+                                    return res.send("Must submit the documents")
+                                }
+                                else {
+                                    leave.documentLinks = req.body.documentLinks
+
+                                    if (req.body.description != null)
+                                        leave.description = req.body.description
+                                    hod.leaveRequestsHOD.push(leave._id)
+                                    staff.leaves.push(leave._id)
+                                    try {
+                                        await leave.save()
+                                        await staff.save()
+                                        await hod.save()
+                                    }
+                                    catch (Err) {
+                                        return res.send("Mongo error")
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case "":
+
+                        break;
+
+                }
+            }
+        }
+    })
 module.exports = router

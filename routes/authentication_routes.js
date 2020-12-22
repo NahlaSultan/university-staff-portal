@@ -6,13 +6,15 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
+
 const course_model=require('../models/course_model').model
 const workingSchedule_model=require('../models/workingSchedule_model').model
 const tokens_model=require('../models/tokens_model').model
 
 
+
 //var firstPass = "$2b$10$eT3Pex54hQL8IALM8MPl3O4oYnZqLjmzpltfTpc7xS8iyHErUrx3S"
-async function defaultPassword(){
+async function defaultPassword() {
     const salt = await bcrypt.genSalt(10)
     const newPassword = await bcrypt.hash("123456", salt)
     return newPassword
@@ -29,19 +31,19 @@ router.route('/login')
 
         const staff = await staff_members_models.findOne({ email: req.body.email })
         if (staff) {
-            const correctPassword=await bcrypt.compare(req.body.password,staff.password)
-
+            const correctPassword = await bcrypt.compare(req.body.password, staff.password)
+       
             console.log("correct password: ", staff.password)
             console.log("entered password: ", req.body.password)
-            if (req.body.password=="123456") {
-                firstLogin=true
+            if (req.body.password == "123456") {
+                firstLogin = true
             }
-            
-            if(correctPassword){
+
+            if (correctPassword) {
                 const token = jwt.sign({ _id: staff._id, role: staff.role }, process.env.TOKEN_SECRET)
                 res.header('token', token)
-                
-                if(firstLogin){
+
+                if (firstLogin) {
                     console.log("first login")
                     res.send('reset your password')
                 }
@@ -52,9 +54,10 @@ router.route('/login')
             return res.status(401).send('Invalid password')
         }
 
-        
+
         return res.status(401).send('Invalid email')
     })
+
 
     //logout
     router.route('/logOut')
@@ -66,39 +69,40 @@ router.route('/login')
       await  t.save()
         res.send("loggedOut")
     })
+
 router.route('/addStaff')
     .post(async (req, res) => {
         const email = req.body.email
         const user = await staff_members_models.findOne({ email: email })
         console.log("finding mail")
-     
+
         //doing anything in the database takes time so we should await and async
         if (!user) {
             console.log("if not user")
             newPassword = await defaultPassword()
-            var staffType,memberID
-            if(req.body.role==("HR members")){
+            var staffType, memberID
+            if (req.body.role == ("HR members")) {
                 staffType = "hr"
             }
-            else{
+            else {
                 staffType = "academic"
             }
 
             const officeName = req.body.office
 
-            if (req.body.office == null){
+            if (req.body.office == null) {
                 res.send('must specify an office (try c2.110)')
             }
             const office = await location_model.findOne({ name: req.body.office })
-            if(!office || office.type!="office"){
+            if (!office || office.type != "office") {
                 res.send('this is not a valid office')
             }
-            if(office.officeMembers<office.capacity){
-                office.officeMembers =  office.officeMembers +1
+            if (office.officeMembers < office.capacity) {
+                office.officeMembers = office.officeMembers + 1
                 try {
                     console.log('saving office')
                     await office.save()
-    
+
                 }
                 catch (Err) {
                     console.log(Err)
@@ -107,9 +111,9 @@ router.route('/addStaff')
 
             }
             else
-            res.send('this office is already full')
+                res.send('this office is already full')
 
-           
+
             const arr = []
             arr.push(req.body.role)
 
@@ -118,38 +122,38 @@ router.route('/addStaff')
                 email: req.body.email,
                 password: newPassword,
                 role: arr,
-                dayOff:req.body.dayOff,
-                salary:req.body.salary,
+                dayOff: req.body.dayOff,
+                salary: req.body.salary,
                 staffType: staffType,
-                officeLocation: req.body.office 
+                officeLocation: req.body.office
             })
 
-            if(req.body.dayOff!=null){
+            if (req.body.dayOff != null) {
                 newUser.dayOff = req.body.dayOff
             }
-            if(staffType=="hr"){
+            if (staffType == "hr") {
                 newUser.dayOff = "Saturday"
             }
-           
-            if(req.body.attendance!=null){
+
+            if (req.body.attendance != null) {
                 newUser.attendance = req.body.attendance
             }
-            if(req.body.annualLeavesBalance!=null){
+            if (req.body.annualLeavesBalance != null) {
                 newUser.annualLeavesBalance = req.body.annualLeavesBalance
             }
-            if(req.body.leaves!=null){
+            if (req.body.leaves != null) {
                 newUser.leaves = req.body.leaves
             }
-            if(req.body.workingSchedule!=null){
+            if (req.body.workingSchedule != null) {
                 newUser.workingSchedule = req.body.workingSchedule
             }
-            if(req.body.department!= null){
+            if (req.body.department != null) {
                 newUser.department = req.body.department
             }
-            if(req.body.faculty!= null){
+            if (req.body.faculty != null) {
                 newUser.faculty = req.body.faculty
             }
-            if(req.body.course!= null){
+            if (req.body.course != null) {
                 //enter in array form 
                 newUser.course = req.body.course
             }
@@ -165,9 +169,10 @@ router.route('/addStaff')
                 
                 if(staffType!="hr"){
 
-                const schedule = new workingSchedule_model({
-                        staffID: memberID })
-                await schedule.save()
+                    const schedule = new workingSchedule_model({
+                        staffID: memberID
+                    })
+                    await schedule.save()
 
 
                 }
@@ -187,45 +192,45 @@ router.route('/addStaff')
 router.route('/addSampleOffice').post(async (req, res) => {
 
     const office = await location_model.findOne({ name: req.body.name })
-     
-        if (!office) {
-    const newOffice = new location_model({
-        type: "office",
-        name: req.body.name,
-        capacity: req.body.capacity,
-        officeMembers: 0,
 
+    if (!office) {
+        const newOffice = new location_model({
+            type: "office",
+            name: req.body.name,
+            capacity: req.body.capacity,
+            officeMembers: 0,
+
+        })
+        try {
+
+            await newOffice.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            res.send("error adding office")
+        }
+        return res.send(newOffice)
+    }
+
+    res.send('office ' + req.body.name + ' is already there')
+
+
+})
+router.route('/addCourse').post(async (req, res) => {
+    const newCourse = new course_model({
+
+        courseName: req.body.name
     })
     try {
-        
-        await newOffice.save()
+        await newCourse.save()
     }
     catch (Err) {
         console.log(Err)
         res.send("error adding office")
     }
-    return res.send(newOffice)    
-        }
-
-        res.send('office '+ req.body.name+' is already there')
-
+    res.send("Successfully added")
 
 })
-router.route('/addCourse').post(async (req, res) => {
-    const newCourse=new course_model({
-    
-        courseName:req.body.name
-    })
-    try{
-        await newCourse.save()
-    }
-    catch(Err){
-        console.log(Err)
-        res.send("error adding office")
-    }
-    res.send("Successfully added")
-    
-    })
 
 
 

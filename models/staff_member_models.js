@@ -30,6 +30,11 @@ const staffSchema = new mongoose.Schema(
             unique: true,
             required: true
         },
+        gender: {
+            type: String,
+            required: true,
+            $in: ["Female", "Male"]
+        },
         password: {
             type: String,
             default: "123456"
@@ -70,13 +75,9 @@ const staffSchema = new mongoose.Schema(
         }
         ,
         leaves: {
+            //array of _ids of the leaves
             type: [],
             default: []
-        },
-        workingSchedule: {
-            type: String
-            //referenced the id of the schedule
-            //has the same id of the staff member
         },
         requestReplacementSent:
         //the ones I send
@@ -144,21 +145,33 @@ const staffSchema = new mongoose.Schema(
             default: []
         },
         dayOffRequestSent: {
-            type: String
-        },
-        missingDays:{
-        type:[],
-        default:[]
-        },
-        missingHours:{
-            type:[],
-        default:[]
-        ,
-        extraHours:{
-            type:[],
-        default:[]
+            type: String,
+            default: ""
 
-        }
+        },
+        missingDays: {
+            type: [],
+            default: []
+        },
+        missingHours: {
+            type: [],
+            default: []
+            ,
+            extraHours: {
+                type: [],
+                default: []
+
+            }
+        },
+        leaveRequestsHOD: {
+            //array of _ids of leave model
+            type: [],
+            default: []
+        },
+        totalAccidentalLeave: {
+            //number of days taken for accidental leave so far(=0 each year)
+            type: Number,
+            default: 0
         }
     })
 
