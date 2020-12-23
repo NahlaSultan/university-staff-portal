@@ -9,8 +9,160 @@ const faculty_model = require('../models/faculty_model').model
 const department_model = require('../models/department_model').model
 const course_model = require('../models/course_model').model
 const newAttendance=require ('../models/attendance_record').model
+const workingSchedule_model=require('../models/workingSchedule_model').model
 
+async function defaultPassword() {
+    const salt = await bcrypt.genSalt(10)
+    const newPassword = await bcrypt.hash("123456", salt)
+    return newPassword
+}
 require('dotenv').config()
+
+router.route('/addStaff')
+    .post(async (req, res) => {
+        const email = req.body.email
+        const user = await staff_members_models.findOne({ email: email })
+        console.log("finding mail")
+
+        //doing anything in the database takes time so we should await and async
+        if (!user) {
+            console.log("if not user")
+            newPassword = await defaultPassword()
+            var staffType, memberID
+            if (req.body.role == ("HR members")) {
+                staffType = "hr"
+            }
+            else {
+                staffType = "academic"
+            }
+
+            const officeName = req.body.office
+
+            if (req.body.office == null) {
+                res.send('must specify an office (try c2.110)')
+            }
+            const office = await location_model.findOne({ name: req.body.office })
+            if (!office || office.type != "office") {
+                res.send('this is not a valid office')
+            }
+            if (office.officeMembers < office.capacity) {
+                office.officeMembers = office.officeMembers + 1
+                try {
+                    console.log('saving office')
+                    await office.save()
+
+                }
+                catch (Err) {
+                    console.log(Err)
+                    res.send("error saving office")
+                }
+
+            }
+            else
+                res.send('this office is already full')
+
+
+            const arr = []
+            arr.push(req.body.role)
+
+            const newUser = new staff_members_models({
+                name: req.body.name,
+                email: req.body.email,
+                password: newPassword,
+                role: arr,
+                dayOff: req.body.dayOff,
+                salary: req.body.salary,
+                staffType: staffType,
+                officeLocation: req.body.office,
+                gender: req.body.gender
+            })
+            var faculty;
+            if (req.body.faculty == null && staffType=="academic") {
+                res.send("must specify faculty name") 
+            }
+            else{
+                faculty = await faculty_model.findOne({ facultyName: req.body.faculty })
+                if(faculty)
+                    newUser.faculty = req.body.faculty
+                else{
+                    res.send("this is not a valid faculty, check faculty table and pick an existing one")
+                }
+            }
+
+            if (req.body.department == null && staffType=="academic") {
+                res.send("must specify department name") 
+            }
+            else{
+
+                var found = false
+                for(var i=0; i<faculty.departments.length; i++){
+                currDep = faculty.departments[i]
+                if(req.body.department == currDep.name)
+                found = true}
+        
+                if(found)
+                    newUser.department = req.body.department
+                else{
+                    console.log("heree")
+
+                    res.send({
+                        "message": "this is not a valid department in" + req.body.faculty+" pick one of these departments or add a department first", 
+                        "facultyDepartments": faculty.departments})
+                    res.send()
+                    console.log("after save")
+                }
+            }
+
+            if (req.body.dayOff != null) {
+                newUser.dayOff = req.body.dayOff
+            }
+            if (staffType == "hr") {
+                newUser.dayOff = "Saturday"
+            }
+
+            if (req.body.attendance != null) {
+                newUser.attendance = req.body.attendance
+            }
+            if (req.body.annualLeavesBalance != null) {
+                newUser.annualLeavesBalance = req.body.annualLeavesBalance
+            }
+            if (req.body.leaves != null) {
+                newUser.leaves = req.body.leaves
+            }
+            if (req.body.workingSchedule != null) {
+                newUser.workingSchedule = req.body.workingSchedule
+            }
+           
+
+            try {
+                console.log("saving user")
+                console.log(newUser.id)
+                await newUser.save()
+                memberID = staffType + "-" + newUser.numberID
+                newUser.memberID = memberID
+
+                
+                if(staffType!="hr"){
+
+                    const schedule = new workingSchedule_model({
+                        staffID: memberID
+                    })
+                    await schedule.save()
+
+
+                }
+                console.log("second save")
+                await newUser.save()
+
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("Mongo error")
+            }
+            return res.send(newUser)
+        }
+        res.send('Email already registered')
+    })
 
 
 router.route('/addLocation')
