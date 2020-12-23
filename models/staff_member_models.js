@@ -33,7 +33,8 @@ const staffSchema = new mongoose.Schema(
         gender: {
             type: String,
             required: true,
-            $in: ["Female", "Male"]
+            $in: ["Female", "Male"],
+            default: "Female"
         },
         password: {
             type: String,
@@ -172,6 +173,15 @@ const staffSchema = new mongoose.Schema(
             //number of days taken for accidental leave so far(=0 each year)
             type: Number,
             default: 0
+        },
+        compensationDay: {
+            type: Date
+        },
+
+        compensationSession:
+        {
+            type: Boolean,
+            default: false
         }
     })
 

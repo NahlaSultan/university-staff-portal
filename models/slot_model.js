@@ -41,13 +41,13 @@ const slotSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-    // ,
-    // academicMember: {
-    //     type: staffSchema
-    // }
+    ,
+    academicMember: {
+        type: String
+    }
 })
 
-    slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID' });
+slotSchema.plugin(AutoIncrement, { id: 'slotid_seq', inc_field: 'numberID' });
 
 module.exports.model = mongoose.model('slots', slotSchema)
 

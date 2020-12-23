@@ -7,6 +7,7 @@ const slot_model = require('../models/slot_model').model
 const dayOffRequest_model = require('../models/dayOffRequest').model
 const department_model = require('../models/department_model').model
 const newLeave_model = require('../models/leaves_model').model
+const faculty_model = require('../models/faculty_model').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
@@ -131,7 +132,10 @@ router.route('/viewSchedule')
                     lastIndex++;
                 }
             }
-
+            array[lastIndex++] = "In case of compensation leave request acceptance,compensation session at:"
+            if (staff.compensationSession == true) {
+                array[lastIndex++] = staff.compensationDay
+            }
 
         }
         res.send(array)
@@ -404,7 +408,9 @@ router.route('/sendChangeDayOff')
                 else {
                     console.log(staff.department)
                     var request;
-                    const hod = await staff_members_models.findOne({ department: staff.department })
+                    const department = staff.department
+                    const hod = await staff_members_models.findOne({ department: department, role: { $all: ["headOfdepartments"] } })
+                    const hodID = hod.memberID
                     console.log(hod)
                     if (!hod) {
                         return res.send("This hod is not found")
@@ -529,6 +535,7 @@ router.route('/cancelReplacementRequest')
 
         }
     })
+
 //submit a leave request
 //Enter a type
 //Enter a replacement request in case of annual leave(_id of this request that has been already sent to someone and can be accepted by then)
@@ -545,9 +552,9 @@ router.route('/submitLeave')
 
             if (staff) {
                 const department = staff.department
-                const deModel = await department_model.findOne({ name: department })
-                const hodID = deModel.headOfDepartment
-                const hod = await staff_members_models.findOne({ memberID: hodID })
+                const hod = await staff_members_models.findOne({ department: department, role: { $all: ["headOfdepartments"] } })
+                const hodID = hod.memberID
+                console.log(hod)
                 switch (req.body.type) {
                     case "Annual":
                         //one day at a time
@@ -555,11 +562,12 @@ router.route('/submitLeave')
                             return res.send("Your annual balance does not allow you to take a day off")
                         }
                         else {
+                            let now = new Date()
                             var leave = new newLeave_model({
                                 staffID: staff.memberID,
                                 hodID: hodID,
                                 type: "Annual",
-                                submission: Date().setHours(0, 0, 0, 0),
+                                submission: now.setHours(0, 0, 0, 0),
                                 pending: true,
                                 accepted: false
                             })
@@ -572,7 +580,11 @@ router.route('/submitLeave')
                             else {
 
                                 let now = Date()
-                                const replacementDate = new Date(req.body.start)
+                                const replacementDateinitial = new Date(req.body.start)
+                                var day = replacementDateinitial.getUTCDate() + 2;
+                                var month = replacementDateinitial.getUTCMonth() + 1;
+                                var year = replacementDateinitial.getUTCFullYear();
+                                const replacementDate = new Date(year + "/" + month + "/" + day)
                                 if (now - replacementDate > 0) {
                                     return res.send("leaves should be submitted before the targeted day.")
                                 }
@@ -592,7 +604,6 @@ router.route('/submitLeave')
                                     }
                                     hod.leaveRequestsHOD.push(leave._id)
                                     staff.leaves.push(leave._id)
-                                    staff.annualLeavesBalance = annualLeavesBalance - 1
                                     try {
                                         await staff.save()
                                         await hod.save()
@@ -606,18 +617,25 @@ router.route('/submitLeave')
                         break;
                     case "Accidental":
                         //one day at a time
+                        console.log("i ENTERED HERE")
                         if (req.body.start == null) {
                             return res.send("Must enter the start and end dates of your leave")
                         }
                         else {
+                            const now = new Date()
+                            const startDate = new Date(req.body.start)
+                            var day = startDate.getUTCDate() + 2;
+                            var month = startDate.getUTCMonth() + 1;
+                            var year = startDate.getUTCFullYear();
+                            const startDateUpdate = new Date(year + "/" + month + "/" + day)
                             var leave = new newLeave_model({
                                 staffID: staff.memberID,
                                 hodID: hodID,
                                 type: "Accidental",
-                                submission: Date().setHours(0, 0, 0, 0),
+                                submission: now.setHours(0, 0, 0, 0),
                                 pending: true,
                                 accepted: false,
-                                start: req.body.start
+                                start: startDateUpdate
                             })
                             //check the difference between start and end is not greater than 6
                             // const difference = dateDiffInDays(req.body.start, req.body.end);
@@ -637,7 +655,7 @@ router.route('/submitLeave')
                                         leave.description = req.body.description
                                     hod.leaveRequestsHOD.push(leave._id)
                                     staff.leaves.push(leave._id)
-                                    staff.annualLeavesBalance = annualLeavesBalance - 1
+                                    const leaveBalance = staff.annualLeavesBalance
                                     try {
                                         await leave.save()
                                         await staff.save()
@@ -653,23 +671,32 @@ router.route('/submitLeave')
                         }
                         break;
                     case "Sick":
-                        if (req.body.start == null) {
+                        if (req.body.start == null || req.body.end == null) {
                             return res.send("Must enter the start and end dates of your leave")
                         }
                         else {
+                            const now = new Date()
+                            var startDate = new Date(req.body.start)
+                            var day = startDate.getUTCDate() + 2;
+                            var month = startDate.getUTCMonth() + 1;
+                            var year = startDate.getUTCFullYear();
+                            const startDateUpdate = new Date(year + "/" + month + "/" + day)
+                            const endDate = new Date(req.body.end)
+                            console.log("End date is" + endDate)
                             var leave = new newLeave_model({
                                 staffID: staff.memberID,
                                 hodID: hodID,
                                 type: "Sick",
-                                submission: Date().setHours(0, 0, 0, 0),
+                                submission: now.setHours(0, 0, 0, 0),
                                 pending: true,
                                 accepted: false,
-                                start: req.body.start,
-                                end: req.body.end
+                                start: startDateUpdate,
+                                end: endDate
                             })
-                            const difference = dateDiffInDays(leave.submission, req.body.start);
-                            const test = Math.abs(difference);
-                            if (leave.submission - req.body.start > 0 && test > 3) {
+                            const difference = dateDiffInDays(startDate, leave.submission);
+                            //  const test = Math.abs(difference);
+                            if (difference > 3) {
+                                console.log("I entered here")
                                 return res.send("Must be submitted by maximum three days after the sick day.")
                             }
                             else {
@@ -695,12 +722,129 @@ router.route('/submitLeave')
                             }
                         }
                         break;
-                    case "":
-
+                    case "Maternity":
+                        if (staff.gender != "Female") {
+                            return res.send("Must be a female")
+                        }
+                        else {
+                            if (req.body.documentLinks == null) {
+                                return res.send("Must submit documents")
+                            }
+                            else {
+                                if (req.body.start == null || req.body.end == null) {
+                                    return res.send("Must enter the start and end dates of your leave")
+                                }
+                                else {
+                                    var startDate = new Date(req.body.start)
+                                    var day = startDate.getUTCDate() + 2;
+                                    var month = startDate.getUTCMonth() + 1;
+                                    var year = startDate.getUTCFullYear();
+                                    const startDateUpdate = new Date(year + "/" + month + "/" + day)
+                                    const endDate = new Date(req.body.end)
+                                    day = endDate.getUTCDate() + 2;
+                                    month = endDate.getUTCMonth() + 1;
+                                    year = endDate.getUTCFullYear();
+                                    const endDateUpdate = new Date(year + "/" + month + "/" + day)
+                                    let now = new Date()
+                                    var leave = new newLeave_model({
+                                        staffID: staff.memberID,
+                                        hodID: hodID,
+                                        type: "Maternity",
+                                        submission: now.setHours(0, 0, 0, 0),
+                                        pending: true,
+                                        accepted: false,
+                                        start: startDateUpdate,
+                                        end: endDateUpdate,
+                                        documentLinks: req.body.documentLinks
+                                    })
+                                    hod.leaveRequestsHOD.push(leave._id)
+                                    staff.leaves.push(leave._id)
+                                    try {
+                                        await leave.save()
+                                        await staff.save()
+                                        await hod.save()
+                                    }
+                                    catch (Err) {
+                                        return res.send("Mongo error")
+                                    }
+                                }
+                            }
+                        }
                         break;
+                    case "Compensation":
+                        if (req.body.description == null) {
+                            return res.send("You should enter a reason")
+                        }
+                        else {
+                            if (req.body.compensation == null) {
+                                return res.send("You should enter the day you wish to attend instead")
+                            }
+                            else {
+                                if (req.body.start == null) {
+                                    return res.send("You should enter the day on which you were absent")
+                                }
+                                else {
+                                    const startDate = new Date(req.body.start)
+                                    console.log("day is" + startDate.getUTCDate())
+                                    var day = startDate.getUTCDate() + 2;
+                                    var month = startDate.getUTCMonth() + 1;
+                                    var year = startDate.getUTCFullYear();
+                                    const startDateUpdate = new Date(year + "/" + month + "/" + day)
+                                    console.log(startDateUpdate)
+                                    const compensationDay = new Date(req.body.compensation)
+                                    console.log("initial compensationdayis" + compensationDay)
+
+                                    if (compensationDay.getMonth() != startDate.getMonth()) {
+                                        return res.send("The compensation should be in the same month")
+                                    }
+                                    else {
+                                        var days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+                                        const slotDay = days[(compensationDay.getUTCDay()) + 2]
+                                        console.log("The compensation date is:" + compensationDay)
+                                        console.log("Day index" + compensationDay.getUTCDay())
+                                        console.log("The compensation day is" + slotDay)
+                                        if (slotDay != staff.dayOff) {
+                                            return res.send("You should compensate on a day off")
+                                        }
+                                        let now = new Date()
+                                        console.log("today's date is" + now)
+                                        var leave = new newLeave_model({
+                                            staffID: staff.memberID,
+                                            hodID: hodID,
+                                            type: "Compensation",
+                                            submission: now.setHours(0, 0, 0, 0),
+                                            pending: true,
+                                            accepted: false,
+                                            start: startDate,
+                                            compensatingDay: compensationDay
+                                        })
+                                        hod.leaveRequestsHOD.push(leave._id)
+                                        staff.leaves.push(leave._id)
+                                        try {
+                                            await leave.save()
+                                            await staff.save()
+                                            await hod.save()
+                                        }
+                                        catch (Err) {
+                                            return res.send("Mongo error")
+                                        }
+                                    }
+
+
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        return res.send("Not a valid type")
 
                 }
+                return res.send("Successfully submitted")
             }
+            else {
+                return res.send("A problem has occured")
+            }
+
         }
     })
 module.exports = router
