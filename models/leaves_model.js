@@ -44,6 +44,9 @@ const leavesSchema = new mongoose.Schema({
     },
     documentLinks: {
         type: String
+    },
+    compensatingDay: {
+        type: Date
     }
 })
 

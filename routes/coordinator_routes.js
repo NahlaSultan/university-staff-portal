@@ -389,6 +389,7 @@ router.route('/acceptSlotLinkingRequest')
                             const slotNumberId = requstTemp.slotID
                             const slotCurrent = await slot_model.findOne({ numberID: requstTemp.slotID })
                             slotCurrent.assignedFlag = true
+                            slotCurrent.requstTemp.senderId
                             try {
                                 slotCurrent.save()
                             }
