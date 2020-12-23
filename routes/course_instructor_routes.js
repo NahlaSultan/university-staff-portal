@@ -52,6 +52,8 @@ router.route('/viewCourseStaff')
 }
 
 })
+
+
 //assign coordinator
 router.route('/assignCourseCoordinator')
 .post(async(req,res,)=>{
