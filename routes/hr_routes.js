@@ -146,7 +146,7 @@ router.route('/addStaff')
                 if(req.body.role== "headOfdepartments"){
                     currDep.headOfDepartment =  memberID
                     try{
-                        faculty.departments[i] = 
+                        faculty.departments[i] = currDep
                         await faculty.save()
                     }
                     catch (Err) {
