@@ -65,7 +65,7 @@ router.route('/assignCourseCoordinator')
         course.courseCoordinator=coordinator.memberID
         //console.log(coordinator._id)
         courseCoordinator.role.push("courseCoordinators")
-        courseCoordinator.course.push(course.courseName)
+        courseCoordinator.coordinatorCourse.push(course.courseName)
         course.save()
         staff.save()
         res.send("successfully assigned")}

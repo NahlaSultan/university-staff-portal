@@ -157,12 +157,12 @@ const staffSchema = new mongoose.Schema(
         missingHours: {
             type: [],
             default: []
-            ,
-            extraHours: {
+        },
+        extraHours: {
                 type: [],
                 default: []
 
-            }
+            
         },
         leaveRequestsHOD: {
             //array of _ids of leave model
