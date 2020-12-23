@@ -36,11 +36,16 @@ router.route('/assignInstructor')
                     if(c == coursename){
                         const course= await course_model.findOne({courseName:coursename})
                         if(instructor){
+                            instructor.course.push(courseName)
+                            if(!instructor.role.includes("courseInstructors")){
+                                instructor.role.push("courseInstructors")
+                            }
                             instArray=course.instructors
                         //    if(!instArray.findOne(instructorid)){
                                 await instArray.push(instructorid)
                                 try{
                                     await course_model.findOneAndUpdate({courseName:coursename},{instructors:instArray})
+                                    await instructor.save()
                                     res.send("instructor assigned successfully")
 
                                 }
