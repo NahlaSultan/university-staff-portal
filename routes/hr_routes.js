@@ -239,6 +239,8 @@ router.route('/addDepartment')
             if(hod){
                 department.headOfDepartment = hod.memberID
                 hod.role.push("headOfdepartments")
+                hod.department = req.body.departmentName
+                hod.faculty =  faculty.facultyName
                 try {
                     await hod.save()
                 }
@@ -287,8 +289,19 @@ router.route('/deleteDepartment')
     if (faculty) {
             for(var i=0; i<faculty.departments.length; i++){
                 currDep = faculty.departments[i]
-                if(req.body.department == currDep.name)
+                if(req.body.department == currDep.name){
+                    const hodID = currDep.headOfDepartment
+
+                    const hod = await staff_members_models.findOne({ memberID: hodID })
+                    if(hod){
+                        const ind = hod.role.indexOf("headOfdepartments")
+                        hod.role.splice(ind,1)
+                    }
+
                     faculty.departments.splice(i, 1);
+                    
+
+                }    
             }
             try {
                 await faculty.save()
@@ -646,15 +659,182 @@ router.route('/viewAttendance')
 
 })
 
+async function deleteHOD(depName, facName){
+
+    const faculty =  await faculty_model.findOne({ facultyName: facName})
+    if(faculty){
+        var indexOfDep =-1
+        var found = false
+        for(var i=0; i<faculty.departments.length; i++){
+            currDep = faculty.departments[i]
+            if(depName == currDep.name){
+                found = true
+                indexOfDep =i
+
+            }
+        }
+
+        if(!found){
+            return false
+        }
+
+        const dep = faculty.departments[indexOfDep]
+        dep.headOfDepartment = "unassigned"
+
+        try{
+            await faculty.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            return false
+        }
+        return true
+    }
+    return false
+}
+
+async function deleteHOD(depName, facName){
+
+    const faculty =  await faculty_model.findOne({ facultyName: facName})
+    if(faculty){
+        var indexOfDep =-1
+        var found = false
+        for(var i=0; i<faculty.departments.length; i++){
+            currDep = faculty.departments[i]
+            if(depName == currDep.name){
+                found = true
+                indexOfDep =i
+
+            }
+        }
+
+        if(!found){
+            return false
+        }
+
+        const dep = faculty.departments[indexOfDep]
+        dep.headOfDepartment = "unassigned"
+
+        try{
+            await faculty.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            return false
+        }
+        return true
+    }
+    return false
+}
+
+async function deleteTeacher(memberID, courses){
+
+
+        for(var i=0; i<courses.length; i++){
+            curCourse = courses[i]
+            if(curCourse.instructors.includes(memberID)){
+               const course = await course_model.findOne({ courseName: curCourse})
+               course.instructors.splice(curCourse.instructors.indexOf(memberID),1)
+               try {
+                   await course.save()
+               } catch (error) {
+                   return false
+               }
+
+            }
+            if(curCourse.teachingAssistants.includes(memberID)){
+                const course = await course_model.findOne({ courseName: curCourse})
+                course.teachingAssistants.splice(curCourse.teachingAssistants.indexOf(memberID),1)
+                try {
+                   await course.save()
+                } catch (Err) {
+                    console.log(Err)
+                   return false
+               }
+            }
+        }
+       
+        return true
+    }
+    async function deleteCoordinator(memberID, courses){
+
+
+        for(var i=0; i<courses.length; i++){
+            curCourse = courses[i]
+            if(curCourse.courseCoordinator==memberID){
+               const course = await course_model.findOne({ courseName: curCourse})
+               course.courseCoordinator="unassigned"
+               try {
+                   await course.save()
+               } catch (error) {
+                   return false
+               }
+
+            }
+         
+        }
+       
+        return true
+    }
+
 router.route('/deleteStaffMember')
 .delete(async (req,res)=>{
-    await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
-        if (err) {
-          console.err(err);
-        } else {
-          res.json(result);
+    const staff = await staff_members_models.findOne({ memberID: req.body.id })
+        if(staff){
+
+            for(var i = 0; i< staff.role.length ; i++ ){
+                var courses = staff.course
+                var del = false
+                switch(role){
+                    case "headOfdepartments":
+                        del = deleteHOD(staff.department, staff.faculty)
+                       if(!del){
+                            res.send("error deleting hod")
+                       }
+
+                        break;
+                    
+                    case "teachingAssistants","courseInstructors":
+                        del = deleteTeacher(staff.memberID,courses)
+                       if(!del){
+                            res.send("error deleting ci or ta")
+                       }
+
+                        break;
+                    case "courseCoordinators":
+                         del = deleteCoordinator(staff.memberID,courses)
+                        if(!del){
+                            res.send("error deleting hod")
+                        }
+         
+                        break;
+                }
+
+
+
+            }
+
+
+
+            await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
+                if (err) {
+                  console.err(err);
+                } else {
+                  res.json(result);
+                }
+              });
+
         }
-      });
+
+        res.send("no staff member with this id")
+
+
+    
+
+
+   
+
+    
       
 })
 
@@ -741,10 +921,10 @@ router.route('/updateStaff')
 
 router.route('/addSignIn')
 .post(async (req, res) => {
-    const staffId = req.user._id;
-    const staff = await staff_members_models.findOne({ _id: staffId })
+    const hrID = req.user._id;
+    const staff = await staff_members_models.findOne({ memberID: req.body.id })
     if (staff) {
-        if(req.body.id == staff.memberID){
+        if(hrID == staff._id){
             res.send("cannot add sign in for yourself")
         }
 
@@ -752,7 +932,7 @@ router.route('/addSignIn')
         manualTime.setMonth( req.body.month -1)
         manualTime.setDate(req.body.day)
         manualTime.setFullYear(req.body.year)
-        manualTime.setHours(req.body.hour)
+        manualTime.setHours(req.body.hour+2)
         manualTime.setMinutes(req.body.minute)
     
         var currentTime=new newAttendance(
@@ -768,6 +948,8 @@ router.route('/addSignIn')
         {
             await staff.attendance.push(currentTime)
             try{
+
+                staff.markModified('attendance.'+staff.attendance.length-1);
                 await staff.save()
             }
             catch(Err){
@@ -777,9 +959,10 @@ router.route('/addSignIn')
         }else{
             if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
 
-                staff.markModified('attendance');
 
                 await staff.attendance.push(currentTime)
+                staff.markModified('attendance.'+staff.attendance.length-1);
+
                 await staff.save()
                 res.send(staff)
             }
@@ -790,43 +973,14 @@ router.route('/addSignIn')
 
 })
 
-router.route('/signOut')
-.get(async(req,res,)=>{
-    const staffId=req.user._id;
-    const staff = await staff_members_models.findOne({ _id: staffId })
-    if(staff){ 
-        if(staff.attendance[staff.attendance.length-1].signOutTime==null ){
-        var currentTime2=new newAttendance(
-            {"signInTime":staff.attendance[staff.attendance.length-1].signInTime,
-            "signOutTime": new Date() }
-        )
-        try{
-            await currentTime2.save()
-        }
-        catch(Err){
-            console.log(Err)
-        }
 
-        const array = []
-        for(let index=0;index<staff.attendance.length-1;index++){
-         
-         array.push(staff.attendance[index])
-        }
-        array.push(currentTime2)
-        staff.attendance=array
-        await staff.save()
-        res.send('/login')}
-        else res.send("you cannot sign out without signing in")
-    }
-    
-})
 
 router.route('/addSignOut')
-.get(async(req,res,)=>{
-    const staffId=req.user._id;
-    const staff = await staff_members_models.findOne({ _id: staffId })
+.post(async(req,res,)=>{
+    const hrID=req.user._id;
+    const staff = await staff_members_models.findOne({  memberID: req.body.id})
     if(staff){
-        if(req.body.id == staff.memberID){
+        if(hrID == staff._id){
             res.send("cannot add sign in for yourself")
         }
         if(staff.attendance[staff.attendance.length-1].signOutTime==null ){
@@ -835,7 +989,7 @@ router.route('/addSignOut')
         manualTime.setMonth( req.body.month -1)
         manualTime.setDate(req.body.day)
         manualTime.setFullYear(req.body.year)
-        manualTime.setHours(req.body.hour)
+        manualTime.setHours(req.body.hour+2)
         manualTime.setMinutes(req.body.minute)
 
         if(staff.attendance[staff.attendance.length-1].signOutTime==null ){
@@ -850,15 +1004,18 @@ router.route('/addSignOut')
             console.log(Err)
         }
 
-        const array = []
-        for(let index=0;index<staff.attendance.length-1;index++){
+        // const array = []
+        // for(let index=0;index<staff.attendance.length-1;index++){
          
-         array.push(staff.attendance[index])
-        }
-        array.push(currentTime2)
-        staff.attendance=array
+        //  array.push(staff.attendance[index])
+        // }
+        const index = staff.attendance.length-1
+        staff.attendance.splice(index,1)
+        staff.attendance.push(currentTime2)
+        //staff.attendance=array
 
         try{
+        staff.markModified('attendance.'+index);
         await staff.save()
         }
         catch(Err){

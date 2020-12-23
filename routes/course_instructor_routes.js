@@ -62,9 +62,10 @@ router.route('/assignCourseCoordinator')
         const course = await course_model.findOne({ courseName: req.body.courseName })
         if(staff.course.includes(req.body.courseName)){
             if(coordinator.course.includes(req.body.courseName) ){
-        course.courseCoordinator=coordinator._id
+        course.courseCoordinator=coordinator.memberID
         //console.log(coordinator._id)
-        courseCoordinator.role="courseCoordinators"
+        courseCoordinator.role.push("courseCoordinators")
+        courseCoordinator.course.push(course.courseName)
         course.save()
         staff.save()
         res.send("successfully assigned")}
