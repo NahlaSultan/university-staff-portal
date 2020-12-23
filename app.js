@@ -14,6 +14,7 @@ const coordinator=require('./routes/coordinator_routes')
 const hr_routes = require('./routes/hr_routes')
 const course_instructor_routes = require('./routes/course_instructor_routes')
 var bodyParser = require('body-parser');
+const tokens_model=require('./models/tokens_model').model
 
 //app.use(bodyParser.json());
 ///app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,7 +22,7 @@ var bodyParser = require('body-parser');
 
 app.use('',authentication_routes)
 
-app.use((req, res, next) => {
+app.use(async(req, res, next) => {
     try {
         console.log("\nWe entered")
 
@@ -31,7 +32,9 @@ app.use((req, res, next) => {
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         console.log(verified);
         //|| blackListed.includes(token)
-        if (!verified) {
+        const findToken=await tokens_model.findOne({blackList:token})
+        console.log(!findToken)
+        if (!verified || findToken) {
             return res.status(401).json({ msg: "authorization failed" });
         }
         req.user = verified;
@@ -76,10 +79,11 @@ app.use('/ci',(req, res, next) => {
         const token = req.headers.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         console.log(verified);
+        
         if (!verified) {
             return res.status(401).json({ msg: "authorization failed" });
         }
-        else if(!verified.role.includes("course Instructor")){
+        else if(!verified.role.includes("courseInstructors")){
             return res.status(401).json({ msg: "authorization failed" });
         }
         req.user = verified;

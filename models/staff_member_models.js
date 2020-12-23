@@ -56,6 +56,7 @@ const staffSchema = new mongoose.Schema(
         role: {
             type: [],
             required: true,
+            default:[],
             //operators start with $, to specify constraints
             $in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
         },
@@ -147,6 +148,7 @@ const staffSchema = new mongoose.Schema(
         dayOffRequestSent: {
             type: String,
             default: ""
+
         },
         missingDays: {
             type: [],

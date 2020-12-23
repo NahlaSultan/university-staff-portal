@@ -33,21 +33,30 @@ router.route('/signIn')
         {
             staff.markModified('attendance');
            await staff.attendance.push(currentTime)
-           await staff.save()
-           res.send(staff)
+          //  res.send(staff)
         }else{
         if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
             console.log("i entered herrrrre")
 
-        staff.markModified('attendance');
 
       await staff.attendance.push(currentTime)
-      await staff.save()
-      res.send(staff)
+     
+      
     }
       else res.send("you cannot sign in without signing out")
-    }}
-    res.send('/homepage')
+    }}   
+    staff.markModified('attendance');
+
+    try{ 
+      await staff.save()
+    }
+    catch(err){
+      res.send(err)
+    }
+     res.send(staff)
+     
+
+    // res.send('/homepage')
 })
 //signout
 router.route('/signOut')
@@ -167,7 +176,7 @@ router.route('/resetPassword')
 //helper for missing days
 function checkMonth(month,day){
     switch(month) {
-        case 1:
+        case 1,3,5,7,8,10,12:
           if (day==31)
           return true
           else 
@@ -179,66 +188,13 @@ function checkMonth(month,day){
           else 
           return false
           break;
-        case 3:
-          if (day==31)
-          return true
-          else 
-          return false
-          break;
-        case 4:
+        case 4,6,9,11:
           if (day==30)
           return true
           else 
           return false
           break;
-        case 5:
-          if (day==31)
-          return true
-          else 
-          return false
-          break;
-        case 6:
-          if (day==30)
-          return true
-          else 
-          return false
-          break;
-        case 7:
-            if (day==31)
-            return true
-            else 
-            return false
-            break;
-          case 8:
-            if (day==31)
-            return true
-            else 
-            return false
-            break;
-          case 9:
-            if (day==30)
-            return true
-            else 
-            return false
-            break;
-          case 10:
-            if (day==31)
-            return true
-            else 
-            return false
-            break;
-          case 11:
-            if (day==30)
-            return true
-            else 
-            return false
-            break;
-          case 12:
-            if (day==31)
-            return true
-            else 
-            return false
-            break;
+        
           default:
           return false
       }
