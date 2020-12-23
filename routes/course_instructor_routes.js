@@ -73,6 +73,7 @@ router.route('/assignCourseCoordinator')
                 coordinator.save()
                 res.send("successfully assigned")
         }
+
         else{
              res.send("this academic member is not assigned to this course")
         }
