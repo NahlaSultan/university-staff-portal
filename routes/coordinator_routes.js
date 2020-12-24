@@ -35,30 +35,25 @@ router.route('/addSlot')
                 return res.send("You are not the coordinator of this course")
             }
             else {
-                if (req.body.type == null || req.body.time == null || req.body.courseTaught == null || req.body.location == null || req.body.day == null)
-                    res.send("missing inputs")
-                const findTime = await slot_model.findOne({ time: req.body.time })
-                const findLocation = await slot_model.findOne({ location: req.body.location })
-                const office = await location_model.findOne({ name: req.body.location })
-
-                if (!office) {
-                    return res.send("Invalid location")
+                if (req.body.type == null || req.body.time == null || req.body.courseTaught == null || req.body.location == null || req.body.day == null) {
+                    return res.send("missing inputs")
                 }
                 else {
-                    const dayName = req.body.day
-                    if (dayName.toLowerCase() != "saturday" && dayName.toLowerCase() != "sunday" && dayName.toLowerCase() != "monday" && dayName.toLowerCase() != "tuesday" && dayName.toLowerCase() != "wednesday" && dayName.toLowerCase() != "thursday") {
-                        return res.send("not a valid day name")
+                    const office = await location_model.findOne({ name: req.body.location })
+
+                    if (!office) {
+                        return res.send("Invalid location")
                     }
                     else {
-                        const timing = req.body.time
-                        if ((timing.toLowerCase()).trim() != "first slot" && (timing.toLowerCase()).trim() != "second slot" && (timing.toLowerCase()).trim() != "third slot" && (timing.toLowerCase()).trim() != "fourth slot" && (timing.toLowerCase()).trim() != "fifth slot") {
-                            return res.send("not a valid timing")
+                        const dayName = req.body.day
+                        if (dayName.toLowerCase() != "saturday" && dayName.toLowerCase() != "sunday" && dayName.toLowerCase() != "monday" && dayName.toLowerCase() != "tuesday" && dayName.toLowerCase() != "wednesday" && dayName.toLowerCase() != "thursday") {
+                            return res.send("not a valid day name")
                         }
                         else {
-                            if (findTime && findLocation) {
-                                res.send("overlapping slots")
+                            const timing = req.body.time
+                            if ((timing.toLowerCase()).trim() != "first slot" && (timing.toLowerCase()).trim() != "second slot" && (timing.toLowerCase()).trim() != "third slot" && (timing.toLowerCase()).trim() != "fourth slot" && (timing.toLowerCase()).trim() != "fifth slot") {
+                                return res.send("not a valid timing")
                             }
-
                             else {
                                 var DayToAdd;
                                 var timeToAdd;
@@ -94,44 +89,59 @@ router.route('/addSlot')
 
                                 if ((timing.toLowerCase()).trim() == "fifth slot")
                                     timeToAdd = "Fifth Slot"
+                                const findTimeOverlap = await slot_model.findOne({ time: timeToAdd, location: req.body.location, day: DayToAdd })
+                                console.log("To check for overlapping" + findTimeOverlap)
+                                if (findTimeOverlap) {
+                                    return res.send("Overlapping slots")
+                                }
+                                else {
+                                    console.log("started adding new values")
+                                    var slot = new slot_model(
+                                        {
+                                            type: req.body.type,
+                                            time: timeToAdd,
+                                            courseTaught: req.body.courseTaught,
+                                            location: req.body.location,
+                                            courseCoordinatorID: staff.memberID,
+                                            day: DayToAdd
+                                        }
+                                    )
 
+                                    try {
+                                        // await slot.save()
+                                        // const slotId="-" + slot.numberID
+                                        // staff.slotID=slotID
+                                        await slot.save()
 
-                                console.log("started adding new values")
-                                var slot = new slot_model(
-                                    {
-                                        type: req.body.type,
-                                        time: timeToAdd,
-                                        courseTaught: req.body.courseTaught,
-                                        location: req.body.location,
-                                        courseCoordinatorID: staff.memberID,
-                                        day: DayToAdd
                                     }
-                                )
 
-                                try {
-                                    // await slot.save()
-                                    // const slotId="-" + slot.numberID
-                                    // staff.slotID=slotID
-                                    await slot.save()
+                                    catch (Err) {
+                                        console.log(Err)
+                                        res.send("Mongo error")
+                                    }
                                     const course = await course_model.findOne({ courseName: req.body.courseTaught })
                                     if (course) {
                                         await course.teachingSlots.push(slot.numberID)
-                                        await course.save()
-                                        res.send("Successfully added")
+                                        try {
+                                            await course.save()
+                                        }
+                                        catch (Err) {
+                                            return res.send("Mongo error")
+                                        }
                                     }
-                                }
-                                catch (Err) {
-                                    console.log(Err)
-                                    res.send("Mongo error")
-                                }
+                                    return res.send("Added successfully")
 
 
+                                }
                             }
                         }
                     }
                 }
             }
-            res.send("This course does not exist")
+
+        }
+        else {
+            return res.send("Something went wrong")
         }
     })
 
@@ -158,11 +168,6 @@ router.route('/deleteSlot')
                     res.send("You are not a coordinator on this course")
                 }
                 else {
-                    await slot_model.remove(slotToDelete, function (err, result) {
-                        if (err) {
-                            console.err(err);
-                        }
-                    });
                     const coursemodify = await course_model.findOne({ courseName: slotToDelete.courseTaught })
                     const SlotArray = await coursemodify.teachingSlots
                     for (let index = 0; index < coursemodify.teachingSlots.length; index++) {
@@ -178,11 +183,29 @@ router.route('/deleteSlot')
                         console, log(Err)
                         res.send("Mongo error")
                     }
+                    const staffID = slotToDelete.academicMember
+                    const staffTeahcing = await staff_members_models.findOne({ memberID: staffID })
+                    console.log("Staff teaching this slot is:" + staffTeahcing)
+                    for (let i = 0; i < staffTeahcing.slotsAssigned.length; i++) {
+                        if (staffTeahcing.slotsAssigned[i] == slotToDelete.numberID) {
+                            console.log("I entered here when the slot was " + staffTeahcing.slotAssigned[i])
+                            staffTeahcing.slotsAssigned.splice(i, 1)
+                            break
+                        }
+                    }
+                    try {
+                        staffTeahcing.save()
+                        slotToDelete.delete()
+                    }
+                    catch (Err) {
+                        return res.send("Mongo error")
+                    }
                     return res.send("Successfully deleted")
                 }
             }
             return res.send("Slot does not exist")
         }
+        return res.send("Something went wrong")
     })
 //input that should be present is the slotID that needs to be updated
 router.route('/updateSlot')
@@ -391,7 +414,7 @@ router.route('/acceptSlotLinkingRequest')
                             const slotNumberId = requstTemp.slotID
                             const slotCurrent = await slot_model.findOne({ numberID: requstTemp.slotID })
                             slotCurrent.assignedFlag = true
-                            slotCurrent.requstTemp.senderId
+                            // slotCurrent.requstTemp.senderId
                             try {
                                 slotCurrent.save()
                             }
@@ -402,6 +425,7 @@ router.route('/acceptSlotLinkingRequest')
                             const courseName = slotCurrent.courseTaught
                             const course = await course_model.findOne({ courseName: courseName })
                             if (senderStaff.role.includes("teachingAssistants")) {
+                                console.log("I entered here")
                                 if ((!course.teachingAssistants.includes(senderStaff.memberID))) {
                                     course.teachingAssistants.push(senderStaff.memberID)
                                 }
@@ -424,36 +448,12 @@ router.route('/acceptSlotLinkingRequest')
 
                             try {
                                 senderStaff.save()
+                                course.save()
                             }
                             catch (Err) {
                                 return res.send("Mongoose error")
                             }
-                            const dayName = slotCurrent.day
-                            const senderSchedule = await newWorkingSchedule.findOne({ staffID: requstTemp.senderId })
-                            if (dayName.toLowerCase() == "saturday") {
-                                senderSchedule.Saturday.push(slotNumberId)
-                            }
-                            if (dayName.toLowerCase() == "sunday") {
-                                senderSchedule.Sunday.push(slotNumberId)
-                            }
-                            if (dayName.toLowerCase() == "monday") {
-                                senderSchedule.Monday.push(slotNumberId)
-                            }
-                            if (dayName.toLowerCase() == "tuesday") {
-                                senderSchedule.Tuesday.push(slotNumberId)
-                            }
-                            if (dayName.toLowerCase() == "wednesday") {
-                                senderSchedule.Wednesday.push(slotNumberId)
-                            }
-                            if (dayName.toLowerCase() == "thursday") {
-                                senderSchedule.Thursday.push(slotNumberId)
-                            }
-                            try {
-                                senderSchedule.save()
-                            }
-                            catch (Err) {
-                                return res.send("Mongoose error")
-                            }
+
 
                             return res.send("Successfully accepted")
                         }

@@ -33,8 +33,7 @@ const staffSchema = new mongoose.Schema(
         gender: {
             type: String,
             required: true,
-            $in: ["Female", "Male"],
-            default: "Female"
+            $in: ["Female", "Male"]
         },
         password: {
             type: String,
