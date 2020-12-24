@@ -29,6 +29,13 @@ const replacementSchema = new mongoose.Schema({
     date: {
         type: Date,
         // required: true
+    },
+    leaveRequestAssigned: {
+        //id of the leave request that has this replacement
+        type: String
+    },
+    notify: {
+        type: Boolean
     }
 
 })
