@@ -336,6 +336,7 @@ router.route('/rejectSlotLinkingRequest')
                         else {
                             requstTemp.pending = false
                             requstTemp.accepted = false
+                            requstTemp.notified = true
                             try {
                                 requstTemp.save()
                             }
@@ -378,6 +379,7 @@ router.route('/acceptSlotLinkingRequest')
                         else {
                             requstTemp.pending = false
                             requstTemp.accepted = true
+                            requstTemp.notified = true
                             try {
                                 requstTemp.save()
                             }
