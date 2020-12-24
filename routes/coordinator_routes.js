@@ -400,6 +400,18 @@ router.route('/acceptSlotLinkingRequest')
                             }
                             console.log("current slotId", slotCurrent)
                             const courseName = slotCurrent.courseTaught
+                            const course = await course_model.findOne({ courseName: courseName })
+                            if (senderStaff.role.includes("teachingAssistants")) {
+                                if ((!course.teachingAssistants.includes(senderStaff.memberID))) {
+                                    course.teachingAssistants.push(senderStaff.memberID)
+                                }
+                            }
+                            if (senderStaff.role.includes("courseInstructors")) {
+                                if ((!course.instructors.includes(senderStaff.memberID))) {
+                                    course.instructors.push(senderStaff.memberID)
+                                }
+                            }
+
                             var flag = "false"
                             for (let index = 0; index < senderStaff.course.length; index++) {
                                 if (senderStaff.course[index] == courseName)
