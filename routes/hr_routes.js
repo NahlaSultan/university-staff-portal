@@ -1243,10 +1243,10 @@ function acceptedLeave(date,staff){
          else if (leave.start=date && leave.accepted==true && leave.end==null){
              return true
          }
-         else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
-             return true
+        //  else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
+        //      return true
 
-         }
+        //  }
          else{
              return false
          }
@@ -1281,6 +1281,7 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
             var d=new Date(month1+"/"+i+"/"+year1)
             console.log(acceptedLeave(d,staff))
             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff))
+            number=number+1
             console.log(number+" ya rab")
         }
          
@@ -1465,24 +1466,6 @@ router.route('/addSignOut')
 
     res.send("staff member with this id doesnt exist")
 })
-<<<<<<< HEAD
-
-
-
-router.route('/viewMissingDays')
-.get(async (req, res) => {
-    const staff =  await staff_members_models.find()
-    var arr;
-    var resArr=[]
-
-    for (var k=0 ; k<staff.length;k++) {
-
-         arr = staff[k].missingDays
-        if(arr.length!=0 && arr[arr.length-1]!=0){
-            //var memID = staff[k].memberID
-        resArr.push({"staffMemberID":staff[k].memberID} , {"missing days this month:":arr[arr.length-1]})
-    }
-=======
 //missing hours
 function missingHours(staff,hours,flag,day1,day2){
     if(flag){
@@ -1503,10 +1486,47 @@ function missingHours(staff,hours,flag,day1,day2){
      if(x<0){
      extraHours(staff,math.abs(x)+8.24,flag,day1,day2)
      x=0}
->>>>>>> 29fa2919b17408a2b9ec14d13990f4f1aa611e19
+    }
+     staff.missingHours[staff.missingHours.length-1]=x
+
+}
+    staff.save()
+}
+//extra hours
+function extraHours(staff,hours,flag,day1,day2){
+    if(flag){
+    staff.extraHours.push(hours-8.24)
+    newMonth2=false
+    
+}
+    else{
+     if(day1!=day2)
+     var x=staff.extraHours[staff.missingHours.length-1]+(hours-8.24)
+     else{
+     var x =hours- staff.extraHours[staff.extraHours.length-1]
+    }
+     staff.extraHours[staff.extraHours.length-1]=x
+
+}
+    staff.save()
+}
+//////////////
+
+router.route('/viewMissingDays')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingDays
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missing days this month:":arr[arr.length-1]})
+    }
     }
 
-<<<<<<< HEAD
     console.log("here")
 
     res.send(resArr)
@@ -1526,23 +1546,6 @@ router.route('/viewMissingHours')
             //var memID = staff[k].memberID
         resArr.push({"staffMemberID":staff[k].memberID} , {"missing hours this month:":arr})
     }
-=======
-}
-    staff.save()
-}
-//extra hours
-function extraHours(staff,hours,flag,day1,day2){
-    if(flag){
-    staff.extraHours.push(hours-8.24)
-    newMonth2=false
-    
-}
-    else{
-     if(day1!=day2)
-     var x=staff.extraHours[staff.missingHours.length-1]+(hours-8.24)
-     else{
-     var x =hours- staff.extraHours[staff.extraHours.length-1]
->>>>>>> 29fa2919b17408a2b9ec14d13990f4f1aa611e19
     }
 
     console.log("here")
