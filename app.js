@@ -26,16 +26,16 @@ app.use('',authentication_routes)
 
 app.use(async(req, res, next) => {
     try {
-        console.log("\nWe entered")
+        //console.log("\nWe entered")
 
         const token = req.headers.token;
 
 
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(verified);
+        //console.log(verified);
         //|| blackListed.includes(token)
         const findToken=await tokens_model.findOne({blackList:token})
-        console.log(!findToken)
+        //console.log(!findToken)
         if (!verified || findToken) {
             return res.status(401).json({ msg: "authorization failed" });
         }
@@ -55,13 +55,13 @@ app.use('',staff_member_routes )
 
 app.use('/hr',(req, res, next) => {
     try {
-        console.log("\nWe entered")
+        //console.log("\nWe entered")
 
         const token = req.headers.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log("hr")
+        //console.log("hr")
        if(verified.role[0]!="HR members"){
-        console.log(" not hr")
+        //console.log(" not hr")
 
             return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
         }
@@ -72,16 +72,17 @@ app.use('/hr',(req, res, next) => {
         res.status(500).json({ error: error.message });
 
     }
+    
 })
 app.use('/hr',hr_routes )
 
 app.use('/ci',(req, res, next) => {
     try {
-        console.log("\nWe entered")
+        //console.log("\nWe entered")
         const token = req.headers.token;
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(verified);
-        
+        //console.log(verified);
+
         if (!verified) {
             return res.status(401).json({ msg: "authorization failed" });
         }
@@ -99,13 +100,13 @@ app.use('/ci',(req, res, next) => {
 app.use('/ci',course_instructor_routes)
 app.use('/academicMembers',(req, res, next) => {
     try {
-        console.log("\nWe entered academic")
+        //console.log("\nWe entered academic")
 
         const token = req.headers.token;
 
 
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(verified);
+        //console.log(verified);
        if(verified.role.includes("HR members")){
             return res.status(401).json({ msg: "authorization failed, must not be an HR member to perform this task" });
         }
@@ -144,13 +145,13 @@ app.use('/academicMembers',academic_members_routes )
 
 app.use('/coordinator',(req, res, next) => {
     try {
-        console.log("\nWe entered ")
+        //console.log("\nWe entered ")
 
         const token = req.headers.token;
 
 
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(verified);
+        //console.log(verified);
        if(!verified.role.includes("courseCoordinators")){
             return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
         }

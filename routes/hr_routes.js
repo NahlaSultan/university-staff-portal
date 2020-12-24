@@ -985,13 +985,13 @@ router.route('/deleteStaffMember')
                 res.send("error saving office")
             }
 
-            // await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
-            //     if (err) {
-            //       console.err(err);
-            //     } else {
-            //       res.json(result);
-            //     }
-            //   });
+            await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
+                if (err) {
+                  console.err(err);
+                } else {
+                  res.json(result);
+                }
+              });
             res.send("deleted")
 
         }
@@ -1143,11 +1143,18 @@ router.route('/addSignIn')
         catch(Err){
             console.log(Err)
         }
+        var firstEntry=false
+        var day1=currentTime.signInTime.getDate()
+        var month1=currentTime.signInTime.getMonth()+1
+        const year1=currentTime.signInTime.getFullYear()
         if(staff.attendance.length==0)
-        {
+        {   var month2=0
+            var day2=11
             await staff.attendance.push(currentTime)
+            firstEntry=true
+            console.log("heloooo")
             try{
-
+                
                 staff.markModified('attendance.'+staff.attendance.length-1);
                 await staff.save()
             }
@@ -1156,23 +1163,139 @@ router.route('/addSignIn')
                 console.log(Err)
             }
         }else{
+              month2=staff.attendance[staff.attendance.length-1].signInTime.getMonth()+1
+                day2=staff.attendance[staff.attendance.length-1].signInTime.getDate()
             if(staff.attendance[staff.attendance.length-1].signOutTime!=null){
-
-
-                await staff.attendance.push(currentTime)
+                 await staff.attendance.push(currentTime)
                 staff.markModified('attendance.'+staff.attendance.length-1);
-
                 await staff.save()
-                res.send(staff)
+                //res.send(staff)
             }
             else res.send("you cannot sign in without signing out")
     }
+   
+    missingDays(staff,day1,day2,month1,month2,year1,firstEntry)
+   // staff.save()
     res.send(staff.attendance)
     }
 
 })
+//helper for missing days
+function checkMonth(month,day){
+    switch(month) {
+        case 1,3,5,7,8,10,12:
+          if (day==31)
+          return true
+          else 
+          return false
+          break;
+        case 2:
+          if (day==29)
+          return true
+          else 
+          return false
+          break;
+        case 4,6,9,11:
+          if (day==30)
+          return true
+          else 
+          return false
+          break;
+          default:
+          return false
+      }
+    }
 
+async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var flag=false
+    var out=false
+    if((month1!=month2&&day1>10))
+    flag=true
+        //add missing days from 11 to next day attended
+        var number=0
+         if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 ){
+         var missingDay=day2+1
+         for(let j=missingDay;j<day1;j++){
+         var d=new Date(month1+"/"+j+"/"+year1)
+             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+             number=number+1
+         
+        }
+        }
+        else if(firstEntry==true && day1!=11){
+            for(let i=11;i<day1;i++){
+            var d=new Date(month1+"/"+i+"/"+year1)
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+            number=number+1
+            console.log(number+" ya rab")
+        }
+         
+        }
+        else if( day1-1!=day2 && month1-1==month2 ){
+            if(checkMonth(month1,day1)==true){
+               
+                    for(let j=1;j<day1;j++){
+                   var d=new Date(month2+"/"+j+"/"+year1)
+                    if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+                   // staff.missingDays.push(d) 
+                    number=number+1
+                }
+            }
+            else{
+                console.log(number +"   ana hena")
+            var missingDay=day2+1
+            console.log("weselt hena 0")
+            for(let j=missingDay;checkMonth(month2,j-1)==false;j++){
+                var d=new Date(month2+"/"+j+"/"+year1)
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+                number=number+1
+            
+             }
+             console.log(number +"   ana hena 1")
+            
+             console.log("weselt hena 1")
+           for(let j=1;j<11;j++){
+            var d=new Date(month1+"/"+j+"/"+year1)
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+            number=number+1
+            }
+            console.log(number +"   ana hena 2")
+            staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
+            console.log(staff.missingDays[staff.missingDays.length-1])
+            staff.markModified("missingDays")
+            await staff.save()
 
+            number=0
+            console.log("weselt hena 2")
+            var d=new Date(month1+"/"+11+"/"+year1)
+            console.log(days[d.getDay()])
+            for(let j=11;j<day1;j++){
+                var d=new Date(month1+"/"+j+"/"+year1)
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+                number=number+1
+                }
+                staff.missingDays.push(number)
+                staff.markModified("missingDays")
+               await  staff.save()
+                out=true
+
+        }}
+        if(!out){
+          
+            console.log("enta lesa bet5osh wala eh ???")
+          if(firstEntry){
+          staff.missingDays.push(number)
+        }
+          else
+          staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
+        
+        staff.markModified("missingDays")
+        staff.save()
+        
+    }
+
+}
 
 router.route('/addSignOut')
 .post(async(req,res,)=>{
@@ -1221,48 +1344,86 @@ router.route('/addSignOut')
             console.log(Err)
             res.send("error saving staff")
         }
+ 
+        var signIn=currentTime2.signInTime
+        var signOut=currentTime2.signOutTime
+         var milliseconds = Math.abs(signOut.getTime() - signIn.getTime());
+        var hours = milliseconds / 36e5;
+        var flag=false
+        var day1=currentTime2.signInTime.getDate()
+        var month1=currentTime2.signInTime.getMonth()+1
+        var month2=0
+        var day2=0
+        if(staff.attendance.length>=2){ 
 
+         month2=staff.attendance[staff.attendance.length-2].signInTime.getMonth()+1
+         day2=staff.attendance[staff.attendance.length-2].signInTime.getDate()}
+         //console.log((month1!=month2&&day1>10)+"1st")
+         //console.log(staff.attendance.length==0+"1st")
+        if((month1!=month2&&day1>10)|| staff.attendance.length==0){
+
+           flag=true
+    }
+    if(hours<8.24){
+    missingHours(staff,hours,flag,day1)
+    staff.extraHours.push(0)}
+    else{
+    staff.missingHours.push(0)
+    extraHours(staff,hours,flag,day1)}  
         
         res.send(staff.attendance)
     }
     }
         else res.send("you cannot sign out without signing in")
     }
+    else
 
     res.send("staff member with this id doesnt exist")
 })
 
-// router.route('/viewMissingHours')
-// .get(async (req, res) => {
-//     console.log("veiwing attendance")
-//     const staff = await staff_members_models.findOne({ memberID: req.body.id })
-     
-//     if (staff) {
-        
-
-//         return res.send(staff.attendance )    
-//     }
-
-//         res.send('staff member with id '+ req.body.id+' doesnt exist')
 
 
-// })
+router.route('/viewMissingDays')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
 
-// router.route('/viewMissingDays')
-// .get(async (req, res) => {
-//     console.log("veiwing attendance")
-//     const staff = await staff_members_models.findOne({ memberID: req.body.id })
-     
-//     if (staff) {
-        
+    for (var k=0 ; k<staff.length;k++) {
 
-//         return res.send(staff.attendance )    
-//     }
+         arr = staff[k].missingDays
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missing days this month:":arr[arr.length-1]})
+    }
+    }
 
-//         res.send('staff member with id '+ req.body.id+' doesnt exist')
+    console.log("here")
 
+    res.send(resArr)
 
-// })
+})
+
+router.route('/viewMissingHours')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingHours
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missing hours this month:":arr})
+    }
+    }
+
+    console.log("here")
+
+    res.send(resArr)
+
+})
 
 //////////////
 
