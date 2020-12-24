@@ -10,7 +10,9 @@ const department_model = require('../models/department_model').model
 const course_model = require('../models/course_model').model
 const newAttendance=require ('../models/attendance_record').model
 const workingSchedule_model=require('../models/workingSchedule_model').model
+const leaves_model=require('../models/leaves_model').model
 var newMonth=false
+var newMonth2=false
 async function defaultPassword() {
     const salt = await bcrypt.genSalt(10)
     const newPassword = await bcrypt.hash("123456", salt)
@@ -1097,8 +1099,12 @@ router.route('/addSignIn')
             console.log(Err)
         }
         var firstEntry=false
+
         var day1=currentTime.signInTime.getDate()
+        console.log(day1)
         var month1=currentTime.signInTime.getMonth()+1
+        console.log(month1)
+
         const year1=currentTime.signInTime.getFullYear()
         if(staff.attendance.length==0)
         {   var month2=0
@@ -1178,18 +1184,19 @@ function checkMonth(month,day){
 function acceptedLeave(date,staff){
     const leave =leaves_model.findOne({staffID:staff.memberID})
          if(leave.start==date && leave.accepted==true && leave.end!=null){
-            return true
+            
             var array =getDates(leave.start,leave.end)
             for(let i=0;i<array.length;i++){
                 leave.leavesDates.push(array[i])
             }
             leave.markModified("leaveDates")
             leave.save()
+            return true
          }
          else if (leave.start=date && leave.accepted==true && leave.end==null){
              return true
          }
-         else if (leave.leavesDates.includes(date)){
+         else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
              return true
 
          }
@@ -1203,7 +1210,7 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var flag=false
     var out=false
-    console.log(newMonth)
+    //console.log(newMonth)
     if((month1!=month2&&day1>10))
     flag=true
         //add missing days from 11 to next day attended
@@ -1217,6 +1224,19 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
              number=number+1
          
         }
+        }
+        else if(firstEntry==true && day1!=11){
+            console.log("talet if")
+            console.log(day1)
+            for(let i=11;i<day1;i++){
+                console.log("in for")
+
+            var d=new Date(month1+"/"+i+"/"+year1)
+            console.log(acceptedLeave(d,staff))
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff))
+            console.log(number+" ya rab")
+        }
+         
         }
         else if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && !newMonth ){
             console.log("awel if")
@@ -1253,16 +1273,7 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
                await  staff.save()
                 out=true
         }
-        else if(firstEntry==true && day1!=11){
-            console.log("talet if")
-            for(let i=11;i<day1;i++){
-            var d=new Date(month1+"/"+i+"/"+year1)
-            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
-            number=number+1
-            console.log(number+" ya rab")
-        }
-         
-        }
+        
         else if( day1-1!=day2 && month1-1==month2 ){
             if(checkMonth(month2,day2)==true){
                 console.log("rabe3 if a")
@@ -1385,7 +1396,9 @@ router.route('/addSignOut')
          day2=staff.attendance[staff.attendance.length-2].signInTime.getDate()}
          //console.log((month1!=month2&&day1>10)+"1st")
          //console.log(staff.attendance.length==0+"1st")
-        if((month1!=month2&&day1>10)|| staff.attendance.length==0){
+         if(month1!=month2)
+          newMonth2=true
+        if((newMonth2&&day1>10)|| staff.attendance.length==0){
 
            flag=true
     }
@@ -1408,15 +1421,17 @@ router.route('/addSignOut')
 //missing hours
 function missingHours(staff,hours,flag,day1,day2){
     if(flag){
+        console.log("ahlannnn")
     staff.missingHours.push(8.24-hours)
+    newMonth2=false
     
 }
     else{
-     if(day1!=day2)
+     if(day1!=day2){
      var x=staff.missingHours[staff.missingHours.length-1]+(8.24-hours)
      if(x<0){
      extraHours(staff,math.abs(x)+8.24,flag,day1,day2)
-     x=0}
+     x=0}}
      else{
 
      var x = staff.missingHours[staff.missingHours.length-1]-hours
@@ -1433,6 +1448,7 @@ function missingHours(staff,hours,flag,day1,day2){
 function extraHours(staff,hours,flag,day1,day2){
     if(flag){
     staff.extraHours.push(hours-8.24)
+    newMonth2=false
     
 }
     else{
