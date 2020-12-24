@@ -10,7 +10,9 @@ const department_model = require('../models/department_model').model
 const course_model = require('../models/course_model').model
 const newAttendance=require ('../models/attendance_record').model
 const workingSchedule_model=require('../models/workingSchedule_model').model
-
+const leaves_model=require('../models/leaves_model').model
+var newMonth=false
+var newMonth2=false
 async function defaultPassword() {
     const salt = await bcrypt.genSalt(10)
     const newPassword = await bcrypt.hash("123456", salt)
@@ -985,13 +987,13 @@ router.route('/deleteStaffMember')
                 res.send("error saving office")
             }
 
-            // await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
-            //     if (err) {
-            //       console.err(err);
-            //     } else {
-            //       res.json(result);
-            //     }
-            //   });
+            await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
+                if (err) {
+                  console.err(err);
+                } else {
+                  res.json(result);
+                }
+              });
             res.send("deleted")
 
         }
@@ -1118,7 +1120,6 @@ router.route('/updateStaff')
 
 })
 
-
 router.route('/addSignIn')
 .post(async (req, res) => {
     const hrID = req.user._id;
@@ -1242,10 +1243,10 @@ function acceptedLeave(date,staff){
          else if (leave.start=date && leave.accepted==true && leave.end==null){
              return true
          }
-         else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
-             return true
+        //  else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
+        //      return true
 
-         }
+        //  }
          else{
              return false
          }
@@ -1280,6 +1281,7 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
             var d=new Date(month1+"/"+i+"/"+year1)
             console.log(acceptedLeave(d,staff))
             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff))
+            number=number+1
             console.log(number+" ya rab")
         }
          
@@ -1510,6 +1512,49 @@ function extraHours(staff,hours,flag,day1,day2){
 }
 //////////////
 
+router.route('/viewMissingDays')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingDays
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missing days this month:":arr[arr.length-1]})
+    }
+    }
+
+    console.log("here")
+
+    res.send(resArr)
+
+})
+
+router.route('/viewMissingHours')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingHours
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missing hours this month:":arr})
+    }
+    }
+
+    console.log("here")
+
+    res.send(resArr)
+
+})
+
+//////////////
 
 
     module.exports = router
