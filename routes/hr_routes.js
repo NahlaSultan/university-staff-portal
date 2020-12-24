@@ -10,7 +10,7 @@ const department_model = require('../models/department_model').model
 const course_model = require('../models/course_model').model
 const newAttendance=require ('../models/attendance_record').model
 const workingSchedule_model=require('../models/workingSchedule_model').model
-
+var newMonth=false
 async function defaultPassword() {
     const salt = await bcrypt.genSalt(10)
     const newPassword = await bcrypt.hash("123456", salt)
@@ -1126,7 +1126,9 @@ router.route('/addSignIn')
             }
             else res.send("you cannot sign in without signing out")
     }
-   
+   //const m=staff.attendance.findOne({signInTime.getMonth:2})
+   if(month1!=month2)
+   newMonth=true
     missingDays(staff,day1,day2,month1,month2,year1,firstEntry)
    // staff.save()
     res.send(staff.attendance)
@@ -1158,74 +1160,144 @@ function checkMonth(month,day){
           return false
       }
     }
+    function getDates (startDate, endDate) {
+        var dates = [],
+            currentDate = startDate,
+            addDays = function(days) {
+              var date = new Date(this.valueOf());
+              date.setDate(date.getDate() + days);
+              return date;
+            };
+        while (currentDate <= endDate) {
+          dates.push(currentDate);
+          currentDate = addDays.call(currentDate, 1);
+        }
+        return dates;
+      };
+
+function acceptedLeave(date,staff){
+    const leave =leaves_model.findOne({staffID:staff.memberID})
+         if(leave.start==date && leave.accepted==true && leave.end!=null){
+            return true
+            var array =getDates(leave.start,leave.end)
+            for(let i=0;i<array.length;i++){
+                leave.leavesDates.push(array[i])
+            }
+            leave.markModified("leaveDates")
+            leave.save()
+         }
+         else if (leave.start=date && leave.accepted==true && leave.end==null){
+             return true
+         }
+         else if (leave.leavesDates.includes(date)){
+             return true
+
+         }
+         else{
+             return false
+         }
+
+}
 
 async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var flag=false
     var out=false
+    console.log(newMonth)
     if((month1!=month2&&day1>10))
     flag=true
         //add missing days from 11 to next day attended
         var number=0
-         if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 ){
+         if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && newMonth && day1<=10){
+             console.log("awel if")
          var missingDay=day2+1
          for(let j=missingDay;j<day1;j++){
          var d=new Date(month1+"/"+j+"/"+year1)
-             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
              number=number+1
          
         }
         }
+        else if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && !newMonth ){
+            console.log("awel if")
+        var missingDay=day2+1
+        for(let j=missingDay;j<day1;j++){
+        var d=new Date(month1+"/"+j+"/"+year1)
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
+            number=number+1
+        
+       }
+       }
+        else if (checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && newMonth && day1>10){
+            console.log("tany if")
+           newMonth=false
+           var missingDay=day2+1
+         for(let j=missingDay;j<11;j++){
+         var d=new Date(month1+"/"+j+"/"+year1)
+             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
+             number=number+1
+         
+        }
+        staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
+            staff.markModified("missingDays")
+            await staff.save()
+            number=0
+        for(let j=11;j<day1;j++){
+            var d=new Date(month1+"/"+j+"/"+year1)
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
+                number=number+1
+            
+           }
+           staff.missingDays.push(number)
+                staff.markModified("missingDays")
+               await  staff.save()
+                out=true
+        }
         else if(firstEntry==true && day1!=11){
+            console.log("talet if")
             for(let i=11;i<day1;i++){
             var d=new Date(month1+"/"+i+"/"+year1)
-            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
             number=number+1
             console.log(number+" ya rab")
         }
          
         }
         else if( day1-1!=day2 && month1-1==month2 ){
-            if(checkMonth(month1,day1)==true){
-               
+            if(checkMonth(month2,day2)==true){
+                console.log("rabe3 if a")
                     for(let j=1;j<day1;j++){
-                   var d=new Date(month2+"/"+j+"/"+year1)
-                    if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+                   var d=new Date(month1+"/"+j+"/"+year1)
+                    if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
                    // staff.missingDays.push(d) 
                     number=number+1
                 }
             }
             else{
-                console.log(number +"   ana hena")
+                console.log("rabe3 if b")
             var missingDay=day2+1
-            console.log("weselt hena 0")
             for(let j=missingDay;checkMonth(month2,j-1)==false;j++){
                 var d=new Date(month2+"/"+j+"/"+year1)
-                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
                 number=number+1
             
              }
-             console.log(number +"   ana hena 1")
             
-             console.log("weselt hena 1")
            for(let j=1;j<11;j++){
             var d=new Date(month1+"/"+j+"/"+year1)
-            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
             number=number+1
             }
-            console.log(number +"   ana hena 2")
+            
             staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
-            console.log(staff.missingDays[staff.missingDays.length-1])
             staff.markModified("missingDays")
             await staff.save()
-
             number=0
-            console.log("weselt hena 2")
+
             var d=new Date(month1+"/"+11+"/"+year1)
-            console.log(days[d.getDay()])
             for(let j=11;j<day1;j++){
                 var d=new Date(month1+"/"+j+"/"+year1)
-                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday") 
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
                 number=number+1
                 }
                 staff.missingDays.push(number)
@@ -1236,7 +1308,7 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
         }}
         if(!out){
           
-            console.log("enta lesa bet5osh wala eh ???")
+            console.log("enta lesa bet5osh wala eh ???" + number)
           if(firstEntry){
           staff.missingDays.push(number)
         }

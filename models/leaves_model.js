@@ -47,6 +47,10 @@ const leavesSchema = new mongoose.Schema({
     },
     compensatingDay: {
         type: Date
+    },
+    leaveDates: {
+        type: [],
+        default:[]
     }
 })
 
