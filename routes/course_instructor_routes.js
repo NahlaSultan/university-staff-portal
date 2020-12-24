@@ -14,13 +14,40 @@ const slots_model = require('../models/slot_model').model
 //viewcoverage
 router.route('/viewCoverage')
 .get(async(req,res,)=>{
+    const coursename=req.body.courseName
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
+    const s=count( await slot_model.find({courseTaught: coursename}))
+    const tmp=await slot_model.find({courseTaught: coursename})
     if(staff){ 
-    res.send(staff.courseCoverage+"")
-}
-
+        const faculty=await faculty_model.findOne({facultyName: staff.faculty})
+        if(faculty){
+            var department;
+            const depArray=faculty.departments
+            depArray.forEach(d => {
+            if(d.name == staff.department)
+                department= d
+            });
+        if(department){
+            const courseArray=department.courses
+            await courseArray.forEach(async c => {
+                if(c == coursename){
+                    const course= await course_model.findOne({courseName:coursename})
+                    const coverage= (s/course.teachingSlotsNumber) * 100
+                    res.send("Coverage: "+coverage+"%")
+            }});
+            // if(course){
+               
+            // }
+            // else{res.send("course not found")}
+        }
+        else{res.send("dept not found")}
+    }
+    }
+    else{res.send("Instructor not found")}
+    //res.send(staff.courseCoverage+"")
 })
+
 //view staff in same department
 router.route('/viewDepartmentStaff')
 .get(async(req,res,)=>{
@@ -101,6 +128,16 @@ router.route('/removeAssignedCourse')
             academicMember.course.splice(i,1)
 
         }
+        for(let i=0;i<academicMember.slotsAssigned.length;i++){
+            const slot= slots_model.findOne({numberID:academicMember.slotsAssigned[i]})
+            if (slot.courseTaught==req.body.courseName){
+                slot.assignedFlag=false
+                academicMember.slotsAssigned.splice(i,1)
+            }
+
+        }
+        slot.academicMember=null
+        slot.save()
         academicMember.save()
         res.send("successfully removed")}
         else{
@@ -123,9 +160,15 @@ router.route('/updateAssignedCourse')
     const academicMember = await staff_members_models.findOne({ email: req.body.email })
     if(staff){  
         const course = await course_model.findOne({ courseName: req.body.courseName })
+        const memberRole= academicMember.role
             if(staff.course.includes(req.body.courseName)){
                 if(!academicMember.course.includes(req.body.courseName)){
                 academicMember.course.push(req.body.courseName)
+                if(memberRole=="teachingAssistants")
+                course.teachingAssistants.push(academicMember.memberID)
+                else if (memberRole=="courseInstructors")
+                course.instructors.push(academicMember.memberID)
+                else res.send("invalid member mail")
         academicMember.save()
         course.save()
         res.send("successfully added")}

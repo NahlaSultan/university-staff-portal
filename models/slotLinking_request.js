@@ -22,6 +22,9 @@ const slotLinkingSchema = new mongoose.Schema({
     senderId:{
         type:String,
         required:true
+    },
+    notified:{
+        type:Boolean
     }
 
 })

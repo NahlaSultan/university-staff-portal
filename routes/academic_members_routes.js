@@ -34,58 +34,33 @@ router.route('/viewSchedule')
         const staff = await staff_members_models.findOne({ _id: staffId })
         if (staff) {
             //mafrood redirect
-            const schedule = await newWorkingSchedule.findOne({ staffID: staff.memberID })
-            var lastIndex = 0;
-            var currentSlot;
-            array[lastIndex] = "You weekly schedule:"
-            lastIndex++;
-            var firstDay = schedule.Saturday
-            array[lastIndex++] = "Saturday:"
-            for (let i = 0; i < firstDay.length; i++) {
-                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
-                if (currentSlot) {
-                    array[lastIndex++] = currentSlot
+            const slotsArray = staff.slotsAssigned
+            var Sunday = []
+            var Monday = []
+            var Tuesday = []
+            var Wednesday = []
+            var Thursday = []
+            var Saturday = []
+            for (let i = 0; i < slotsArray.length; i++) {
+                if (slotsArray[i].day == "Saturday") {
+                    Saturday.push(slotsArray[i])
                 }
-            }
-            firstDay = schedule.Sunday
-            array[lastIndex++] = "Sunday:"
-            for (let i = 0; i < firstDay.length; i++) {
-                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
-                if (currentSlot) {
-                    array[lastIndex++] = currentSlot
+                if (slotsArray[i].day == "Sunday") {
+                    Sunday.push(slotsArray[i])
                 }
-            }
-            firstDay = schedule.Monday
-            array[lastIndex++] = "Monday:"
-            for (let i = 0; i < firstDay.length; i++) {
-                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
-                if (currentSlot) {
-                    array[lastIndex++] = currentSlot
+                if (slotsArray[i].day == "Monday") {
+                    Monday.push(slotsArray[i])
                 }
-            }
-            firstDay = schedule.Tuesday
-            array[lastIndex++] = "Tuesday:"
-            for (let i = 0; i < firstDay.length; i++) {
-                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
-                if (currentSlot) {
-                    array[lastIndex++] = currentSlot
+                if (slotsArray[i].day == "Tuesday") {
+                    Tuesday.push(slotsArray[i])
                 }
-            }
-            firstDay = schedule.Wednesday
-            array[lastIndex++] = "Wednesday:"
-            for (let i = 0; i < firstDay.length; i++) {
-                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
-                if (currentSlot) {
-                    array[lastIndex++] = currentSlot
+                if (slotsArray[i].day == "Wednesday") {
+                    Wednesday.push(slotsArray[i])
                 }
-            }
-            firstDay = schedule.Thursday
-            array[lastIndex++] = "Thursday:"
-            for (let i = 0; i < firstDay.length; i++) {
-                currentSlot = await slot_model.findOne({ numberID: firstDay[i] })
-                if (currentSlot) {
-                    array[lastIndex++] = currentSlot
+                if (slotsArray[i].day == "Thursday") {
+                    Thursday.push(slotsArray[i])
                 }
+
             }
             // array[lastIndex] = schedule
             // lastIndex++
@@ -99,13 +74,14 @@ router.route('/viewSchedule')
             var year;
             array[lastIndex++] = "Slots to replace:"
             for (let index = 0; index < staff.slotsToReplace.length; index++) {
-                slotRequest = await newReplacement.findOne({ _id: staff.slotToReplace[index] })
+                console.log(staff.slotsToReplace)
+                slotRequest = await newReplacement.findOne({ _id: staff.slotsToReplace[index] })
                 array[lastIndex++] = "Replaced on date:"
-                dateToReplace = slotRequest.date
-                day = dateToReplace.getDay();
-                month = dateToReplace.getMonth() + 1;
-                year = dateToReplace.getFullYear();
-                dateToPrint = day + "," + month + "," + year
+                dateToPrint = slotRequest.date
+                // day = dateToReplace.getDay();
+                // month = dateToReplace.getMonth() + 1;
+                // year = dateToReplace.getFullYear();
+                // dateToPrint = day + "," + month + "," + year
                 array[lastIndex] = dateToPrint
                 lastIndex++;
                 slotIDReplac = staff.slotsToReplace[index].slot;
@@ -119,11 +95,11 @@ router.route('/viewSchedule')
                 console.log(slotRequest)
                 if (slotRequest) {
                     array[lastIndex++] = "Replaced on date:"
-                    dateToReplace = slotRequest.date
-                    day = dateToReplace.getDay();
-                    month = dateToReplace.getMonth() + 1;
-                    year = dateToReplace.getFullYear();
-                    dateToPrint = day + "," + month + "," + year
+                    dateToPrint = slotRequest.date
+                    // day = dateToReplace.getDay();
+                    // month = dateToReplace.getMonth() + 1;
+                    // year = dateToReplace.getFullYear();
+                    // dateToPrint = day + "," + month + "," + year
                     array[lastIndex] = dateToPrint
                     lastIndex++;
                     slotIDReplac = slotRequest.slot;
@@ -140,16 +116,357 @@ router.route('/viewSchedule')
         }
         res.send(array)
     })
+
+router.route('/viewStatusOfRequests')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            console.log(dayOffRequest)
+            const slotLinkingRequests = staff.staffLinkingRequests
+            console.log(slotLinkingRequests)
+            const replacement_requests = staff.requestReplacementSent
+            const leaveRequests = staff.leaves
+
+            resArr.push(
+                {
+                    "dayOff Request": { "id": dayOffRequest.senderId, "pending": dayOffRequest.pending, "accepted": dayOffRequest.accepted }
+
+                }
+            )
+
+
+            var curRequest;
+            var replacementArr = []
+            for (var i = 0; i < replacement_requests.length; i++) {
+                curRequest = await newReplacement.findOne({ _id: replacement_requests[i] })
+                if (curRequest) {
+                    replacementArr.push({ "id": curRequest._id, "pending": curRequest.pending, "accepted": curRequest.accepted })
+                }
+
+            }
+
+            resArr.push(
+                {
+                    "Replacement Requests": replacementArr
+
+                }
+            )
+
+            var slotLinkingArr = []
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest) {
+                    slotLinkingArr.push({ "id": curRequest._id, "pending": curRequest.pending, "accepted": curRequest.accepted })
+                }
+            }
+
+            resArr.push(
+                {
+                    "Slot linking Requests": slotLinkingArr
+
+                }
+            )
+            var leaveArr = []
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest) {
+                    leaveArr.push({ "id": curRequest._id, "pending": curRequest.pending, "accepted": curRequest.accepted })
+                }
+            }
+
+            resArr.push(
+                {
+                    "leave requests": leaveArr
+
+                }
+            )
+            res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+    })
+router.route('/viewAcceptedRequests')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            console.log(dayOffRequest)
+            const slotLinkingRequests = staff.staffLinkingRequests
+            console.log(slotLinkingRequests)
+            const replacement_requests = staff.requestReplacementSent
+            const leaveRequests = staff.leaves
+            if (dayOffRequest.accepted == true) {
+                resArr.push(
+                    {
+                        "dayOff Request": dayOffRequest
+
+                    }
+                )
+            }
+            else {
+                resArr.push(
+                    {
+                        "dayOff Request": []
+                    }
+                )
+            }
+
+
+            var curRequest;
+            var replacementArr = []
+            for (var i = 0; i < replacement_requests.length; i++) {
+                curRequest = await newReplacement.findOne({ _id: replacement_requests[i] })
+                if (curRequest) {
+                    if (curRequest.accepted == true) {
+                        replacementArr.push(curRequest)
+                    }
+                }
+
+            }
+
+            resArr.push(
+                {
+                    "Replacement Requests": replacementArr
+
+                }
+            )
+
+            var slotLinkingArr = []
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest) {
+                    if (curRequest.accepted == true) {
+                        slotLinkingArr.push(curRequest)
+                    }
+                }
+            }
+
+            resArr.push(
+                {
+                    "Slot linking Requests": slotLinkingArr
+
+                }
+            )
+            var leaveArr = []
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest) {
+                    if (curRequest.accepted == true) {
+                        leaveArr.push(curRequest)
+                    }
+                }
+            }
+
+            resArr.push(
+                {
+                    "leave requests": leaveArr
+
+                }
+            )
+            res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+    })
+router.route('/viewPendingRequests')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            console.log(dayOffRequest)
+            const slotLinkingRequests = staff.staffLinkingRequests
+            console.log(slotLinkingRequests)
+            const replacement_requests = staff.requestReplacementSent
+            const leaveRequests = staff.leaves
+            if (dayOffRequest.pending == true) {
+                resArr.push(
+                    {
+                        "dayOff Request": dayOffRequest
+
+                    }
+                )
+            }
+            else {
+                resArr.push(
+                    {
+                        "dayOff Request": []
+                    }
+                )
+            }
+
+
+            var curRequest;
+            var replacementArr = []
+            for (var i = 0; i < replacement_requests.length; i++) {
+                curRequest = await newReplacement.findOne({ _id: replacement_requests[i] })
+                if (curRequest) {
+                    if (curRequest.pending == true) {
+                        replacementArr.push(curRequest)
+                    }
+                }
+
+            }
+
+            resArr.push(
+                {
+                    "Replacement Requests": replacementArr
+
+                }
+            )
+
+            var slotLinkingArr = []
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest) {
+                    if (curRequest.pending == true) {
+                        slotLinkingArr.push(curRequest)
+                    }
+                }
+            }
+
+            resArr.push(
+                {
+                    "Slot linking Requests": slotLinkingArr
+
+                }
+            )
+            var leaveArr = []
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest) {
+                    if (curRequest.pending == true) {
+                        leaveArr.push(curRequest)
+                    }
+                }
+            }
+
+            resArr.push(
+                {
+                    "leave requests": leaveArr
+
+                }
+            )
+            res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+    })
+router.route('/viewRejectedRequests')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            console.log(dayOffRequest)
+            const slotLinkingRequests = staff.staffLinkingRequests
+            console.log(slotLinkingRequests)
+            const replacement_requests = staff.requestReplacementSent
+            const leaveRequests = staff.leaves
+            if (dayOffRequest.accepted == false && dayOffRequest.pending == false) {
+                resArr.push(
+                    {
+                        "dayOff Request": dayOffRequest
+
+                    }
+                )
+            }
+            else {
+                resArr.push(
+                    {
+                        "dayOff Request": []
+                    }
+                )
+            }
+
+
+            var curRequest;
+            var replacementArr = []
+            for (var i = 0; i < replacement_requests.length; i++) {
+                curRequest = await newReplacement.findOne({ _id: replacement_requests[i] })
+                if (curRequest) {
+                    if (curRequest.accepted == false && curRequest.pending == false) {
+                        replacementArr.push(curRequest)
+                    }
+                }
+
+            }
+
+            resArr.push(
+                {
+                    "Replacement Requests": replacementArr
+
+                }
+            )
+
+            var slotLinkingArr = []
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest) {
+                    if (curRequest.accepted == false && curRequest.pending == false) {
+                        slotLinkingArr.push(curRequest)
+                    }
+                }
+            }
+
+            resArr.push(
+                {
+                    "Slot linking Requests": slotLinkingArr
+
+                }
+            )
+            var leaveArr = []
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest) {
+                    if (curRequest.accepted == false && curRequest.pending == false) {
+                        leaveArr.push(curRequest)
+                    }
+                }
+            }
+
+            resArr.push(
+                {
+                    "leave requests": leaveArr
+
+                }
+            )
+            res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+    })
 //inputs : slot(the slotID I want someone to replace),receiverId(the id of the staff member I want to send it to)
 //,dateReplace:the day on which I need this replacement
 router.route('/sendReplacementRequest')
     .post(async (req, res) => {
+        console.log("I entered here")
         //I am sending a request to someone ,i Will create a new request object and add it to the replacementRequest table of this user
         const senderId = req.user._id;
         const receiver = req.body.receiverId;
         const slotReplacement = req.body.slot;
-        const slotDate = new Date(req.body.dateReplace);
-        slotDate.setHours(0, 0, 0, 0)
+        //   const slotDateinitial = new Date(req.body.dateReplace);
+        // console.log(slotDateinitial)
+        // var day = slotDateinitial.getUTCDate() + 2; 
+        // console.log(day)
+        // var month = slotDateinitial.getUTCMonth() + 1;
+        // var year = slotDateinitial.getUTCFullYear();
+        const slotDate = new Date(req.body.dateReplace)
+        slotDate.setDate(slotDate.getDate() + 1)
+
+        // const slotDate = new Date(year + "/" + month + "/" + day)
+        // slotDate.setHours(1)
         if (receiver == null || slotReplacement == null || slotDate == null) {
             return res.send("Incomplete inputs")
         }
@@ -159,46 +476,57 @@ router.route('/sendReplacementRequest')
         const recevierDepartment = staff.department
         if (staffDepartment != recevierDepartment) {
             return res.send("Must choose someone of the same department to replace you")
-        }
-        console.log(receiverStaff)
-        console.log(staff)
-        var flag = "false"
-        for (let index = 0; index < staff.slotsAssigned.length; index++) {
-            if (staff.slotsAssigned[index] == req.body.slot)
-                flag = "true"
-        }
-        if (flag == "false")
-            return res.send("This slot is not assigned to you")
-        else {
-            if (staff && receiverStaff) {
-
-                var request = new newReplacement(
-                    {
-                        pending: true,
-                        accepted: false,
-                        slot: slotReplacement,
-                        receiverId: receiver,
-                        senderId: staff.memberID,
-                        date: slotDate
-                    }
-                )
-                try {
-                    await request.save()
+        } else {
+            var flag = 0
+            for (let i = 0; i < staff.role.length; i++) {
+                if (receiverStaff.role.includes(staff.role[i])) {
+                    flag = 1
                 }
-                catch (Err) {
-                    console.log(Err)
-                }
-                await staff.requestReplacementSent.push(request._id)
-                await staff.save()
-                await receiverStaff.requestReplacmentReceived.push(request._id)
-                await receiverStaff.save()
-                return res.send("Successfully sent")
-
-
             }
-            res.send("Invalid inputs")
-            //add it to the table of requests in staff member
+            if (flag == 0) {
+                return res.send("Must be of the same role")
+            }
+            else {
+                console.log(receiverStaff)
+                console.log(staff)
+                var flag = "false"
+                for (let index = 0; index < staff.slotsAssigned.length; index++) {
+                    if (staff.slotsAssigned[index] == req.body.slot)
+                        flag = "true"
+                }
+                if (flag == "false")
+                    return res.send("This slot is not assigned to you")
+                else {
+                    if (staff && receiverStaff) {
+                        var request = new newReplacement(
+                            {
+                                pending: true,
+                                accepted: false,
+                                slot: slotReplacement,
+                                receiverId: receiver,
+                                senderId: staff.memberID,
+                                date: slotDate
+                            }
+                        )
+                        try {
+                            await request.save()
+                        }
+                        catch (Err) {
+                            console.log(Err)
+                        }
+                        await staff.requestReplacementSent.push(request._id)
+                        await staff.save()
+                        await receiverStaff.requestReplacmentReceived.push(request._id)
+                        await receiverStaff.save()
+                        return res.send("Successfully sent")
 
+
+                    }
+                    res.send("Invalid inputs")
+                    //add it to the table of requests in staff member
+
+                }
+            }
         }
     }
     )
@@ -211,11 +539,11 @@ router.route('/sendSlotLinkingRequest')
         const slotReplacement = req.body.slotId;
         const slot = await slot_model.findOne({ numberID: slotReplacement })
         if (slot) {
-            const coordinatorID = slot.courseCoordinatorID
             const staff = await staff_members_models.findOne({ _id: senderId })
-            const coordinator = await staff_members_models.findOne({ memberID: coordinatorID })
-
+            //same coordinator course and role is coordinator
+            const coordinator = await staff_members_models.findOne({ role: { $all: ["courseCoordinators"] }, coordinatorCourse: { $all: [slot.courseTaught] } })
             if (staff && coordinator) {
+                const coordinatorID = coordinator.memberID
                 var request = new newSlotlinking(
                     {
                         pending: true,
@@ -286,6 +614,35 @@ router.route('/viewReplacementRequest')
         res.send("Invalid staff member")
 
     })
+// router.route('/viewSlotLinkingRequest')
+//     .get(async (req, res) => {
+//         var sentArray = [];
+//         var temp;
+//         var tempDate;
+//         var requstTemp;
+//         sentArray[0] = "Slot linking requests are:"
+//         const staffId = req.user._id;
+//         const staff = await staff_members_models.findOne({ _id: staffId })
+//         if (staff) {
+//             console.log("In staff")
+//             var lastIndex = 1;
+//             var startIndex = 0
+//             for (let index = 0; index < staff.coordinatorLinkingRequests.length; index++) {
+//                 console.log("I entered here")
+//                 temp = staff.coordinatorLinkingRequests[index]
+//                 requstTemp = await newSlotLinking.findOne({ _id: temp })
+//                 if (requstTemp) {
+//                     sentArray[lastIndex] = requstTemp
+//                 }
+//                 lastIndex++
+//             }
+
+//             res.send(sentArray)
+
+//         }
+//         res.send("Invalid staff member")
+
+//     })
 //inputs the slotID of the request he wished to accept(_id)
 //change the accepted-->true and pending-->false of the slotID 
 router.route('/acceptReplacementRequest')
@@ -298,6 +655,7 @@ router.route('/acceptReplacementRequest')
         if (staff) {
             console.log("in staff")
             for (let index = 0; index < staff.requestReplacmentReceived.length; index++) {
+                console.log(staff)
                 if (staff.requestReplacmentReceived[index] == slotID) {
                     console.log("found the request")
                     requstTemp = await newReplacement.findOne({ _id: slotID })
@@ -308,6 +666,7 @@ router.route('/acceptReplacementRequest')
                         else {
                             requstTemp.pending = false
                             requstTemp.accepted = true
+                            requstTemp.notified = true
                             try {
                                 requstTemp.save()
                             }
@@ -340,7 +699,11 @@ router.route('/acceptReplacementRequest')
                         return res.send("This request is not found")
                     }
                 }
+
             }
+
+            return res.send("Could not find this request")
+
         }
         else {
             return res.send("Something wrong has occured")
@@ -368,6 +731,7 @@ router.route('/rejectReplacementRequest')
                         else {
                             requstTemp.pending = false
                             requstTemp.accepted = false
+                            requstTemp.notified = true
                             try {
                                 requstTemp.save()
                             }
@@ -458,6 +822,54 @@ router.route('/sendChangeDayOff')
         }
 
     })
+//cancel the request (no need to enter anything as he only has one request)
+router.route('/cancelDayoffRequest')
+    .post(async (req, res) => {
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            if (staff.dayOffRequestSent == "") {
+                return res.send("There is no request to cancel")
+            }
+            else {
+                const request = await dayOffRequest_model.findOne({ senderId: staff.memberID })
+                if (request) {
+                    if (request.pending == true) {
+                        //remove from staff
+                        staff.dayOffRequestSent = ""
+                        //find hod and remove the request
+                        const department = staff.department
+                        const hod = await staff_members_models.findOne({ department: department, role: { $all: ["headOfdepartments"] } })
+                        for (let index = 0; index < hod.dayOffRequestsHOD.length; index++) {
+                            if (hod.dayOffRequestsHOD[index] == staff.memberID) {
+                                hod.dayOffRequestsHOD.splice(index, 1)
+                                break
+                            }
+
+                        }
+                        try {
+                            await staff.save()
+                            await hod.save()
+                            await request.save()
+                        }
+                        catch (Err) {
+                            return res.send("Mongo error")
+                        }
+                        return res.send("Canceled successfuly")
+                    }
+                    else {
+                        return res.send("Cannot cancel an already accepted/rejected dsyOff request,you can send another dayOffchange request to return it to the previous dayOff")
+                    }
+
+                }
+
+            }
+        }
+        else {
+            return res.send("Something went wrong")
+        }
+    })
+
 //inputs the id of the request he wants to cancel
 router.route('/cancelReplacementRequest')
     .post(async (req, res) => {
@@ -470,45 +882,51 @@ router.route('/cancelReplacementRequest')
             else {
                 //check it is pending or its date is yet to come
                 const request = await newReplacement.findOne({ _id: req.body.requestID })
-                today = new Date();
+                const today = new Date();
+                today.setDate(today.getDate())
                 // moment(today).isAfter(request.date, 'day');
-                if (request.pending == true || moment(today).isAfter(request.date, 'day')) {
+                console.log(today)
+                console.log(request.date)
+                console.log(today.getDate() - request.date.getDate() + 1)
+                if (request.pending == true || (today.getDate() - request.date.getDate() + 1) < 0) {
                     console.log("Can remove it")
                     //remove it from the array of sent requests
                     for (let i = 0; i < staff.requestReplacementSent.length; i++) {
                         if (staff.requestReplacementSent[i] == req.body.requestID) {
+                            console.log("I entered here")
                             staff.requestReplacementSent.splice(i, 1)
                             break
                         }
                     }
                     //remove it from the array of slot replaced in case it was accepted
                     for (let j = 0; j < staff.slotsReplaced.length; j++) {
-                        if (staff.slotsReplaced[i] == req.body.requestID) {
-                            staff.slotsReplaced.splice(i, 1)
+                        if (staff.slotsReplaced[j] == req.body.requestID) {
+                            staff.slotsReplaced.splice(j, 1)
                             break
                         }
-                        try {
-                            await staff.save()
-                        }
-                        catch (Err) {
-                            return res.send("Mongo error")
-                        }
                     }
+                    try {
+                        await staff.save()
+                    }
+                    catch (Err) {
+                        return res.send("Mongo error")
+                    }
+
                     //get the receiver to delete the request from its corresponding array
                     const receiverID = request.receiverId
                     const receiver = await staff_members_models.findOne({ memberID: receiverID })
                     if (receiver) {
                         //delete from requests received
-                        for (let i = 0; i < receiver.requestReplacementReceived.length; i++) {
-                            if (receiver.requestReplacementReceived[i] == req.body.requestID) {
-                                receiver.requestReplacementReceived.splice(i, 1)
+                        for (let i = 0; i < receiver.requestReplacmentReceived.length; i++) {
+                            if (receiver.requestReplacmentReceived[i] == req.body.requestID) {
+                                receiver.requestReplacmentReceived.splice(i, 1)
                                 break
                             }
                         }
                         //delete from slots to replace
                         for (let j = 0; j < receiver.slotsToReplace.length; j++) {
-                            if (receiver.slotsToReplace[i] == req.body.requestID) {
-                                receiver.slotsToReplace.splice(i, 1)
+                            if (receiver.slotsToReplace[j] == req.body.requestID) {
+                                receiver.slotsToReplace.splice(j, 1)
                                 break
                             }
                         }
@@ -518,6 +936,19 @@ router.route('/cancelReplacementRequest')
                         catch (Err) {
                             return res.send("Mongo error")
                         }
+                        //remove the attribute from the leave request
+                        const leaveRequest = request.leaveRequestAssigned
+                        const theLeaveRequest = await newLeave_model.findOne({ _id: leaveRequest })
+                        if (theLeaveRequest) {
+                            theLeaveRequest.replacementRequest = ""
+                            try {
+                                theLeaveRequest.save()
+                            }
+                            catch (Err) {
+                                return res.send("Mongo error")
+                            }
+                        }
+
                         //delete the request
                         try {
                             request.delete()
@@ -526,13 +957,260 @@ router.route('/cancelReplacementRequest')
                             return res.send("Mongo error")
                         }
 
+
                     }
+                    return res.send("Cancelled successfully")
                 }
                 else {
-                    return res.send("The request has already been accepted and replaced by someone else")
+                    return res.send("Cannot cancel")
                 }
             }
 
+        }
+    })
+//function called cancelReplacementRapalcement
+// async function cancelReplacementRequest(senderId, requestID) {
+//     const staff = await staff_members_models.findOne({ _id: senderId })
+//     if (staff) {
+//         console.log(staff)
+//         if (requestID == null) {
+//             console.log("Can't be done")
+//         }
+//         else {
+//             //check it is pending or its date is yet to come
+//             const request = await newReplacement.findOne({ _id: requestID })
+//             const today = new Date();
+//             today.setDate(today.getDate())
+//             // moment(today).isAfter(request.date, 'day');
+//             console.log(today)
+//             console.log(request.date)
+//             console.log(today.getDate() - request.date.getDate() + 1)
+//             console.log(staff)
+//             if (request.pending == true || (today.getDate() - request.date.getDate() + 1) < 0) {
+//                 console.log("Can remove it,canceling replacement request")
+//                 //remove it from the array of sent requests
+//                 for (let i = 0; i < staff.requestReplacementSent.length; i++) {
+//                     if (staff.requestReplacementSent[i] == requestID) {
+//                         console.log("I entered here")
+//                         console.log(staff)
+//                         staff.requestReplacementSent.splice(i, 1)
+//                         console.log(staff)
+//                         try {
+//                             await staff.save()
+//                         }
+//                         catch (Err) {
+//                             console.log(Err)
+//                         }
+//                         break
+//                     }
+//                 }
+//                 //remove it from the array of slot replaced in case it was accepted
+//                 for (let j = 0; j < staff.slotsReplaced.length; j++) {
+//                     if (staff.slotsReplaced[j] == requestID) {
+//                         staff.slotsReplaced.splice(j, 1)
+//                         break
+//                     }
+//                 }
+
+//                 //get the receiver to delete the request from its corresponding array
+//                 const receiverID = request.receiverId
+//                 const receiver = await staff_members_models.findOne({ memberID: receiverID })
+//                 if (receiver) {
+//                     //delete from requests received
+//                     for (let i = 0; i < receiver.requestReplacmentReceived.length; i++) {
+//                         if (receiver.requestReplacmentReceived[i] == requestID) {
+//                             receiver.requestReplacmentReceived.splice(i, 1)
+//                             break
+//                         }
+//                     }
+//                     //delete from slots to replace
+//                     for (let j = 0; j < receiver.slotsToReplace.length; j++) {
+//                         if (receiver.slotsToReplace[j] == requestID) {
+//                             receiver.slotsToReplace.splice(j, 1)
+//                             break
+//                         }
+//                     }
+
+
+//                     try {
+//                         await staff.save()
+
+//                     }
+//                     catch (Err) {
+//                         console.log(Err)
+//                     }
+
+//                     //delete the request
+//                     try {
+//                         await request.delete()
+//                         await receiver.save()
+//                     }
+//                     catch (Err) {
+//                         console.log(Err)
+//                     }
+
+
+//                 }
+
+//             }
+
+//         }
+
+//     }
+// }
+//cancel slot linking request
+//enter a slotLinkingRequest _id
+router.route('/cancelSlotLinkingRequest')
+    .post(async (req, res) => {
+        const senderId = req.user._id;
+        if (req.body.requestId == null) {
+            return res.send("You should enter the _id of the request you wish to cancel")
+        }
+        else {
+            const staff = await staff_members_models.findOne({ _id: senderId })
+            console.log(staff)
+            const request = await newSlotlinking.findOne({ _id: req.body.requestId })
+            console.log(request)
+            if (staff && request) {
+                //remove from stafflinking request
+                for (let i = 0; i < staff.staffLinkingRequests.length; i++) {
+                    if (staff.staffLinkingRequests[i] == req.body.requestId) {
+                        console.log("I entered here")
+                        staff.staffLinkingRequests.splice(i, 1)
+                        break
+                    }
+                }
+                //remove from the coordinator linking request
+                const coordinatorID = request.coordinatorId
+                const coordinator = await staff_members_models.findOne({ memberID: coordinatorID })
+                for (let j = 0; j < coordinator.coordinatorLinkingRequests.length; j++) {
+                    if (coordinator.coordinatorLinkingRequests[j] == req.body.requestId) {
+                        console.log("I entered here too")
+                        coordinator.coordinatorLinkingRequests.splice(j, 1)
+                        break
+                    }
+                }
+                try {
+                    staff.save()
+                    coordinator.save()
+                    request.delete()
+                }
+                catch (Err) {
+                    return res.send("Mongoose error")
+                }
+                return res.send("Cancelled successfully")
+            }
+            else {
+                return res.send("Problem cancelling slot linking request")
+            }
+        }
+    })
+//enter the _id of the leave request you wish to delete
+router.route('/cancelLeaveRequest')
+    .post(async (req, res) => {
+        if (req.body.requestId == null) {
+            return res.send("You should enter the request id you wish to delete")
+        }
+        else {
+            const senderId = req.user._id;
+            const staff = await staff_members_models.findOne({ _id: senderId })
+            if (staff) {
+                const leaveRequest = await newLeave_model.findOne({ _id: req.body.requestId })
+                if (leaveRequest) {
+                    if (leaveRequest.pending == false) {
+                        return res.send("Cannot cancel an already accepted/rejected requestF")
+                    }
+                    else {
+                        const type = leaveRequest.type
+                        switch (type) {
+                            case "Annual":
+                                const today = new Date();
+                                today.setDate(today.getDate())
+                                // moment(today).isAfter(request.date, 'day');
+                                console.log(today.getDate() - leaveRequest.start.getDate() + 1)
+                                if (leaveRequest.pending == true || (today.getDate() - request.start.getDate() + 1) < 0) {
+                                    //if there is a replacement request,cancel it
+                                    if (leaveRequest.replacementRequest != "") {
+                                        console.log("Time to cancel the replacement request")
+                                        // cancelReplacementRequest(senderId, leaveRequest.replacementRequest)
+                                        const requestID = leaveRequest.replacementRequest
+                                        for (let i = 0; i < staff.requestReplacementSent.length; i++) {
+                                            if (staff.requestReplacementSent[i] == requestID) {
+                                                staff.requestReplacementSent.splice(i, 1)
+                                            }
+                                        }
+                                        const request = await newReplacement.findOne({ _id: leaveRequest.replacementRequest })
+                                        const receiverID = request.receiverId
+                                        const receiver = await staff_members_models.findOne({ memberID: receiverID })
+                                        if (receiver) {
+                                            //delete from requests received
+                                            for (let i = 0; i < receiver.requestReplacmentReceived.length; i++) {
+                                                if (receiver.requestReplacmentReceived[i] == requestID) {
+                                                    receiver.requestReplacmentReceived.splice(i, 1)
+                                                    break
+                                                }
+                                            }
+                                            try {
+                                                await staff.save()
+                                                await receiver.save()
+                                                await request.delete()
+                                            }
+                                            catch (Err) {
+                                                return res.send(Err)
+                                            }
+
+                                        }
+                                    }
+
+
+                                }
+                                else {
+                                    return res.send("Request is either accepted/rejectd or its day has passed")
+                                }
+
+                                break;
+                        }
+                        const department = staff.department
+                        const hod = await staff_members_models.findOne({ department: department, role: { $all: ["headOfdepartments"] } })
+                        const hodID = hod.memberID
+                        //remove from leaves array of staff
+                        for (let index = 0; index < staff.leaves.length; index++) {
+                            if (staff.leaves[index] == req.body.requestId) {
+                                staff.leaves.splice(index, 1)
+                                break
+                            }
+                        }
+                        //remove from leaveRequestsHOD array of hod
+                        for (let index = 0; index < hod.leaveRequestsHOD.length; index++) {
+                            if (hod.leaveRequestsHOD[index] == req.body.requestId) {
+                                hod.leaveRequestsHOD.splice(index, 1)
+                                break
+                            }
+                        }
+                        //save to database
+
+                        try {
+                            hod.save()
+                            staff.save()
+                            leaveRequest.delete()
+                        }
+                        catch (Err) {
+                            return res.send("Mongoose error")
+                        }
+                    }
+                    return res.send("Canceled successfully")
+
+
+
+                }
+                else {
+                    return res.send("Request not found")
+                }
+
+            }
+            else {
+                return res.send("Somthung went wrong")
+            }
         }
     })
 
@@ -558,11 +1236,13 @@ router.route('/submitLeave')
                 switch (req.body.type) {
                     case "Annual":
                         //one day at a time
+                        console.log("Here")
                         if (staff.annualLeavesBalance < 1) {
                             return res.send("Your annual balance does not allow you to take a day off")
                         }
                         else {
                             let now = new Date()
+                            now.setDate(now.getDate() + 1)
                             var leave = new newLeave_model({
                                 staffID: staff.memberID,
                                 hodID: hodID,
@@ -578,23 +1258,56 @@ router.route('/submitLeave')
 
                             }
                             else {
-
                                 let now = Date()
-                                const replacementDateinitial = new Date(req.body.start)
-                                var day = replacementDateinitial.getUTCDate() + 2;
-                                var month = replacementDateinitial.getUTCMonth() + 1;
-                                var year = replacementDateinitial.getUTCFullYear();
-                                const replacementDate = new Date(year + "/" + month + "/" + day)
+                                const replacementDate = new Date(req.body.start)
+                                replacementDate.setDate(replacementDate.getDate() + 1)
+                                console.log(replacementDate)
+                                // replacementDate.setDate(replacementDate.getDate())
+                                console.log("New date" + replacementDate)
                                 if (now - replacementDate > 0) {
                                     return res.send("leaves should be submitted before the targeted day.")
                                 }
                                 else {
-                                    leave.start = replacementDate.setHours(0, 0, 0, 0)
-                                    if (req.body.replacementRequestID != null) {
+                                    leave.start = replacementDate
+                                    if (req.body.replacementRequestID != null && req.body.replacementRequestID != "") {
                                         leave.replacementRequest = req.body.replacementRequestID
+                                        console.log(req.body.replacementRequestID)
+                                        const replacementRequest = await newReplacement.findOne({ _id: req.body.replacementRequestID })
+                                        console.log(replacementRequest)
+                                        if (replacementRequest) {
+                                            if (replacementRequest.accepted == false) {
+                                                return res.send("You have entered a replacement request that is not accepted yet")
+                                            }
+                                            else {
+                                                if (replacementRequest.senderId != staff.memberID) {
+                                                    console.log(replacementRequest.senderId)
+                                                    console.log(staff.memberID)
+                                                    return res.send("You haven't sent this request")
+                                                }
+                                                else {
+                                                    if (replacementRequest.date - replacementDate != 0) {
+                                                        console.log(replacementRequest.date)
+                                                        console.log(replacementDate)
+                                                        return res.send("The replacement request should be on the same day as the leave")
+                                                    }
+                                                    else {
+                                                        replacementRequest.leaveRequestAssigned = leave._id
+                                                        try {
+                                                            await replacementRequest.save()
+                                                        }
+                                                        catch (Err) {
+                                                            return res.send("Mongo error")
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            return res.send("This request is not found")
+                                        }
                                     }
                                     if (req.body.description != null) {
-                                        leave.description = req.body.description
+                                        leave.commentWhySent = req.body.description
                                     }
                                     try {
                                         await leave.save()
@@ -611,7 +1324,13 @@ router.route('/submitLeave')
                                     catch (Err) {
                                         return res.send("Mongo error")
                                     }
+
                                 }
+
+
+
+
+
                             }
                         }
                         break;
@@ -623,11 +1342,9 @@ router.route('/submitLeave')
                         }
                         else {
                             const now = new Date()
-                            const startDate = new Date(req.body.start)
-                            var day = startDate.getUTCDate() + 2;
-                            var month = startDate.getUTCMonth() + 1;
-                            var year = startDate.getUTCFullYear();
-                            const startDateUpdate = new Date(year + "/" + month + "/" + day)
+                            now.setDate(now.getDate() + 1)
+                            const startDateUpdate = new Date(req.body.start)
+                            startDateUpdate.setDate(startDateUpdate.getDate() + 1)
                             var leave = new newLeave_model({
                                 staffID: staff.memberID,
                                 hodID: hodID,
@@ -649,10 +1366,9 @@ router.route('/submitLeave')
                                     return res.send("Rejected,you have used up all your allowed number of days for accidental leaves")
                                 }
                                 else {
-                                    staff.totalAccidentalLeave = staff.totalAccidentalLeave + 1
-
+                                    //  staff.totalAccidentalLeave = staff.totalAccidentalLeave + 1
                                     if (req.body.description != null)
-                                        leave.description = req.body.description
+                                        leave.commentWhySent = req.body.description
                                     hod.leaveRequestsHOD.push(leave._id)
                                     staff.leaves.push(leave._id)
                                     const leaveBalance = staff.annualLeavesBalance
@@ -676,12 +1392,11 @@ router.route('/submitLeave')
                         }
                         else {
                             const now = new Date()
-                            var startDate = new Date(req.body.start)
-                            var day = startDate.getUTCDate() + 2;
-                            var month = startDate.getUTCMonth() + 1;
-                            var year = startDate.getUTCFullYear();
-                            const startDateUpdate = new Date(year + "/" + month + "/" + day)
+                            now.setDate(now.getDate() + 1)
+                            const startDateUpdate = new Date(req.body.start)
+                            startDateUpdate.setDate(startDateUpdate.getDate() + 1)
                             const endDate = new Date(req.body.end)
+                            endDate.setDate(endDate.getDate() + 1)
                             console.log("End date is" + endDate)
                             var leave = new newLeave_model({
                                 staffID: staff.memberID,
@@ -707,7 +1422,7 @@ router.route('/submitLeave')
                                     leave.documentLinks = req.body.documentLinks
 
                                     if (req.body.description != null)
-                                        leave.description = req.body.description
+                                        leave.commentWhySent = req.body.description
                                     hod.leaveRequestsHOD.push(leave._id)
                                     staff.leaves.push(leave._id)
                                     try {
@@ -735,17 +1450,12 @@ router.route('/submitLeave')
                                     return res.send("Must enter the start and end dates of your leave")
                                 }
                                 else {
-                                    var startDate = new Date(req.body.start)
-                                    var day = startDate.getUTCDate() + 2;
-                                    var month = startDate.getUTCMonth() + 1;
-                                    var year = startDate.getUTCFullYear();
-                                    const startDateUpdate = new Date(year + "/" + month + "/" + day)
+                                    const startDateUpdate = new Date(req.body.start)
+                                    startDateUpdate.setDate(startDateUpdate.getDate() + 1)
                                     const endDate = new Date(req.body.end)
-                                    day = endDate.getUTCDate() + 2;
-                                    month = endDate.getUTCMonth() + 1;
-                                    year = endDate.getUTCFullYear();
-                                    const endDateUpdate = new Date(year + "/" + month + "/" + day)
+                                    endDate.setDate(endDate.getDate() + 1)
                                     let now = new Date()
+                                    now.setDate(now.getDate() + 1)
                                     var leave = new newLeave_model({
                                         staffID: staff.memberID,
                                         hodID: hodID,
@@ -754,9 +1464,12 @@ router.route('/submitLeave')
                                         pending: true,
                                         accepted: false,
                                         start: startDateUpdate,
-                                        end: endDateUpdate,
+                                        end: endDate,
                                         documentLinks: req.body.documentLinks
                                     })
+
+                                    if (req.body.description != null)
+                                        leave.commentWhySent = req.body.description
                                     hod.leaveRequestsHOD.push(leave._id)
                                     staff.leaves.push(leave._id)
                                     try {
@@ -784,16 +1497,12 @@ router.route('/submitLeave')
                                     return res.send("You should enter the day on which you were absent")
                                 }
                                 else {
-                                    const startDate = new Date(req.body.start)
-                                    console.log("day is" + startDate.getUTCDate())
-                                    var day = startDate.getUTCDate() + 2;
-                                    var month = startDate.getUTCMonth() + 1;
-                                    var year = startDate.getUTCFullYear();
-                                    const startDateUpdate = new Date(year + "/" + month + "/" + day)
-                                    console.log(startDateUpdate)
+                                    const startDateUpdate = new Date(req.body.start)
+                                    startDateUpdate
+                                    console.log(startDateUpdate).setDate(startDateUpdate.getDate() + 1)
                                     const compensationDay = new Date(req.body.compensation)
                                     console.log("initial compensationdayis" + compensationDay)
-
+                                    compensationDay.setDate(compensationDay.getDate() + 1)
                                     if (compensationDay.getMonth() != startDate.getMonth()) {
                                         return res.send("The compensation should be in the same month")
                                     }
@@ -807,6 +1516,7 @@ router.route('/submitLeave')
                                             return res.send("You should compensate on a day off")
                                         }
                                         let now = new Date()
+                                        now.setDate(now.getDate() + 1)
                                         console.log("today's date is" + now)
                                         var leave = new newLeave_model({
                                             staffID: staff.memberID,
@@ -816,7 +1526,8 @@ router.route('/submitLeave')
                                             pending: true,
                                             accepted: false,
                                             start: startDate,
-                                            compensatingDay: compensationDay
+                                            compensatingDay: compensationDay,
+                                            commentWhySent: req.body.description
                                         })
                                         hod.leaveRequestsHOD.push(leave._id)
                                         staff.leaves.push(leave._id)

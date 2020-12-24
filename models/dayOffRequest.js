@@ -27,6 +27,12 @@ const dayOffSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: false
+    },
+    notified: {
+        type: Boolean
+    },
+    commentWhyNeeded: {
+        type: String
     }
 })
 module.exports.model = mongoose.model('dayOffChange_requests', dayOffSchema)

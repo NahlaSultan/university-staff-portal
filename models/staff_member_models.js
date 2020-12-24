@@ -56,7 +56,7 @@ const staffSchema = new mongoose.Schema(
         role: {
             type: [],
             required: true,
-            default:[],
+            default: [],
             //operators start with $, to specify constraints
             $in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
         },
@@ -159,10 +159,10 @@ const staffSchema = new mongoose.Schema(
             default: []
         },
         extraHours: {
-                type: [],
-                default: []
+            type: [],
+            default: []
 
-            
+
         },
         leaveRequestsHOD: {
             //array of _ids of leave model

@@ -34,7 +34,7 @@ const leavesSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    description: {
+    comment: {
         type: String,
         required: false
     },
@@ -47,6 +47,16 @@ const leavesSchema = new mongoose.Schema({
     },
     compensatingDay: {
         type: Date
+    },
+    leaveDates: {
+        type: [],
+        default:[]
+    },
+    notified: {
+        type: Boolean
+    },
+    commentWhySent: {
+        type: String
     }
 })
 
