@@ -120,13 +120,14 @@ function checkMonth(month,day){
 function acceptedLeave(date,staff){
     const leave =leaves_model.findOne({staffID:staff.memberID})
          if(leave.start==date && leave.accepted==true && leave.end!=null){
-            return true
+            
             var array =getDates(leave.start,leave.end)
             for(let i=0;i<array.length;i++){
                 leave.leavesDates.push(array[i])
             }
             leave.markModified("leaveDates")
             leave.save()
+            return true
          }
          else if (leave.start=date && leave.accepted==true && leave.end==null){
              return true

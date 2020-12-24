@@ -50,7 +50,8 @@ const leavesSchema = new mongoose.Schema({
     },
     leaveDates: {
         type: [],
-        default:[]},
+        default:[]
+    },
     notified: {
         type: Boolean
     },
