@@ -30,7 +30,7 @@ const slotSchema = new mongoose.Schema({
         required: true
     },
     courseCoordinatorID: {
-        type: String,
+        type: String
     },
     numberID:
     {
