@@ -50,7 +50,7 @@ app.use(async(req, res, next) => {
 app.use('',staff_member_routes )
 
 
-
+app.use('',hod_routes)
 
 
 app.use('/hr',(req, res, next) => {

@@ -454,12 +454,9 @@ router.route('/updateProfile')
         }
         if(req.body.gender!=null){
 
-            staff.gender = gender
+            staff.gender = req.body.gender
         }
-        if(req.body.gender!=null){
-
-            staff.gender = gender
-        }
+       
     
       
 
