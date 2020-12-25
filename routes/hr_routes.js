@@ -234,6 +234,7 @@ router.route('/updateLocation')
         if(req.body.officeMembers!=null){
             location.officeMembers = req.body.officeMembers
         }
+
         if(req.body.newName!=null){
             const usedName = await location_model.findOne({ name: req.body.newName })
             if(usedName)
@@ -536,6 +537,25 @@ router.route('/updateDepartment')
 
                 dep.name = req.body.newName
         }
+        if(req.body.newFaculty!=null){
+            const newFaculty = await faculty_model.findOne({ facultyName: req.body.newFaculty })
+     
+            if (newFaculty) {  
+                newFaculty.departments.push(req.body.courseName)
+                faculty.departments.splice(indexOfDep, 1) 
+                faculty.markModified('departments.'+indexOfDep);
+                try{
+                    await faculty.save()
+                    await newFaculty.save()
+                }
+                catch (Err) {
+                    console.log(Err)
+                    res.send("error adding faculty")
+                }
+            }
+            res.send("new faculty isn't valid")
+        }
+
         if(req.body.hod!=null){
 
 
@@ -776,13 +796,40 @@ router.route('/updateCourse')
             //string form
             course.teachingSlotsNumber = req.body.teachingSlotsNumber         
         }
+        if(req.body.newDepartment!=null){
+            var newDepartmentFound = false
+            var newDepIndex = -1
+            for(var i=0; i<faculty.departments.length; i++){
+                currDep = faculty.departments[i]
+                if(req.body.newDepartment == currDep.name){
+                    newDepartmentFound = true
+                    newDepIndex = i
 
+                }
+            }
+            if(!newDepartmentFound){
+                res.send("this department isn't in "+ req.body.facultyName)
+            }
+            faculty.departments[newDepIndex].course.push(req.body.courseName)
+            faculty.departments[depIndex].course.splice(courseIndex, 1) 
+            faculty.markModified('departments.'+newDepIndex);
+            faculty.markModified('departments.'+depIndex);
+            try{
+                await faculty.save()
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("error adding faculty")
+            }
+
+        }
+    
         try {
             await course.save()
         }
         catch (Err) {
             console.log(Err)
-            res.send("error adding faculty")
+            res.send("error saving course")
         }
     res.send(course)    
     
