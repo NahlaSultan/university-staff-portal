@@ -79,6 +79,7 @@ router.route('/addStaff')
                 gender: req.body.gender
             })
             var faculty;
+            var depIndex;
             if (req.body.faculty == null && staffType=="academic") {
                 res.send("must specify faculty name") 
             }
@@ -99,11 +100,15 @@ router.route('/addStaff')
                 var found = false
                 for(var i=0; i<faculty.departments.length; i++){
                 currDep = faculty.departments[i]
-                if(req.body.department == currDep.name)
-                found = true}
+                if(req.body.department == currDep.name){
+                    found = true
+                    depIndex=i
+                }
+            }
         
-                if(found)
+                if(found){
                     newUser.department = req.body.department
+                }
                 else{
                     console.log("heree")
 
@@ -140,7 +145,13 @@ router.route('/addStaff')
                 console.log("saving user")
                 console.log(newUser.id)
                 await newUser.save()
-                memberID = staffType + "-" + newUser.numberID
+                var str=""
+                if (staffType!="hr")
+                    str = "ac"
+                else
+                    str = "hr"  
+
+                memberID = str + "-" + newUser.numberID
                 newUser.memberID = memberID
 
                 
@@ -150,6 +161,15 @@ router.route('/addStaff')
                         staffID: memberID
                     })
                     await schedule.save()
+
+
+                }
+                if(req.body.role=="headOfdepartments"){
+                    console.log("role if")
+                    faculty.departments[depIndex].headOfDepartment = memberID
+                    faculty.markModified('departments.'+depIndex);
+
+                    await faculty.save()
 
 
                 }

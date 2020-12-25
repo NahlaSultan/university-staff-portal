@@ -510,20 +510,20 @@ router.route('/viewMonthAttendance')
         res.send(arr)
         }
 })
-//updatprofile
-router.route('/updateProfile')
-.post(async(req,res)=>{
-    const staffId=req.user._id;
-    const staff = await staff_members_models.findOne({ _id: staffId })
-    if(staff){ 
-        if(staff.staffType==academic){
+// //updatprofile
+// router.route('/updateProfile')
+// .post(async(req,res)=>{
+//     const staffId=req.user._id;
+//     const staff = await staff_members_models.findOne({ _id: staffId })
+//     if(staff){ 
+//         if(staff.staffType==academic){
 
-        }
-        else{
+//         }
+//         else{
 
-        }
-        }
-})
+//         }
+//         }
+// })
 
 
 router.route('/homePage')

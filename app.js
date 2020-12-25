@@ -153,7 +153,7 @@ app.use('/coordinator',(req, res, next) => {
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         //console.log(verified);
        if(!verified.role.includes("courseCoordinators")){
-            return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
+            return res.status(401).json({ msg: "authorization failed, must be a course coordinator to perform this task" });
         }
         req.user = verified;
         next();
