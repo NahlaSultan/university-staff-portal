@@ -99,14 +99,11 @@ router.route('/addStaff')
                 var found = false
                 for(var i=0; i<faculty.departments.length; i++){
                 currDep = faculty.departments[i]
-                if(req.body.department == currDep.name){
-                    found = true
-                    break;
-                }
-            }
+                if(req.body.department == currDep.name)
+                found = true}
         
                 if(found)
-                    newUser.department = req.body.department  
+                    newUser.department = req.body.department
                 else{
                     console.log("heree")
 
@@ -145,22 +142,7 @@ router.route('/addStaff')
                 await newUser.save()
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
-                if(req.body.role== "headOfdepartments"){
-                    console.log("hod add ")
-                    console.log(faculty.departments[i].name)
-                    console.log(memberID)
-                    faculty.departments[i].headOfDepartment = memberID
-                    try{
-                        faculty.markModified('departments.'+i);
-                        await faculty.save()
-                        res.send(faculty)
-                    }
-                    catch (Err) {
-                        res.send("error saving hod in faculty")
-                    }
 
-                    
-                }
                 
                 if(staffType!="hr"){
 
@@ -234,7 +216,6 @@ router.route('/updateLocation')
         if(req.body.officeMembers!=null){
             location.officeMembers = req.body.officeMembers
         }
-
         if(req.body.newName!=null){
             const usedName = await location_model.findOne({ name: req.body.newName })
             if(usedName)
@@ -537,25 +518,6 @@ router.route('/updateDepartment')
 
                 dep.name = req.body.newName
         }
-        if(req.body.newFaculty!=null){
-            const newFaculty = await faculty_model.findOne({ facultyName: req.body.newFaculty })
-     
-            if (newFaculty) {  
-                newFaculty.departments.push(req.body.courseName)
-                faculty.departments.splice(indexOfDep, 1) 
-                faculty.markModified('departments.'+indexOfDep);
-                try{
-                    await faculty.save()
-                    await newFaculty.save()
-                }
-                catch (Err) {
-                    console.log(Err)
-                    res.send("error adding faculty")
-                }
-            }
-            res.send("new faculty isn't valid")
-        }
-
         if(req.body.hod!=null){
 
 
@@ -796,40 +758,13 @@ router.route('/updateCourse')
             //string form
             course.teachingSlotsNumber = req.body.teachingSlotsNumber         
         }
-        if(req.body.newDepartment!=null){
-            var newDepartmentFound = false
-            var newDepIndex = -1
-            for(var i=0; i<faculty.departments.length; i++){
-                currDep = faculty.departments[i]
-                if(req.body.newDepartment == currDep.name){
-                    newDepartmentFound = true
-                    newDepIndex = i
 
-                }
-            }
-            if(!newDepartmentFound){
-                res.send("this department isn't in "+ req.body.facultyName)
-            }
-            faculty.departments[newDepIndex].course.push(req.body.courseName)
-            faculty.departments[depIndex].course.splice(courseIndex, 1) 
-            faculty.markModified('departments.'+newDepIndex);
-            faculty.markModified('departments.'+depIndex);
-            try{
-                await faculty.save()
-            }
-            catch (Err) {
-                console.log(Err)
-                res.send("error adding faculty")
-            }
-
-        }
-    
         try {
             await course.save()
         }
         catch (Err) {
             console.log(Err)
-            res.send("error saving course")
+            res.send("error adding faculty")
         }
     res.send(course)    
     
@@ -878,7 +813,39 @@ router.route('/viewAttendance')
 
 })
 
+async function deleteHOD(depName, facName){
 
+    const faculty =  await faculty_model.findOne({ facultyName: facName})
+    if(faculty){
+        var indexOfDep =-1
+        var found = false
+        for(var i=0; i<faculty.departments.length; i++){
+            currDep = faculty.departments[i]
+            if(depName == currDep.name){
+                found = true
+                indexOfDep =i
+
+            }
+        }
+
+        if(!found){
+            return false
+        }
+
+        const dep = faculty.departments[indexOfDep]
+        dep.headOfDepartment = "unassigned"
+
+        try{
+            await faculty.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            return false
+        }
+        return true
+    }
+    return false
+}
 
 async function deleteHOD(depName, facName){
 
@@ -901,10 +868,8 @@ async function deleteHOD(depName, facName){
 
         const dep = faculty.departments[indexOfDep]
         dep.headOfDepartment = "unassigned"
-        faculty.departments[indexOfDep]= dep
-        faculty.markModified('departments.'+indexOfDep);
 
-         try{
+        try{
             await faculty.save()
         }
         catch (Err) {
@@ -918,37 +883,24 @@ async function deleteHOD(depName, facName){
 
 async function deleteTeacher(memberID, courses){
 
-        console.log(courses)
+
         for(var i=0; i<courses.length; i++){
-           // curCourse = courses[i]
-            const curCourse = await course_model.findOne({ courseName: courses[i] })
-           console.log(curCourse)
-
-
-            console.log(curCourse.instructors)
+            curCourse = courses[i]
             if(curCourse.instructors.includes(memberID)){
-              // const course = await course_model.findOne({ courseName: curCourse})
-               const index =curCourse.instructors.indexOf(memberID)
-               console.log("ins length before splice: " + curCourse.instructors.length)
-               curCourse.instructors.splice(index,1)
-               console.log("ins length after splice: " + curCourse.instructors.length)
-
+               const course = await course_model.findOne({ courseName: curCourse})
+               course.instructors.splice(curCourse.instructors.indexOf(memberID),1)
                try {
-                   await curCourse.save()
+                   await course.save()
                } catch (error) {
                    return false
                }
 
             }
             if(curCourse.teachingAssistants.includes(memberID)){
-               // const course = await course_model.findOne({ courseName: curCourse})
-                const index =curCourse.teachingAssistants.indexOf(memberID)
-                console.log("ta length before splice: " + curCourse.teachingAssistants.length)
-                curCourse.teachingAssistants.splice(index,1)
-                console.log("ta length after splice: " + curCourse.teachingAssistants.length)
- 
+                const course = await course_model.findOne({ courseName: curCourse})
+                course.teachingAssistants.splice(curCourse.teachingAssistants.indexOf(memberID),1)
                 try {
-                   await curCourse.save()
+                   await course.save()
                 } catch (Err) {
                     console.log(Err)
                    return false
@@ -959,21 +911,21 @@ async function deleteTeacher(memberID, courses){
         return true
     }
     async function deleteCoordinator(memberID, courses){
+
+
         for(var i=0; i<courses.length; i++){
-
             curCourse = courses[i]
-            console.log(curCourse)
-            var course = await course_model.findOne({ courseName: curCourse})
-            if(course.courseCoordinator==memberID){
-                console.log("i am cc")
-
+            if(curCourse.courseCoordinator==memberID){
+               const course = await course_model.findOne({ courseName: curCourse})
                course.courseCoordinator="unassigned"
                try {
                    await course.save()
                } catch (error) {
                    return false
                }
-            } 
+
+            }
+         
         }
        
         return true
@@ -981,17 +933,13 @@ async function deleteTeacher(memberID, courses){
 
 router.route('/deleteStaffMember')
 .delete(async (req,res)=>{
-    console.log(req.body.id)
-    console.log(req.body.id == "academic-46")
-
     const staff = await staff_members_models.findOne({ memberID: req.body.id })
         if(staff){
-    
+
             for(var i = 0; i< staff.role.length ; i++ ){
-                //var courses = staff.course
+                var courses = staff.course
                 var del = false
-                const r = staff.role[i]
-                switch(r){
+                switch(role){
                     case "headOfdepartments":
                         del = deleteHOD(staff.department, staff.faculty)
                        if(!del){
@@ -1001,15 +949,14 @@ router.route('/deleteStaffMember')
                         break;
                     
                     case "teachingAssistants","courseInstructors":
-                        del = deleteTeacher(staff.memberID,staff.course)
+                        del = deleteTeacher(staff.memberID,courses)
                        if(!del){
                             res.send("error deleting ci or ta")
                        }
 
                         break;
                     case "courseCoordinators":
-                        console.log("hereee")
-                         del = deleteCoordinator(staff.memberID,staff.course)
+                         del = deleteCoordinator(staff.memberID,courses)
                         if(!del){
                             res.send("error deleting hod")
                         }
@@ -1021,18 +968,7 @@ router.route('/deleteStaffMember')
 
             }
 
-            const oldofficeName = staff.officeLocation
-            const oldoffice = await location_model.findOne({ name: oldofficeName })
-            oldoffice.officeMembers = oldoffice.officeMembers -1
-            try {
-                console.log('saving office')
-                await oldoffice.save()
 
-
-            }catch (Err) {
-                console.log(Err)
-                res.send("error saving office")
-            }
 
             await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
                 if (err) {
@@ -1041,7 +977,6 @@ router.route('/deleteStaffMember')
                   res.json(result);
                 }
               });
-            res.send("deleted")
 
         }
 
@@ -1091,35 +1026,6 @@ router.route('/updateStaff')
         if(req.body.annualLeavesBalance!=null){
             staff.annualLeavesBalance = req.body.annualLeavesBalance
         }
-        
-
-            if (req.body.faculty != null && staffType=="academic") {
-         
-                faculty = await faculty_model.findOne({ facultyName: req.body.faculty })
-                if(faculty)
-                    staff.faculty = req.body.faculty
-                else{
-                    res.send("this is not a valid faculty, check faculty table and pick an existing one")
-                }
-            }
-
-            if (req.body.department != null ) {
-          
-
-                var found = false
-                for(var i=0; i<staff.faculty.departments.length; i++){
-                currDep = staff.faculty.departments[i]
-                if(req.body.department == currDep.name){
-                    found = true
-                    break;
-                }
-            }
-
-            if(!found){
-                res.send("department not found in this faculty")
-            }
-            staff.department = req.body.department
-        }        
         if(req.body.office!=null){
 
             const newoffice = await location_model.findOne({ name: req.body.office })
@@ -1420,10 +1326,10 @@ async function acceptedLeave(date,staff){
              f= true
 
          }
-
          else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
             console.log("3")
              f=true
+
          }
          else{
             console.log("4")
@@ -1431,11 +1337,10 @@ async function acceptedLeave(date,staff){
     }
 }
 //console.log("ana tala3t" + f)
-return f 
-         
-    }
-
-
+ 
+}
+return f
+}
 
 
 
@@ -1569,50 +1474,6 @@ function extraHours(staff,hours,flag,day1,day2){
 staff.markModified("ExtraHours")
 staff.save()
 }
-//////////////
-
-router.route('/viewMissingDays')
-.get(async (req, res) => {
-    const staff =  await staff_members_models.find()
-    var arr;
-    var resArr=[]
-
-    for (var k=0 ; k<staff.length;k++) {
-
-         arr = staff[k].missingDays
-        if(arr.length!=0 && arr[arr.length-1]!=0){
-            //var memID = staff[k].memberID
-        resArr.push({"staffMemberID":staff[k].memberID} , {"missing days this month:":arr[arr.length-1]})
-    }
-    }
-
-    console.log("here")
-
-    res.send(resArr)
-
-})
-
-router.route('/viewMissingHours')
-.get(async (req, res) => {
-    const staff =  await staff_members_models.find()
-    var arr;
-    var resArr=[]
-
-    for (var k=0 ; k<staff.length;k++) {
-
-         arr = staff[k].missingHours
-        if(arr.length!=0 && arr[arr.length-1]!=0){
-            //var memID = staff[k].memberID
-        resArr.push({"staffMemberID":staff[k].memberID} , {"missing hours this month:":arr})
-    }
-    }
-
-    console.log("here")
-
-    res.send(resArr)
-
-})
-
 //////////////
 
 
