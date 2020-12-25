@@ -5,6 +5,7 @@ const course_model=require('../models/course_model').model
 const slot_model=require('../models/slot_model').model
 const dayoff_model=require('../models/dayOffRequest').model
 const leaves_model=require('../models/leaves_model').model
+const replacementRequest_model=require('../models/replacement_requests').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
@@ -12,22 +13,21 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+
 //working
 router.route('/assignInstructor')
 .post(async (req,res)=>{
     const coursename=req.body.courseName
     const instructorid=req.body.instructorId
     const staffId=req.user._id;
+    var done=false
 
     const staff=await staff_members_models.findOne({ _id: staffId })
     const instructor=await staff_members_models.findOne({memberID: instructorid})
     if(staff){
-        console.log(staff.department)
-        console.log(staff.faculty)
 
         const faculty=await faculty_model.findOne({facultyName: staff.faculty})
         if(faculty){
-            console.log("is fac")
             var department;
             const depArray=faculty.departments
             depArray.forEach(d => {
@@ -35,61 +35,65 @@ router.route('/assignInstructor')
                 department= d
             });
             if(department){ 
-                console.log("is dep")
-  
+ 
                 const courseArray=department.courses
-                console.log(courseArray.length)
                 courseArray.forEach( async(c) => {
-                    console.log(c)
 
                     if(c == coursename){
-                        console.log("is course")
-
+                        done =true
                         const course= await course_model.findOne({courseName:coursename})
-                        if(instructor){
-                            console.log("is ins")
-                            instructor.course.push(coursename)
-                            if(!instructor.role.includes("courseInstructors")){
-                                instructor.role.push("courseInstructors")
-                            }
-                            instArray=course.instructors
-                        //    if(!instArray.findOne(instructorid)){
-                                await instArray.push(instructorid)
-                                try{
-                                    await course_model.findOneAndUpdate({courseName:coursename},{instructors:instArray})
-                                    await instructor.save()
-                                    res.send("instructor assigned successfully")
 
-                                }
-                                catch(err){
-                                    console.log(err)
-                                    console.log(course)
-                                }
-                        //    }
-                            // else{
-                            //     res.send("instructor is already assigned ")
-                            // }
+                        if(course){
+                        if(instructor){
+                            if(!instructor.course.includes(coursename)){
+                                instructor.course.push(coursename)
+                            }
+                            if(!instructor.role.includes("courseInstructors")){
+                                instructor.role.push("courseInstructors")                                
+                            }
+                            await instructor.save()
+
+                            if(!course.instructors.includes(instructorid)){
+                                course.instructors.push(instructorid)
+                                await course.save()
+                                res.send("instructor assigned successfully")
+                            }
+                            else{
+                                res.send("instructor is already assigned to this course")
+                            }
+                            
+                        
                         }
                         else{res.send("inst not found")}
                     }
-                });       
+                    else{res.send("course not found")}
+                    return
+                    }
+                });
+                if(!done)
+                    res.send("course not in this department")
             }
             else{res.send("dept not found")} 
         }
         else{res.send("no such faculty")}
     }
     else{res.send("HOD not found")}
-    
+
 })
-////not complete i dont know what attributes should the hod update
+
+//working
 router.route('/updateInstructor')
-.put(async (req,res)=>{
+.post(async (req,res)=>{
     const coursename=req.body.courseName
-    const instructorid=req.body.instructorId
+    const oldinstructorid=req.body.oldInstructorId
+    const newinstructorid=req.body.newInstructorId
     const staffId=req.user._id;
+    var done=false
 
     const staff=await staff_members_models.findOne({ _id: staffId })
-    const instructor=await staff_members_models.findOne({memberID: instructorid})
+    const Oinstructor=await staff_members_models.findOne({memberID: oldinstructorid})
+    const Ninstructor=await staff_members_models.findOne({memberID: newinstructorid})
+
     if(staff){
         const faculty=await faculty_model.findOne({facultyName: staff.faculty})
         if(faculty){
@@ -99,21 +103,55 @@ router.route('/updateInstructor')
             if(d.name == staff.department)
                 department= d
             });
-        if(department){
-            //not sure
-            //mesh 3arfa el mafrod ye update attributes ehh
-            try{
-                 const course = await department.courses.findOne({courseName: coursename}, {instructor:instructor})
-            //   const course = await course_model.findOneAndUpdate({courseName: coursename}, {instructor:instructor})
-                res.send(course)
-        }catch(err){
-                console.log(err)
-           
+            if(department){   
+                const courseArray=department.courses
+               for(let i=0; i<courseArray.length; i++){
+                   var c=courseArray[i]
+                    if(c == coursename){
+                        done =true
+                        const course= await course_model.findOne({courseName:coursename})
+                        if(course){
+                            if(Oinstructor){
+                                if(Ninstructor){
+
+                                const instArray=course.instructors
+                                instArray.forEach(inst => {
+                                    if(inst == oldinstructorid)
+                                    course.instructors.remove(inst)
+                                    });
+                                await course.save()
+                                
+                                if(!Ninstructor.role.includes("courseInstructors")){
+                                    Ninstructor.role.push("courseInstructors")
+                                }
+                                if(!Ninstructor.course.includes(coursename)){
+                                    Ninstructor.course.push(coursename)
+                                }
+                                course.instructors.push(newinstructorid)
+                                await Ninstructor.save()
+                                await course.save()
+
+                                for(let i=0;i<Oinstructor.course.length;i++){
+                                    var crs=Oinstructor.course[i]
+                                    if(crs==coursename)
+                                        Oinstructor.course.remove(crs)
+                                }
+                                await Oinstructor.save()
+                                res.send("instructor updated successfully")
+                                }
+                                else{res.send("no new instructor with this id")}
+                            }
+                            else{res.send("no old instructor with this id")}
+                    }else{res.send("no course with this id")}
+                return
+                }   
+            } 
+            if(!done)
+                res.send("course not in this department")
             }
+            else{res.send("dept not found")} 
         }
-        else{res.send("dept not found")} 
-    }
-    else{res.send("no such faculty")}
+        else{res.send("no such faculty")}
 }
 else{res.send("HOD not found")}
 })
@@ -124,6 +162,8 @@ router.route('/deleteInstructor')
     const coursename=req.body.courseName
     const instructorid=req.body.instructorId
     const staffId=req.user._id;
+    var done =false 
+    var donedel=false
 
     const staff=await staff_members_models.findOne({ _id: staffId })
     if(staff){
@@ -139,32 +179,36 @@ router.route('/deleteInstructor')
                 const courseArray=department.courses
                 courseArray.forEach(async c => {
                     if(c == coursename){
+                        done =true
                         const course= await course_model.findOne({courseName:coursename})
+                        if(course){
                         const instArray=course.instructors
-                        instArray.forEach(inst => {
-                            if(inst == instructorid)
-                                instArray.remove(inst)
-                            });
-                            try{
-                                await course_model.findOneAndUpdate({courseName:coursename},{instructors:instArray})
-                                res.send("instructor deleted successfully")
-
+                        instArray.forEach(async inst => {
+                            if(inst == instructorid){
+                                course.instructors.remove(inst)
+                                await course.save()
+                                donedel=true
+                                return 
                             }
-                            catch(err){
-                                console.log(err)
-                                console.log(course)
-                            }    
-                    }
+                            });
+                        
+                        const tmp = await staff_members_models.findOne({memberID:instructorid})
+                        for(let i=0;i<tmp.course.length;i++){
+                            var crs=tmp.course[i]
+                            if(crs==coursename)
+                            tmp.course.remove(crs)
+                        }
+                        await tmp.save()
+
+                            res.send("instructor deleted successfully")   
+   
+                    }else{res.send("no course with this id")}
+                    return
+                }
                 });
-            // if(course){
-            // const instArray=course.instructors
-            // instArray.forEach(inst => {
-            //     if(inst == instructorid)
-            //         instArray.remove(inst)
-            //         return
-            // });
-            // }
-            // else{res.send("course not found")}
+                if(!done)
+                res.send("course not in this department")
+            
         }
         else{res.send("dept not found")}
     }
@@ -173,55 +217,26 @@ router.route('/deleteInstructor')
     else{res.send("HOD not found")}
 })
 
-//working but array is empty problem 
+//working 
 router.route('/viewAllStaff')
 .get(async(req,res)=>{
     const staffId=req.user._id;
     const staff=await staff_members_models.findOne({ _id: staffId })
-    var staffArray =[];
+    var staffArray =[]
     if(staff){
-        const faculty=await faculty_model.findOne({facultyName: staff.faculty})
-        if(faculty){
-            var department;
-            const depArray=faculty.departments
-            depArray.forEach(d => {
-            if(d.name == staff.department)
-                department= d
-            });
-            if(department){
-                const courseArray=department.courses
-                await courseArray.forEach(async c=> {
-                    if(c!=null){
-                    //    console.log("entered")
-                        var course =await course_model.findOne({courseName:c})
-                        var instArray=course.instructors
-                        var taArray=course.teachingAssistants
-                    //    console.log(course)
+        const staffs=await staff_members_models.find({department:staff.department})
 
-                        await instArray.forEach(async inst => {
-                            var instructor= await staff_members_models.findOne({memberID: inst})
-                            await staffArray.push(helper(instructor))
-                            await console.log("in instructors "+staffArray)
-                        });
-                        await console.log("after instructors "+staffArray)
+        staffs.forEach(s => {
+            if(s.memberID != staff.memberID)
+                staffArray+=helper(s)+"\n"
+        });
+        res.send(staffArray)
 
-                        await taArray.forEach(async ta => {
-                            var teachingAssistant= await staff_members_models.findOne({memberID: ta})
-                            await staffArray.push(helper(teachingAssistant))
-                        });
-                        await console.log("out "+staffArray)
-                }});
-                await res.send(staffArray)
-                await console.log("bara el loop: "+staffArray)
-            //    res.send(staffArray)
-            }
-            else{res.send("dept not found")}
-    }
     }
     else{res.send("HOD not found")}
 })
 
-//working but array is empty problem
+//working 
 router.route('/viewStaffinCourse')
 .get(async(req,res)=>{
     const coursename=req.body.courseName
@@ -230,43 +245,25 @@ router.route('/viewStaffinCourse')
     var staffArray=[]
     const staff=await staff_members_models.findOne({ _id: staffId })
     if(staff){
-        const faculty=await faculty_model.findOne({facultyName: staff.faculty})
-        if(faculty){
-            var department;
-            const depArray=faculty.departments
-            depArray.forEach(d => {
-            if(d.name == staff.department)
-                department= d
+
+        const staffs=await staff_members_models.find({department:staff.department})
+
+        staffs.forEach(s => {
+            var courses= s.course
+            courses.forEach(c => {
+                if(c == coursename)
+                    staffArray+=helper(s)+"\n"
             });
-        if(department){
-            const courseArray=department.courses
-            courseArray.forEach(async c => {
-                if(c == coursename){
-                    const course= await course_model.findOne({courseName:coursename})
-                    const instArray=course.instructors
-                const taArray=course.teachingAssistants
+            
+        });
+        res.send(staffArray)
 
-                await instArray.forEach(async inst => {
-                    var instructor= await staff_members_models.findOne({memberID: inst})
-                    staffArray.push(helper(instructor))
-                //    res.send(instructor)
-                });
-                await taArray.forEach(async ta => {
-                    var teachingAssistant= await staff_members_models.findOne({memberID: ta})
-                    staffArray.push(helper(teachingAssistant))
-                //     res.send(teachingAssistant)
-                 });
-            }});
-            res.send(staffArray)
-
-        }
-        else{res.send("dept not found")}
-    }
+        
 }
     else{res.send("HOD not found")}
 })
 
-//working but array is empty problem
+//working
 router.route('/viewDayOffAllStaff')
 .get(async(req,res)=>{
     const staffId=req.user._id;
@@ -274,36 +271,14 @@ router.route('/viewDayOffAllStaff')
     const staff=await staff_members_models.findOne({ _id: staffId })
 
     if(staff){
-        const faculty=await faculty_model.findOne({facultyName: staff.faculty})
-        if(faculty){
-            var department;
-            const depArray=faculty.departments
-            depArray.forEach(d => {
-            if(d.name == staff.department)
-                department= d
-            });
-        if(department){
-            const courseArray=department.courses
-            await courseArray.forEach(async c => {
-                if(c!=null){
-                var course= await course_model.findOne({courseName:c})
-                var instArray=course.instructors
-                var taArray=course.teachingAssistants
 
-                await instArray.forEach(async inst => {
-                    var instructor= await staff_members_models.findOne({memberID: inst})
-                    staffArray.push("name: "+ instructor.name + " day off: "+instructor.dayOff)
-                    console.log(staffArray)
-                });
-                await taArray.forEach(async ta => {
-                    var teachingAssistant= await staff_members_models.findOne({memberID: ta})
-                     staffArray.push("name: "+ teachingAssistant.name + " day off: "+teachingAssistant.dayOff)
-                 });
-            }});
-            res.send(staffArray)
-        }
-        else{res.send("dept not found")}
-    }
+        const staffs=await staff_members_models.find({department:staff.department})
+        staffs.forEach(s => {
+            if(s.memberID != staff.memberID && s.staffType!="hr")
+                staffArray.push("name: "+ s.name + " day off: "+s.dayOff)
+        });
+        res.send(staffArray)
+
     }
     else{res.send("HOD not found")}
 })
@@ -315,48 +290,17 @@ router.route('/viewDayOffSingleStaff')
     const staffId=req.user._id;
 
     const staff=await staff_members_models.findOne({ _id: staffId })
-    const staffMember=await staff_members_models.findOne({ memberID : staffmemberid })
+    const staffMember=await staff_members_models.findOne({ memberID : staffmemberid, department:staff.department})
     if(staff){
-       const faculty=await faculty_model.findOne({facultyName: staff.faculty})
-        if(faculty){
-            var department;
-            const depArray=faculty.departments
-            depArray.forEach(d => {
-            if(d.name == staff.department)
-                department= d
-            });
-        if(department){
-            const courseArray=department.courses
-
-            await courseArray.forEach(async c => {
-                if(c!=null){
-                    var course=await course_model.findOne({courseName:c})
-                    var instArray=course.instructors
-                    var taArray=course.teachingAssistants
-
-                    await instArray.forEach(async inst => {
-                        if(staffmemberid==inst){
-                            var instructor= await staff_members_models.findOne({memberID: inst})
-                            res.send("name: "+ instructor.name + " day off: "+instructor.dayOff)
-                            return 
-                        }
-                    });
-                    await taArray.forEach(async ta => {
-                        if(staffmemberid==ta){
-                            var teachingAssistant= await staff_members_models.findOne({memberID: ta})
-                            res.send("name: "+ teachingAssistant.name + " day off: "+teachingAssistant.dayOff)
-                            return
-                        }
-                    });
-            }});
+        if(staffMember){
+        res.send("name: "+ staffMember.name + " day off: "+staffMember.dayOff)
         }
-        else{res.send("dept not found")}
-    }
+        else{res.send("staff member not found")}
     }
     else{res.send("HOD not found")}
 })
 
-//need to test
+//working
 router.route('/viewAllRequests')
 .get(async(req,res)=>{
     const staffId=req.user._id;
@@ -364,45 +308,108 @@ router.route('/viewAllRequests')
     const staff=await staff_members_models.findOne({ _id: staffId })
 
     if(staff){
-        const faculty=await faculty_model.findOne({facultyName: staff.faculty})
 
         const dayoffRequests=staff.dayOffRequestsHOD
-        await dayoffRequests.forEach(async d => {
+
+        for (let i = 0; i < dayoffRequests.length; i++) {
+            var d= dayoffRequests[i]
             var s= await staff_members_models.findOne({memberID:d})
             if(s){
                 var request= await dayoff_model.findOne({senderId: d})
-                if(request){
-                    staffRequests.push(s.name+" change day off request: "+" pending:" + request.pending+" accepted: "+ request.accepted
-                    +" reason: "+ request.reason)
-                }
-                }
-        });
+               if(request){
+                    staffRequests.push("Staff name: "+s.name+", change day off request: "+" pending:" + request.pending+", accepted: "+ request.accepted
+                    +", reason: "+ request.reason)
+               }
+               }
+        }
 
         const leaveRequests=staff.leaveRequestsHOD
-        await leaveRequests.forEach(async l => {
-            var leaverequest= await leaves_model.findOne({_id:l._id})
+
+        for (let i = 0; i < leaveRequests.length; i++) {
+            var l = leaveRequests[i]
+            var leaverequest= await leaves_model.findOne({_id:l})
             if(leaverequest){
-                var s= await staff_members_models.findOne({memberID: leaverequest.staffID})
-                if(s){
-                    staffRequests.push(s.name+" leave request: "+" pending:" + leaverequest.pending+" accepted: "+ leaverequest.accepted
-                    +" reason: "+ leaverequest.reason)
-                }
+                var s2= await staff_members_models.findOne({memberID: leaverequest.staffID})
+                if(s2){                
+                    staffRequests.push("Staff name: "+s2.name+", leave request: "+" type:"+ leaverequest.type+", pending:" + leaverequest.pending+", accepted: "+ leaverequest.accepted
+                    +", reason: "+ leaverequest.reason)
+                }   
             }
-        });
-        res.send(staffRequests)
+        }
+        res.send( staffRequests)
     }
     else{res.send("HOD not found")}
+   
 })
+
+//working
+router.route('/viewChangeDayOffRequests')
+.get(async(req,res)=>{
+    const staffId=req.user._id;
+    var staffRequests=[]
+    const staff=await staff_members_models.findOne({ _id: staffId })
+
+    if(staff){
+
+        const dayoffRequests=staff.dayOffRequestsHOD
+
+        for (let i = 0; i < dayoffRequests.length; i++) {
+            var d= dayoffRequests[i]
+            var s= await staff_members_models.findOne({memberID:d})
+            if(s){
+                var request= await dayoff_model.findOne({senderId: d})
+               if(request){
+                    staffRequests.push("Staff name: "+s.name+", change day off request: "+" pending:" + request.pending+", accepted: "+ request.accepted
+                    +", reason: "+ request.reason)
+               }
+               }
+        }
+
+        res.send( staffRequests)
+    }
+    else{res.send("HOD not found")}
+   
+})
+
+//working
+router.route('/viewLeaveRequests')
+.get(async(req,res)=>{
+    const staffId=req.user._id;
+    var staffRequests=[]
+    const staff=await staff_members_models.findOne({ _id: staffId })
+
+    if(staff){
+
+        const leaveRequests=staff.leaveRequestsHOD
+
+        for (let i = 0; i < leaveRequests.length; i++) {
+            var l = leaveRequests[i]
+            var leaverequest= await leaves_model.findOne({_id:l})
+            if(leaverequest){
+                var s2= await staff_members_models.findOne({memberID: leaverequest.staffID})
+                if(s2){                
+                    staffRequests.push("Staff name: "+s2.name+", leave request: "+" type:"+ leaverequest.type+", pending:" + leaverequest.pending+", accepted: "+ leaverequest.accepted
+                    +", reason: "+ leaverequest.reason)
+                }   
+            }
+        }
+        res.send( staffRequests)
+    }
+    else{res.send("HOD not found")}
+   
+})
+
 
 //working
 router.route('/viewCourseCoverage')
 .get(async (req,res)=>{
     const coursename=req.body.courseName
     const staffId=req.user._id;
+
     const staff=await staff_members_models.findOne({ _id: staffId })
-//    const s=count( await slot_model.find({courseTaught: coursename}))
     const tmp=await slot_model.find({courseTaught: coursename})
     const s=tmp.length
+    var done=false
 
     if(staff){
         const faculty=await faculty_model.findOne({facultyName: staff.faculty})
@@ -417,14 +424,18 @@ router.route('/viewCourseCoverage')
             const courseArray=department.courses
             await courseArray.forEach(async c => {
                 if(c == coursename){
+                    done=true
                     const course= await course_model.findOne({courseName:coursename})
-                    const coverage= (s/course.teachingSlotsNumber) * 100
-                    res.send("Course Name: "+coursename+", Coverage: "+coverage+"%")
+                    if(course){
+                        const coverage= (s/course.teachingSlotsNumber) * 100
+                        res.send("Course Name: "+coursename+", Coverage: "+coverage+"%")
+                        return
+                    }
+                    else{res.send("course not found")}
             }});
-            // if(course){
-               
-            // }
-            // else{res.send("course not found")}
+            if(!done)
+                res.send("course is not in this department")
+
         }
         else{res.send("dept not found")}
     }
@@ -432,12 +443,12 @@ router.route('/viewCourseCoverage')
     else{res.send("HOD not found")}
 })
 
-//working but array is empty problem
-router.route('/ViewTeachingAssignments')
+//working
+router.route('/viewTeachingAssignments')
 .get(async(req,res)=>{
     const coursename=req.body.courseName
     const staffId=req.user._id;
-    var teachingArray=["Course Name: "+coursename]
+    var teachingArray=[]
 
     const staff=await staff_members_models.findOne({ _id: staffId })
     if(staff){
@@ -451,36 +462,32 @@ router.route('/ViewTeachingAssignments')
             });
             if(department){
                 const courseArray=department.courses
-                courseArray.forEach(async c => {
+                for(let i=0; i<courseArray.length; i++){
+
+                    var c=courseArray[i]
+
                     if(c == coursename){
-                        course= await course_model.findOne({courseName:coursename})
-                        const instArray=course.instructors
-                        const taArray=course.teachingAssistants
+                        const course= await course_model.findOne({courseName:coursename})
+                        if(course){
 
-                        await instArray.forEach(async inst => {
-                        var instructor= await staff_members_models.findOne({memberID: inst})
-                        const slot =await slot_model.findOne({academicMember: inst})
-                        if(slot){
-                        //    console.log(slot)
-                            teachingArray.push("Instructor name: "+instructor.name+ " slot type: "+ slot.type+" slot time: "+slot.time)
-                        //    console.log(teachingArray)
-                        }
-                        console.log("in instr: "+teachingArray )
-                        });
-                        
-                        console.log("in between: "+teachingArray )
+                            var slots=course.teachingSlots
+                            for(let i=0; i<slots.length; i++){
+                                var slotId = slots[i]
+                                var slot =await slot_model.findOne({numberID: slotId})
 
-                        await taArray.forEach(async ta => {
-                        var teachingAssistant= await staff_members_models.findOne({memberID: ta})
-                        var slot =await slot_model.findOne({academicMember: ta})
-                        if(slot){
-                            teachingArray.push("TA name: "+teachingAssistant.name+ " slot type: "+ slot.type+" slot time: "+slot.time)
-                        }
-                        console.log("in ta: "+teachingArray )
-                        });
-                        console.log("after: "+teachingArray )
-                }});
-                res.send(teachingArray)
+                                if(slot){
+                                    var s=await staff_members_models.findOne({memberID: slot.academicMember})
+                                    if(s){
+                                        teachingArray.push("Staff name: "+s.name+ ", course taught: "+coursename+
+                                        ", slot type: "+ slot.type+", day: "+slot.day +", time: "+slot.time+
+                                        ", location: "+slot.location)
+                                    }
+                                }
+                            }
+                        }                                       
+                    }
+                }
+            res.send(teachingArray)
             }  
             else{res.send("dept not found")}
     }
@@ -488,47 +495,70 @@ router.route('/ViewTeachingAssignments')
     else{res.send("HOD not found")}
 })
 
-//need to test
+//working
 router.route('/acceptChangeDayOffRequest')
 .post(async(req,res)=>{
     const staffId=req.user._id;
     const staffmemberid= req.body.staffId;
+    var o=""
+    var done=false
 
     const staff=await staff_members_models.findOne({ _id: staffId })
     if(staff){
         const requestsArray=staff.dayOffRequestsHOD
-        requestsArray.forEach(async sId => {
+
+        for(let i=0;i<requestsArray.length;i++) {
+            var sId=requestsArray[i]
+
             if(sId==staffmemberid){
+                done=true
                 var request= await dayoff_model.findOne({senderId: sId})
                 if(request){
                     if(request.pending && !request.accepted){
                         request.accepted=true
                         request.pending=false
-                        res.send("request accepted successfully")
+
+                        await request.save()
+
+                        const s=await staff_members_models.findOne({memberID: staffmemberid})
+                        s.dayOff=request.day
+                        await s.save()
+
+                        o="request accepted successfully"
+
+                        
                     }
+                    else 
+                        o="request is already accepted"
                 }
-                else{
-                    res.send("No request with this sender id")}
+                else
+                    o="No request with this sender id"
                 }
-            else{res.send("No request with this sender id")}
-        });
+        }
+        if(!done)
+            o="this staff member has no change day off request"
+        res.send(o)
     }
     else{res.send("HOD not found")}
 })
 
-//need to test
+//working
 router.route('/rejectChangeDayOffRequest')
 .post(async(req,res)=>{
     const staffId=req.user._id;
     const staffmemberid= req.body.staffId;
     const comment= req.body.comment
+    var o=""
 
     const staff=await staff_members_models.findOne({ _id: staffId })
     if(staff){
         const requestsArray=staff.dayOffRequestsHOD
-        requestsArray.forEach(async sId => {
+       for(let i=0; i<requestsArray.length; i++){
+            var sId=requestsArray[i]
+
             if(sId==staffmemberid){
                 var request= await dayoff_model.findOne({senderId: sId})
+
                 if(request){
                     if(request.pending){
                         request.accepted=false
@@ -536,26 +566,23 @@ router.route('/rejectChangeDayOffRequest')
                         if(comment!=null){
                             request.comment=comment
                         }
-                        res.send("request rejected")
+                        await request.save()
+                        o="request rejected"
                     }
                 }
                 else{
-                    res.send("No request with this sender id")}
+                    o="No request with this sender id"}
             }
-            else{res.send("No request with this sender id")}
-        });
+        }
+        res.send(o)
     }
     else{res.send("HOD not found")}
 })
 
-//not finished lesa part el replacement
-//momken law type annual ne3mel attribute esmo replacement found if true i will accept el request
-//if false i will reject
-//need to test
+//working
 router.route('/acceptLeaveRequest')
 .post(async(req,res)=>{
     const staffId=req.user._id;
-//    const staffmemberid= req.body.staffId;
     const reqId= req.body.requestId;
 
     const staff=await staff_members_models.findOne({ _id: staffId })
@@ -568,36 +595,49 @@ router.route('/acceptLeaveRequest')
                     if(request.pending && !request.accepted){
                         request.accepted=true
                         request.pending=false
-                        res.send("request accepted successfully")
+                        await request.save()
+                        
                     }
-                    if(request.type=="Annual"){
+
+                    const type=request.type
+
+                    if(type=="Annual"){
+                        
+                        const s =await staff_members_models.findOne({memberID:request.staffID})
+                        s.annualLeavesBalance=s.annualLeavesBalance-1
+                        await s.save()
+
                         const id=request.replacementRequest
                         const replacement=await replacementRequest_model.findOne({_id:id})
-                        const sender=await staff_members_models.findOne({memberID: replacement.senderId})
-                        const receiver=await staff_members_models.findOne({memberID:replacement.receiverId})
-                        const slot = replacement.slot
 
-                        const receiverSlots= receiver.slotsToReplace
-                        receiverSlots.push(slot)
-                        try{
-                        await staff_members_models.findOneAndUpdate({memberID:receiver},{slotsToReplace:receiverSlots})
-                        }
-                        catch(err){
-                        console.log(err)
-                        console.log(course)
-                        }
+                        if(replacement){
+                            const sender=await staff_members_models.findOne({memberID: replacement.senderId})
+                            const receiver=await staff_members_models.findOne({memberID:replacement.receiverId})
 
-                        const senderSlots=sender.slotsReplaced
-                        senderSlots.push(slot)
-                        try{
-                        await staff_members_models.findOneAndUpdate({memberID:sender},{slotsReplaced:senderSlots})
-                        }
-                        catch(err){
-                        console.log(err)
-                        console.log(course)
-                        }
-    
-                        }
+                            receiver.slotsToReplace.push(id)
+                            sender.slotsReplaced.push(id)
+
+                            await receiver.save()
+                            await sender.save()
+
+                            console.log("end of annual")
+                        }      
+                    }
+                    else if(type=="Accidental")  {
+
+                        const s = await staff_members_models.findOne({memberID:request.staffID})
+                        s.annualLeavesBalance=s.annualLeavesBalance-1
+                        s.totalAccidentalLeave=s.totalAccidentalLeave+1
+                        await s.save()
+                    }
+                    else if(type=="Compensation") {
+
+                        const s = await staff_members_models.findOne({memberID:request.staffID}) 
+                        s.compensationDay= request.compensatingDay
+                        s.compensationSession=true
+                        await s.save()
+                    }
+                    res.send("request accepted successfully") 
                     }
                 }
             });
@@ -606,11 +646,10 @@ router.route('/acceptLeaveRequest')
     else{res.send("HOD not found")}
 })
 
-//need to test
+//working
 router.route('/rejectLeaveRequest')
 .post(async(req,res)=>{
     const staffId=req.user._id;
-//    const staffmemberid= req.body.staffId;
     const reqId= req.body.requestId;
     const comment=req.body.comment
 
@@ -620,7 +659,7 @@ router.route('/rejectLeaveRequest')
         const leavesArray=staff.leaveRequestsHOD
         leavesArray.forEach(async l => {
         if(l==reqId){
-            const request = await leaves_model.findOne({id:l})
+            const request = await leaves_model.findOne({_id:l})
             if(request){
                 if(request.pending){
                     request.accepted=false
@@ -628,6 +667,7 @@ router.route('/rejectLeaveRequest')
                     if(comment!=null){
                           request.comment=comment
                     }
+                    await request.save()
                     res.send("request rejected")
                     }
             }
