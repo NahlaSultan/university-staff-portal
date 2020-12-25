@@ -16,12 +16,12 @@ router.route('/viewCoverage')
 .get(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const tmp=await slot_model.find({courseTaught: coursename})
+    const tmp=await slots_model.find({courseTaught: coursename})
     if(staff){ 
        for(let i=0;i<staff.course.length;i++){
             var s=0
             for(let j=0;j<staff.slotsAssigned.length;j++){
-                const slot =await slot_model.find({numberID:slotsAssigned[j]})
+                const slot =await slots_model.find({numberID:slotsAssigned[j]})
                 if(slot.courseTaught==staff.course)
                 s=s+1
             }
@@ -86,6 +86,7 @@ router.route('/assignCourseCoordinator')
         if(staff.course.includes(req.body.courseName)){
             if(coordinator.course.includes(req.body.courseName) ){
                 course.courseCoordinator=coordinator.memberID
+                coordinator.coordinatorCourse.push(req.body.courseName)
                 //console.log(coordinator._id)
                 coordinator.role.push("courseCoordinators")
                 //coordinator.course.push(course.courseName)
@@ -150,7 +151,7 @@ router.route('/updateAssignedCourse')
 .post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const academicMember = await staff_members_models.findOne({ email: req.body.email })
+    const academicMember = await staff_members_models.findOne({ memberID: req.body.memberID })
     if(staff){  
         const course = await course_model.findOne({ courseName: req.body.courseName })
         const memberRole= academicMember.role
@@ -200,8 +201,8 @@ router.route('/assignSlots')
 .post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const academicMember = await staff_members_models.findOne({ email: req.body.email })
-    const slot= await slot_model.findOne({ numberID: req.body.numberID})
+    const academicMember = await staff_members_models.findOne({ memberID: req.body.memberID })
+    const slot= await slots_model.findOne({ numberID: req.body.numberID})
     if(staff){ 
         //console.log(slot)
         if(slot.assignedFlag==false){
