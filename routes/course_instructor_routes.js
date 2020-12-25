@@ -16,22 +16,24 @@ router.route('/viewCoverage')
 .get(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const tmp=await slot_model.find({courseTaught: coursename})
+    //const tmp=await slots_model.find({courseTaught: coursename})
     if(staff){ 
+        var array=[]
        for(let i=0;i<staff.course.length;i++){
+           const course= await course_model.findOne({courseName:staff.course[i]})
             var s=0
             for(let j=0;j<staff.slotsAssigned.length;j++){
                 const slot =await slot_model.find({numberID:slotsAssigned[j]})
                 if(slot.courseTaught==staff.course)
                 s=s+1
             }
-                    const totalNo=staff.course[i].teachingSlotsNumber
-                    const coverage= (s/course.teachingSlotsNumber) * 100
-                    res.send("Coverage: "+coverage+"%")
+                    const totalNo= await course.teachingSlots.length
+                    const coverage= (s/totalNo) * 100
+                    array.push(staff.course[i]+ "->"+"Coverage: "+coverage+"%")
             }
             // if(course){
                
-            // }
+            res.send(array)
             // else{res.send("course not found")}
         
        
@@ -79,7 +81,7 @@ router.route('/assignCourseCoordinator')
 .post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const coordinator = await staff_members_models.findOne({ memberID: req.body.id })
+    const coordinator = await staff_members_models.findOne({ memberID: req.body.memberID })
     if(staff){  
         if(coordinator){
         const course = await course_model.findOne({ courseName: req.body.courseName })
@@ -150,7 +152,7 @@ router.route('/updateAssignedCourse')
 .post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const academicMember = await staff_members_models.findOne({ email: req.body.email })
+    const academicMember = await staff_members_models.findOne({ memberID: req.body.memberID })
     if(staff){  
         const course = await course_model.findOne({ courseName: req.body.courseName })
         const memberRole= academicMember.role
