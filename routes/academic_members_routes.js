@@ -1392,20 +1392,21 @@ router.route('/submitLeave')
                                 }
                                 else {
                                     const startDateUpdate = new Date(req.body.start)
-                                    startDateUpdate
-                                    console.log(startDateUpdate).setDate(startDateUpdate.getDate() + 1)
+                                    startDateUpdate.setDate(startDateUpdate.getDate() + 1)
+                                   // startDateUpdate
+                                  //  console.log(startDateUpdate).setDate(startDateUpdate.getDate() + 1)
                                     const compensationDay = new Date(req.body.compensation)
                                     console.log("initial compensationdayis" + compensationDay)
                                     compensationDay.setDate(compensationDay.getDate() + 1)
-                                    if (compensationDay.getMonth() != startDate.getMonth()) {
+                                    if (compensationDay.getMonth() != startDateUpdate.getMonth()) {
                                         return res.send("The compensation should be in the same month")
                                     }
                                     else {
                                         var days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
-                                        const slotDay = days[(compensationDay.getUTCDay()) + 2]
-                                        console.log("The compensation date is:" + compensationDay)
-                                        console.log("Day index" + compensationDay.getUTCDay())
-                                        console.log("The compensation day is" + slotDay)
+                                        const slotDay = days[(compensationDay.getUTCDay()) + 1]
+                                        console.log(compensationDay)
+                                        console.log(slotDay)
+                                      //  console.log("The compensation day is" + slotDay)
                                         if (slotDay != staff.dayOff) {
                                             return res.send("You should compensate on a day off")
                                         }
@@ -1419,7 +1420,7 @@ router.route('/submitLeave')
                                             submission: now.setHours(0, 0, 0, 0),
                                             pending: true,
                                             accepted: false,
-                                            start: startDate,
+                                            start: startDateUpdate,
                                             compensatingDay: compensationDay,
                                             commentWhySent: req.body.description
                                         })
