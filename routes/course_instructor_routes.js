@@ -14,36 +14,29 @@ const slots_model = require('../models/slot_model').model
 //viewcoverage
 router.route('/viewCoverage')
 .get(async(req,res,)=>{
-    const coursename=req.body.courseName
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const s=count( await slot_model.find({courseTaught: coursename}))
     const tmp=await slot_model.find({courseTaught: coursename})
     if(staff){ 
-        const faculty=await faculty_model.findOne({facultyName: staff.faculty})
-        if(faculty){
-            var department;
-            const depArray=faculty.departments
-            depArray.forEach(d => {
-            if(d.name == staff.department)
-                department= d
-            });
-        if(department){
-            const courseArray=department.courses
-            await courseArray.forEach(async c => {
-                if(c == coursename){
-                    const course= await course_model.findOne({courseName:coursename})
+       for(let i=0;i<staff.course.length;i++){
+            var s=0
+            for(let j=0;j<staff.slotsAssigned.length;j++){
+                const slot =await slot_model.find({numberID:slotsAssigned[j]})
+                if(slot.courseTaught==staff.course)
+                s=s+1
+            }
+                    const totalNo=staff.course[i].teachingSlotsNumber
                     const coverage= (s/course.teachingSlotsNumber) * 100
                     res.send("Coverage: "+coverage+"%")
-            }});
+            }
             // if(course){
                
             // }
             // else{res.send("course not found")}
-        }
-        else{res.send("dept not found")}
+        
+       
     }
-    }
+    
     else{res.send("Instructor not found")}
     //res.send(staff.courseCoverage+"")
 })
@@ -79,23 +72,27 @@ router.route('/viewCourseStaff')
 }
 
 })
+
+
 //assign coordinator
 router.route('/assignCourseCoordinator')
 .post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const coordinator = await staff_members_models.findOne({ email: req.body.email })
+    const coordinator = await staff_members_models.findOne({ memberID: req.body.id })
     if(staff){  
+        if(coordinator){
         const course = await course_model.findOne({ courseName: req.body.courseName })
         if(staff.course.includes(req.body.courseName)){
             if(coordinator.course.includes(req.body.courseName) ){
-        course.courseCoordinator=coordinator.memberID
-        //console.log(coordinator._id)
-        courseCoordinator.role.push("courseCoordinators")
-        courseCoordinator.coordinatorCourse.push(course.courseName)
-        course.save()
-        staff.save()
-        res.send("successfully assigned")}
+                course.courseCoordinator=coordinator.memberID
+                //console.log(coordinator._id)
+                coordinator.role.push("courseCoordinators")
+                //coordinator.course.push(course.courseName)
+                course.save()
+                coordinator.save()
+                res.send("successfully assigned")
+        }
         else{
              res.send("this academic member is not assigned to this course")
         }
@@ -103,8 +100,10 @@ router.route('/assignCourseCoordinator')
         else{
             res.send("the course is not yours")
         }
-    
+    }   
 }
+res.send("this coordinator id is not valid")
+
 
 })
 //remove assigned course from an academic member
@@ -162,7 +161,7 @@ router.route('/updateAssignedCourse')
                 course.teachingAssistants.push(academicMember.memberID)
                 else if (memberRole=="courseInstructors")
                 course.instructors.push(academicMember.memberID)
-                else res.send("invalid member mail")
+                else res.send("invalid member")
         academicMember.save()
         course.save()
         res.send("successfully added")}
@@ -204,13 +203,14 @@ router.route('/assignSlots')
     const academicMember = await staff_members_models.findOne({ email: req.body.email })
     const slot= await slot_model.findOne({ numberID: req.body.numberID})
     if(staff){ 
-        console.log(slot)
+        //console.log(slot)
         if(slot.assignedFlag==false){
             if(academicMember.course.includes(slot.courseTaught)){
                 console.log("heeyyyy")
               slot.assignedFlag=true
-       console.log(slot.assignedFlag)
+       //console.log(slot.assignedFlag)
        academicMember.slotsAssigned.push(slot.numberID)
+       slot.academicMember=academicMember.memberID
        slot.save()
        academicMember.save()
        res.send("Successfully done")

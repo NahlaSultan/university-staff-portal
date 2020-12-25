@@ -99,11 +99,14 @@ router.route('/addStaff')
                 var found = false
                 for(var i=0; i<faculty.departments.length; i++){
                 currDep = faculty.departments[i]
-                if(req.body.department == currDep.name)
-                found = true}
+                if(req.body.department == currDep.name){
+                    found = true
+                    break;
+                }
+            }
         
                 if(found)
-                    newUser.department = req.body.department
+                    newUser.department = req.body.department  
                 else{
                     console.log("heree")
 
@@ -142,7 +145,22 @@ router.route('/addStaff')
                 await newUser.save()
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
+                if(req.body.role== "headOfdepartments"){
+                    console.log("hod add ")
+                    console.log(faculty.departments[i].name)
+                    console.log(memberID)
+                    faculty.departments[i].headOfDepartment = memberID
+                    try{
+                        faculty.markModified('departments.'+i);
+                        await faculty.save()
+                        res.send(faculty)
+                    }
+                    catch (Err) {
+                        res.send("error saving hod in faculty")
+                    }
 
+                    
+                }
                 
                 if(staffType!="hr"){
 
@@ -216,6 +234,7 @@ router.route('/updateLocation')
         if(req.body.officeMembers!=null){
             location.officeMembers = req.body.officeMembers
         }
+
         if(req.body.newName!=null){
             const usedName = await location_model.findOne({ name: req.body.newName })
             if(usedName)
@@ -518,6 +537,25 @@ router.route('/updateDepartment')
 
                 dep.name = req.body.newName
         }
+        if(req.body.newFaculty!=null){
+            const newFaculty = await faculty_model.findOne({ facultyName: req.body.newFaculty })
+     
+            if (newFaculty) {  
+                newFaculty.departments.push(req.body.courseName)
+                faculty.departments.splice(indexOfDep, 1) 
+                faculty.markModified('departments.'+indexOfDep);
+                try{
+                    await faculty.save()
+                    await newFaculty.save()
+                }
+                catch (Err) {
+                    console.log(Err)
+                    res.send("error adding faculty")
+                }
+            }
+            res.send("new faculty isn't valid")
+        }
+
         if(req.body.hod!=null){
 
 
@@ -758,13 +796,40 @@ router.route('/updateCourse')
             //string form
             course.teachingSlotsNumber = req.body.teachingSlotsNumber         
         }
+        if(req.body.newDepartment!=null){
+            var newDepartmentFound = false
+            var newDepIndex = -1
+            for(var i=0; i<faculty.departments.length; i++){
+                currDep = faculty.departments[i]
+                if(req.body.newDepartment == currDep.name){
+                    newDepartmentFound = true
+                    newDepIndex = i
 
+                }
+            }
+            if(!newDepartmentFound){
+                res.send("this department isn't in "+ req.body.facultyName)
+            }
+            faculty.departments[newDepIndex].course.push(req.body.courseName)
+            faculty.departments[depIndex].course.splice(courseIndex, 1) 
+            faculty.markModified('departments.'+newDepIndex);
+            faculty.markModified('departments.'+depIndex);
+            try{
+                await faculty.save()
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("error adding faculty")
+            }
+
+        }
+    
         try {
             await course.save()
         }
         catch (Err) {
             console.log(Err)
-            res.send("error adding faculty")
+            res.send("error saving course")
         }
     res.send(course)    
     
@@ -813,39 +878,7 @@ router.route('/viewAttendance')
 
 })
 
-async function deleteHOD(depName, facName){
 
-    const faculty =  await faculty_model.findOne({ facultyName: facName})
-    if(faculty){
-        var indexOfDep =-1
-        var found = false
-        for(var i=0; i<faculty.departments.length; i++){
-            currDep = faculty.departments[i]
-            if(depName == currDep.name){
-                found = true
-                indexOfDep =i
-
-            }
-        }
-
-        if(!found){
-            return false
-        }
-
-        const dep = faculty.departments[indexOfDep]
-        dep.headOfDepartment = "unassigned"
-
-        try{
-            await faculty.save()
-        }
-        catch (Err) {
-            console.log(Err)
-            return false
-        }
-        return true
-    }
-    return false
-}
 
 async function deleteHOD(depName, facName){
 
@@ -868,8 +901,10 @@ async function deleteHOD(depName, facName){
 
         const dep = faculty.departments[indexOfDep]
         dep.headOfDepartment = "unassigned"
+        faculty.departments[indexOfDep]= dep
+        faculty.markModified('departments.'+indexOfDep);
 
-        try{
+         try{
             await faculty.save()
         }
         catch (Err) {
@@ -883,24 +918,37 @@ async function deleteHOD(depName, facName){
 
 async function deleteTeacher(memberID, courses){
 
-
+        console.log(courses)
         for(var i=0; i<courses.length; i++){
-            curCourse = courses[i]
+           // curCourse = courses[i]
+            const curCourse = await course_model.findOne({ courseName: courses[i] })
+           console.log(curCourse)
+
+
+            console.log(curCourse.instructors)
             if(curCourse.instructors.includes(memberID)){
-               const course = await course_model.findOne({ courseName: curCourse})
-               course.instructors.splice(curCourse.instructors.indexOf(memberID),1)
+              // const course = await course_model.findOne({ courseName: curCourse})
+               const index =curCourse.instructors.indexOf(memberID)
+               console.log("ins length before splice: " + curCourse.instructors.length)
+               curCourse.instructors.splice(index,1)
+               console.log("ins length after splice: " + curCourse.instructors.length)
+
                try {
-                   await course.save()
+                   await curCourse.save()
                } catch (error) {
                    return false
                }
 
             }
             if(curCourse.teachingAssistants.includes(memberID)){
-                const course = await course_model.findOne({ courseName: curCourse})
-                course.teachingAssistants.splice(curCourse.teachingAssistants.indexOf(memberID),1)
+               // const course = await course_model.findOne({ courseName: curCourse})
+                const index =curCourse.teachingAssistants.indexOf(memberID)
+                console.log("ta length before splice: " + curCourse.teachingAssistants.length)
+                curCourse.teachingAssistants.splice(index,1)
+                console.log("ta length after splice: " + curCourse.teachingAssistants.length)
+ 
                 try {
-                   await course.save()
+                   await curCourse.save()
                 } catch (Err) {
                     console.log(Err)
                    return false
@@ -911,21 +959,21 @@ async function deleteTeacher(memberID, courses){
         return true
     }
     async function deleteCoordinator(memberID, courses){
-
-
         for(var i=0; i<courses.length; i++){
+
             curCourse = courses[i]
-            if(curCourse.courseCoordinator==memberID){
-               const course = await course_model.findOne({ courseName: curCourse})
+            console.log(curCourse)
+            var course = await course_model.findOne({ courseName: curCourse})
+            if(course.courseCoordinator==memberID){
+                console.log("i am cc")
+
                course.courseCoordinator="unassigned"
                try {
                    await course.save()
                } catch (error) {
                    return false
                }
-
-            }
-         
+            } 
         }
        
         return true
@@ -933,13 +981,17 @@ async function deleteTeacher(memberID, courses){
 
 router.route('/deleteStaffMember')
 .delete(async (req,res)=>{
+    console.log(req.body.id)
+    console.log(req.body.id == "academic-46")
+
     const staff = await staff_members_models.findOne({ memberID: req.body.id })
         if(staff){
-
+    
             for(var i = 0; i< staff.role.length ; i++ ){
-                var courses = staff.course
+                //var courses = staff.course
                 var del = false
-                switch(role){
+                const r = staff.role[i]
+                switch(r){
                     case "headOfdepartments":
                         del = deleteHOD(staff.department, staff.faculty)
                        if(!del){
@@ -949,14 +1001,15 @@ router.route('/deleteStaffMember')
                         break;
                     
                     case "teachingAssistants","courseInstructors":
-                        del = deleteTeacher(staff.memberID,courses)
+                        del = deleteTeacher(staff.memberID,staff.course)
                        if(!del){
                             res.send("error deleting ci or ta")
                        }
 
                         break;
                     case "courseCoordinators":
-                         del = deleteCoordinator(staff.memberID,courses)
+                        console.log("hereee")
+                         del = deleteCoordinator(staff.memberID,staff.course)
                         if(!del){
                             res.send("error deleting hod")
                         }
@@ -968,7 +1021,18 @@ router.route('/deleteStaffMember')
 
             }
 
+            const oldofficeName = staff.officeLocation
+            const oldoffice = await location_model.findOne({ name: oldofficeName })
+            oldoffice.officeMembers = oldoffice.officeMembers -1
+            try {
+                console.log('saving office')
+                await oldoffice.save()
 
+
+            }catch (Err) {
+                console.log(Err)
+                res.send("error saving office")
+            }
 
             await staff_members_models.remove({ memberID:  req.body.id}, function(err, result) {
                 if (err) {
@@ -977,6 +1041,7 @@ router.route('/deleteStaffMember')
                   res.json(result);
                 }
               });
+            res.send("deleted")
 
         }
 
@@ -1026,6 +1091,35 @@ router.route('/updateStaff')
         if(req.body.annualLeavesBalance!=null){
             staff.annualLeavesBalance = req.body.annualLeavesBalance
         }
+        
+
+            if (req.body.faculty != null && staffType=="academic") {
+         
+                faculty = await faculty_model.findOne({ facultyName: req.body.faculty })
+                if(faculty)
+                    staff.faculty = req.body.faculty
+                else{
+                    res.send("this is not a valid faculty, check faculty table and pick an existing one")
+                }
+            }
+
+            if (req.body.department != null ) {
+          
+
+                var found = false
+                for(var i=0; i<staff.faculty.departments.length; i++){
+                currDep = staff.faculty.departments[i]
+                if(req.body.department == currDep.name){
+                    found = true
+                    break;
+                }
+            }
+
+            if(!found){
+                res.send("department not found in this faculty")
+            }
+            staff.department = req.body.department
+        }        
         if(req.body.office!=null){
 
             const newoffice = await location_model.findOne({ name: req.body.office })
@@ -1072,6 +1166,129 @@ router.route('/updateStaff')
 
 
 })
+async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var flag=false
+    var out=false
+    //console.log(newMonth)
+    if((month1!=month2&&day1>10))
+    flag=true
+        //add missing days from 11 to next day attended
+        var number=0
+         if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && newMonth && day1<=10){
+             console.log("awel if")
+         var missingDay=day2+1
+         for(let j=missingDay;j<day1;j++){
+         var d=new Date(month1+"/"+j+"/"+year1)
+             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && await acceptedLeave(d,staff)==false) 
+             number=number+1
+         
+        }
+        }
+        else if(firstEntry==true && day1!=11){
+            console.log("talet if")
+            for(let i=11;i<day1;i++){
+            var d=new Date(month1+"/"+i+"/"+year1)
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && await acceptedLeave(d,staff)==false)
+            number=number+1
+            console.log(number)
+        }
+         
+        }
+        else if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && !newMonth ){
+            console.log("awel if")
+        var missingDay=day2+1
+        for(let j=missingDay;j<day1;j++){
+        var d=new Date(month1+"/"+j+"/"+year1)
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& await acceptedLeave(d,staff)==false) 
+            number=number+1
+        
+       }
+       }
+        else if (checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && newMonth && day1>10){
+            console.log("tany if")
+           newMonth=false
+           var missingDay=day2+1
+         for(let j=missingDay;j<11;j++){
+         var d=new Date(month1+"/"+j+"/"+year1)
+             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& await acceptedLeave(d,staff)==false) 
+             number=number+1
+         
+        }
+        staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
+            staff.markModified("missingDays")
+            await staff.save()
+            number=0
+        for(let j=11;j<day1;j++){
+            var d=new Date(month1+"/"+j+"/"+year1)
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && await acceptedLeave(d,staff)==false) 
+                number=number+1
+            
+           }
+           staff.missingDays.push(number)
+                staff.markModified("missingDays")
+               await  staff.save()
+                out=true
+        }
+        
+        else if( day1-1!=day2 && month1-1==month2 ){
+            if(checkMonth(month2,day2)==true){
+                console.log("rabe3 if a")
+                    for(let j=1;j<day1;j++){
+                   var d=new Date(month1+"/"+j+"/"+year1)
+                    if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && await acceptedLeave(d,staff)==false) 
+                   // staff.missingDays.push(d) 
+                    number=number+1
+                }
+            }
+            else{
+                console.log("rabe3 if b")
+            var missingDay=day2+1
+            for(let j=missingDay;checkMonth(month2,j-1)==false;j++){
+                var d=new Date(month2+"/"+j+"/"+year1)
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && await acceptedLeave(d,staff)==false) 
+                number=number+1
+            
+             }
+            
+           for(let j=1;j<11;j++){
+            var d=new Date(month1+"/"+j+"/"+year1)
+            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& await acceptedLeave(d,staff)==false) 
+            number=number+1
+            }
+            
+            staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
+            staff.markModified("missingDays")
+            await staff.save()
+            number=0
+
+            var d=new Date(month1+"/"+11+"/"+year1)
+            for(let j=11;j<day1;j++){
+                var d=new Date(month1+"/"+j+"/"+year1)
+                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && await acceptedLeave(d,staff)==false) 
+                number=number+1
+                }
+                staff.missingDays.push(number)
+                staff.markModified("missingDays")
+               await  staff.save()
+                out=true
+
+        }}
+        if(!out){
+          
+            //console.log("enta lesa bet5osh wala eh ???" + number)
+          if(firstEntry){
+          staff.missingDays.push(number)
+        }
+          else
+          staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
+        
+        staff.markModified("missingDays")
+        staff.save()
+        
+    }
+
+}
 
 router.route('/addSignIn')
 .post(async (req, res) => {
@@ -1166,7 +1383,7 @@ function checkMonth(month,day){
           return false
       }
     }
-    function getDates (startDate, endDate) {
+ async function getDates (startDate, endDate) {
         var dates = [],
             currentDate = startDate,
             addDays = function(days) {
@@ -1181,157 +1398,46 @@ function checkMonth(month,day){
         return dates;
       };
 
-function acceptedLeave(date,staff){
-    const leave =leaves_model.findOne({staffID:staff.memberID})
-         if(leave.start==date && leave.accepted==true && leave.end!=null){
-            
+async function acceptedLeave(date,staff){
+    const leaveArray=staff.leaves
+    var f= false
+    for(let i=0;i<leaveArray.length;i++){
+        const leave =await leaves_model.findOne({_id:leaveArray[i]})
+        if(leave){
+        if(leave.start==date && leave.accepted==true && leave.end!=null){
             var array =getDates(leave.start,leave.end)
             for(let i=0;i<array.length;i++){
-                leave.leavesDates.push(array[i])
+                leave.leaveDates.push(array[i])
             }
             leave.markModified("leaveDates")
-            leave.save()
-            return true
+            await leave.save()
+            console.log("1")
+            f= true
+            
          }
          else if (leave.start=date && leave.accepted==true && leave.end==null){
-             return true
-         }
-         else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
-             return true
+            console.log("2")
+             f= true
 
+         }
+
+         else if (leave.leaveDates.length!=0 && leave.leaveDates.includes(date)){
+            console.log("3")
+             f=true
          }
          else{
-             return false
-         }
-
+            console.log("4")
+             f= false
+    }
 }
-
-async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
-    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var flag=false
-    var out=false
-    //console.log(newMonth)
-    if((month1!=month2&&day1>10))
-    flag=true
-        //add missing days from 11 to next day attended
-        var number=0
-         if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && newMonth && day1<=10){
-             console.log("awel if")
-         var missingDay=day2+1
-         for(let j=missingDay;j<day1;j++){
-         var d=new Date(month1+"/"+j+"/"+year1)
-             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
-             number=number+1
+//console.log("ana tala3t" + f)
+return f 
          
-        }
-        }
-        else if(firstEntry==true && day1!=11){
-            console.log("talet if")
-            console.log(day1)
-            for(let i=11;i<day1;i++){
-                console.log("in for")
-
-            var d=new Date(month1+"/"+i+"/"+year1)
-            console.log(acceptedLeave(d,staff))
-            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff))
-            console.log(number+" ya rab")
-        }
-         
-        }
-        else if(checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && !newMonth ){
-            console.log("awel if")
-        var missingDay=day2+1
-        for(let j=missingDay;j<day1;j++){
-        var d=new Date(month1+"/"+j+"/"+year1)
-            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
-            number=number+1
-        
-       }
-       }
-        else if (checkMonth(month1,day1)==false && day1-1!=day2 && month1==month2 && newMonth && day1>10){
-            console.log("tany if")
-           newMonth=false
-           var missingDay=day2+1
-         for(let j=missingDay;j<11;j++){
-         var d=new Date(month1+"/"+j+"/"+year1)
-             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
-             number=number+1
-         
-        }
-        staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
-            staff.markModified("missingDays")
-            await staff.save()
-            number=0
-        for(let j=11;j<day1;j++){
-            var d=new Date(month1+"/"+j+"/"+year1)
-                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
-                number=number+1
-            
-           }
-           staff.missingDays.push(number)
-                staff.markModified("missingDays")
-               await  staff.save()
-                out=true
-        }
-        
-        else if( day1-1!=day2 && month1-1==month2 ){
-            if(checkMonth(month2,day2)==true){
-                console.log("rabe3 if a")
-                    for(let j=1;j<day1;j++){
-                   var d=new Date(month1+"/"+j+"/"+year1)
-                    if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
-                   // staff.missingDays.push(d) 
-                    number=number+1
-                }
-            }
-            else{
-                console.log("rabe3 if b")
-            var missingDay=day2+1
-            for(let j=missingDay;checkMonth(month2,j-1)==false;j++){
-                var d=new Date(month2+"/"+j+"/"+year1)
-                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
-                number=number+1
-            
-             }
-            
-           for(let j=1;j<11;j++){
-            var d=new Date(month1+"/"+j+"/"+year1)
-            if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday"&& !acceptedLeave(d,staff)) 
-            number=number+1
-            }
-            
-            staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
-            staff.markModified("missingDays")
-            await staff.save()
-            number=0
-
-            var d=new Date(month1+"/"+11+"/"+year1)
-            for(let j=11;j<day1;j++){
-                var d=new Date(month1+"/"+j+"/"+year1)
-                if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && !acceptedLeave(d,staff)) 
-                number=number+1
-                }
-                staff.missingDays.push(number)
-                staff.markModified("missingDays")
-               await  staff.save()
-                out=true
-
-        }}
-        if(!out){
-          
-            console.log("enta lesa bet5osh wala eh ???" + number)
-          if(firstEntry){
-          staff.missingDays.push(number)
-        }
-          else
-          staff.missingDays[staff.missingDays.length-1]=staff.missingDays[staff.missingDays.length-1]+number
-        
-        staff.markModified("missingDays")
-        staff.save()
-        
     }
 
-}
+
+
+
 
 router.route('/addSignOut')
 .post(async(req,res,)=>{
@@ -1362,15 +1468,9 @@ router.route('/addSignOut')
             console.log(Err)
         }
 
-        // const array = []
-        // for(let index=0;index<staff.attendance.length-1;index++){
-         
-        //  array.push(staff.attendance[index])
-        // }
         const index = staff.attendance.length-1
         staff.attendance.splice(index,1)
         staff.attendance.push(currentTime2)
-        //staff.attendance=array
 
         try{
         staff.markModified('attendance.'+index);
@@ -1394,8 +1494,6 @@ router.route('/addSignOut')
 
          month2=staff.attendance[staff.attendance.length-2].signInTime.getMonth()+1
          day2=staff.attendance[staff.attendance.length-2].signInTime.getDate()}
-         //console.log((month1!=month2&&day1>10)+"1st")
-         //console.log(staff.attendance.length==0+"1st")
          if(month1!=month2)
           newMonth2=true
         if((newMonth2&&day1>10)|| staff.attendance.length==0){
@@ -1403,12 +1501,16 @@ router.route('/addSignOut')
            flag=true
     }
     if(hours<8.24){
+    console.log("heloo")
     missingHours(staff,hours,flag,day1)
-    staff.extraHours.push(0)}
+    
+     }
     else{
-    staff.missingHours.push(0)
-    extraHours(staff,hours,flag,day1)}  
-        
+    
+    extraHours(staff,hours,flag,day1)
+    
+}  
+      
         res.send(staff.attendance)
     }
     }
@@ -1418,11 +1520,12 @@ router.route('/addSignOut')
 
     res.send("staff member with this id doesnt exist")
 })
+
 //missing hours
 function missingHours(staff,hours,flag,day1,day2){
     if(flag){
-        console.log("ahlannnn")
     staff.missingHours.push(8.24-hours)
+    staff.extraHours.push(0)
     newMonth2=false
     
 }
@@ -1439,15 +1542,18 @@ function missingHours(staff,hours,flag,day1,day2){
      extraHours(staff,math.abs(x)+8.24,flag,day1,day2)
      x=0}
     }
+   // console.log("hhhh "+x)
      staff.missingHours[staff.missingHours.length-1]=x
 
 }
+   staff.markModified("missingHours")
     staff.save()
 }
 //extra hours
 function extraHours(staff,hours,flag,day1,day2){
     if(flag){
     staff.extraHours.push(hours-8.24)
+    staff.missingHours.push(0)
     newMonth2=false
     
 }
@@ -1460,8 +1566,53 @@ function extraHours(staff,hours,flag,day1,day2){
      staff.extraHours[staff.extraHours.length-1]=x
 
 }
-    staff.save()
+staff.markModified("ExtraHours")
+staff.save()
 }
+//////////////
+
+router.route('/viewMissingDays')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingDays
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missing days this month:":arr[arr.length-1]})
+    }
+    }
+
+    console.log("here")
+
+    res.send(resArr)
+
+})
+
+router.route('/viewMissingHours')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingHours
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missing hours this month:":arr})
+    }
+    }
+
+    console.log("here")
+
+    res.send(resArr)
+
+})
+
 //////////////
 
 
