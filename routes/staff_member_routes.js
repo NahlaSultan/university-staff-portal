@@ -460,13 +460,7 @@ router.route('/updateProfile')
 
             staff.gender = gender
         }
-        var message = ""
-        if(req.body.dayOff!=null){
-            if(staff.staffType=="hr"){
-                message = "you can't change hr's day off, it must remain as Saturday"
-            }
-            staff.dayOff = req.body.dayOff
-        }
+    
       
 
         
@@ -478,9 +472,7 @@ router.route('/updateProfile')
             console.log(Err)
             res.send("error saving staff member")
         }
-        return res.send({
-            "staff": staff,
-            "message": message})    
+        return res.send(staff)    
     }
 
         res.send('staff member with id '+ req.body.id+' doesnt exist')

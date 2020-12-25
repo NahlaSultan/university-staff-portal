@@ -266,7 +266,7 @@ router.route('/deleteLocation')
         if (err) {
           console.err(err);
         } else {
-          res.json(result);
+          res.send("deleted successfully");
         }
       });
       
@@ -317,7 +317,7 @@ router.route('/deleteFaculty')
         if (err) {
           console.err(err);
         } else {
-          res.json(result);
+          res.send("deleted successfully")
         }
       });
       
@@ -493,18 +493,6 @@ router.route('/deleteDepartment')
       
 })
 
-// name: {
-//     type: String,
-//     required: true
-// },
-// headOfDepartment: {
-//     type: staffSchema,
-//     unique: true
-// },
-// courses:{
-//     type:[],
-//     default: []
-// } 
 
 router.route('/updateDepartment')
 .post(async (req, res) => {
@@ -596,7 +584,6 @@ router.route('/updateDepartment')
         res.send('faculty '+ req.body.name+' doesnt exist')
 
 })
-
 
 
 router.route('/addCourse')
@@ -778,7 +765,33 @@ router.route('/updateCourse')
             //string form
             course.teachingSlotsNumber = req.body.teachingSlotsNumber         
         }
+        if(req.body.newDepartment!=null){
+            var newDepartmentFound = false
+            var newDepIndex = -1
+            for(var i=0; i<faculty.departments.length; i++){
+                currDep = faculty.departments[i]
+                if(req.body.newDepartment == currDep.name){
+                    newDepartmentFound = true
+                    newDepIndex = i
 
+                }
+            }
+            if(!newDepartmentFound){
+                res.send("this department isn't in "+ req.body.facultyName)
+            }
+            faculty.departments[newDepIndex].course.push(req.body.courseName)
+            faculty.departments[depIndex].course.splice(courseIndex, 1) 
+            faculty.markModified('departments.'+newDepIndex);
+            faculty.markModified('departments.'+depIndex);
+            try{
+                await faculty.save()
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("error adding faculty")
+            }
+
+        }
         try {
             await course.save()
         }
@@ -994,7 +1007,7 @@ router.route('/deleteStaffMember')
                 if (err) {
                   console.err(err);
                 } else {
-                  res.json(result);
+                  res.send("deleted Successfully");
                 }
               });
 

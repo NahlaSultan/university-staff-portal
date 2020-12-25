@@ -21,9 +21,11 @@ router.route('/viewCoverage')
         var array=[]
        for(let i=0;i<staff.course.length;i++){
            const course= await course_model.findOne({courseName:staff.course[i]})
+
             var s=0
             for(let j=0;j<staff.slotsAssigned.length;j++){
-                const slot =await slot_model.find({numberID:staff.slotsAssigned[j]})
+                const slot =await slots_model.find({numberID:staff.slotsAssigned[j]})
+
                 if(slot.courseTaught==staff.course.courseName)
                 s=s+1
             }
@@ -113,7 +115,7 @@ router.route('/removeAssignedCourse')
 .post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const academicMember = await staff_members_models.findOne({ email: req.body.email })
+    const academicMember = await staff_members_models.findOne({ memberID: req.body.memberID })
     if(staff){  
         const course = await course_model.findOne({ courseName: req.body.courseName })
         if(academicMember.course.includes(req.body.courseName)){
@@ -123,8 +125,9 @@ router.route('/removeAssignedCourse')
             academicMember.course.splice(i,1)
 
         }
+        var slot;
         for(let i=0;i<academicMember.slotsAssigned.length;i++){
-            const slot= slots_model.findOne({numberID:academicMember.slotsAssigned[i]})
+            slot= await slots_model.findOne({numberID:academicMember.slotsAssigned[i]})
             if (slot.courseTaught==req.body.courseName){
                 slot.assignedFlag=false
                 academicMember.slotsAssigned.splice(i,1)

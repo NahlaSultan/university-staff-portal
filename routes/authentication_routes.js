@@ -12,7 +12,7 @@ const course_model=require('../models/course_model').model
 const workingSchedule_model=require('../models/workingSchedule_model').model
 const tokens_model=require('../models/tokens_model').model
 
-router.route('/addStaff')
+router.route('/addSampleStaff')
     .post(async (req, res) => {
         const email = req.body.email
         const user = await staff_members_models.findOne({ email: email })
@@ -23,12 +23,9 @@ router.route('/addStaff')
             console.log("if not user")
             newPassword = await defaultPassword()
             var staffType, memberID
-            if (req.body.role == ("HR members")) {
                 staffType = "hr"
-            }
-            else {
-                staffType = "academic"
-            }
+            
+           
 
             const officeName = req.body.office
 
@@ -57,7 +54,7 @@ router.route('/addStaff')
 
 
             const arr = []
-            arr.push(req.body.role)
+            arr.push("HR members")
 
             const newUser = new staff_members_models({
                 name: req.body.name,
@@ -70,51 +67,15 @@ router.route('/addStaff')
                 officeLocation: req.body.office,
                 gender: req.body.gender
             })
-            var faculty;
-            if(staffType=="academic"){
-            if (req.body.faculty == null ) {
-                res.send("must specify faculty name") 
-            }
-            else{
-                faculty = await faculty_model.findOne({ facultyName: req.body.faculty })
-                if(faculty)
-                    newUser.faculty = req.body.faculty
-                else{
-                    res.send("this is not a valid faculty, check faculty table and pick an existing one")
-                }
-            }
-
-            if (req.body.department == null && staffType=="academic") {
-                res.send("must specify department name") 
-            }
-            else{
-
-                var found = false
-                for(var i=0; i<faculty.departments.length; i++){
-                currDep = faculty.departments[i]
-                if(req.body.department == currDep.name)
-                found = true}
+           
+            
         
-                if(found)
-                    newUser.department = req.body.department
-                else{
-                    console.log("heree")
-
-                    res.send({
-                        "message": "this is not a valid department in" + req.body.faculty+" pick one of these departments or add a department first", 
-                        "facultyDepartments": faculty.departments})
-                    res.send()
-                    console.log("after save")
-                }
-            }
-        }
 
             if (req.body.dayOff != null) {
                 newUser.dayOff = req.body.dayOff
             }
-            if (staffType == "hr") {
                 newUser.dayOff = "Saturday"
-            }
+            
 
             if (req.body.attendance != null) {
                 newUser.attendance = req.body.attendance
@@ -137,16 +98,6 @@ router.route('/addStaff')
                 memberID = staffType + "-" + newUser.numberID
                 newUser.memberID = memberID
 
-                
-                if(staffType!="hr"){
-
-                    const schedule = new workingSchedule_model({
-                        staffID: memberID
-                    })
-                    await schedule.save()
-
-
-                }
                 console.log("second save")
                 await newUser.save()
 
