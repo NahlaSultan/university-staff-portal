@@ -4,6 +4,7 @@ const authentication_routes=require('./routes/authentication_routes')
 const academic_members_routes=require('./routes/academic_members_routes')
 const hr_routes=require('./routes/hr_routes')
 const coordinator=require('./routes/coordinator_routes')
+const hod_routes=require('./routes/hod_routes')
 
 const mongoose = require('mongoose')
 require('dotenv').config()
@@ -17,6 +18,7 @@ staff_member_routes.route('')
 academic_members_routes.route('')
 hr_routes.route('')
 coordinator.route('')
+hod_routes.route('')
 
 
 
