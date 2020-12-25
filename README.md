@@ -20,7 +20,7 @@ npm start
 https://drive.google.com/file/d/1WPWap3Ugs9aUj_pZEs6rPmgMuE81hGA1/view?usp=sharing
 
 
-##Functionalities
+## Functionalities and Routes
 
 <h4>Seeding the database: </h4>
 
