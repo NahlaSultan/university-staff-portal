@@ -72,23 +72,27 @@ router.route('/viewCourseStaff')
 }
 
 })
+
+
 //assign coordinator
 router.route('/assignCourseCoordinator')
 .post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const coordinator = await staff_members_models.findOne({ email: req.body.email })
+    const coordinator = await staff_members_models.findOne({ memberID: req.body.id })
     if(staff){  
+        if(coordinator){
         const course = await course_model.findOne({ courseName: req.body.courseName })
         if(staff.course.includes(req.body.courseName)){
             if(coordinator.course.includes(req.body.courseName) ){
-        course.courseCoordinator=coordinator.memberID
-        //console.log(coordinator._id)
-        courseCoordinator.role.push("courseCoordinators")
-        courseCoordinator.coordinatorCourse.push(course.courseName)
-        course.save()
-        staff.save()
-        res.send("successfully assigned")}
+                course.courseCoordinator=coordinator.memberID
+                //console.log(coordinator._id)
+                coordinator.role.push("courseCoordinators")
+                //coordinator.course.push(course.courseName)
+                course.save()
+                coordinator.save()
+                res.send("successfully assigned")
+        }
         else{
              res.send("this academic member is not assigned to this course")
         }
@@ -96,8 +100,10 @@ router.route('/assignCourseCoordinator')
         else{
             res.send("the course is not yours")
         }
-    
+    }   
 }
+res.send("this coordinator id is not valid")
+
 
 })
 //remove assigned course from an academic member

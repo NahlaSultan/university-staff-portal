@@ -433,6 +433,66 @@ router.route('/viewAttendance')
         res.send(staff.attendance)
         }
 })
+
+//update profile
+router.route('/updateProfile')
+.post(async (req, res) => {
+    console.log("updating staff")
+    const staff = await staff_members_models.findOne({ _id: req.user._id})
+     
+    if (staff) {
+
+        
+        if(req.body.email!=null){
+
+            const found = await staff_members_models.findOne({ email: req.body.email })
+            if(found){
+                res.send("email taken, try with another email")
+            }
+            staff.email = req.body.email
+
+        }
+        if(req.body.password!=null){
+            const salt = await bcrypt.genSalt(10)
+            const newPassword = await bcrypt.hash(req.body.password, salt)
+            staff.password = newPassword
+        }
+        if(req.body.gender!=null){
+
+            staff.gender = gender
+        }
+        if(req.body.gender!=null){
+
+            staff.gender = gender
+        }
+        var message = ""
+        if(req.body.dayOff!=null){
+            if(staff.staffType=="hr"){
+                message = "you can't change hr's day off, it must remain as Saturday"
+            }
+            staff.dayOff = req.body.dayOff
+        }
+      
+
+        
+        try {
+            
+            await staff.save()
+        }
+        catch (Err) {
+            console.log(Err)
+            res.send("error saving staff member")
+        }
+        return res.send({
+            "staff": staff,
+            "message": message})    
+    }
+
+        res.send('staff member with id '+ req.body.id+' doesnt exist')
+
+
+})
+
 //view month attendance
 router.route('/viewMonthAttendance')
 .post(async(req,res)=>{

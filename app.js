@@ -12,6 +12,8 @@ const authentication_routes = require('./routes/authentication_routes')
 const academic_members_routes = require('./routes/academic_members_routes')
 const coordinator=require('./routes/coordinator_routes')
 const hr_routes = require('./routes/hr_routes')
+const hod_routes = require('./routes/hod_routes')
+
 const course_instructor_routes = require('./routes/course_instructor_routes')
 var bodyParser = require('body-parser');
 const tokens_model=require('./models/tokens_model').model
@@ -116,6 +118,28 @@ app.use('/academicMembers',(req, res, next) => {
 
     }
 })
+
+app.use('/hod',(req, res, next) => {
+    try {
+        console.log("\nWe entered")
+
+        const token = req.headers.token;
+        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        console.log("hod")
+       if(!verified.role.includes("headOfdepartments")){
+        console.log(" not hod")
+
+            return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
+        }
+        req.user = verified;
+        next();
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+
+    }
+})
+app.use('/hod',hod_routes )
 
 app.use('/academicMembers',academic_members_routes )
 
