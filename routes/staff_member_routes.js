@@ -52,12 +52,6 @@ router.route('/signIn')
             }
           
         }else{
-            var month2=0
-          var day2=11
-            if(staff.attendance.length>=2)
-            { month1=staff.attendance[staff.attendance.length-2].signInTime.getMonth()+1
-              day1=staff.attendance[staff.attendance.length-2].signInTime.getDate()
-            }
           
             month2=staff.attendance[staff.attendance.length-1].signInTime.getMonth()+1
             day2=staff.attendance[staff.attendance.length-1].signInTime.getDate()
@@ -308,6 +302,7 @@ router.route('/signOut')
         array.push(currentTime2)
         staff.attendance=array
         await staff.save()
+        var signIn=currentTime2.signInTime
         var signOut=currentTime2.signOutTime
          var milliseconds = Math.abs(signOut.getTime() - signIn.getTime());
         var hours = milliseconds / 36e5;
