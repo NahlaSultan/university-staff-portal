@@ -41,80 +41,88 @@ router.route('/viewSchedule')
             var Wednesday = []
             var Thursday = []
             var Saturday = []
+            var arr = []
+            arr.push("Your weekly schedule:")
             for (let i = 0; i < slotsArray.length; i++) {
-                if (slotsArray[i].day == "Saturday") {
-                    Saturday.push(slotsArray[i])
+                const slotArr = await slot_model.findOne({ numberID: slotsArray[i] })
+                if (slotArr.day == "Saturday") {
+                    Saturday.push(slotArr)
                 }
-                if (slotsArray[i].day == "Sunday") {
-                    Sunday.push(slotsArray[i])
+                if (slotArr.day == "Sunday") {
+                    Sunday.push(slotArr)
                 }
-                if (slotsArray[i].day == "Monday") {
-                    Monday.push(slotsArray[i])
+                if (slotArr.day == "Monday") {
+                    Monday.push(slotArr)
                 }
-                if (slotsArray[i].day == "Tuesday") {
-                    Tuesday.push(slotsArray[i])
+                if (slotArr.day == "Tuesday") {
+                    Tuesday.push(slotArr)
                 }
-                if (slotsArray[i].day == "Wednesday") {
-                    Wednesday.push(slotsArray[i])
+                if (slotArr.day == "Wednesday") {
+                    Wednesday.push(slotArr)
                 }
-                if (slotsArray[i].day == "Thursday") {
-                    Thursday.push(slotsArray[i])
+                if (slotArr.day == "Thursday") {
+                    Thursday.push(slotArr)
                 }
 
             }
-            // array[lastIndex] = schedule
-            // lastIndex++
+            arr.push({
+                "Saturday: ": Saturday
+            })
+            arr.push({
+                "Sunday: ": Sunday
+            })
+            arr.push({
+                "Monday: ": Monday
+            })
+            arr.push({
+                "Tuesday: ": Tuesday
+            })
+            arr.push({
+                "Wednesday: ": Wednesday
+            })
+            arr.push({
+                "Thursday: ": Thursday
+            })
+
             var slotReplac;
             var slotIDReplac;
             var dateToReplace;
             var slotRequest;
             var dateToPrint;
-            var day;
-            var month;
-            var year;
-            array[lastIndex++] = "Slots to replace:"
+            //     var day;
+            //     var month;
+            //     var year;
+            arr.push("Slots to replace:")
             for (let index = 0; index < staff.slotsToReplace.length; index++) {
                 console.log(staff.slotsToReplace)
                 slotRequest = await newReplacement.findOne({ _id: staff.slotsToReplace[index] })
-                array[lastIndex++] = "Replaced on date:"
                 dateToPrint = slotRequest.date
-                // day = dateToReplace.getDay();
-                // month = dateToReplace.getMonth() + 1;
-                // year = dateToReplace.getFullYear();
-                // dateToPrint = day + "," + month + "," + year
-                array[lastIndex] = dateToPrint
-                lastIndex++;
-                slotIDReplac = staff.slotsToReplace[index].slot;
+                slotIDReplac = slotRequest.slot;
                 slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
-                array[lastIndex] = slotReplac
-                lastIndex++;
+                arr.push({
+                    "Replaced on date: ": dateToPrint, "Slot's information is:": slotReplac
+                })
             }
-            array[lastIndex++] = "Slots replaced for you:"
+            arr.push("Slots replaced for you:")
             for (let index = 0; index < staff.slotsReplaced.length; index++) {
                 slotRequest = await newReplacement.findOne({ _id: staff.slotsReplaced[index] })
                 console.log(slotRequest)
                 if (slotRequest) {
-                    array[lastIndex++] = "Replaced on date:"
+                    //   array[lastIndex++] = "Replaced on date:"
                     dateToPrint = slotRequest.date
-                    // day = dateToReplace.getDay();
-                    // month = dateToReplace.getMonth() + 1;
-                    // year = dateToReplace.getFullYear();
-                    // dateToPrint = day + "," + month + "," + year
-                    array[lastIndex] = dateToPrint
-                    lastIndex++;
+                    //  array[lastIndex] = dateToPrint
+                    //  lastIndex++;
                     slotIDReplac = slotRequest.slot;
                     slotReplac = await slot_model.findOne({ numberID: slotIDReplac })
-                    array[lastIndex] = slotReplac
-                    lastIndex++;
+                    //  array[lastIndex] = slotReplac
+                    // lastIndex++;
+                    arr.push({ "Replaced on date:": dateToPrint, "Slot's information is:": slotReplac })
                 }
-            }
-            array[lastIndex++] = "In case of compensation leave request acceptance,compensation session at:"
-            if (staff.compensationSession == true) {
-                array[lastIndex++] = staff.compensationDay
             }
 
         }
-        res.send(array)
+        res.send(arr)
+
     })
 
 router.route('/viewStatusOfRequests')
@@ -539,37 +547,42 @@ router.route('/sendSlotLinkingRequest')
         const slotReplacement = req.body.slotId;
         const slot = await slot_model.findOne({ numberID: slotReplacement })
         if (slot) {
-            const staff = await staff_members_models.findOne({ _id: senderId })
-            //same coordinator course and role is coordinator
-            const coordinator = await staff_members_models.findOne({ role: { $all: ["courseCoordinators"] }, coordinatorCourse: { $all: [slot.courseTaught] } })
-            if (staff && coordinator) {
-                const coordinatorID = coordinator.memberID
-                var request = new newSlotlinking(
-                    {
-                        pending: true,
-                        accepted: false,
-                        slotID: slotReplacement,
-                        coordinatorId: coordinatorID,
-                        senderId: staff.memberID
+            if (slot.assignedFlag == true) {
+                return res.send("This slot is already assigned ")
+            }
+            else {
+                const staff = await staff_members_models.findOne({ _id: senderId })
+                //same coordinator course and role is coordinator
+                const coordinator = await staff_members_models.findOne({ role: { $all: ["courseCoordinators"] }, coordinatorCourse: { $all: [slot.courseTaught] } })
+                if (staff && coordinator) {
+                    const coordinatorID = coordinator.memberID
+                    var request = new newSlotlinking(
+                        {
+                            pending: true,
+                            accepted: false,
+                            slotID: slotReplacement,
+                            coordinatorId: coordinatorID,
+                            senderId: staff.memberID
+                        }
+                    )
+                    try {
+                        await request.save()
                     }
-                )
-                try {
-                    await request.save()
-                }
-                catch (Err) {
-                    console.log(Err)
-                }
-                staff.staffLinkingRequests.push(request._id)
-                coordinator.coordinatorLinkingRequests.push(request._id)
-                try {
-                    await staff.save()
-                    await coordinator.save()
-                }
-                catch (Err) {
-                    return res.send("Mongoose Error")
-                }
-                res.send("Successfully sent to coordinator")
+                    catch (Err) {
+                        console.log(Err)
+                    }
+                    staff.staffLinkingRequests.push(request._id)
+                    coordinator.coordinatorLinkingRequests.push(request._id)
+                    try {
+                        await staff.save()
+                        await coordinator.save()
+                    }
+                    catch (Err) {
+                        return res.send("Mongoose Error")
+                    }
+                    res.send("Successfully sent to coordinator")
 
+                }
             }
         }
         res.send("Invalid inputs")
@@ -614,35 +627,7 @@ router.route('/viewReplacementRequest')
         res.send("Invalid staff member")
 
     })
-// router.route('/viewSlotLinkingRequest')
-//     .get(async (req, res) => {
-//         var sentArray = [];
-//         var temp;
-//         var tempDate;
-//         var requstTemp;
-//         sentArray[0] = "Slot linking requests are:"
-//         const staffId = req.user._id;
-//         const staff = await staff_members_models.findOne({ _id: staffId })
-//         if (staff) {
-//             console.log("In staff")
-//             var lastIndex = 1;
-//             var startIndex = 0
-//             for (let index = 0; index < staff.coordinatorLinkingRequests.length; index++) {
-//                 console.log("I entered here")
-//                 temp = staff.coordinatorLinkingRequests[index]
-//                 requstTemp = await newSlotLinking.findOne({ _id: temp })
-//                 if (requstTemp) {
-//                     sentArray[lastIndex] = requstTemp
-//                 }
-//                 lastIndex++
-//             }
 
-//             res.send(sentArray)
-
-//         }
-//         res.send("Invalid staff member")
-
-//     })
 //inputs the slotID of the request he wished to accept(_id)
 //change the accepted-->true and pending-->false of the slotID 
 router.route('/acceptReplacementRequest')
@@ -968,98 +953,6 @@ router.route('/cancelReplacementRequest')
 
         }
     })
-//function called cancelReplacementRapalcement
-// async function cancelReplacementRequest(senderId, requestID) {
-//     const staff = await staff_members_models.findOne({ _id: senderId })
-//     if (staff) {
-//         console.log(staff)
-//         if (requestID == null) {
-//             console.log("Can't be done")
-//         }
-//         else {
-//             //check it is pending or its date is yet to come
-//             const request = await newReplacement.findOne({ _id: requestID })
-//             const today = new Date();
-//             today.setDate(today.getDate())
-//             // moment(today).isAfter(request.date, 'day');
-//             console.log(today)
-//             console.log(request.date)
-//             console.log(today.getDate() - request.date.getDate() + 1)
-//             console.log(staff)
-//             if (request.pending == true || (today.getDate() - request.date.getDate() + 1) < 0) {
-//                 console.log("Can remove it,canceling replacement request")
-//                 //remove it from the array of sent requests
-//                 for (let i = 0; i < staff.requestReplacementSent.length; i++) {
-//                     if (staff.requestReplacementSent[i] == requestID) {
-//                         console.log("I entered here")
-//                         console.log(staff)
-//                         staff.requestReplacementSent.splice(i, 1)
-//                         console.log(staff)
-//                         try {
-//                             await staff.save()
-//                         }
-//                         catch (Err) {
-//                             console.log(Err)
-//                         }
-//                         break
-//                     }
-//                 }
-//                 //remove it from the array of slot replaced in case it was accepted
-//                 for (let j = 0; j < staff.slotsReplaced.length; j++) {
-//                     if (staff.slotsReplaced[j] == requestID) {
-//                         staff.slotsReplaced.splice(j, 1)
-//                         break
-//                     }
-//                 }
-
-//                 //get the receiver to delete the request from its corresponding array
-//                 const receiverID = request.receiverId
-//                 const receiver = await staff_members_models.findOne({ memberID: receiverID })
-//                 if (receiver) {
-//                     //delete from requests received
-//                     for (let i = 0; i < receiver.requestReplacmentReceived.length; i++) {
-//                         if (receiver.requestReplacmentReceived[i] == requestID) {
-//                             receiver.requestReplacmentReceived.splice(i, 1)
-//                             break
-//                         }
-//                     }
-//                     //delete from slots to replace
-//                     for (let j = 0; j < receiver.slotsToReplace.length; j++) {
-//                         if (receiver.slotsToReplace[j] == requestID) {
-//                             receiver.slotsToReplace.splice(j, 1)
-//                             break
-//                         }
-//                     }
-
-
-//                     try {
-//                         await staff.save()
-
-//                     }
-//                     catch (Err) {
-//                         console.log(Err)
-//                     }
-
-//                     //delete the request
-//                     try {
-//                         await request.delete()
-//                         await receiver.save()
-//                     }
-//                     catch (Err) {
-//                         console.log(Err)
-//                     }
-
-
-//                 }
-
-//             }
-
-//         }
-
-//     }
-// }
-//cancel slot linking request
-//enter a slotLinkingRequest _id
 router.route('/cancelSlotLinkingRequest')
     .post(async (req, res) => {
         const senderId = req.user._id;
@@ -1408,7 +1301,8 @@ router.route('/submitLeave')
                                 start: startDateUpdate,
                                 end: endDate
                             })
-                            const difference = dateDiffInDays(startDate, leave.submission);
+                            // leave.leaveDates.push(now)
+                            const difference = dateDiffInDays(startDateUpdate, leave.submission);
                             //  const test = Math.abs(difference);
                             if (difference > 3) {
                                 console.log("I entered here")
