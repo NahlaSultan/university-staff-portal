@@ -17,7 +17,6 @@ router.route('/viewCoverage')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     //const tmp=await slots_model.find({courseTaught: coursename})
-
     if(staff){ 
         var array=[]
        for(let i=0;i<staff.course.length;i++){
@@ -26,6 +25,7 @@ router.route('/viewCoverage')
             var s=0
             for(let j=0;j<staff.slotsAssigned.length;j++){
                 const slot =await slots_model.find({numberID:staff.slotsAssigned[j]})
+
                 if(slot.courseTaught==staff.course.courseName)
                 s=s+1
             }
@@ -90,7 +90,6 @@ router.route('/assignCourseCoordinator')
         if(staff.course.includes(req.body.courseName)){
             if(coordinator.course.includes(req.body.courseName) ){
                 course.courseCoordinator=coordinator.memberID
-                coordinator.coordinatorCourse.push(req.body.courseName)
                 //console.log(coordinator._id)
                 coordinator.role.push("courseCoordinators")
                 //coordinator.course.push(course.courseName)
@@ -207,7 +206,7 @@ router.route('/assignSlots')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     const academicMember = await staff_members_models.findOne({ memberID: req.body.memberID })
-    const slot= await slots_model.findOne({ numberID: req.body.numberID})
+    const slot= await slot_model.findOne({ numberID: req.body.numberID})
     if(staff){ 
         //console.log(slot)
         if(slot.assignedFlag==false){
