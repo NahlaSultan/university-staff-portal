@@ -145,12 +145,10 @@ async function acceptedLeave(date,staff){
     }
 }
 //console.log("ana tala3t" + f)
-return f 
-         
-
+ 
 }
+return f
 }
-
 
 
 async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){

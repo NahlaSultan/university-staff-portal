@@ -1117,7 +1117,7 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
             var d=new Date(month1+"/"+i+"/"+year1)
             if(days[d.getDay()]!=staff.dayOff && days[d.getDay()]!="Friday" && await acceptedLeave(d,staff)==false)
             number=number+1
-            console.log(number)
+           // console.log(number)
         }
          
         }
@@ -1426,7 +1426,7 @@ router.route('/addSignOut')
            flag=true
     }
     if(hours<8.24){
-    console.log("heloo")
+    //console.log("heloo")
     missingHours(staff,hours,flag,day1)
     
      }
