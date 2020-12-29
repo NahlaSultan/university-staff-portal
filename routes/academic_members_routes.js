@@ -488,7 +488,9 @@ router.route('/sendReplacementRequest')
             var flag = 0
             for (let i = 0; i < staff.role.length; i++) {
                 if (receiverStaff.role.includes(staff.role[i])) {
+                    console.log("I entered here")
                     flag = 1
+                    console.log(flag)
                 }
             }
             if (flag == 0) {
