@@ -30,20 +30,20 @@ export default function AddStaff() {
 
   return (
     <>
-  <div class="mainDiv">
-    <div class="addStaff">		
+  <div className="mainDiv">
+    <div className="addStaff">		
 
-				<form class="login100-form validate-form">
+				<form className="login100-form validate-form">
 
-					<span class="login100-form-title">
+					<span className="login100-form-title">
 						Add Staff Member
 					</span>
 
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input ref={EmailRef} class="input100" type="text" name="email" placeholder="Email" />
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-envelope" aria-hidden="true"></i>
+					<div className="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<input ref={EmailRef} className="input100" type="text" name="email" placeholder="Email" />
+						<span className="focus-input100"></span>
+						<span className="symbol-input100">
+							<i className="fa fa-envelope" aria-hidden="true"></i>
 						</span>
                         <br/>
 
@@ -51,55 +51,55 @@ export default function AddStaff() {
 
 
                     <div>
-						<input ref={NameRef} class="input100" name="name" placeholder="Name" />
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+						<input ref={NameRef} className="input100" name="name" placeholder="Name" />
+						<span className="focus-input100"></span>
+						<span className="symbol-input100">
 						</span>
                         <br/>
 					</div>
 
                     <div>
-						<input ref={RoleRef} class="input100" name="role" placeholder="Role" />
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+						<input ref={RoleRef} className="input100" name="role" placeholder="Role" />
+						<span className="focus-input100"></span>
+						<span className="symbol-input100">
 						</span>
                         <br/>
 					</div>
 
                     <div>
-						<input ref={DayOffRef} class="input100" name="dayOff" placeholder="Day Off" />
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+						<input ref={DayOffRef} className="input100" name="dayOff" placeholder="Day Off" />
+						<span className="focus-input100"></span>
+						<span className="symbol-input100">
 						</span>
                         <br/>
 					</div>
 					
                     <div>
-						<input ref={SalaryRef} class="input100" name="salary" type='number' placeholder="Salary" />
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+						<input ref={SalaryRef} className="input100" name="salary" type='number' placeholder="Salary" />
+						<span className="focus-input100"></span>
+						<span className="symbol-input100">
 						</span>
                         <br/>
 					</div>
 
                     <div>
-						<input ref={OfficeRef} class="input100" name="office" placeholder="Office Location" />
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+						<input ref={OfficeRef} className="input100" name="office" placeholder="Office Location" />
+						<span className="focus-input100"></span>
+						<span className="symbol-input100">
 						</span>
                         <br/>
 					</div>
 					 
                     <div>
-						<input ref={GenderRef} class="input100" name="gender" placeholder="Gender" />
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+						<input ref={GenderRef} className="input100" name="gender" placeholder="Gender" />
+						<span className="focus-input100"></span>
+						<span className="symbol-input100">
 						</span>
                         <br/>
 					</div>
 
-					<div class="container-login100-form-btn">
-                    <button onClick={HandleAddStaff} class="login100-form-btn">
+					<div className="container-login100-form-btn">
+                    <button onClick={HandleAddStaff} className="login100-form-btn">
 							Add Member
 						</button>
 					</div>
