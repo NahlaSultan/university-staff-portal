@@ -41,42 +41,42 @@ export default function Login() {
     }
     return (
       <div>
-        <h3>  {headerText} </h3>
-        <div class="limiter">
+        <div className="limiter">
 
-        <div class="container-login100">
+        <div className="container-login100">
 
-          <div class="wrap-login100">
+          <div className="wrap-login100">
 
-            <div class="login100-pic js-tilt" data-tilt>
+            <div className="login100-pic js-tilt" data-tilt>
               <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
                 </img>
             </div>
 
-            <form class="login100-form validate-form">
+            <form className="login100-form validate-form">
+            <h3>  {headerText} </h3>
 
-              <span class="login100-form-title">
+              <span className="login100-form-title">
                 GUC Staff Login
               </span>
 
-              <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                <input ref={EmailRef} class="input100" type="text" name="email" placeholder="Email" />
-                <span class="focus-input100"></span>
-                <span class="symbol-input100">
-                  <i class="fa fa-envelope" aria-hidden="true"></i>
+              <div className="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                <input ref={EmailRef} className="input100" type="text" name="email" placeholder="Email" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <i className="fa fa-envelope" aria-hidden="true"></i>
                 </span>
               </div>
 
-              <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                <input ref={PassRef} class="input100" type="password" name="pass" placeholder="Password" />
-                <span class="focus-input100"></span>
-                <span class="symbol-input100">
-                  <i class="fa fa-lock" aria-hidden="true"></i>
+              <div className="wrap-input100 validate-input" data-validate = "Password is required">
+                <input ref={PassRef} className="input100" type="password" name="pass" placeholder="Password" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <i className="fa fa-lock" aria-hidden="true"></i>
                 </span>
               </div>
               
-              <div class="container-login100-form-btn">
-                <button onClick={HandleEmail} class="login100-form-btn">
+              <div className="container-login100-form-btn">
+                <button onClick={HandleEmail} className="login100-form-btn">
                   Login
                 </button>
               </div>
