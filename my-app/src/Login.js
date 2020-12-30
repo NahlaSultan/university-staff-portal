@@ -29,7 +29,7 @@ export default function Login() {
 
   if (logIn == "reset your password" || logIn == "Success") {
     return (
-      <Redirect to="/home" />
+      <Redirect to="/homeHR" />
     )
   }
   else {
