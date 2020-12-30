@@ -14,7 +14,8 @@ function App() {
     <>
       <Switch>
         <Route component={Login} exact path="/" />
-       
+        <Route component={HRprofile} exact path="/home" />
+
       </Switch>
 
     </>
@@ -50,4 +51,3 @@ function App() {
 
 export default App;
 
- 
