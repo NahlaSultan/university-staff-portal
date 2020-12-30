@@ -11,7 +11,7 @@ require('dotenv').config()
 console.log(process.env.DB_URL)
 
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true , useUnifiedTopology:true})
-
+console.log("connected")
 
 authentication_routes.route('')
 staff_member_routes.route('')
