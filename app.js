@@ -13,15 +13,13 @@ const academic_members_routes = require('./routes/academic_members_routes')
 const coordinator=require('./routes/coordinator_routes')
 const hr_routes = require('./routes/hr_routes')
 const hod_routes = require('./routes/hod_routes')
-
 const course_instructor_routes = require('./routes/course_instructor_routes')
 var bodyParser = require('body-parser');
 const tokens_model=require('./models/tokens_model').model
-
+var cors=require("cors")
 //app.use(bodyParser.json());
 ///app.use(bodyParser.urlencoded({ extended: false }));
-
-
+app.use(cors());
 app.use('',authentication_routes)
 
 app.use(async(req, res, next) => {
