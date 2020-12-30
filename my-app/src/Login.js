@@ -10,7 +10,7 @@ export default function Login() {
   const [logIn, setlogIn] = useState("")
   const EmailRef = useRef()
   const PassRef = useRef()
-  const headerText = ""
+  var headerText = ""
   function HandleEmail() {
     const body = { email: EmailRef.current.value, password: PassRef.current.value }
     //  console.log(body)

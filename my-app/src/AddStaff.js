@@ -30,7 +30,7 @@ export default function AddStaff() {
 
   return (
     <>
-  <div className="mainDiv">
+  <div >
     <div className="addStaff">		
 
 				<form className="login100-form validate-form">
@@ -51,7 +51,7 @@ export default function AddStaff() {
 
 
                     <div>
-						<input ref={NameRef} className="input100" name="name" placeholder="Name" />
+						<input required={true} ref={NameRef} className="input100" name="name" placeholder="Name" />
 						<span className="focus-input100"></span>
 						<span className="symbol-input100">
 						</span>
@@ -59,7 +59,7 @@ export default function AddStaff() {
 					</div>
 
                     <div>
-						<input ref={RoleRef} className="input100" name="role" placeholder="Role" />
+						<input required={true} ref={RoleRef} className="input100" name="role" placeholder="Role" />
 						<span className="focus-input100"></span>
 						<span className="symbol-input100">
 						</span>
@@ -67,7 +67,7 @@ export default function AddStaff() {
 					</div>
 
                     <div>
-						<input ref={DayOffRef} className="input100" name="dayOff" placeholder="Day Off" />
+						<input required={true} ref={DayOffRef} className="input100" name="dayOff" placeholder="Day Off" />
 						<span className="focus-input100"></span>
 						<span className="symbol-input100">
 						</span>
@@ -75,7 +75,7 @@ export default function AddStaff() {
 					</div>
 					
                     <div>
-						<input ref={SalaryRef} className="input100" name="salary" type='number' placeholder="Salary" />
+						<input required={true} ref={SalaryRef} className="input100" name="salary" type='number' placeholder="Salary" />
 						<span className="focus-input100"></span>
 						<span className="symbol-input100">
 						</span>
@@ -83,7 +83,7 @@ export default function AddStaff() {
 					</div>
 
                     <div>
-						<input ref={OfficeRef} className="input100" name="office" placeholder="Office Location" />
+						<input required={true}  ref={OfficeRef} className="input100" name="office" placeholder="Office Location" />
 						<span className="focus-input100"></span>
 						<span className="symbol-input100">
 						</span>
@@ -91,7 +91,7 @@ export default function AddStaff() {
 					</div>
 					 
                     <div>
-						<input ref={GenderRef} className="input100" name="gender" placeholder="Gender" />
+						<input required={true} ref={GenderRef} className="input100" name="gender" placeholder="Gender" />
 						<span className="focus-input100"></span>
 						<span className="symbol-input100">
 						</span>

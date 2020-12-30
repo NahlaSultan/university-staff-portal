@@ -157,14 +157,10 @@ iframe {
 }
 
 .addStaff {
-  width: 20%;
+  width: 40%;
   margin: 0 auto;
 }
 
-.mainDiv{
-  align-content: center;
-
-}
 .container-login100 {
   width: 100%;  
   min-height: 100vh;
