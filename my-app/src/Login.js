@@ -11,6 +11,7 @@ export default function Login() {
    .post('http://localhost:8000/login', body)
    
    .then(res=>console.log(res.data));
+   
    // callAPI()
 }
 
