@@ -40,7 +40,7 @@ export default function Login() {
       headerText = "Invalid email" 
     }
     return (
-    <>
+      <div>
         <h3>  {headerText} </h3>
         <div class="limiter">
 
@@ -86,5 +86,14 @@ export default function Login() {
 
             </form>
 
+
           </div>
 
+          </div>
+
+          </div>
+
+          </div>
+  )
+}
+}
