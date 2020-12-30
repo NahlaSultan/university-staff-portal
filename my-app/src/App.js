@@ -3,7 +3,9 @@ import React,{useState,useRef} from 'react'
 import './App.css';
 import Nav from './Nav'
 import Login from './Login'
-import AddStaff from './AddStaff'
+
+//NAHLA
+/* import AddStaff from './AddStaff'
 import {BrowserRouter as Router, Switch, Route}  from 'react-router-dom'
 import Home from './Home';
 
@@ -24,10 +26,23 @@ function App() {
     </Router>   
   )
 
+*/
+//END NAHLA
+
+import AssignCoordinator from './AssignCoordinator'
+import RemoveAssignedCourse from './RemoveAssignedCourse'
+import AssignCourse from './AssignCourse'
+import AssignSlot from './AssignSlot'
+function App() {
+ 
+  return (
+    <>
+    <AssignSlot/>
+    
+    </>
+  )
 }
 
 export default App;
 
-    /*
-     <Nav/>
-      */
+ 
