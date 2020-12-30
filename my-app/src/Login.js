@@ -3,12 +3,13 @@ import axios from 'axios'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { render } from 'react-dom'
 import HRprofile from './HRprofile'
+import './main.css';
 
 export default function Login() {
   const [logIn, setlogIn] = useState("")
   const EmailRef = useRef()
   const PassRef = useRef()
-
+  var headerText = ""
   function HandleEmail() {
     const body = { email: EmailRef.current.value, password: PassRef.current.value }
 
@@ -23,55 +24,73 @@ export default function Login() {
 
   if (logIn == "reset your password" || logIn == "Success") {
     return (
-      <Redirect to="/home" />
+      <Redirect to="/homeHR" />
     )
   }
   else {
-    if (logIn == "Invalid password")
-      return (
-        <div>
-          <h2>Invalid password</h2>
-          Email:
-          <input ref={EmailRef} type="text" />
-          <br></br>
-          Password:
-          <input ref={PassRef} type="text" />
-          <br></br>
-          <button onClick={HandleEmail}> login </button>
+    if (logIn == "Invalid password"){
+      headerText = "Invalid password"
+    }
+    else if (logIn == "Invalid email") {
+      headerText = "Invalid email" 
+    }
+    return (
+      <div>
+        <div className="limiter">
+
+        <div className="container-login100">
+
+          <div className="wrap-login100">
+
+            <div className="login100-pic js-tilt" data-tilt>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
+                </img>
+            </div>
+
+            <form className="login100-form validate-form">
+            <h3>  {headerText} </h3>
+
+              <span className="login100-form-title">
+                GUC Staff Login
+              </span>
+
+              <div className="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                <input ref={EmailRef} className="input100" type="text" name="email" placeholder="Email" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <i className="fa fa-envelope" aria-hidden="true"></i>
+                </span>
+              </div>
+
+              <div className="wrap-input100 validate-input" data-validate = "Password is required">
+                <input ref={PassRef} className="input100" type="password" name="pass" placeholder="Password" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <i className="fa fa-lock" aria-hidden="true"></i>
+                </span>
+              </div>
+              
+              <div className="container-login100-form-btn">
+                <button onClick={HandleEmail} className="login100-form-btn">
+                  Login
+                </button>
+              </div>
+
+              
 
 
-        </div>
-      )
-    else
-      if (logIn == "Invalid email") {
-        return (
-          <div>
-            <h2>Invalid email</h2>
-          Email:
-            <input ref={EmailRef} type="text" />
-            <br></br>
-          Password:
-            <input ref={PassRef} type="text" />
-            <br></br>
-            <button onClick={HandleEmail}> login </button>
+            </form>
 
 
           </div>
-        )
-      }
-      else {
-        return (
-          <div>
-            Email:
-            <input ref={EmailRef} type="text" />
-            <br></br>
-            Password:
-            <input ref={PassRef} type="text" />
-            <br></br>
-            <button onClick={HandleEmail}> login </button>
+
+          </div>
+
+          </div>
 
           </div>
         )
       }
   }
 }
+
