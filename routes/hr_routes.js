@@ -266,7 +266,7 @@ router.route('/deleteLocation')
         if (err) {
           console.err(err);
         } else {
-          res.json(result);
+          res.send("deleted successfully");
         }
       });
       
@@ -317,7 +317,7 @@ router.route('/deleteFaculty')
         if (err) {
           console.err(err);
         } else {
-          res.json(result);
+          res.send("deleted successfully")
         }
       });
       
@@ -472,9 +472,9 @@ router.route('/deleteDepartment')
                         hod.role.splice(ind,1)
                     }
 
-                    faculty.departments.splice(i, 1);
-                    
-
+                    faculty.departments.splice(i, 1); 
+                    faculty.markModified('departments.'+ i)
+                    break;
                 }    
             }
             try {
@@ -493,18 +493,6 @@ router.route('/deleteDepartment')
       
 })
 
-// name: {
-//     type: String,
-//     required: true
-// },
-// headOfDepartment: {
-//     type: staffSchema,
-//     unique: true
-// },
-// courses:{
-//     type:[],
-//     default: []
-// } 
 
 router.route('/updateDepartment')
 .post(async (req, res) => {
@@ -520,6 +508,7 @@ router.route('/updateDepartment')
             if(depName == currDep.name){
                 found = true
                 indexOfDep =i
+                break;
 
             }
         }
@@ -537,7 +526,15 @@ router.route('/updateDepartment')
                 res.send('name ' + req.body.newName+'is already in use')
 
                 dep.name = req.body.newName
+
+                faculty.departments[indexOfDep]= dep
+                faculty.markModified('departments.'+indexOfDep);
+
+
         }
+
+        
+
         if(req.body.hod!=null){
 
 
@@ -546,6 +543,7 @@ router.route('/updateDepartment')
                 res.send('this hod is not a staff member')
                 
             hod.role.push("headOfdepartments")
+            
             try {
               await hod.save()
             }
@@ -569,20 +567,40 @@ router.route('/updateDepartment')
                 res.send("error saving oldhod")
             }
 
-            }            
+            } 
+            
+            
 
             dep.headOfDepartment = hod.memberID
+            faculty.departments[indexOfDep]= dep
+            faculty.markModified('departments.'+indexOfDep);
+        }
 
-               
+        if(req.body.newFaculty!=null){
+            console.log("new fac")
+            const newFaculty = await faculty_model.findOne({ facultyName: req.body.newFaculty })
+
+            if (newFaculty) {  
+                newFaculty.departments.push(dep)
+                faculty.departments.splice(indexOfDep, 1) 
+                faculty.markModified('departments.'+indexOfDep);
+                try{
+                    await faculty.save()
+                    await newFaculty.save()
+                }
+                catch (Err) {
+                    console.log(Err)
+                    res.send("error adding faculty")
+                }
+            }
+            else{
+                res.send("new faculty isn't valid")}
         }
         try {
-            faculty.departments[indexOfDep]= dep
             console.log('saving')
-            faculty.markModified('departments.'+indexOfDep);
 
             await faculty.save()
             console.log('saved')
-            console.log(faculty.departments[indexOfDep].name)
 
         }
         catch (Err) {
@@ -596,7 +614,6 @@ router.route('/updateDepartment')
         res.send('faculty '+ req.body.name+' doesnt exist')
 
 })
-
 
 
 router.route('/addCourse')
@@ -778,7 +795,33 @@ router.route('/updateCourse')
             //string form
             course.teachingSlotsNumber = req.body.teachingSlotsNumber         
         }
+        if(req.body.newDepartment!=null){
+            var newDepartmentFound = false
+            var newDepIndex = -1
+            for(var i=0; i<faculty.departments.length; i++){
+                currDep = faculty.departments[i]
+                if(req.body.newDepartment == currDep.name){
+                    newDepartmentFound = true
+                    newDepIndex = i
 
+                }
+            }
+            if(!newDepartmentFound){
+                res.send("this department isn't in "+ req.body.facultyName)
+            }
+            faculty.departments[newDepIndex].courses.push(req.body.courseName)
+            faculty.departments[depIndex].courses.splice(courseIndex, 1) 
+            faculty.markModified('departments.'+newDepIndex);
+            faculty.markModified('departments.'+depIndex);
+            try{
+                await faculty.save()
+            }
+            catch (Err) {
+                console.log(Err)
+                res.send("error adding faculty")
+            }
+
+        }
         try {
             await course.save()
         }
@@ -994,7 +1037,7 @@ router.route('/deleteStaffMember')
                 if (err) {
                   console.err(err);
                 } else {
-                  res.json(result);
+                  res.send("deleted Successfully");
                 }
               });
 
@@ -1045,6 +1088,9 @@ router.route('/updateStaff')
         }
         if(req.body.annualLeavesBalance!=null){
             staff.annualLeavesBalance = req.body.annualLeavesBalance
+        }
+        if(req.body.gender!=null){
+            staff.gender = req.body.gender
         }
         if(req.body.office!=null){
 

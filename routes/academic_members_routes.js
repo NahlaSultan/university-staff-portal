@@ -965,34 +965,41 @@ router.route('/cancelSlotLinkingRequest')
             const request = await newSlotlinking.findOne({ _id: req.body.requestId })
             console.log(request)
             if (staff && request) {
-                //remove from stafflinking request
-                for (let i = 0; i < staff.staffLinkingRequests.length; i++) {
-                    if (staff.staffLinkingRequests[i] == req.body.requestId) {
-                        console.log("I entered here")
-                        staff.staffLinkingRequests.splice(i, 1)
-                        break
+                if (request.pending == false) {
+                    return res.send("Already sccepted cannot cancel it")
+                }
+                else {
+                    //remove from stafflinking request
+                    for (let i = 0; i < staff.staffLinkingRequests.length; i++) {
+                        if (staff.staffLinkingRequests[i] == req.body.requestId) {
+                            console.log("I entered here")
+                            staff.staffLinkingRequests.splice(i, 1)
+                            break
+                        }
                     }
-                }
-                //remove from the coordinator linking request
-                const coordinatorID = request.coordinatorId
-                const coordinator = await staff_members_models.findOne({ memberID: coordinatorID })
-                for (let j = 0; j < coordinator.coordinatorLinkingRequests.length; j++) {
-                    if (coordinator.coordinatorLinkingRequests[j] == req.body.requestId) {
-                        console.log("I entered here too")
-                        coordinator.coordinatorLinkingRequests.splice(j, 1)
-                        break
+                    //remove from the coordinator linking request
+                    const coordinatorID = request.coordinatorId
+                    const coordinator = await staff_members_models.findOne({ memberID: coordinatorID })
+                    for (let j = 0; j < coordinator.coordinatorLinkingRequests.length; j++) {
+                        if (coordinator.coordinatorLinkingRequests[j] == req.body.requestId) {
+                            console.log("I entered here too")
+                            coordinator.coordinatorLinkingRequests.splice(j, 1)
+                            break
+                        }
                     }
+
+                    try {
+                        staff.save()
+                        coordinator.save()
+                        request.delete()
+                    }
+                    catch (Err) {
+                        return res.send("Mongoose error")
+                    }
+                    return res.send("Cancelled successfully")
                 }
-                try {
-                    staff.save()
-                    coordinator.save()
-                    request.delete()
-                }
-                catch (Err) {
-                    return res.send("Mongoose error")
-                }
-                return res.send("Cancelled successfully")
             }
+
             else {
                 return res.send("Problem cancelling slot linking request")
             }
@@ -1032,6 +1039,15 @@ router.route('/cancelLeaveRequest')
                                                 staff.requestReplacementSent.splice(i, 1)
                                             }
                                         }
+                                        //remove it from the array of slot replaced in case it was accepted
+                                        for (let j = 0; j < staff.slotsReplaced.length; j++) {
+                                            if (staff.slotsReplaced[j] == requestID) {
+                                                staff.slotsReplaced.splice(j, 1)
+                                                break
+                                            }
+                                        }
+
+
                                         const request = await newReplacement.findOne({ _id: leaveRequest.replacementRequest })
                                         const receiverID = request.receiverId
                                         const receiver = await staff_members_models.findOne({ memberID: receiverID })
@@ -1043,6 +1059,13 @@ router.route('/cancelLeaveRequest')
                                                     break
                                                 }
                                             }
+                                            for (let j = 0; j < receiver.slotsToReplace.length; j++) {
+                                                if (receiver.slotsToReplace[j] == requestID) {
+                                                    receiver.slotsToReplace.splice(j, 1)
+                                                    break
+                                                }
+                                            }
+
                                             try {
                                                 await staff.save()
                                                 await receiver.save()
@@ -1392,20 +1415,21 @@ router.route('/submitLeave')
                                 }
                                 else {
                                     const startDateUpdate = new Date(req.body.start)
-                                    startDateUpdate
-                                    console.log(startDateUpdate).setDate(startDateUpdate.getDate() + 1)
+                                    startDateUpdate.setDate(startDateUpdate.getDate() + 1)
+                                   // startDateUpdate
+                                  //  console.log(startDateUpdate).setDate(startDateUpdate.getDate() + 1)
                                     const compensationDay = new Date(req.body.compensation)
                                     console.log("initial compensationdayis" + compensationDay)
                                     compensationDay.setDate(compensationDay.getDate() + 1)
-                                    if (compensationDay.getMonth() != startDate.getMonth()) {
+                                    if (compensationDay.getMonth() != startDateUpdate.getMonth()) {
                                         return res.send("The compensation should be in the same month")
                                     }
                                     else {
                                         var days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
-                                        const slotDay = days[(compensationDay.getUTCDay()) + 2]
-                                        console.log("The compensation date is:" + compensationDay)
-                                        console.log("Day index" + compensationDay.getUTCDay())
-                                        console.log("The compensation day is" + slotDay)
+                                        const slotDay = days[(compensationDay.getUTCDay()) + 1]
+                                        console.log(compensationDay)
+                                        console.log(slotDay)
+                                      //  console.log("The compensation day is" + slotDay)
                                         if (slotDay != staff.dayOff) {
                                             return res.send("You should compensate on a day off")
                                         }
@@ -1419,7 +1443,7 @@ router.route('/submitLeave')
                                             submission: now.setHours(0, 0, 0, 0),
                                             pending: true,
                                             accepted: false,
-                                            start: startDate,
+                                            start: startDateUpdate,
                                             compensatingDay: compensationDay,
                                             commentWhySent: req.body.description
                                         })
