@@ -1,8 +1,27 @@
 
-import React,{useState,useRef} from 'react' 
-import './App.css';
-import Nav from './Nav'
+import React, { useState, useRef } from 'react'
+import { Link, Switch, Route } from 'react-router-dom'
 import Login from './Login'
+import HRprofile from './HRprofile'
+import AssignCoordinator from './AssignCoordinator'
+import RemoveAssignedCourse from './RemoveAssignedCourse'
+import AssignCourse from './AssignCourse'
+import AssignSlot from './AssignSlot'
+
+function App() {
+
+  return (
+    <>
+      <Switch>
+        <Route component={Login} exact path="/" />
+       
+      </Switch>
+
+    </>
+  )
+
+}
+
 
 //NAHLA
 /* import AddStaff from './AddStaff'
@@ -28,20 +47,6 @@ function App() {
 
 */
 //END NAHLA
-
-import AssignCoordinator from './AssignCoordinator'
-import RemoveAssignedCourse from './RemoveAssignedCourse'
-import AssignCourse from './AssignCourse'
-import AssignSlot from './AssignSlot'
-function App() {
- 
-  return (
-    <>
-    <AssignSlot/>
-    
-    </>
-  )
-}
 
 export default App;
 
