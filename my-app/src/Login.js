@@ -1,5 +1,7 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
+import './main.css';
+
 export default function Login() {
   const EmailRef=useRef()
   const PassRef=useRef()
@@ -16,7 +18,64 @@ export default function Login() {
 }
 
   return (
-    <div>
+<>
+  
+    <div class="limiter">
+
+		<div class="container-login100">
+
+			<div class="wrap-login100">
+
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
+            </img>
+				</div>
+
+				<form class="login100-form validate-form">
+
+					<span class="login100-form-title">
+						GUC Staff Login
+					</span>
+
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<input ref={EmailRef} class="input100" type="text" name="email" placeholder="Email" />
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input ref={PassRef} class="input100" type="password" name="pass" placeholder="Password" />
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+					
+					<div class="container-login100-form-btn">
+						<button onClick={HandleEmail} class="login100-form-btn">
+							Login
+						</button>
+					</div>
+
+					
+
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+	
+</>
+
+
+
+  )
+}
+
+{/* <div>
      Email:
     <input ref={EmailRef} type="text"/>
     <br></br>
@@ -24,7 +83,4 @@ export default function Login() {
     <input ref={PassRef} type="text"/>
     <br></br>
     <button onClick={HandleEmail}> login </button>
-    </div>
-  )
-}
-
+    </div> */}
