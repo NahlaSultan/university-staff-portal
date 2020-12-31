@@ -47,8 +47,28 @@ app.use(async(req, res, next) => {
 })
 app.use('',staff_member_routes )
 
+app.use('/hod',(req, res, next) => {
+    try {
+        //console.log("\nWe entered")
 
-app.use('',hod_routes)
+        const token = req.headers.token;
+        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        //console.log("hr")
+       if(verified.role[0]!="headOfdepartments"){
+        //console.log(" not hr")
+
+            return res.status(401).json({ msg: "authorization failed, must be an HR member to perform this task" });
+        }
+        req.user = verified;
+        next();
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+
+    }
+    
+})
+app.use('/hod',hod_routes)
 
 
 app.use('/hr',(req, res, next) => {
