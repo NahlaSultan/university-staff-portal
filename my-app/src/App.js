@@ -50,6 +50,7 @@ export default function App() {
     <Route path='/hr/addStaff' component={AddStaff} />
    <Route path='/home' component={Home} />
 
+    <Route component={HRprofile} exact path="/homeHR" />
    </Switch>
      </div> 
      </Router>   
