@@ -4,10 +4,14 @@ import HRprofile from './HRprofile'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { render } from 'react-dom'
 import './main.css';
+// const jwt =require("jsonwebtoken")
+// require("dotenv").config()
 
 
 export default function Login() {
   const [logIn, setlogIn] = useState("")
+  //const [token, setToken] = useState("")
+
   const EmailRef = useRef()
   const PassRef = useRef()
   var headerText = ""
@@ -19,7 +23,13 @@ export default function Login() {
       .post('http://localhost:8000/login', body)
       .then(res => {
         setlogIn(res.data)
-        console.log(logIn)
+        console.log("here")
+        console.log(res.headers)
+
+        // const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        // setToken(verified)
+        // console.log(verified.role)
+        console.log(res.data)
       });
 
 
@@ -29,7 +39,9 @@ export default function Login() {
 
   if (logIn == "reset your password" || logIn == "Success") {
     return (
-      <Redirect to="/homeHR" />
+      //see which role from header and redirect to a certain homepage
+      <Redirect to="/home" />
+      //<Redirect to="/homeHR" />
     )
   }
   else {
@@ -52,8 +64,6 @@ export default function Login() {
                 </img>
             </div>
 
-            <form className="login100-form validate-form">
-            <h3>  {headerText} </h3>
 
               <span className="login100-form-title">
                 GUC Staff Login
@@ -66,6 +76,7 @@ export default function Login() {
                   <i className="fa fa-envelope" aria-hidden="true"></i>
                 </span>
               </div>
+              <h3>  {headerText} </h3>
 
               <div className="wrap-input100 validate-input" data-validate = "Password is required">
                 <input ref={PassRef} className="input100" type="password" name="pass" placeholder="Password" />
@@ -84,7 +95,6 @@ export default function Login() {
               
 
 
-            </form>
 
 
           </div>
