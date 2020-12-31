@@ -43,13 +43,13 @@ export default function App() {
    return (
      <Router>  
    <div className='App'> 
+   <Route path='/' exact component={Login} />
    <h1> app page</h1>
     <Nav/>
     <Switch> 
-   <Route path='/' exact component={Home} />
-
     <Route path='/hr/addStaff' component={AddStaff} />
-   <Route path='/login' component={Login} />
+   <Route path='/home' component={Home} />
+
    </Switch>
      </div> 
      </Router>   
