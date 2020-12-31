@@ -4,10 +4,14 @@ import HRprofile from './HRprofile'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { render } from 'react-dom'
 import './main.css';
+// const jwt =require("jsonwebtoken")
+// require("dotenv").config()
 
 
 export default function Login() {
   const [logIn, setlogIn] = useState("")
+  //const [token, setToken] = useState("")
+
   const EmailRef = useRef()
   const PassRef = useRef()
   var headerText = ""
@@ -19,7 +23,13 @@ export default function Login() {
       .post('http://localhost:8000/login', body)
       .then(res => {
         setlogIn(res.data)
-        console.log(logIn)
+        console.log("here")
+        console.log(res.headers)
+
+        // const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        // setToken(verified)
+        // console.log(verified.role)
+        console.log(res.data)
       });
 
 
