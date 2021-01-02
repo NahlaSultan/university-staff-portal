@@ -8,9 +8,9 @@ const jwt = require('jsonwebtoken')
 const location_model = require('../models/location_model').model
 const faculty_model = require('../models/faculty_model').model
 const department_model = require('../models/department_model').model
-const course_model=require('../models/course_model').model
-const workingSchedule_model=require('../models/workingSchedule_model').model
-const tokens_model=require('../models/tokens_model').model
+const course_model = require('../models/course_model').model
+const workingSchedule_model = require('../models/workingSchedule_model').model
+const tokens_model = require('../models/tokens_model').model
 
 router.route('/addSampleStaff')
     .post(async (req, res) => {
@@ -23,9 +23,9 @@ router.route('/addSampleStaff')
             console.log("if not user")
             newPassword = await defaultPassword()
             var staffType, memberID
-                staffType = "hr"
-            
-           
+            staffType = "hr"
+
+
 
             const officeName = req.body.office
 
@@ -67,15 +67,15 @@ router.route('/addSampleStaff')
                 officeLocation: req.body.office,
                 gender: req.body.gender
             })
-           
-            
-        
+
+
+
 
             if (req.body.dayOff != null) {
                 newUser.dayOff = req.body.dayOff
             }
-                newUser.dayOff = "Saturday"
-            
+            newUser.dayOff = "Saturday"
+
 
             if (req.body.attendance != null) {
                 newUser.attendance = req.body.attendance
@@ -89,7 +89,7 @@ router.route('/addSampleStaff')
             if (req.body.workingSchedule != null) {
                 newUser.workingSchedule = req.body.workingSchedule
             }
-           
+
 
             try {
                 console.log("saving user")
@@ -130,7 +130,7 @@ router.route('/login')
         const staff = await staff_members_models.findOne({ email: req.body.email })
         if (staff) {
             const correctPassword = await bcrypt.compare(req.body.password, staff.password)
-       
+
             console.log("correct password: ", staff.password)
             console.log("entered password: ", req.body.password)
             if (req.body.password == "123456") {
@@ -149,22 +149,22 @@ router.route('/login')
                 res.send("Success")
                 // return res.redirect('/homePage')
             }
-            return res.status(401).send('Invalid password')
+            return res.send('Invalid password')
         }
 
 
-        return res.status(401).send('Invalid email')
+        return res.send('Invalid email')
     })
 
 
-    //logout
-    router.route('/logOut')
+//logout
+router.route('/logOut')
     .get(async (req, res) => {
-        const token =req.headers.token;
-        const t =new tokens_model({
-          "blackList":token
+        const token = req.headers.token;
+        const t = new tokens_model({
+            "blackList": token
         })
-      await  t.save()
+        await t.save()
         res.send("loggedOut")
     })
 
