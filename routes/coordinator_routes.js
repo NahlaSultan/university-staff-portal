@@ -149,7 +149,21 @@ router.route('/addSlot')
             return res.send("Something went wrong")
         }
     })
-
+router.route('/viewCourseCoordinator')
+.get(async(req,res)=>
+{
+    const staffId = req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+    if(staff){
+        const courseNames=staff.coordinatorCourse
+        res.send(courseNames)
+    }
+    else
+   
+    res.send("Something wrong happened")
+    
+}
+)
 
 router.route('/deleteSlot')
     .post(async (req, res) => {
