@@ -212,7 +212,11 @@ router.route('/addCourse').post(async (req, res) => {
     res.send("Successfully added")
 
 })
+router.route('/viewLocations')
+    .get(async (req, res) => {
+        const locations = await location_model.find()
+        res.send(locations)
 
-
+    })
 
 module.exports = router

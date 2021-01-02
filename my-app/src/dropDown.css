@@ -23,6 +23,9 @@
   text-align: left;
   background-color: #176ed1;;
   color: white;
+  align-items: center;
+  align-self: center;
+  vertical-align: inherit;
   padding: 10px;
   font-size: 14px;
   border: none;
