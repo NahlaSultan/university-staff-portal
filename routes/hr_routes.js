@@ -219,6 +219,14 @@ router.route('/addLocation')
 
 })
 
+router.route('/viewLocations')
+.get(async (req, res) => {
+    const locations = await location_model.find()
+
+        res.send(locations)
+
+})
+
 router.route('/updateLocation')
 .post(async (req, res) => {
     console.log("adding loc")

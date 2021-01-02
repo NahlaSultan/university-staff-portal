@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react'
-import './App.css';
+import '../styling/App.css'
 
 
 export default function Home() {
