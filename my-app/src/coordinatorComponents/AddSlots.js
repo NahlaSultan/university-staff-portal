@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
 import '../styling/main.css';
-import '../styling/dropDown.css'
+import '../styling/dropDown.css';
+import '../styling/App.css';
 //import '.dropDown.css';
 
 
@@ -9,22 +10,29 @@ export default function AddSlots() {
     const [Type, setType] = useState("")
     const [Time, setTime] = useState("")
     const [Day, setDay] = useState("")
+    const [Location, setLocation] = useState("")
+    const locs = ['1', '2', '3']
     //if the course is not found (azabtha fl backend)
     const CourseTaughtRef = useRef()
     const TimeRef = useRef()
     const LocationRef = useRef()
     async function HandleChange(e) {
-        setType(e.target.value)
+        await setType(e.target.value)
         console.log(Type)
     }
     async function HandleTime(e) {
-        setTime(e.target.value)
+        await setTime(e.target.value)
         console.log(Time)
     }
     async function HandleDay(e) {
-        setDay(e.target.value)
+        await setDay(e.target.value)
         console.log(Day)
     }
+    async function HandleLocation(e) {
+        await setLocation(e.target.value)
+        console.log(Location)
+    }
+    const [locations, setLocations] = useState([])
     function HandleAddSlot() {
 
         const body = {
@@ -41,21 +49,30 @@ export default function AddSlots() {
         // callAPI()
     }
 
+    useEffect(() => {
+        // Update the document title using the browser API
+        axios
+            .get('http://localhost:8000/viewLocations')
+            .then(res => {
+                setLocations(res.data)
+            
+            });
+    });
+
+
+
     return (
         <>
             <div >
-                <div className="addSlot">
-
-
-                    <span className="login100-form-title">
-                        Add Slot
+                <span className="login100-form-title">
+                    Add Slot
 					</span>
 
-                    {/* <div class="dropdown"> */}
-                    {/* <button class="dropbtn">Type</button>
+                {/* <div class="dropdown"> */}
+                {/* <button class="dropbtn">Type</button>
                         <div class="dropdown-content"> */}
 
-                    {/* <div>
+                {/* <div>
                         <input required={true} ref={TimeRef} className="input100" name="time" placeholder="Time" />
                         <span className="focus-input100"></span>
                         <span className="symbol-input100">
@@ -63,15 +80,15 @@ export default function AddSlots() {
                         <br />
                     </div> */}
 
-                    <div>
-                        <input required={true} ref={CourseTaughtRef} className="input100" name="courseTaught" placeholder="Course Taught" />
-                        <span className="focus-input100"></span>
-                        <span className="symbol-input100">
-                        </span>
-                        <br />
-                    </div>
+                <div>
+                    <input required={true} ref={CourseTaughtRef} className="input100" name="courseTaught" placeholder="Course Taught" />
+                    <span className="focus-input100"></span>
+                    <span className="symbol-input100">
+                    </span>
+                    <br />
+                </div>
 
-                    {/* <div>
+                {/* <div>
                         <input required={true} ref={DayRef} className="input100" name="day" type='checkbox' placeholder="Day" />
                         <span className="focus-input100"></span>
                         <span className="symbol-input100">
@@ -79,18 +96,27 @@ export default function AddSlots() {
                         <br />
                     </div> */}
 
-                    <div>
+                {/* <div>
                         <input required={true} ref={LocationRef} className="input100" name="location" placeholder="Slot's Location" />
                         <span className="focus-input100"></span>
                         <span className="symbol-input100">
                         </span>
                         <br />
-                    </div>
+                    </div> */}
+                <div className='whole'>
+                    <label className='textDown'>Choose a Location:</label>
+                    <select className='dropbtn' name="types" id="type" onChange={HandleLocation}>
+                        {locations.map(item => (
+                            <option key={item.name} value={item.name}>{item.name}</option>
+                        ))}
+                        {/* {locs.map(item => (
+                            <option key={item} value={item}>{item}</option>
+                          ))} */}
+                    </select>
                 </div>
 
-
                 <div className='whole'>
-                    <label for="types" className='textDown'>Choose a Type: </label>
+                    <label className='textDown'>Choose The Type: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleChange}>
                         <option value="lab">Lab</option>
                         <option value="tutorial">Tutorial</option>
@@ -98,7 +124,7 @@ export default function AddSlots() {
                     </select>
 
                     {/* </div> */}
-                    <label for="time" className='textDown'> Slot Time: </label>
+                    <label className='textDown'> Slot Time: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleTime}>
                         <option value="First Slot">First Slot</option>
                         <option value="Second Slot">Second Slot</option>
@@ -106,8 +132,9 @@ export default function AddSlots() {
                         <option value="Fourth Slot">Fourth Slot</option>
                         <option value="Fifth Slot">Fifth Slot</option>
                     </select>
-                    <label for="days" className='textDown'> Day: </label>
+                    <label className='textDown'> Day: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
+                    <option value="Saturday">Saturday</option>
                         <option value="Sunday">Sunday</option>
                         <option value="Monday">Monday</option>
                         <option value="Tuesday">Tuesday</option>
