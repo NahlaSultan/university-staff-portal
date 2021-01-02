@@ -92,6 +92,14 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import HRprofile from './hrComponents/HRprofile';
 import ManageSlots from './coordinatorComponents/ManageSlots'
 import AddSlots from './coordinatorComponents/AddSlots'
+import AssignSlot from './ciComponents/AssignSlot'
+import AssignCourse from './ciComponents/AssignCourse'
+import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
+import AssignCoordinator from './ciComponents/AssignCoordinator'
+import ViewSlots from './ciComponents/ViewSlots'
+import InstructorProfile from './ciComponents/InstructorProfile'
+import ViewDepartmentStaff from './ciComponents/ViewDepartmentStaff'
+import ViewCourseStaff from './ciComponents/ViewCourseStaff'
 
 export default function App() {
 
@@ -108,6 +116,14 @@ export default function App() {
           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
           <Route component={HRprofile} exact path="/homeHR" />
           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
+          <Route exact path='/ci/assignSlots' component={AssignSlot} />
+          <Route exact path='/ci/updateAssignedCourse' component={AssignCourse} />
+          <Route exact path='/ci/removeAssignedCourse' component={RemoveAssignedCourse} />
+          <Route exact path='/ci/assignCourseCoordinator' component={AssignCoordinator} />
+          <Route exact path='/ci/viewSlots' component={ViewSlots} />
+          <Route exact path='/instructorProfile' component={InstructorProfile} />
+          <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
+          <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
 
         </Switch>
       </div>

@@ -87,7 +87,7 @@ export default function Login() {
     return (
       //see which role from header and redirect to a certain homepage
       // <Redirect to="/homeHR" />
-      <Redirect to="/coordinatorProfile" />
+      <Redirect to="/InstructorProfile" />
 
     )
   }
