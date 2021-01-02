@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { render } from 'react-dom'
-import HRprofile from './HRprofile'
-import './main.css';
+import HRprofile from '../hrComponents/HRprofile'
+import '../styling/main.css';
 // const jwt =require("jsonwebtoken")
 
 export default function Login() {

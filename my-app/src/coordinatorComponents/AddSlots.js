@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios'
-import './main.css';
-import './dropDown.css';
+import '../styling/main.css';
+import '../styling/dropDown.css'
+//import '.dropDown.css';
+
 
 export default function AddSlots() {
     const [Type, setType] = useState("")
