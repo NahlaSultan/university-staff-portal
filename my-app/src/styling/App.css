@@ -6,16 +6,18 @@ nav{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: rgb(94, 155, 175);
+    background: #060b26;
     color: white;
 
+}
+.nav-pic {
+  margin-top: 10px;
+  width: 50px;
 }
 
 .nav-links{
     width: 40%;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
     list-style: none;
 }
 
@@ -31,6 +33,14 @@ nav{
 
 }
 
+
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
 /* unvisited link */
 
 a:link {

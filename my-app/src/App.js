@@ -18,15 +18,18 @@
 
 // import Home from './mainComponents/Home';
 // import Nav from './mainComponents/Nav';
+// import SideNav from './mainComponents/SideNav'
 // import Locations from './hrComponents/Locations';
 // import Faculties from './hrComponents/Faculties'
 // import AddStaff from './hrComponents/AddStaff'
 // import Login from './mainComponents/Login'
+// import Logout from './mainComponents/Logout';
 // import HRprofile from './hrComponents/HRprofile'
 // import AssignCoordinator from './ciComponents/AssignCoordinator'
 // import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
 // import AssignCourse from './ciComponents/AssignCourse'
 // import AssignSlot from './acComponents/AssignSlot'
+
 // import './styling/App.css'
 // import './styling/main.css'
 
@@ -38,14 +41,13 @@
 //    <Router>  
 //    <div className='App'> 
 //     <Route path='/' exact component={Login} />
-//     <h1> app page</h1>
 //     <Nav/>
-
+//     <SideNav/>
 //     <Switch> 
 //     <Route path='/hr/addStaff' component={AddStaff} />
 //     <Route path='/hr/locations' component={Locations} />
 //     <Route path='/hr/faculties' component={Faculties} />
-
+//     <Route path='/logout' component={Logout} />
 //    <Route path='/home' component={Home} />
 
 //     </Switch>
