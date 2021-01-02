@@ -102,6 +102,15 @@ import ViewSlots from './ciComponents/ViewSlots'
 import InstructorProfile from './ciComponents/InstructorProfile'
 import ViewDepartmentStaff from './ciComponents/ViewDepartmentStaff'
 import ViewCourseStaff from './ciComponents/ViewCourseStaff'
+import CourseCoverage from './ciComponents/CourseCoverage'
+import ViewProfile from './smComponent/ViewProfile'
+import staffProfile from './smComponent/StaffProfile'
+import StaffProfile from './smComponent/StaffProfile'
+import ViewAttendance from './smComponent/ViewAttendance'
+import ViewMissingDays from './smComponent/ViewMissingDays'
+import ViewMissingHours from './smComponent/ViewMissingHours'
+import ViewExtraHours from './smComponent/ViewExtraHours'
+import ResetPassword from './mainComponents/ResetPassword'
 
 export default function App() {
 
@@ -126,7 +135,14 @@ export default function App() {
           <Route exact path='/instructorProfile' component={InstructorProfile} />
           <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
           <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
-
+          <Route exact path='/ci/viewCoverage' component={CourseCoverage} />
+          <Route exact path='/viewProfile' component={ViewProfile} />
+          <Route exact path='/staffProfile' component={StaffProfile} />
+          <Route exact path='/viewAttendance' component={ViewAttendance} />
+          <Route exact path='/viewMissingDays' component={ViewMissingDays} />
+          <Route exact path='/viewMissingHours' component={ViewMissingHours} />
+          <Route exact path='/viewExtraHours' component={ViewExtraHours} />
+          <Route exact path='/resetPassword' component={ResetPassword} />
         </Switch>
       </div>
     </Router>
