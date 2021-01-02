@@ -69,7 +69,7 @@ router.route('/viewCourseStaff')
          for(let i=0;i<staff.course.length;i++){
         const result =  await staff_members_models.find({course:staff.course[i]})
         array.push(result)
-        res.send(result)
+       // res.send(result)
     }
     res.send(array)
     

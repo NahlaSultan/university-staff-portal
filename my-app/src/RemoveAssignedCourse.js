@@ -1,10 +1,10 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
 export default function RemoveAssignedCourse() {
-    const IDRef=useRef()
-    const CourseRef=useRef()
-  function removeCourse(){
-    const body={memberID:IDRef.current.value, courseName:CourseRef.current.value  }
+    const memberIDRef=useRef()
+    const courseRef=useRef()
+  function HandleRemoveCourse(){
+    const body={memberID:memberIDRef.current.value, courseName:courseRef.current.value  }
   //  console.log(body)
 
    axios   
@@ -14,16 +14,50 @@ export default function RemoveAssignedCourse() {
    // callAPI()
 }
 
-  return (
-    <div>
-     Staff ID:
-    <input ref={IDRef} type="text"/>
-    <br></br>
-    Course Name:
-    <input ref={CourseRef} type="text"/>
-    <br></br>
-    <button onClick={ removeCourse}> Remove </button>
-    </div>
-  )
+return (
+  <>
+      <div >
+          <div className="RemoveAssignedCourse">
+
+
+              <span className="login100-form-title">
+                  Remove Assigned Course
+    </span>
+
+
+              <div>
+                  <input required={true} ref={memberIDRef} className="input100" name="memberID" placeholder="Member ID" />
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                  </span>
+                  <br />
+              </div>
+
+
+              <div>
+                  <input required={true} ref={courseRef} className="input100" name="courseName" placeholder="Course Name" />
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                  </span>
+                  <br />
+              </div>
+          </div>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <div className="buttons">
+              <button onClick={ HandleRemoveCourse} className="buttons">
+                  Assign Course
+      </button>
+          </div>
+
+      </div>
+
+  </>
+)
 }
 
