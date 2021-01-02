@@ -26,7 +26,7 @@ export default function InstructorProfile() {
             <br></br>
             <ul className='link_list'>
                 <Link className='a' to='/ci/removeAssignedCourse'>
-                    <li>Remove Assigned Course </li>
+                    <li>Remove Assigned Course</li>
                 </Link>
 
             </ul>
@@ -34,7 +34,7 @@ export default function InstructorProfile() {
             <br></br>
             <ul className='link_list'>
                 <Link className='a' to='/ci/assignCourseCoordinator'>
-                    <li>Assign Course Coordinator </li>
+                    <li>Assign Coordinator </li>
                 </Link>
 
             </ul>
@@ -62,6 +62,16 @@ export default function InstructorProfile() {
                 </Link>
 
             </ul>
+            <br></br>
+            <br></br>
+            <ul className='link_list'>
+                <Link className='a' to='/ci/viewCoverage'>
+                    <li>View Course/s Coverage </li>
+                </Link>
+
+            </ul>
+            <br></br>
+            <br></br>
         </>
 
     )
