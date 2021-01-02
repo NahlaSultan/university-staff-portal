@@ -41,6 +41,7 @@ export default function Login() {
     return (
       //see which role from header and redirect to a certain homepage
       <Redirect to="/home" />
+      //<Redirect to="/homeHR" />
     )
   }
   else {

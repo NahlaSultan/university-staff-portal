@@ -49,3 +49,25 @@
  //end nahla
 
 
+ // 
+//  =======
+//    return (
+//      <Router>  
+//    <div className='App'> 
+//    <Route path='/' exact component={Login} />
+//    <h1> app page</h1>
+//     <Nav/>
+//     <Switch> 
+//     <Route path='/hr/addStaff' component={AddStaff} />
+//    <Route path='/home' component={Home} />
+
+//     <Route component={HRprofile} exact path="/homeHR" />
+//    </Switch>
+//      </div> 
+//      </Router>   
+//    )
+
+//  }
+// >>>>>>> 5625b40f960a7f098cbedb69a0dc4d35238066e1
+
+
