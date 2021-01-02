@@ -82,41 +82,37 @@
 //  }
 // >>>>>>> 5625b40f960a7f098cbedb69a0dc4d35238066e1
 
-// import React, { useState, useRef } from 'react'
-// //import { Link, Switch, Route } from 'react-router-dom'
-// import Login from './Login'
-// import HRprofile from './HRprofile'
-// import AssignCoordinator from './AssignCoordinator'
-// import RemoveAssignedCourse from './RemoveAssignedCourse'
-// import AssignCourse from './AssignCourse'
-// import AssignSlot from './AssignSlot'
-// import AddStaff from './AddStaff'
-// import coordinatorProfile from './coordinatorProfile'
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-// import Home from './Home';
-// import Nav from './Nav';
-// import ManageSlots from './ManageSlots'
-// import AddSlots from './AddSlots'
 
-// export default function App() {
+//startSaraAmjad
+import React, { useState, useRef } from 'react'
+import Login from './mainComponents/Login'
+import AddStaff from './hrComponents/AddStaff'
+import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import HRprofile from './hrComponents/HRprofile';
+import ManageSlots from './coordinatorComponents/ManageSlots'
+import AddSlots from './coordinatorComponents/AddSlots'
 
-//   return (
-//     <Router>
-//       <div className='App'>
-//         <h1> app page</h1>
-//         <Switch>
-//           <Route exact path='/' exact component={Login} />
-//           {/* <Nav /> */}
-//           <Route exact path='/hr/addStaff' component={AddStaff} />
-//           <Route exact path='/home' component={Home} />
-//           <Route exact path='/coordinator/addSlot' component={AddSlots} />
-//           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
-//           <Route component={HRprofile} exact path="/homeHR" />
-//           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
+export default function App() {
 
-//         </Switch>
-//       </div>
-//     </Router>
-//   )
+  return (
+    <Router>
+      <div className='App'>
+        <h1> app page</h1>
+        <Switch>
+          <Route exact path='/' exact component={Login} />
+          {/* <Nav /> */}
+          <Route exact path='/hr/addStaff' component={AddStaff} />
+          <Route exact path='/HRProfile' component={HRprofile} />
+          <Route exact path='/coordinator/addSlot' component={AddSlots} />
+          <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
+          <Route component={HRprofile} exact path="/homeHR" />
+          <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
 
-// }
+        </Switch>
+      </div>
+    </Router>
+  )
+
+}
+//END SaraAmjad
