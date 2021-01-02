@@ -1,12 +1,11 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
-import HRprofile from './HRprofile'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { render } from 'react-dom'
+import HRprofile from './HRprofile'
 import './main.css';
 // const jwt =require("jsonwebtoken")
 // require("dotenv").config()
-
 
 export default function Login() {
   const [logIn, setlogIn] = useState("")
@@ -17,7 +16,6 @@ export default function Login() {
   var headerText = ""
   function HandleEmail() {
     const body = { email: EmailRef.current.value, password: PassRef.current.value }
-    //  console.log(body)
 
     axios
       .post('http://localhost:8000/login', body)
@@ -32,9 +30,6 @@ export default function Login() {
         console.log(res.data)
       });
 
-
-
-    // callAPI()
   }
 
   if (logIn == "reset your password" || logIn == "Success") {
@@ -104,6 +99,8 @@ export default function Login() {
           </div>
 
           </div>
-  )
+        )
+      }
+  }
 }
-}
+
