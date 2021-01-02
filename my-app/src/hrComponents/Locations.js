@@ -1,6 +1,6 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
-import './main.css';
+import '../styling/main.css';
 
 
 

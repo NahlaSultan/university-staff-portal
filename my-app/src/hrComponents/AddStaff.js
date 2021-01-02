@@ -1,6 +1,7 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
-import './main.css';
+import '../styling/main.css'
+//import './main.css';
 
 export default function AddStaff() {
   const EmailRef=useRef()
