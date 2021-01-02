@@ -43,8 +43,18 @@ if (LoginMessage=="Invalid email"){
       </div>
     )}
     else if (LoginMessage=="reset your password"){
-      return <Redirect to="/"/>
+      return <Redirect to="/AssignSlot"/>
     }
-  
+  else{
+    <div>
+    Email:
+   <input ref={EmailRef} type="text"/>
+   <br></br>
+   Password:
+   <input ref={PassRef} type="text"/>
+   <br></br>
+   <button onClick={HandleEmail}> login </button>
+   </div>
+  }
 }
 

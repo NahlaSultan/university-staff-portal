@@ -9,9 +9,14 @@ function App() {
  
   return (
     <>
-    <AssignSlot/>
-    
-    </>
+    <Switch>
+    <Route component={Test} exact path="/"/>
+    <Route component={Test2} exact path="/AssignSlot"/>
+    <Route component={Test2} exact path="/AssignCoordinator"/>
+    <Route component={Test2} exact path="/AssignCourse"/>
+    <Route component={Test2} exact path="/RemoveAssignedCourse"/>
+    </Switch>
+</>
   )
   //hassan trial
 }
