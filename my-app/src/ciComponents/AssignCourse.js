@@ -1,29 +1,64 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
 export default function AssignCourse() {
-    const IDRef=useRef()
-    const SlotRef=useRef()
-  function AssCourse(){
-    const body={memberID:IDRef.current.value, numberID:SlotRef.current.value  }
+    const memberIDRef=useRef()
+    const courseRef=useRef()
+  function HandleAssCourse(){
+    const body={memberID:memberIDRef.current.value, courseName:courseRef.current.value  }
   
 
    axios   
-   .post('http://localhost:8000/ci/assignSlots', body)
+   .post('http://localhost:8000/ci/updateAssignedCourse', body)
    
    .then(res=>console.log(res.data));
   
 }
 
-  return (
-    <div>
-     Staff ID:
-    <input ref={IDRef} type="text"/>
-    <br></br>
-    Slot ID:
-    <input ref={SlotRef} type="text"/>
-    <br></br>
-    <button onClick={AssCourse}> Assign </button>
-    </div>
-  )
+return (
+  <>
+      <div >
+          <div className="assignCourse">
+
+
+              <span className="login100-form-title">
+                  Assign Course
+    </span>
+
+
+              <div>
+                  <input required={true} ref={memberIDRef} className="input100" name="memberID" placeholder="Member ID" />
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                  </span>
+                  <br />
+              </div>
+
+
+              <div>
+                  <input required={true} ref={courseRef} className="input100" name="courseName" placeholder="Course Name" />
+                  <span className="focus-input100"></span>
+                  <span className="symbol-input100">
+                  </span>
+                  <br />
+              </div>
+          </div>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <div className="buttons">
+              <button onClick={HandleAssCourse} className="buttons">
+                  Assign Course
+      </button>
+          </div>
+
+      </div>
+
+  </>
+)
+
 }
 
