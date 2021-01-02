@@ -33,7 +33,6 @@ export default function AddStaff() {
   <div >
     <div className="addStaff">		
 
-				<form className="login100-form validate-form">
 
 					<span className="login100-form-title">
 						Add Staff Member
@@ -107,7 +106,6 @@ export default function AddStaff() {
 					
 
 
-				</form>
 
 	</div>
 
