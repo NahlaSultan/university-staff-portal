@@ -55,7 +55,7 @@ export default function AddSlots() {
             .get('http://localhost:8000/viewLocations')
             .then(res => {
                 setLocations(res.data)
-            
+
             });
     });
 
@@ -104,7 +104,7 @@ export default function AddSlots() {
                         <br />
                     </div> */}
                 <div className='whole'>
-                    <label className='textDown'>Choose a Location:</label>
+                    <label className='textDown'>Choose a Location: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleLocation}>
                         {locations.map(item => (
                             <option key={item.name} value={item.name}>{item.name}</option>
@@ -113,8 +113,17 @@ export default function AddSlots() {
                             <option key={item} value={item}>{item}</option>
                           ))} */}
                     </select>
-                </div>
-
+                    <label className='textDown'> Choose A Day: </label>
+                    <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                    </select>                
+                    </div>
+                <br></br>
                 <div className='whole'>
                     <label className='textDown'>Choose The Type: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleChange}>
@@ -132,15 +141,7 @@ export default function AddSlots() {
                         <option value="Fourth Slot">Fourth Slot</option>
                         <option value="Fifth Slot">Fifth Slot</option>
                     </select>
-                    <label className='textDown'> Day: </label>
-                    <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
-                    <option value="Saturday">Saturday</option>
-                        <option value="Sunday">Sunday</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                    </select>
+
 
 
                 </div>
