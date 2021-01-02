@@ -1,11 +1,11 @@
 
-import React,{useState,useRef} from 'react'
+import React, { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import './App.css'
 
 
 export default function Nav() {
- 
+
   return (
     <nav>
         <h3>  HR Members  </h3>
@@ -25,7 +25,7 @@ export default function Nav() {
             </Link>
             
 
-        </ul>
+     </ul>
     </nav>
   )
 }
