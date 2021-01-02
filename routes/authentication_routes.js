@@ -12,6 +12,28 @@ const course_model = require('../models/course_model').model
 const workingSchedule_model = require('../models/workingSchedule_model').model
 const tokens_model = require('../models/tokens_model').model
 
+
+
+router.route('/viewLocations')
+.get(async (req, res) => {
+    const locations = await location_model.find()
+   
+
+
+        res.send(locations)
+
+}) 
+
+router.route('/viewFaculties')
+.get(async (req, res) => {
+    const faculties = await faculty_model.find()
+   
+
+
+        res.send(faculties)
+
+}) 
+
 router.route('/addSampleStaff')
     .post(async (req, res) => {
         const email = req.body.email

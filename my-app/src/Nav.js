@@ -13,9 +13,17 @@ export default function Nav() {
             <Link to='/hr/addStaff'>  
             <li> add staff member </li>
             </Link>
+            <Link to='/hr/locations'>  
+            <li> Locations </li>
+            </Link>
+            here
             <Link to = '/login'>
             <li> login  </li>
             </Link>
+            <Link to = '/hr/faculties'>
+            <li> login  </li>
+            </Link>
+            
 
         </ul>
     </nav>
