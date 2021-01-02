@@ -8,7 +8,7 @@ export default function Nav() {
 
   return (
     <nav>
-      <h3>  HR Members  </h3>
+      <h3> Profile Page </h3>
       <ul className="nav-links">
         <Link to='/hr/addStaff'>
           <li> add staff member </li>

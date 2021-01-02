@@ -5,7 +5,6 @@ import { render } from 'react-dom'
 import HRprofile from './HRprofile'
 import './main.css';
 // const jwt =require("jsonwebtoken")
-// require("dotenv").config()
 
 export default function Login() {
   const [logIn, setlogIn] = useState("")
@@ -16,6 +15,7 @@ export default function Login() {
   var headerText = ""
   function HandleEmail() {
     const body = { email: EmailRef.current.value, password: PassRef.current.value }
+    //  console.log(body)
 
     axios
       .post('http://localhost:8000/login', body)
@@ -30,41 +30,45 @@ export default function Login() {
         console.log(res.data)
       });
 
+
+
+    // callAPI()
   }
 
   if (logIn == "reset your password" || logIn == "Success") {
     return (
       //see which role from header and redirect to a certain homepage
-      <Redirect to="/home" />
-      //<Redirect to="/homeHR" />
+      // <Redirect to="/homeHR" />
+      <Redirect to="/coordinatorProfile" />
+
     )
   }
   else {
-    if (logIn == "Invalid password"){
+    if (logIn == "Invalid password") {
       headerText = "Invalid password"
     }
     else if (logIn == "Invalid email") {
-      headerText = "Invalid email" 
+      headerText = "Invalid email"
     }
     return (
       <div>
         <div className="limiter">
 
-        <div className="container-login100">
+          <div className="container-login100">
 
-          <div className="wrap-login100">
+            <div className="wrap-login100">
 
-            <div className="login100-pic js-tilt" data-tilt>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
+              <div className="login100-pic js-tilt" data-tilt>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
                 </img>
-            </div>
+              </div>
 
 
               <span className="login100-form-title">
                 GUC Staff Login
               </span>
 
-              <div className="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+              <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 <input ref={EmailRef} className="input100" type="text" name="email" placeholder="Email" />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
@@ -73,34 +77,32 @@ export default function Login() {
               </div>
               <h3>  {headerText} </h3>
 
-              <div className="wrap-input100 validate-input" data-validate = "Password is required">
+              <div className="wrap-input100 validate-input" data-validate="Password is required">
                 <input ref={PassRef} className="input100" type="password" name="pass" placeholder="Password" />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">
                   <i className="fa fa-lock" aria-hidden="true"></i>
                 </span>
               </div>
-              
+
               <div className="container-login100-form-btn">
                 <button onClick={HandleEmail} className="login100-form-btn">
                   Login
                 </button>
               </div>
 
-              
 
 
 
 
-          </div>
 
-          </div>
+            </div>
 
           </div>
 
-          </div>
-        )
-      }
+        </div>
+
+      </div>
+    )
   }
 }
-
