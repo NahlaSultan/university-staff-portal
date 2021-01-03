@@ -1,10 +1,12 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
+
 export default function UpdateInstructor() {
   const CoursenameRef=useRef()
   const OldInstructoridRef=useRef()
   const NewInstructoridRef=useRef()
-  function HandleAssign(){
+
+  function HandleUpdate(){
     const body={courseName:CoursenameRef.current.value, oldInstructorId:OldInstructoridRef.current.value,
       newInstructorId:NewInstructoridRef.current.value  }
   CoursenameRef.current.value=null
@@ -29,7 +31,7 @@ export default function UpdateInstructor() {
     new Instructor id:
     <input ref={NewInstructoridRef} type="text"/>
     <br></br>
-    <button onClick={HandleAssign}> update instructor </button>
+    <button onClick={HandleUpdate}> update instructor </button>
     </div>
   )
 }

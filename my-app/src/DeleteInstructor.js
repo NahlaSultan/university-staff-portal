@@ -1,9 +1,11 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
+
 export default function DeleteInstructor() {
   const CoursenameRef=useRef()
   const InstructoridRef=useRef()
-  function HandleAssign(){
+  
+  function HandleDelete(){
     const body={courseName:CoursenameRef.current.value, instructorId:InstructoridRef.current.value  }
   CoursenameRef.current.value=null
   InstructoridRef.current.value=null
@@ -21,7 +23,7 @@ export default function DeleteInstructor() {
     Instructor id:
     <input ref={InstructoridRef} type="text"/>
     <br></br>
-    <button onClick={HandleAssign}> delete instructor </button>
+    <button onClick={HandleDelete}> delete instructor </button>
     </div>
   )
 }
