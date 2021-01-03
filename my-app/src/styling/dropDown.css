@@ -1,27 +1,27 @@
 
 .whole{
-  align-self: left;
-  align-content: left;
-  text-align: left;
-  display: flex;
+  align-self: center;
+  align-content: center;
+  text-align: center;
+  display: center;
 }
 .textDown{
   width: 10%;
-  align-items: left;
+  align-items: center;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: bold;
   font-size: larger;
-  align-self: left;
-  align-content: left;
-  text-align: left;
+  align-self: center;
+  align-content: center;
+  text-align: center;
   color: rgb(94, 13, 60);
   
 }
 /* Dropdown Button */
 .dropbtn {
-  align-self: left;
-  align-content: left;
-  text-align: left;
+  align-self: center;
+  align-content: center;
+  text-align: center;
   
   background-color: #176ed1;;
   color: white;

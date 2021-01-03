@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
 import '../styling/SideNav.css';
 import { IconContext } from 'react-icons';
-
+import {SidebarCoordinator} from '../coordinatorComponents/SidebarCoordinator'
 export default function SideNav() {
   const [sidebar, setSidebar] = useState(false);
 
@@ -26,7 +26,12 @@ export default function SideNav() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-            {SidebarData.map((item, index) => {
+            {/* Start Nahla */}
+            {SidebarCoordinator.map((item, index) => {
+            {/* end nahla */}
+            {/* start sara */}
+            {/* {SidebarCoordinator.map((item, index) => { */}
+            {/* end sara */}
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>

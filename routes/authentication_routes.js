@@ -165,10 +165,10 @@ router.route('/login')
 
                 if (firstLogin) {
                     console.log("first login")
-                    res.send('reset your password')
+                    res.send(token)
                 }
 
-                res.send("Success")
+                res.send(token)
                 // return res.redirect('/homePage')
             }
             return res.send('Invalid password')
