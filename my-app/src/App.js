@@ -13,9 +13,63 @@
 
 
 //NAHLA
-// 
-//end nahla
+// import React, { useState, useRef } from 'react'
+// import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
 
+// import Home from './mainComponents/Home';
+// import Nav from './mainComponents/Nav';
+// import SideNav from './mainComponents/SideNav'
+// import Locations from './hrComponents/Locations';
+// import Faculties from './hrComponents/Faculties'
+// import AddStaff from './hrComponents/AddStaff'
+// import Login from './mainComponents/Login'
+// import Logout from './mainComponents/Logout';
+// import HRprofile from './hrComponents/HRprofile'
+// import Staffs from './hrComponents/Staffs';
+
+// import './styling/App.css'
+// import './styling/main.css'
+// import addLocation from './hrComponents/AddLocation';
+// import addDepartment from './hrComponents/AddDepartment';
+// import addFaculty from './hrComponents/AddFaculty';
+// import addCourse from './hrComponents/AddCourse';
+// import StaffsMissingHours from './hrComponents/StaffsMissingHours';
+// import StaffsMissingDays from './hrComponents/StaffsMissingDays';
+
+
+// export default function App() {
+
+//    return (
+//    <Router>  
+//    <div className='App'> 
+//     <Route path='/' exact component={Login} />
+
+//     <Nav/>
+//     <SideNav/>
+//     <Switch> 
+//     <Route path='/hr/addStaff' component={AddStaff} />
+//     <Route path='/hr/locations' component={Locations} />
+//     <Route path='/hr/staffs' component={Staffs} />
+//     <Route path='/hr/faculties' component={Faculties} />
+//     <Route path='/logout' component={Logout} />
+//     <Route path='/home' component={HRprofile} />
+//     <Route path='/addLocation' component={addLocation} />
+//     <Route path='/addDepartment' component={addDepartment} />
+//     <Route path='/addFaculty' component={addFaculty} />
+//     <Route path='/addCourse' component={addCourse} />
+//     <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
+//     <Route path='/hr/viewMissingDays' component={StaffsMissingDays} />
+
+
+
+//     </Switch>
+//      </div> 
+//      </Router>   
+//    )
+
+//  }
+
+ //end nahla
 
 
 
@@ -112,87 +166,43 @@
 
 // }
 //END SaraAmjad
-//startSaraAmjad
-import React, { useState, useRef } from 'react'
-import Login from './mainComponents/Login'
-import AddStaff from './hrComponents/AddStaff'
-import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import HRprofile from './hrComponents/HRprofile';
-import ManageSlots from './coordinatorComponents/ManageSlots';
-import AddSlots from './coordinatorComponents/AddSlots';
-import SideNav from './mainComponents/SideNav'
-import Nav from './mainComponents/Nav';
-export default function App() {
-
-  return (
-    <Router>
-      <div className='App'>
-        <h1> app page</h1>
-        <Route exact path='/' exact component={Login} />
-        <Nav />
-        <SideNav />
-        <Switch>
-          
-          {/* {/* <Nav /> */}
-
-          <Route exact path='/hr/addStaff' component={AddStaff} />
-          <Route exact path='/HRProfile' component={HRprofile} />
-          <Route exact path='/coordinator/addSlot' component={AddSlots} />
-          <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
-          <Route component={HRprofile} exact path="/homeHR" />
-          <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
-
-        </Switch>
-      </div>
-    </Router>
-  )
-
-}
-//END SaraAmjad
-
+// //startSaraAmjad
 // import React, { useState, useRef } from 'react'
-// import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
-
-// import Home from './mainComponents/Home';
-// import Nav from './mainComponents/Nav';
-// import SideNav from './mainComponents/SideNav'
-// import Locations from './hrComponents/Locations';
-// import Faculties from './hrComponents/Faculties'
-// import AddStaff from './hrComponents/AddStaff'
 // import Login from './mainComponents/Login'
-// import Logout from './mainComponents/Logout';
-// import HRprofile from './hrComponents/HRprofile'
-// import AssignCoordinator from './ciComponents/AssignCoordinator'
-// import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
-// import AssignCourse from './ciComponents/AssignCourse'
-// import AssignSlot from './acComponents/AssignSlot'
-
-// import './styling/App.css'
-// import './styling/main.css'
-
-
-
+// import AddStaff from './hrComponents/AddStaff'
+// import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
+// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+// import HRprofile from './hrComponents/HRprofile';
+// import ManageSlots from './coordinatorComponents/ManageSlots';
+// import AddSlots from './coordinatorComponents/AddSlots';
+// import SideNav from './mainComponents/SideNav'
+// import Nav from './mainComponents/Nav';
 // export default function App() {
 
-//    return (
-//    <Router>  
-//    <div className='App'> 
-//     <Route path='/' exact component={Login} />
-//     <Nav/>
-//     <SideNav/>
-//     <Switch> 
-//     <Route path='/hr/addStaff' component={AddStaff} />
-//     <Route path='/hr/locations' component={Locations} />
-//     <Route path='/hr/faculties' component={Faculties} />
-//     <Route path='/logout' component={Logout} />
-//    <Route path='/home' component={Home} />
+//   return (
+//     <Router>
+//       <div className='App'>
+//         <h1> app page</h1>
+//         <Route exact path='/' exact component={Login} />
+//         <Nav />
+//         <SideNav />
+//         <Switch>
+          
+//           {/* {/* <Nav /> */}
 
-//     </Switch>
-//      </div> 
-//      </Router>   
-//    )
+//           <Route exact path='/hr/addStaff' component={AddStaff} />
+//           <Route exact path='/HRProfile' component={HRprofile} />
+//           <Route exact path='/coordinator/addSlot' component={AddSlots} />
+//           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
+//           <Route component={HRprofile} exact path="/homeHR" />
+//           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
 
-//  }
-// 
- //end nahla
+//         </Switch>
+//       </div>
+//     </Router>
+//   )
+
+// }
+//END SaraAmjad
+
+

@@ -119,7 +119,8 @@ textarea:-ms-input-placeholder { color: #999999; }
 button {
 	outline: none !important;
 	border: none;
-	background: transparent;
+  background: transparent;
+  margin-right: 5px;
 }
 
 button:hover {
@@ -147,6 +148,14 @@ iframe {
   color: #666666;
 }
 
+
+
+.leftDiv{
+  display: block;
+  justify-content: left;
+  align-content: left;
+    
+  }
 
 /*//////////////////////////////////////////////////////////////////
 [ login ]*/
@@ -317,6 +326,37 @@ iframe {
 
 /*------------------------------------------------------------------
 [ Button ]*/
+
+
+/*---------------------------------------------*/
+.btn {
+  font-family: Montserrat-Bold;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #fff;
+  text-transform: uppercase;
+  height: 25px;
+  border-radius: 30px;
+  background: #b87046;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+ 
+  padding: 0 25px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.btn:hover {
+  background: #333333;
+}
+
+
+
 .container-login100-form-btn {
   width: 100%;
   display: -webkit-box;
