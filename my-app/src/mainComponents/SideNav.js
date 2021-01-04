@@ -27,7 +27,7 @@ export default function SideNav() {
               </Link>
             </li>
             {/* Start Nahla */}
-            {SidebarCoordinator.map((item, index) => {
+            {SidebarData.map((item, index) => {
             {/* end nahla */}
             {/* start sara */}
             {/* {SidebarCoordinator.map((item, index) => { */}

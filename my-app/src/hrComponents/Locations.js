@@ -10,11 +10,9 @@ export default function Locations() {
   useEffect(() => {
     // Update the document title using the browser API
     axios   
-    .get('http://localhost:8000/viewLocations')
+    .get('http://localhost:8000/hr/viewLocations',{ headers: { 'token': localStorage.getItem('token') } })
     .then(res => {
         setLocations(res.data)
-        console.log("here")
-        console.log(res.data)
       });  });
 
 
