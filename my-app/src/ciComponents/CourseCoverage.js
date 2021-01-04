@@ -7,11 +7,10 @@ export default function CourseCoverage() {
   useEffect(() => {
     // Update the document title using the browser API
     axios   
-    .get('http://localhost:8000/ci/viewCoverage')
+    .get('http://localhost:8000/ci/viewCoverage', {headers:{'token':localStorage.getItem('token')}})
     .then(res => {
         setCoverage(res.data)
-        console.log("here")
-        console.log(res.data)
+       
       });  });
 
   return (

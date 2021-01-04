@@ -16,7 +16,7 @@ export default function ResetPassword() {
   //  console.log(body)
 
    axios   
-   .post('http://localhost:8000/resetPassword', body)
+   .post('http://localhost:8000/resetPassword', body,{headers:{'token':localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));}
    else{

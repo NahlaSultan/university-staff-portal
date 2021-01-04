@@ -23,6 +23,13 @@ export default function StaffProfile() {
             <br></br>
             <br></br>
             <ul className='link_list'>
+                <Link className='a' to='/viewMonthAttendance'>
+                    <li>View Month Attendance </li>
+                </Link>
+            </ul>
+            <br></br>
+            <br></br>
+            <ul className='link_list'>
                 <Link className='a' to='/viewMissingDays'>
                     <li>View Missing Days </li>
                 </Link>
