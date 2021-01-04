@@ -150,23 +150,23 @@ router.route('/addSlot')
         }
     })
 router.route('/viewCourseCoordinator')
-.get(async(req,res)=>
-{
-    const staffId = req.user._id;
-    const staff = await staff_members_models.findOne({ _id: staffId })
-    if(staff){
-        const courseNames=staff.coordinatorCourse
-        res.send(courseNames)
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            const courseNames = staff.coordinatorCourse
+            res.send(courseNames)
+        }
+        else
+
+            res.send("Something wrong happened")
+
     }
-    else
-   
-    res.send("Something wrong happened")
-    
-}
-)
+    )
 
 router.route('/deleteSlot')
     .post(async (req, res) => {
+        console.log("Deleting....")
         const staffId = req.user._id;
         const staff = await staff_members_models.findOne({ _id: staffId })
         console.log("The coordinator is" + staff)
@@ -204,16 +204,20 @@ router.route('/deleteSlot')
                     }
                     const staffID = slotToDelete.academicMember
                     const staffTeahcing = await staff_members_models.findOne({ memberID: staffID })
-                    console.log("Staff teaching this slot is:" + staffTeahcing)
-                    for (let i = 0; i < staffTeahcing.slotsAssigned.length; i++) {
-                        if (staffTeahcing.slotsAssigned[i] == slotToDelete.numberID) {
-                            console.log("I entered here when the slot was " + staffTeahcing.slotAssigned[i])
-                            staffTeahcing.slotsAssigned.splice(i, 1)
-                            break
+                    if (staffTeahcing) {
+                        console.log("Staff teaching this slot is:" + staffTeahcing)
+                        for (let i = 0; i < staffTeahcing.slotsAssigned.length; i++) {
+                            if (staffTeahcing.slotsAssigned[i] == slotToDelete.numberID) {
+                                console.log("I entered here when the slot was " + staffTeahcing.slotAssigned[i])
+                                staffTeahcing.slotsAssigned.splice(i, 1)
+                                break
+                            }
                         }
                     }
                     try {
-                        staffTeahcing.save()
+                        if (staffTeahcing) {
+                            staffTeahcing.save()
+                        }
                         slotToDelete.delete()
                     }
                     catch (Err) {
@@ -229,104 +233,70 @@ router.route('/deleteSlot')
 //input that should be present is the slotID that needs to be updated
 router.route('/updateSlot')
     .post(async (req, res) => {
-        const staffId = req.user._id;
-        const staff = await staff_members_models.findOne({ _id: staffId })
-        console.log("The coordinator is" + staff)
-        if (staff) {
-            if (req.body.slotID == null) {
-                res.send("You should enter the slot ID you wish to update")
-            }
-            else {
 
-                const bodyinput = req.body.slotID
-                console.log("bodyInput is" + bodyinput)
-                const slotToUpdate = await slot_model.findOne({ numberID: bodyinput })
+        if (req.body.slotID == null) {
+            res.send("You should enter the slot ID you wish to update")
+        }
+        else {
 
-                if (slotToUpdate) {
-                    console.log("Slot to update is" + slotToUpdate)
-                    var flag = "false"
-                    for (let index = 0; index < staff.coordinatorCourse.length; index++) {
-                        if (staff.coordinatorCourse[index] == slotToUpdate.courseTaught) {
-                            flag = "true"
-                        }
+            const bodyinput = req.body.slotID
+            const slotToUpdate = await slot_model.findOne({ numberID: bodyinput })
+
+            if (slotToUpdate) {
+                if (req.body.location != null && req.body.location != "") {
+                    console.log("OOPS")
+                    const newLocation = req.body.location
+                    const office = await location_model.findOne({ name: newLocation })
+                    if (!office) {
+                        return res.send("Invalid location")
                     }
-                    if (flag == "false") {
-                        res.send("You are not a coordinator on this course")
+                    slotToUpdate.location = newLocation
+
+                }
+                if (req.body.type != null && req.body.type != "") {
+                    const newType = req.body.type
+                    if (newType != "lab" && newType != "tutorial" && newType != "lecture") {
+                        return res.send("Invalid type;should be a lab,lecture or tutorial")
+                    }
+                    slotToUpdate.type = newType
+
+                }
+                if (req.body.time != null && req.body.time != "") {
+                    const newTime = req.body.time
+                    slotToUpdate.time = newTime
+
+                }
+                if (req.body.day != null && req.body.day != "") {
+                    const dayName = req.body.day
+                    if (dayName.toLowerCase() != "saturday" && dayName.toLowerCase() != "sunday" && dayName.toLowerCase() != "monday" && dayName.toLowerCase() != "tuesday" && dayName.toLowerCase() != "wednesday" && dayName.toLowerCase() != "thursday") {
+                        return res.send("not a valid day name")
                     }
                     else {
-                        if (req.body.location != null) {
-                            const newLocation = req.body.location
-                            const office = await location_model.findOne({ name: newLocation })
-                            if (!office) {
-                                return res.send("Invalid location")
-                            }
-                            slotToUpdate.location = newLocation
-                            try {
-                                slotToUpdate.save()
-                            }
-                            catch (Err) {
-                                console.log(Err)
-                                res.send("Mongoose problem while updating location")
-                            }
-                        }
-                        if (req.body.type != null) {
-                            const newType = req.body.type
-                            if (newType != "lab" && newType != "tutorial" && newType != "lecture") {
-                                return res.send("Invalid type;should be a lab,lecture or tutorial")
-                            }
-                            slotToUpdate.type = newType
-                            try {
-                                slotToUpdate.save()
-                            }
-                            catch (Err) {
-                                console.log(Err)
-                                res.send("Mongoose problem while updating type")
-                            }
-                        }
-                        if (req.body.time != null) {
-                            const newTime = req.body.time
-                            slotToUpdate.time = newTime
-                            try {
-                                slotToUpdate.save()
-                            }
-                            catch (Err) {
-                                console.log(Err)
-                                res.send("Mongoose problem while updating time")
-                            }
-                        }
-                        if (req.body.day != null) {
-                            const dayName = req.body.day
-                            if (dayName.toLowerCase() != "saturday" && dayName.toLowerCase() != "sunday" && dayName.toLowerCase() != "monday" && dayName.toLowerCase() != "tuesday" && dayName.toLowerCase() != "wednesday" && dayName.toLowerCase() != "thursday") {
-                                return res.send("not a valid day name")
-                            }
-                            else {
-                                slotToUpdate.day = dayName
-                                try {
-                                    slotToUpdate.save()
-                                }
-                                catch (Err) {
-                                    console.log(Err)
-                                    res.send("Mongoose problem while updating time")
-                                }
-                            }
-                        }
-                        if (req.body.courseTaught != null) {
+                        slotToUpdate.day = dayName
 
-                            const newcourseTaught = req.body.courseTaught
-                            slotToUpdate.courseTaught = newcourseTaught
-                            try {
-                                slotToUpdate.save()
-                            }
-                            catch (Err) {
-                                console.log(Err)
-                                res.send("Mongoose problem while updating course taught")
-                            }
-                        }
-                        res.send("Successfully updated")
                     }
                 }
+                if (req.body.courseTaught != null && req.body.courseTaught != "") {
+
+                    const newcourseTaught = req.body.courseTaught
+                    slotToUpdate.courseTaught = newcourseTaught
+
+                }
+                try {
+                    slotToUpdate.save()
+                }
+                catch (Err) {
+                    console.log(Err)
+                    res.send("Mongoose problem while updating location")
+                }
+                res.send("Successfully updated")
+
+            }
+            else {
+                res.send('Problem')
             }
         }
+
     })
 router.route('/viewSlotLinkingRequest')
     .get(async (req, res) => {
@@ -493,4 +463,36 @@ router.route('/acceptSlotLinkingRequest')
         //     }
         // }
     })
+
+router.route('/viewSlots')
+    .get(async (req, res) => {
+        var arr = []
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            let course;
+            let slot;
+            const courses = staff.coordinatorCourse
+
+            for (let i = 0; i < courses.length; i++) {
+
+                course = await course_model.findOne({ courseName: courses[i] })
+
+                for (let j = 0; j < course.teachingSlots.length; j++) {
+                    slot = await slot_model.findOne({ numberID: course.teachingSlots[j] })
+                    arr.push(slot)
+
+                }
+
+            }
+            res.send(arr)
+        }
+        else {
+            res.send("Something wrong happened")
+        }
+    })
+
+
+
+
 module.exports = router
