@@ -11,7 +11,9 @@ export default function AddSlots() {
     const [Time, setTime] = useState("")
     const [Day, setDay] = useState("")
     const [Location, setLocation] = useState("")
+    const [Output, setOutput] = useState("")
     const locs = ['1', '2', '3']
+    // var headerText=""
     //if the course is not found (azabtha fl backend)
     const CourseTaughtRef = useRef()
     const TimeRef = useRef()
@@ -33,40 +35,54 @@ export default function AddSlots() {
         console.log(Location)
     }
     const [locations, setLocations] = useState([])
+    const [headerText, setHeaderText] = useState("")
     function HandleAddSlot() {
 
         const body = {
             type: Type, time: Time,
-            courseTaught: CourseTaughtRef.current.value, location: LocationRef.current.value,
+            courseTaught: CourseTaughtRef.current.value, location: Location,
             day: Day
         }
         //  console.log(body)
 
         axios
-            .post('http://localhost:8000/coordinator/addSlot', body)
+            .post('http://localhost:8000/coordinator/addSlot', body, { headers: { 'token': localStorage.getItem('token') } })
 
-            .then(res => console.log(res.data));
+            .then(res => {
+                setHeaderText(res.data);
+
+            }
+            );
+
         // callAPI()
     }
 
-    useEffect(() => {
-        // Update the document title using the browser API
-        axios
-            .get('http://localhost:8000/viewLocations')
-            .then(res => {
-                setLocations(res.data)
-            
-            });
-    });
 
+    // Update the document title using the browser API
+    axios
+        .get('http://localhost:8000/viewLocations')
+        .then(res => {
+            setLocations(res.data)
 
+        });
+
+    // if (Output == "Maximum number of slots added to this course,cannot add a new one") {
+    //     headerText = "Maximum number of slots added to this course,cannot add a new one"
+    // }
+    // else if (Output == "Overlapping slots") {
+    //     headerText = "Overlapping slots"
+    // }
+    // else if (Output == "Added successfully") {
+    //     headerText = "Added successfully"
+    // }
 
     return (
         <>
             <div >
+                <h1>{headerText}</h1>
                 <span className="login100-form-title">
                     Add Slot
-					</span>
+                </span>
 
                 {/* <div class="dropdown"> */}
                 {/* <button class="dropbtn">Type</button>
@@ -103,21 +119,31 @@ export default function AddSlots() {
                         </span>
                         <br />
                     </div> */}
+                <h3>  {headerText} </h3>
                 <div className='whole'>
-                    <label className='textDown'>Choose a Location:</label>
+                    <label className='textDown'>Choose a Location: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleLocation}>
+                        <option value="">Choose location</option>
                         {locations.map(item => (
                             <option key={item.name} value={item.name}>{item.name}</option>
                         ))}
-                        {/* {locs.map(item => (
-                            <option key={item} value={item}>{item}</option>
-                          ))} */}
+                    </select>
+
+                    <label className='textDown'> Choose A Day: </label>
+                    <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
+                        <option value="">Choose day</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
                     </select>
                 </div>
-
+                <br></br>
                 <div className='whole'>
                     <label className='textDown'>Choose The Type: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleChange}>
+                        <option value="">Choose type</option>
                         <option value="lab">Lab</option>
                         <option value="tutorial">Tutorial</option>
                         <option value="lecture">Lecture</option>
@@ -126,21 +152,14 @@ export default function AddSlots() {
                     {/* </div> */}
                     <label className='textDown'> Slot Time: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleTime}>
+                        <option value="">Choose time</option>
                         <option value="First Slot">First Slot</option>
                         <option value="Second Slot">Second Slot</option>
                         <option value="Third Slot">Third Slot</option>
                         <option value="Fourth Slot">Fourth Slot</option>
                         <option value="Fifth Slot">Fifth Slot</option>
                     </select>
-                    <label className='textDown'> Day: </label>
-                    <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
-                    <option value="Saturday">Saturday</option>
-                        <option value="Sunday">Sunday</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                    </select>
+
 
 
                 </div>
@@ -158,6 +177,7 @@ export default function AddSlots() {
                 </div>
 
             </div>
+
 
         </>
 

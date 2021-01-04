@@ -8,24 +8,20 @@ export default function Nav() {
 
   return (
     <nav>
-        <h3>  HR Members  </h3>
-        <ul className= "nav-links">
-            <Link to='/hr/addStaff'>  
-            <li> add staff member </li>
-            </Link>
-            <Link to='/hr/locations'>  
-            <li> Locations </li>
-            </Link>
-            here
-            <Link to = '/login'>
-            <li> login  </li>
-            </Link>
-            <Link to = '/hr/faculties'>
-            <li> login  </li>
-            </Link>
-            
+    
+      <div >
+        <Link to='/home'>  
+        <img className="nav-pic" src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
+                  </img>            
+        </Link>          
+      </div>   
 
-     </ul>
+      <ul className= "nav-links">
+        <Link to = '/logout'>
+          <li > Log Out  </li>
+        </Link>      
+      </ul>
+      
     </nav>
   )
 }
