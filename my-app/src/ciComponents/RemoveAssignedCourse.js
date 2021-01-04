@@ -8,7 +8,7 @@ export default function RemoveAssignedCourse() {
   //  console.log(body)
 
    axios   
-   .post('http://localhost:8000/ci/removeAssignedCourse', body)
+   .post('http://localhost:8000/ci/removeAssignedCourse', body, {headers:{'token':localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));
    // callAPI()

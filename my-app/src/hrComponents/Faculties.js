@@ -1,6 +1,9 @@
 import React,{useRef, useState, useEffect} from 'react'
+import {Link}  from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
+
+import Faculty from './Faculty'
 
 
 
@@ -10,11 +13,9 @@ export default function Faculties() {
   useEffect(() => {
     // Update the document title using the browser API
     axios   
-    .get('http://localhost:8000/viewFaculties')
+    .get('http://localhost:8000/hr/viewFaculties',{ headers: { 'token': localStorage.getItem('token') } })
     .then(res => {
         setFaculties(res.data)
-        console.log("here")
-        console.log(res.data)
       });  });
 
 
@@ -25,27 +26,21 @@ export default function Faculties() {
     
         <div>   
             <h2>Array of Faculties:</h2>
+
+            <Link to = '/AddFaculty'>
+            <li > Add Faculty  </li>
+            </Link> 
+            <Link to = '/AddDepartment' >
+            <li > Add Department  </li>
+            </Link>  
+            <Link to = '/AddCourse' >
+            <li > Add Course  </li>
+            </Link> 
             <hr/>
 
                 {faculties.map((fac, i) => {
                 return <li key={fac._id}>
-                <h2> {fac.facultyName} </h2>
-                <ul>
-                        {fac.departments.map((dep, i) => {
-                        return <ul key={dep._id}>
-                            <h4> {dep.name} </h4>
-                            <li> HOD: {dep.headOfDepartment} </li>
-                            <li className='courseList' > Courses:
-                                {dep.courses.map((c, i) => {
-                                return <ul key={i} className='courseItem'>
-                                    <h4> {c} </h4>
-                                </ul>
-                                })}
-                            </li>
-                            <br/>
-                        </ul>
-                        })}
-                </ul>
+                <Faculty facultyName={fac.facultyName}  departments= {fac.departments}   />             
                 <hr/>
                 </li> })}
          
