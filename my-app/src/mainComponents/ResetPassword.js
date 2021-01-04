@@ -21,7 +21,9 @@ export default function ResetPassword() {
    .then(res=>console.log(res.data));}
    else{
     console.log("in else")
-    setMessage("passwords don't match")
+
+    setMessage("passwords don't match!!")
+
    // callAPI()
 }
 }
@@ -54,7 +56,9 @@ export default function ResetPassword() {
                     </span>
                     <br />
                 </div>
-                <h3> {message}</h3>
+
+                <r1> {message}</r1>
+
             </div>
             <br></br>
             <br></br>
