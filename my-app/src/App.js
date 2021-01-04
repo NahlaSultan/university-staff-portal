@@ -123,6 +123,9 @@ import ManageSlots from './coordinatorComponents/ManageSlots';
 import AddSlots from './coordinatorComponents/AddSlots';
 import SideNav from './mainComponents/SideNav'
 import Nav from './mainComponents/Nav';
+import Schedule from './academicMembersComponents/ViewSchedule';
+import SendReplacement from './academicMembersComponents/SendReplacement';
+import ChangeDayOff from './academicMembersComponents/ChangeDayOff';
 export default function App() {
 
   return (
@@ -133,13 +136,16 @@ export default function App() {
         <Nav />
         <SideNav />
         <Switch>
-          
+
           {/* {/* <Nav /> */}
 
           <Route exact path='/hr/addStaff' component={AddStaff} />
           <Route exact path='/HRProfile' component={HRprofile} />
           <Route exact path='/coordinator/addSlot' component={AddSlots} />
           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
+          <Route exact path='/academic/schedule' component={Schedule} />
+          <Route exact path='/academic/manageReplacement' component={SendReplacement} />
+          <Route exact path='/academic/changeDayOff' component={ChangeDayOff} />
           <Route component={HRprofile} exact path="/homeHR" />
           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
 

@@ -455,6 +455,47 @@ router.route('/viewRejectedRequests')
             res.send("not staff")
         }
     })
+router.route('/viewCollegues')
+    .get(async (req, res) => {
+        var arr = []
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            const myrole = staff.role
+            const mydepartment = staff.department
+            const collegues = await staff_members_models.find({ role: myrole, department: mydepartment })
+            if (collegues) {
+                console.log(collegues.length)
+
+                for (let index = 0; index < collegues.length; index++) {
+                    if (staff.memberID != collegues[index].memberID)
+                        arr.push(collegues[index].memberID)
+
+                }
+                res.send(arr)
+            }
+        }
+        else {
+            res.send([])
+        }
+
+    })
+router.route('/viewSlotsAssigned')
+    .get(async (req, res) => {
+        var arr = []
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            var currentSlot;
+            const slot = staff.slotsAssigned
+            for (let i = 0; i < slot.length; i++) {
+                currentSlot = await slot_model.findOne({ numberID: slot[i] })
+                arr.push(currentSlot)
+            }
+        }
+        res.send(arr)
+
+    })
 //inputs : slot(the slotID I want someone to replace),receiverId(the id of the staff member I want to send it to)
 //,dateReplace:the day on which I need this replacement
 router.route('/sendReplacementRequest')
@@ -540,6 +581,19 @@ router.route('/sendReplacementRequest')
         }
     }
     )
+router.route('/dayOff')
+    .get(async (req, res) => {
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        if (staff) {
+            console.log("I entered here")
+            res.send(staff.dayOff)
+        }
+        else {
+            res.send("Something Went wrong")
+        }
+    })
+
 //Inputs:slotId(slot I want to be assigned to)
 router.route('/sendSlotLinkingRequest')
     .post(async (req, res) => {
@@ -779,7 +833,7 @@ router.route('/sendChangeDayOff')
                                 senderId: staff.memberID
                             }
                         )
-                        if (req.body.reason != null) {
+                        if (req.body.reason != null && req.body.reason != "") {
                             request.comment = req.body.reason
                         }
 
@@ -1418,8 +1472,8 @@ router.route('/submitLeave')
                                 else {
                                     const startDateUpdate = new Date(req.body.start)
                                     startDateUpdate.setDate(startDateUpdate.getDate() + 1)
-                                   // startDateUpdate
-                                  //  console.log(startDateUpdate).setDate(startDateUpdate.getDate() + 1)
+                                    // startDateUpdate
+                                    //  console.log(startDateUpdate).setDate(startDateUpdate.getDate() + 1)
                                     const compensationDay = new Date(req.body.compensation)
                                     console.log("initial compensationdayis" + compensationDay)
                                     compensationDay.setDate(compensationDay.getDate() + 1)
@@ -1431,7 +1485,7 @@ router.route('/submitLeave')
                                         const slotDay = days[(compensationDay.getUTCDay()) + 1]
                                         console.log(compensationDay)
                                         console.log(slotDay)
-                                      //  console.log("The compensation day is" + slotDay)
+                                        //  console.log("The compensation day is" + slotDay)
                                         if (slotDay != staff.dayOff) {
                                             return res.send("You should compensate on a day off")
                                         }
