@@ -1,7 +1,24 @@
 .App{
     text-align: center;
 }
+.content{
+  width:100%;
+  min-height:100vh;
+  background-size: cover; 
+  background-color: black;
+}
+.get{
+  color:rgb(60, 6, 110);
+  font-style: italic;
+  font-size: x-large;
+  font-family: Montserrat-Bold;
+}
+.elemntsInside{
+  color: rgb(0, 34, 29);
+  font-size: medium;
+  font-weight: bold;
 
+}
 nav{
     display: flex;
     justify-content: space-around;
@@ -76,36 +93,70 @@ a:link {
   }
  
 .buttons{
-    font-family: Montserrat-Bold;
-    align-items: 'center';
-    font-size: 15px;
-    line-height: 1.5;
-    color: #fff;
-    text-transform: uppercase;
-    width: 100%;
-    height: 50px;
-    border-radius: 25px;
-    background: #58095f;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 0 25px;
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    -moz-transition: all 1.0s;
-    transition: all 1.0 s;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.buttons {
+  font-family: Montserrat-Bold;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #fff;
+  text-transform: uppercase;
+
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+   background: #58095f;
+   display: inline-block;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+
+  justify-content: center;
+  align-items: center;
+  padding: 0 25px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
   }
   
   .buttons:hover {
-    width: 100%;
+   
     background: #2c2130;
     color: rgb(248, 194, 244);
   }
-  
+  .divider{
+    position: relative;
+  display: inline-block;  
+}
+  .btn {
+    align-self: center;
+    align-content: center;
+    text-align: center;
+    background: #58095f;
+    color: white;
+    align-items: center;
+    align-self: center;
+    vertical-align: inherit;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+  }
+  .btn:hover{
+    
+    background: #2c2130;
+    color: rgb(248, 194, 244);
+  }
   
   

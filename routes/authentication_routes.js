@@ -1,5 +1,6 @@
 const staff_members_models = require('../models/staff_member_models').model
 const staff_member_routes = require('./staff_member_routes')
+const slot_model = require('../models/slot_model').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
@@ -14,7 +15,7 @@ const tokens_model = require('../models/tokens_model').model
 
 
 
- 
+
 
 router.route('/addSampleStaff')
     .post(async (req, res) => {
@@ -216,11 +217,22 @@ router.route('/addCourse').post(async (req, res) => {
     res.send("Successfully added")
 
 })
+//views all locations avalilable
 router.route('/viewLocations')
     .get(async (req, res) => {
         const locations = await location_model.find()
         res.send(locations)
 
+    })
+//views the slot with this certain numberID
+router.route('/viewCertainSlot')
+    .post(async (req, res) => {
+        var arr = []
+        const slot = await slot_model.findOne({ numberID: req.body.numberID })
+        if (slot) {
+            arr.push(slot)
+        }
+        res.send(arr)
     })
 
 module.exports = router
