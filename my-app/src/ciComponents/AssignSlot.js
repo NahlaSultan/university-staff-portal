@@ -9,7 +9,7 @@ export default function AssignSlot() {
   //  console.log(body)
 
    axios   
-   .post('http://localhost:8000/ci/assignSlots', body)
+   .post('http://localhost:8000/ci/assignSlots', body, {headers:{'token':localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));
    // callAPI()

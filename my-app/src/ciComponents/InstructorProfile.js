@@ -58,7 +58,7 @@ export default function InstructorProfile() {
             <br></br>
             <ul className='link_list'>
                 <Link className='a' to='/ci/viewCourseStaff'>
-                    <li>View Same Course Staff </li>
+                    <li>View Course Staff </li>
                 </Link>
 
             </ul>

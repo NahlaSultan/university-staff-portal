@@ -7,7 +7,7 @@ export default function ViewExtraHours() {
   useEffect(() => {
     // Update the document title using the browser API
     axios   
-    .get('http://localhost:8000/viewExtraHours')
+    .get('http://localhost:8000/viewExtraHours',{headers:{'token':localStorage.getItem('token')}})
     .then(res => {
         setHours(res.data)
         console.log("here")
