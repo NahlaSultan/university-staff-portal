@@ -8,7 +8,7 @@ export default function AssignInstructor() {
   CoursenameRef.current.value=null
   InstructoridRef.current.value=null
    axios   
-   .post('http://localhost:8000/hod/assignInstructor', body)
+   .post('http://localhost:8000/hod/assignInstructor', body, {headers:{'token': localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));
 }

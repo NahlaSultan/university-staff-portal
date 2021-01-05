@@ -524,6 +524,25 @@ iframe {
   
 } 
 
+  
+.viewStaff{
+  display: flexbox;
+  /* justify-content: center; */
+  margin-left: 20px;
+  margin-right: 20px;
+}  
+
+.hodhome{
+  display: flexbox;
+   justify-content: center; 
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 30px;
+  font-family: Poppins-Regular;
+  font-size: 50px;
+  
+}
+
 #main {
   transition: margin-left .5s;
   padding: 20px;

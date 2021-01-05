@@ -1,4 +1,3 @@
-
 //Start Sofia
 // import React, { useState, useRef } from 'react'
 // import Login from './mainComponents/Login'
@@ -185,48 +184,79 @@
 // }
 ////////////////////////////////////////////////////////////////////////////////
 //startSaraAmjad
+// import React, { useState, useRef } from 'react'
+// import Login from './mainComponents/Login'
+// import AddStaff from './hrComponents/AddStaff'
+// import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
+// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+// import HRprofile from './hrComponents/HRprofile';
+// import ManageSlots from './coordinatorComponents/ManageSlots';
+// import AddSlots from './coordinatorComponents/AddSlots';
+// import SideNav from './mainComponents/SideNav'
+// import Nav from './mainComponents/Nav';
+// import Schedule from './academicMembersComponents/ViewSchedule';
+// import SendReplacement from './academicMembersComponents/SendReplacement';
+// import ChangeDayOff from './academicMembersComponents/ChangeDayOff';
+// export default function App() {
+
+//   return (
+//     <Router>
+//       <div className='App'>
+//         <h1> app page</h1>
+//         <Route exact path='/' exact component={Login} />
+//         <Nav />
+//         <SideNav />
+//         <Switch>
+
+//           {/* {/* <Nav /> */}
+
+//           <Route exact path='/hr/addStaff' component={AddStaff} />
+//           <Route exact path='/HRProfile' component={HRprofile} />
+//           <Route exact path='/coordinator/addSlot' component={AddSlots} />
+//           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
+//           <Route exact path='/academic/schedule' component={Schedule} />
+//           <Route exact path='/academic/manageReplacement' component={SendReplacement} />
+//           <Route exact path='/academic/changeDayOff' component={ChangeDayOff} />
+//           <Route component={HRprofile} exact path="/homeHR" />
+//           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
+
+//         </Switch>
+//       </div>
+//     </Router>
+//   )
+
+// }
+///////////////////////////////////////////////////////////////////
+// Start HASSAN
 import React, { useState, useRef } from 'react'
-import Login from './mainComponents/Login'
-import AddStaff from './hrComponents/AddStaff'
-import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import HRprofile from './hrComponents/HRprofile';
-import ManageSlots from './coordinatorComponents/ManageSlots';
-import AddSlots from './coordinatorComponents/AddSlots';
-import SideNav from './mainComponents/SideNav'
+ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+ import Login from './mainComponents/Login'
+import ViewAllStaff from './hodComponents/ViewAllStaff'
+import AssignInstructor from './hodComponents/AssignInstructor'
 import Nav from './mainComponents/Nav';
-import Schedule from './academicMembersComponents/ViewSchedule';
-import SendReplacement from './academicMembersComponents/SendReplacement';
-import ChangeDayOff from './academicMembersComponents/ChangeDayOff';
-export default function App() {
+import HodSideNav from './hodComponents/HodSideNav'
+import HodProfile from './hodComponents/HodProfile'
+
+ export default function App() {
 
   return (
+    
     <Router>
       <div className='App'>
-        <h1> app page</h1>
+      <h1> app page</h1>
         <Route exact path='/' exact component={Login} />
+        <HodSideNav />
+        <Route exact path='/home' component={HodProfile} />
+        <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
+        
         <Nav />
-        <SideNav />
-        <Switch>
-
-          {/* {/* <Nav /> */}
-
-          <Route exact path='/hr/addStaff' component={AddStaff} />
-          <Route exact path='/HRProfile' component={HRprofile} />
-          <Route exact path='/coordinator/addSlot' component={AddSlots} />
-          <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
-          <Route exact path='/academic/schedule' component={Schedule} />
-          <Route exact path='/academic/manageReplacement' component={SendReplacement} />
-          <Route exact path='/academic/changeDayOff' component={SendReplacement} />
-          <Route component={HRprofile} exact path="/homeHR" />
-          <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
-
-        </Switch>
       </div>
     </Router>
   )
 
 }
+//END HASSAN
+////////////////////////////////////////////////////////////////
 //END SaraAmjad
 /////////////////////////////////////////////////////////////////////
 // import React, { useState, useRef } from 'react'

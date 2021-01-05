@@ -228,10 +228,10 @@ router.route('/viewAllStaff')
 
         staffs.forEach(s => {
             if(s.memberID != staff.memberID)
-                staffArray+=helper(s)+"\n"
+                staffArray.push(helper(s)+"\n")
         });
         res.send(staffArray)
-
+    //    console.log(staffArray[0])
     }
     else{res.send("HOD not found")}
 })
@@ -679,23 +679,24 @@ router.route('/rejectLeaveRequest')
 })
 
 function helper(staff){
-    var s="Staff name: "+staff.name
-    s+="\nID: "+staff.memberID
-    s+="\nemail: "+staff.email
-    s+="\nRole: "+staff.role
-    s+="\nDay off: "+staff.dayOff
-    s+="\nOffice location: "+staff.officeLocation
-    s+="\nAttendance: "+staff.attendance
-    s+="\nAnnual leaves balance: "+staff.annualLeavesBalance
-    s+="\nLeaves: "+staff.leaves
-    s+="\nRequest replacement sent: "+staff.requestReplacementSent
-    s+="\nRequest replacement received: "+staff.requestReplacmentReceived
-    s+="\nCoordinator linking requests: "+staff.coordinatorLinkingRequests
-    s+="\nCourses: "+staff.course
-    s+="\nSlots assigned: "+staff.slotsAssigned
-    s+="\nSlots replaced: "+staff.slotsReplaced
-    s+="\nSlots to replace: "+staff.slotsToReplace
-    s+="\nDay off request sent: "+staff.dayOffRequestSent +"\n"
+    var s=[]
+    s.push("Staff name: "+staff.name)
+    s.push("\nID: "+staff.memberID)
+    s.push("\nemail: "+staff.email)
+    s.push("\nRole: "+staff.role)
+    s.push("\nDay off: "+staff.dayOff)
+    s.push("\nOffice location: "+staff.officeLocation)
+    s.push("\nAttendance: "+staff.attendance)
+    s.push("\nAnnual leaves balance: "+staff.annualLeavesBalance)
+    s.push("\nLeaves: "+staff.leaves)
+    s.push("\nRequest replacement sent: "+staff.requestReplacementSent)
+    s.push("\nRequest replacement received: "+staff.requestReplacmentReceived)
+    s.push("\nCoordinator linking requests: "+staff.coordinatorLinkingRequests)
+    s.push("\nCourses: "+staff.course)
+    s.push("\nSlots assigned: "+staff.slotsAssigned)
+    s.push("\nSlots replaced: "+staff.slotsReplaced)
+    s.push("\nSlots to replace: "+staff.slotsToReplace)
+    s.push("\nDay off request sent: "+staff.dayOffRequestSent +"\n")
 
     return s
 }
