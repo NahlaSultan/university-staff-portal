@@ -13,61 +13,69 @@
 
 
 //NAHLA
-// import React, { useState, useRef } from 'react'
-// import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
+import React, { useState, useRef } from 'react'
+import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
 
-// import Home from './mainComponents/Home';
-// import Nav from './mainComponents/Nav';
-// import SideNav from './mainComponents/SideNav'
-// import Locations from './hrComponents/Locations';
-// import Faculties from './hrComponents/Faculties'
-// import AddStaff from './hrComponents/AddStaff'
-// import Login from './mainComponents/Login'
-// import Logout from './mainComponents/Logout';
-// import HRprofile from './hrComponents/HRprofile'
-// import Staffs from './hrComponents/Staffs';
+import Home from './mainComponents/Home';
+import Nav from './mainComponents/Nav';
+import SideNav from './mainComponents/SideNav'
+import Locations from './hrComponents/Locations';
+import Faculties from './hrComponents/Faculties'
+import AddStaff from './hrComponents/AddStaff'
+import Login from './mainComponents/Login'
+import Logout from './mainComponents/Logout';
+import HRprofile from './hrComponents/HRprofile'
+import Staffs from './hrComponents/Staffs';
 
-// import './styling/App.css'
-// import './styling/main.css'
-// import addLocation from './hrComponents/AddLocation';
-// import addDepartment from './hrComponents/AddDepartment';
-// import addFaculty from './hrComponents/AddFaculty';
-// import addCourse from './hrComponents/AddCourse';
-// import StaffsMissingHours from './hrComponents/StaffsMissingHours';
-// import StaffsMissingDays from './hrComponents/StaffsMissingDays';
-
-
-// export default function App() {
-
-//    return (
-//    <Router>  
-//    <div className='App'> 
-//     <Route path='/' exact component={Login} />
-
-//     <Nav/>
-//     <SideNav/>
-//     <Switch> 
-//     <Route path='/hr/addStaff' component={AddStaff} />
-//     <Route path='/hr/locations' component={Locations} />
-//     <Route path='/hr/staffs' component={Staffs} />
-//     <Route path='/hr/faculties' component={Faculties} />
-//     <Route path='/logout' component={Logout} />
-//     <Route path='/home' component={HRprofile} />
-//     <Route path='/addLocation' component={addLocation} />
-//     <Route path='/addDepartment' component={addDepartment} />
-//     <Route path='/addFaculty' component={addFaculty} />
-//     <Route path='/addCourse' component={addCourse} />
-//     <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
-//     <Route path='/hr/viewMissingDays' component={StaffsMissingDays} />
+import './styling/App.css'
+import './styling/main.css'
+import addLocation from './hrComponents/AddLocation';
+import addDepartment from './hrComponents/AddDepartment';
+import addFaculty from './hrComponents/AddFaculty';
+import addCourse from './hrComponents/AddCourse';
+import StaffsMissingHours from './hrComponents/StaffsMissingHours';
+import StaffsMissingDays from './hrComponents/StaffsMissingDays';
+import ManageAttendance from './hrComponents/ManageAttendance';
+import ViewAttendance from './hrComponents/ViewAttendance'
+import AddSignIn from './hrComponents/AddSignIn';
+import AddSignOut from './hrComponents/AddSignOut';
 
 
+export default function App() {
 
-//     </Switch>
-//      </div> 
-//      </Router>   
-//    )
+   return (
+   <Router>  
+   <div className='App'> 
+    <Route path='/' exact component={Login} />
 
-//  }
+    <Nav/>
+    <SideNav/>
+    <Switch> 
+    <Route path='/hr/addStaff' component={AddStaff} />
+    <Route path='/hr/locations' component={Locations} />
+    <Route path='/hr/staffs' component={Staffs} />
+    <Route path='/hr/faculties' component={Faculties} />
+    <Route path='/logout' component={Logout} />
+    <Route path='/home' component={HRprofile} />
+    <Route path='/addLocation' component={addLocation} />
+    <Route path='/addDepartment' component={addDepartment} />
+    <Route path='/addFaculty' component={addFaculty} />
+    <Route path='/addCourse' component={addCourse} />
+    <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
+    <Route path='/hr/viewMissingDays' component={StaffsMissingDays} />
+    <Route path='/hr/manageAttendance' component={ManageAttendance}/>
+    <Route path='/hr/viewAttendance' component={ViewAttendance}/>
+    <Route path='/hr/AddSignIn' component={AddSignIn}/>
+    <Route path='/hr/AddSignOut' component={AddSignOut}/>
+
+
+
+    </Switch>
+     </div> 
+     </Router>   
+   )
+
+ }
 
  //end nahla
 

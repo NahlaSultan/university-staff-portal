@@ -4,7 +4,7 @@ import '../styling/main.css';
 import AttendanceRecord from './AttendanceRecord'
 
 
-export default function StaffMember({name, memberID, email, dayOff,annualLeavesBalance,gender, office,salary }) {
+export default function StaffMemberAttendance({name, memberID, email, dayOff,annualLeavesBalance,gender, office,salary }) {
     const [attendance, setAttendance] = useState([])
     const [toggle, setToggle] = useState(true)
     const [toggle2, setToggle2] = useState(true)
@@ -15,20 +15,12 @@ export default function StaffMember({name, memberID, email, dayOff,annualLeavesB
 
 // });
 
-function HandleDeleteStaff(){
-  const body={id:memberID}
-
-      axios   
-       .post('http://localhost:8000/hr/deleteStaffMember',body, { headers: { 'token': localStorage.getItem('token') } })
-       .then(res => {
-           console.log(res.data)}
-           ).catch(error => {
-               console.log(error)
-             })
+function HandleSignIn(){
+    
  
 }
 
-     function HandleViewAttendance(){
+function HandleViewAttendance(){
       const body={id:memberID}
 
         if(toggle){

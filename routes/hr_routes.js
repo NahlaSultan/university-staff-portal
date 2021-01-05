@@ -230,12 +230,29 @@ router.route('/viewLocations')
 
 }) 
 
+
+router.route('/viewOffices')
+.get(async (req, res) => {
+    const locations = await location_model.find({type: "office"})
+    res.send(locations)
+
+}) 
+
 router.route('/viewFaculties')
 .get(async (req, res) => {
     const faculties = await faculty_model.find()
     res.send(faculties)
 
 })
+
+router.route('/viewDepartments')
+.post(async (req, res) => {
+    const fac = await faculty_model.findOne({facultyName:req.body.fac})
+    res.send(fac.departments)
+
+
+})
+
 
 router.route('/viewStaffs')
 .get(async (req, res) => {
@@ -286,15 +303,28 @@ router.route('/updateLocation')
 
 
 router.route('/deleteLocation')
-.delete(async (req,res)=>{
+.post(async (req,res)=>{
     await location_model.remove({ name:  req.body.name.toLowerCase()}, function(err, result) {
         if (err) {
           console.err(err);
-        } else {
-          res.send("deleted successfully");
-        }
+        } 
       });
+      const staff = await staff_members_models.find({officeLocation: req.body.name})
+      console.log(staff.length)
+      for (var k=0 ; k<staff.length;k++) {
+              staff[k].officeLocation = "unassigned"  
+
+              try {
+                  await staff[k].save()
+              } catch (error) {
+                  res.send("error saving staff")
+                  
+              }     
+
+      }
       
+      res.send("deleted successfully");
+
 })
 
 router.route('/addFaculty')
@@ -337,15 +367,40 @@ router.route('/addFaculty')
 })
 
 router.route('/deleteFaculty')
-.delete(async (req,res)=>{
-    await faculty_model.remove({ facultyName:  req.body.name}, function(err, result) {
+.post(async (req,res)=>{
+
+    console.log("here")
+    console.log(req.body.name)
+
+    await faculty_model.deleteOne({ facultyName:  req.body.name}, function(err, result) {
         if (err) {
-          console.err(err);
-        } else {
-          res.send("deleted successfully")
+            console.log(err)
+            res.send("error while removing fac")
+        }   }
+        );
+
+
+        const staff = await staff_members_models.find({faculty: req.body.name})
+        console.log(staff.length)
+        for (var k=0 ; k<staff.length;k++) {
+                staff[k].faculty = "unassigned"  
+                staff[k].department = "unassigned"  
+
+                try {
+                    await staff[k].save()
+                } catch (error) {
+                    res.send("error saving staff")
+                    
+                }     
+
         }
-      });
-      
+       
+          res.send("deleted successfully")
+        
+    
+
+
+
 })
 
 
@@ -483,7 +538,7 @@ router.route('/addDepartment')
 })
 
 router.route('/deleteDepartment')
-.delete(async (req,res)=>{
+.post(async (req,res)=>{
     const faculty = await faculty_model.findOne({ facultyName: req.body.facultyName })
     if (faculty) {
             for(var i=0; i<faculty.departments.length; i++){
@@ -710,7 +765,7 @@ router.route('/addCourse')
 })
 
 router.route('/deleteCourse')
-.delete(async (req, res) => {
+.post(async (req, res) => {
     console.log("deleting course")
     const faculty = await faculty_model.findOne({ facultyName: req.body.facultyName })
    
@@ -863,7 +918,7 @@ router.route('/updateCourse')
 })
 router.route('/updateSalary')
 .post(async (req, res) => {
-    console.log("udating salary")
+    console.log("updating salary")
     const staff = await staff_members_models.findOne({ memberID: req.body.id })
      
     if (staff) {
@@ -894,6 +949,23 @@ router.route('/viewAttendance')
         
 
         return res.send(staff.attendance )    
+    }
+
+        res.send('staff member with id '+ req.body.id+' doesnt exist')
+
+
+})
+
+router.route('/viewAttendanceRec')
+.post(async (req, res) => {
+    console.log("veiwing attendance")
+    const staff = await staff_members_models.findOne({ memberID: req.body.id })
+     
+    if (staff) {
+        var arr = []
+        arr.push(staff.attendance[staff.attendance.length -1])
+
+        return res.send(arr )    
     }
 
         res.send('staff member with id '+ req.body.id+' doesnt exist')
@@ -1020,13 +1092,14 @@ async function deleteTeacher(memberID, courses){
     }
 
 router.route('/deleteStaffMember')
-.delete(async (req,res)=>{
+.post(async (req,res)=>{
     const staff = await staff_members_models.findOne({ memberID: req.body.id })
         if(staff){
 
             for(var i = 0; i< staff.role.length ; i++ ){
                 var courses = staff.course
                 var del = false
+                var role = staff.role[i]
                 switch(role){
                     case "headOfdepartments":
                         del = deleteHOD(staff.department, staff.faculty)
@@ -1286,6 +1359,9 @@ async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
     }
 
 }
+
+
+
 
 router.route('/addSignIn')
 .post(async (req, res) => {
