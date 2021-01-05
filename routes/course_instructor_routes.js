@@ -53,26 +53,31 @@ router.route('/viewDepartmentStaff')
     if(staff){  
         
         const result =  await staff_members_models.find({department:staff.department})
-        console.log(result)
+        //console.log(result)
         res.send(result)
+
     
 }
 
 })
 //view staff who gives same course
 router.route('/viewCourseStaff')
-.get(async(req,res,)=>{
+.post(async(req,res,)=>{
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     var array=[]
-    if(staff){  
-         for(let i=0;i<staff.course.length;i++){
-        const result =  await staff_members_models.find({course:staff.course[i]})
-        array.push(result)
-        res.send(result)
-    }
+    if(staff){
+     const staffs=await staff_members_models.find()  
+     staffs.forEach(s => {
+        var courses= s.course
+        courses.forEach(c => {
+            if(c == req.body.courseName)
+                array.push(s)
+        });
+        
+    });
     res.send(array)
-    
+    console.log(array)
 }
 
 })
@@ -143,7 +148,7 @@ router.route('/removeAssignedCourse')
         }
     }
         else{
-            res.send("You are not assigned to this course")
+            res.send("This member is not assigned to this course")
         }
     
 }
@@ -196,6 +201,7 @@ router.route('/viewSlots')
            
         }
         res.send(array)
+        //console.log(array)
     }
 
 
@@ -206,7 +212,7 @@ router.route('/assignSlots')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     const academicMember = await staff_members_models.findOne({ memberID: req.body.memberID })
-    const slot= await slot_model.findOne({ numberID: req.body.numberID})
+    const slot= await slots_model.findOne({ numberID: req.body.numberID})
     if(staff){ 
         //console.log(slot)
         if(slot.assignedFlag==false){
@@ -214,10 +220,10 @@ router.route('/assignSlots')
                 console.log("heeyyyy")
               slot.assignedFlag=true
        //console.log(slot.assignedFlag)
-       academicMember.slotsAssigned.push(slot.numberID)
+      await academicMember.slotsAssigned.push(slot.numberID)
        slot.academicMember=academicMember.memberID
-       slot.save()
-       academicMember.save()
+       await slot.save()
+      await academicMember.save()
        res.send("Successfully done")
     }
        else{
@@ -228,7 +234,7 @@ router.route('/assignSlots')
         res.send("this slot is already assigned to someone")
     }
     }
-
+   
 
 })
 
