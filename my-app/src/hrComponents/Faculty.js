@@ -6,24 +6,35 @@ import '../styling/main.css';
 export default function Faculty({facultyName,departments }) {
     const [deps, setDeps] = useState([])
     const [toggle, setToggle] = useState(true)
+    var facName = facultyName+""
+    function HandleDeleteFaculty(){
 
+        const body = {name: facName}
+       axios   
+       .post('http://localhost:8000/hr/deleteFaculty',body, { headers: { 'token': localStorage.getItem('token') } })
+       .then(res=>console.log(res.data));
+    
+    }
+
+    function HandleUpdateFaculty(){
+
+       const body = {name: facName}
+       axios   
+       .post('http://localhost:8000/hr/deleteFaculty',body, { headers: { 'token': localStorage.getItem('token') } })
+       .then(res=>console.log(res.data));
+    
+    }
 
      function HandleViewDepartments(){
         if(toggle){
  
                setDeps(departments)
-
            }
            else{
                setDeps([])
-   
            }  
-        setToggle(toggle => !toggle);
-
-
-    
+        setToggle(toggle => !toggle)
     }
-
 
 
 
@@ -50,6 +61,9 @@ export default function Faculty({facultyName,departments }) {
                         </ul>
                         })}
                 </ul>
+                <button className = 'btn' onClick={HandleDeleteFaculty}>   Delete this Faculty  </button> 
+                <button className = 'btn' onClick={HandleUpdateFaculty}>   Update this Faculty  </button> 
+
 
         </div>      
 
