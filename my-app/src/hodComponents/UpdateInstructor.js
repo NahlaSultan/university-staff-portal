@@ -13,7 +13,7 @@ export default function UpdateInstructor() {
 
 
    axios   
-   .post('http://localhost:8000/hod/updateInstructor', body)
+   .post('http://localhost:8000/hod/updateInstructor', body, {headers:{'token': localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));
 }
