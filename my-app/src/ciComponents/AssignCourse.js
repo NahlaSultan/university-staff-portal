@@ -8,7 +8,7 @@ export default function AssignCourse() {
   
 
    axios   
-   .post('http://localhost:8000/ci/updateAssignedCourse', body)
+   .post('http://localhost:8000/ci/updateAssignedCourse', body, {headers:{'token':localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));
   

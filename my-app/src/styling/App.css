@@ -19,6 +19,13 @@
   font-weight: bold;
 
 }
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #060b26;
+    color: white;
+    margin-top:32%
 
 /* Style the side navigation */
 .nav {
@@ -202,5 +209,4 @@ a:link {
     background: #2c2130;
     color: rgb(248, 194, 244);
   }
-  
-  
+

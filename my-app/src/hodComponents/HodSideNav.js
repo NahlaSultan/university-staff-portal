@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
+import { SidebarHod } from './SidebarHod';
 import '../styling/SideNav.css';
 import { IconContext } from 'react-icons';
-import { SidebarCoordinator } from '../coordinatorComponents/SidebarCoordinator';
-import { SidebarAcademicMember } from '../academicMembersComponents/SidebarAcademicMember';
-export default function SideNav() {
+import {SidebarCoordinator} from '../coordinatorComponents/SidebarCoordinator'
+
+export default function HodSideNav() {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
@@ -27,20 +27,12 @@ export default function SideNav() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-
-            {/* start nahla */}
-            {/* {SidebarData.map((item, index) => { */}
+            {/* Start Nahla */}
+            {SidebarHod.map((item, index) => {
             {/* end nahla */}
-            {/* /////////////////////////////////////////////// */}
             {/* start sara */}
-            {/* Start sara coor */}
             {/* {SidebarCoordinator.map((item, index) => { */}
-            {/* end sara coor */}
-
-            {/* // start sara adacemic */}
-            {SidebarAcademicMember.map((item, index) => {
-              // end sara academic
-              ///////////////////////////////////////////////////////              
+            {/* end sara */}
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>

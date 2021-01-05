@@ -65,6 +65,10 @@ a:hover {
 h1,h2,h3,h4,h5,h6 {
 	margin: 0px;
 }
+r1 {
+  margin: 0px;
+  color: #ff0000;
+}
 
 p {
 	font-family: Poppins-Regular;
@@ -519,6 +523,25 @@ iframe {
   margin-right: 10px;
   
 } 
+
+  
+.viewStaff{
+  display: flexbox;
+  /* justify-content: center; */
+  margin-left: 20px;
+  margin-right: 20px;
+}  
+
+.hodhome{
+  display: flexbox;
+   justify-content: center; 
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 30px;
+  font-family: Poppins-Regular;
+  font-size: 50px;
+  
+}
 
 #main {
   transition: margin-left .5s;
