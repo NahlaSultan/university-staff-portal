@@ -10,7 +10,7 @@ export default function ViewMonthAttendance() {
     const body={month:monthRef.current.value}
  
     axios   
-    .post('http://localhost:8000/ci/viewCourseStaff',body,{headers:{'token':localStorage.getItem('token')}})
+    .post('http://localhost:8000/viewMonthAttendance',body,{headers:{'token':localStorage.getItem('token')}})
     .then(res => {
         setAttendance(res.data)
         console.log("here")
@@ -25,7 +25,7 @@ export default function ViewMonthAttendance() {
   
   
                   <span className="login100-form-title">
-                      View Course Staff
+                      View Month Attendance
         </span>
         <br></br>
               <br></br>

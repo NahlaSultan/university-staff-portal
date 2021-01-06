@@ -82,7 +82,35 @@ router.route('/viewCourseStaff')
 
 })
 
+router.route('/loadCourses')
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+   
+    if(staff){  
+        res.send(staff.course)
+        //console.log(staff.course)
+    }
 
+})
+router.route('/loadSlots')
+.get(async(req,res,)=>{
+    const staffId=req.user._id;
+    const staff = await staff_members_models.findOne({ _id: staffId })
+   
+    if(staff){  
+        var array=[]
+        for(let i=0;i<staff.course.length;i++){
+          const slots= await slots_model.find({ courseTaught: staff.course[i] })
+          if(slots)
+          array.push(slots)
+        }
+        res.send(array)
+        //console.log("helooo")
+      // console.log(array)
+    }
+
+})
 //assign coordinator
 router.route('/assignCourseCoordinator')
 .post(async(req,res,)=>{
@@ -100,18 +128,18 @@ router.route('/assignCourseCoordinator')
                 //coordinator.course.push(course.courseName)
                 course.save()
                 coordinator.save()
-                res.send("successfully assigned")
+                res.send("Successfully assigned")
         }
         else{
-             res.send("this academic member is not assigned to this course")
+             res.send("This academic member is not assigned to this course")
         }
     }
         else{
-            res.send("the course is not yours")
+            res.send("The course is not yours.You cannot change in")
         }
     }   
 }
-res.send("this coordinator id is not valid")
+res.send("This coordinator id is invalid")
 
 
 })
@@ -142,7 +170,7 @@ router.route('/removeAssignedCourse')
         slot.academicMember=null
         slot.save()
         academicMember.save()
-        res.send("successfully removed")}
+        res.send("Successfully removed")}
         else{
             res.send("This course is not yours. You can't change in ")
         }
@@ -174,9 +202,9 @@ router.route('/updateAssignedCourse')
                 else res.send("invalid member")
         academicMember.save()
         course.save()
-        res.send("successfully added")}
+        res.send("Successfully added")}
         else{
-            res.send("this course is already assigned to this academic member")
+            res.send("This course is already assigned to this academic member")
         }
     }
         else{
