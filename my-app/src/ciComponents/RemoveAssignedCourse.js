@@ -1,18 +1,31 @@
-import React,{useRef} from 'react'
+import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
 export default function RemoveAssignedCourse() {
     const memberIDRef=useRef()
-    const courseRef=useRef()
+    const [courses, setCourses] = useState([])
+    const [course, setCourse] = useState("")
+    const [message, setMessage] = useState("")
+    async function HandleCourses(e) {
+        await setCourse(e.target.value)
+        console.log(Location)
+    }
   function HandleRemoveCourse(){
-    const body={memberID:memberIDRef.current.value, courseName:courseRef.current.value  }
+    const body={memberID:memberIDRef.current.value, courseName:course  }
   //  console.log(body)
 
    axios   
    .post('http://localhost:8000/ci/removeAssignedCourse', body, {headers:{'token':localStorage.getItem('token')}})
    
-   .then(res=>console.log(res.data));
+   .then(res=>setMessage(res.data));
    // callAPI()
 }
+axios
+.get('http://localhost:8000/ci/loadCourses', {headers:{'token':localStorage.getItem('token')}})
+.then(res => {
+    setCourses(res.data)
+    //console.log(res.data)
+
+});
 
 return (
   <>
@@ -32,26 +45,27 @@ return (
                   </span>
                   <br />
               </div>
+              <br></br>
+          <br></br>
+          <label className='textDown'>Choose a course: </label>
+                    <select className='dropbtn' name="types" id="type" onChange={HandleCourses}>
+                        <option value="">Choose a Course</option>
+                        {courses.map(item => (
+                            <option key={item} value={item}>{item}</option>
+                        ))}
+                    </select>
 
-
-              <div>
-                  <input required={true} ref={courseRef} className="input100" name="courseName" placeholder="Course Name" />
-                  <span className="focus-input100"></span>
-                  <span className="symbol-input100">
-                  </span>
-                  <br />
-              </div>
+           
           </div>
           <br></br>
           <br></br>
-          <br></br>
-          <br></br>
+          <r1> {message}</r1>
           <br></br>
           <br></br>
           <br></br>
           <div className="buttons">
               <button onClick={ HandleRemoveCourse} className="buttons">
-                  Assign Course
+                 Remove Course
       </button>
           </div>
 

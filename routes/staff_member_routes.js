@@ -67,7 +67,7 @@ router.route('/signIn')
     newMonth=true
     missingDays(staff,day1,day2,month1,month2,year1,firstEntry)
    // staff.save()
-    res.send(staff.attendance)
+    res.send("SIGNED IN")
 }   
        //res.send('/homepage')
 })
@@ -323,12 +323,15 @@ router.route('/signOut')
     }
     if(hours<8.24){
     missingHours(staff,hours,flag,day1)
-    staff.extraHours.push(0)}
+    console.log("missingHours")
+}
     else{
-    staff.missingHours.push(0)
-    extraHours(staff,hours,flag,day1)}  
+   // staff.missingHours.push(0)
+    extraHours(staff,hours,flag,day1)
+    console.log("extraHours")
+}  
         
-        res.send(staff.attendance)
+        res.send("SIGNED OUT")
     }
     
         else res.send("you cannot sign out without signing in")
@@ -342,6 +345,7 @@ router.route('/signOut')
 //missing hours
 function missingHours(staff,hours,flag,day1,day2){
     if(flag){
+        console.log("da5alt")
     staff.missingHours.push(8.24-hours)
     staff.extraHours.push(0)
     newMonth2=false
@@ -468,7 +472,7 @@ router.route('/updateProfile')
             console.log(Err)
             res.send("error saving staff member")
         }
-        return res.send(staff)    
+        return res.send("Updated")    
     }
 
         res.send('staff member with id '+ req.body.id+' doesnt exist')
