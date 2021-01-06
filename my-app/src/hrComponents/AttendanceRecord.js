@@ -6,6 +6,7 @@ import '../styling/main.css';
 export default function AttendanceRecord({attendance}) {
 
 
+  
   return (
 
     
