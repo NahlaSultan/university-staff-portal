@@ -269,19 +269,37 @@ router.route('/updateLocation')
     if (location) {
         const name = req.body.name
 
-        if(req.body.type!=null){
+        if(req.body.type!=null && req.body.type!=''){
+            
             location.type = req.body.type
         }
-        if(req.body.capacity!=null){
+        if(req.body.capacity!=null && req.body.capacity!=''){
                 location.capacity = req.body.capacity
         }
-        if(req.body.officeMembers!=null){
+        if(req.body.officeMembers!=null && req.body.officeMembers!=''){
             location.officeMembers = req.body.officeMembers
         }
-        if(req.body.newName!=null){
+        if(req.body.newName!=null && req.body.newName!=''){
             const usedName = await location_model.findOne({ name: req.body.newName })
             if(usedName)
                 res.send('name ' + req.body.newName+'is already in use')
+
+            if(location.type=="office"){
+
+               const staff = await staff_members_models.find({officeLocation: location.name})
+               console.log(staff.length)
+               for (var k=0 ; k<staff.length;k++) {
+                       staff[k].officeLocation = req.body.newName
+       
+                       try {
+                           await staff[k].save()
+                       } catch (error) {
+                           res.send("error saving staff")
+                           
+                       }     
+       
+               }
+            }    
 
             location.name = req.body.newName
         }
@@ -448,6 +466,18 @@ router.route('/updateFaculty')
             if(usedName)
                 res.send('name ' + req.body.newName+'is already in use')
 
+                const staff = await staff_members_models.find({faculty: req.body.name})
+                console.log(staff.length)
+                for (var k=0 ; k<staff.length;k++) {
+                        staff[k].faculty =  req.body.newName
+        
+                        try {
+                            await staff[k].save()
+                        } catch (error) {
+                            res.send("error saving staff")
+                            
+                        } 
+                }  
             faculty.facultyName = req.body.newName
         }
         try {
@@ -1163,6 +1193,9 @@ router.route('/updateStaff')
         if(req.body.name!=null){
             staff.name = req.body.name
         }
+        if(req.body.gender!=null){
+            staff.name = req.body.gender
+        }
         if(req.body.email!=null){
 
             const found = await staff_members_models.findOne({ email: req.body.email })
@@ -1187,9 +1220,35 @@ router.route('/updateStaff')
         if(req.body.annualLeavesBalance!=null){
             staff.annualLeavesBalance = req.body.annualLeavesBalance
         }
-        if(req.body.gender!=null){
-            staff.gender = req.body.gender
-        }
+        
+
+            if (req.body.faculty != null && req.body.faculty!="" && staffType=="academic") {
+         
+                faculty = await faculty_model.findOne({ facultyName: req.body.faculty })
+                if(faculty)
+                    staff.faculty = req.body.faculty
+                else{
+                    res.send("this is not a valid faculty, check faculty table and pick an existing one")
+                }
+            }
+
+            if (req.body.department != null && req.body.department!="")  {
+          
+
+                var found = false
+                for(var i=0; i<staff.faculty.departments.length; i++){
+                currDep = staff.faculty.departments[i]
+                if(req.body.department == currDep.name){
+                    found = true
+                    break;
+                }
+            }
+
+            if(!found){
+                res.send("department not found in this faculty")
+            }
+            staff.department = req.body.department
+        }        
         if(req.body.office!=null){
 
             const newoffice = await location_model.findOne({ name: req.body.office })
@@ -1236,6 +1295,8 @@ router.route('/updateStaff')
 
 
 })
+
+
 async function missingDays(staff,day1,day2,month1,month2,year1,firstEntry){
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var flag=false

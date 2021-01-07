@@ -110,6 +110,12 @@
 // import ViewAttendance from './hrComponents/ViewAttendance'
 // import AddSignIn from './hrComponents/AddSignIn';
 // import AddSignOut from './hrComponents/AddSignOut';
+// import UpdateFaculty from './hrComponents/UpdateFaculty';
+// import UpdateDepartment from './hrComponents/UpdateDepartment';
+// import UpdateCourse from './hrComponents/UpdateCourse';
+// import UpdateStaff from './hrComponents/UpdateStaff';
+// import UpdateLocation from './hrComponents/UpdateLocation';
+// import UpdateSalary from './hrComponents/UpdateSalary';
 
 
 // export default function App() {
@@ -117,7 +123,8 @@
 //    return (
 //    <Router>  
 //    <div className='App'> 
-//     <Route path='/' exact component={Login} />
+
+//    <Route path='/' exact component={Login} />
 
 //     <Nav/>
 //     <SideNav/>
@@ -129,7 +136,7 @@
 //     <Route path='/logout' component={Logout} />
 //     <Route path='/home' component={HRprofile} />
 //     <Route path='/addLocation' component={addLocation} />
-//     <Route path='/addDepartment' component={addDepartment} />
+//     <Route path='/hr/addDepartment' component={addDepartment} />
 //     <Route path='/addFaculty' component={addFaculty} />
 //     <Route path='/addCourse' component={addCourse} />
 //     <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
@@ -138,6 +145,15 @@
 //     <Route path='/hr/viewAttendance' component={ViewAttendance}/>
 //     <Route path='/hr/AddSignIn' component={AddSignIn}/>
 //     <Route path='/hr/AddSignOut' component={AddSignOut}/>
+//     <Route path= '/hr/updateFaculty' component={UpdateFaculty}/>
+//     <Route path= '/hr/updateDepartment' component={UpdateDepartment}/>
+//     <Route path= '/hr/updateCourse' component={UpdateCourse}/>
+//     <Route path= '/hr/updateStaff' component={UpdateStaff}/>
+//     <Route path= '/hr/updateLocation' component={UpdateLocation}/>
+//     <Route path= '/hr/updateSalary' component={UpdateSalary}/>
+
+
+    
 
 
 

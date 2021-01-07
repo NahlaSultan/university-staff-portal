@@ -1,7 +1,7 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
 import '../styling/main.css';
-
+import Location from './Location'
 
 
 export default function Locations() {
@@ -22,15 +22,11 @@ export default function Locations() {
 
     
         <div>   
-            <h2>Array of Locations:</h2>
+            <h2>Locations</h2>
             <ul>
                 {locations.map((loc, i) => {
                 return <li key={loc._id}>
-                <h3> {loc.name} </h3>
-                <ul> type: {loc.type} </ul>
-                <ul> capacity: {loc.capacity} </ul> 
-                <ul> office Members: {loc.officeMembers} </ul> 
-                <br/>
+                <Location loc = {loc}/>
                 </li>
                 })}
              </ul>
