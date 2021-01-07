@@ -153,7 +153,7 @@
 //     <Route path= '/hr/updateSalary' component={UpdateSalary}/>
 
 
-    
+
 
 
 
@@ -381,11 +381,11 @@ export default function App() {
 //       <div className='App'>
 
 //       <h1> app page</h1>
-      
+
 //         <Route exact path='/' exact component={Login} />
-        
+
 //         <HodSideNav />
-        
+
 //         <Route exact path='/home' component={HodProfile} />
 //         <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
 //         <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
@@ -403,9 +403,9 @@ export default function App() {
 //         <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} />
 //         <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} />
 //         <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} />
-    
 
-    
+
+
 
 //         </Switch>
 //       </div>
