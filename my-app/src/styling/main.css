@@ -532,10 +532,10 @@ iframe {
 
   
 .viewStaff{
-  display: flexbox;
+  display: grid;
   /* justify-content: center; */
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
 }  
 
 .hodhome{

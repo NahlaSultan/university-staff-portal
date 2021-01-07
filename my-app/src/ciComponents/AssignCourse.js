@@ -1,5 +1,6 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
+
 export default function AssignCourse() {
     const memberIDRef=useRef()
    // const courseRef=useRef()
@@ -11,8 +12,7 @@ export default function AssignCourse() {
         console.log(Location)
     }
   function HandleAssCourse(){
-    const body={memberID:memberIDRef.current.value, courseName:course  }
-  
+    const body={memberID:memberIDRef.current.value, courseName:courseRef.current.value  }
 
    axios   
    .post('http://localhost:8000/ci/updateAssignedCourse', body, {headers:{'token':localStorage.getItem('token')}})

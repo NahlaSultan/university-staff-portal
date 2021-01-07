@@ -151,7 +151,7 @@ router.route('/login')
                     res.send(token)
                 }
 
-                res.send(token)
+               // res.send(token)
                 // return res.redirect('/homePage')
             }
             return res.send('Invalid password')
@@ -222,6 +222,13 @@ router.route('/viewLocations')
     .get(async (req, res) => {
         const locations = await location_model.find()
         res.send(locations)
+
+    })
+//views all locations avalilable
+router.route('/viewSlot')
+    .get(async (req, res) => {
+        const slots = await slot_model.find()
+        res.send(slots)
 
     })
 //views the slot with this certain numberID

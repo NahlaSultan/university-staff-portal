@@ -1,22 +1,25 @@
 import React,{useRef, useState} from 'react'
 import axios from 'axios'
-export default function AcceptChangeDayoff() {
+import '../styling/main.css';
+
+
+export default function ViewDayOffSingleStaff() {
+  const [dayOff, setDayOff] = useState()
   const StaffIDRef=useRef()
-  const [resp, setRes] = useState()
-
-  function HandleAccept(){
-    const body={staffId:StaffIDRef.current.value}
 
 
-   axios   
-   .post('http://localhost:8000/hod/acceptChangeDayOffRequest', body, {headers:{'token': localStorage.getItem('token')}})
-   
-   .then(res=>{
-     setRes(res.data)
-    });
-}
+     function HandleView(){
+        const body={staffId: StaffIDRef.current.value }
 
-   return (
+        axios   
+        .post('http://localhost:8000/hod/viewDayOffSingleStaff',body,{headers:{'token': localStorage.getItem('token')}})
+        .then(res => {
+            setDayOff(res.data)
+          });
+    }  
+
+
+  return (
 
     <>
     <div >
@@ -24,7 +27,7 @@ export default function AcceptChangeDayoff() {
 
 
             <span className="login100-form-title">
-                Accept Change Day off Request
+                View Day Off
   </span>
 
 
@@ -39,13 +42,13 @@ export default function AcceptChangeDayoff() {
         </div>        
         <br></br>
         <div className="buttons">
-            <button onClick={HandleAccept} className="buttons">
-                Accept Request
+            <button onClick={HandleView} className="buttons">
+                View Day Off
     </button>
     <br></br>
     <br></br>
         </div>
-        <ul className='viewStaff'> {resp} </ul>
+        <ul className='viewStaff'> {dayOff}</ul>
         <br></br><br></br>
     </div>
 
@@ -55,5 +58,5 @@ export default function AcceptChangeDayoff() {
     
 
   )
-}
 
+}
