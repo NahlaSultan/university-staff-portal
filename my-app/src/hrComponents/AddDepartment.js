@@ -1,23 +1,22 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
 import '../styling/main.css'
-
+import { useLocation } from "react-router-dom";
 
 export default function AddDepartment() {
-  const FacNameRef=useRef()
   const DepNameRef=useRef()
   const HodRef=useRef()
+  const locationReact = useLocation();
 
   function ClearTxtfields(){
     document.getElementById('depnameInput').value = ''
-    document.getElementById('facnameInput').value = ''
     document.getElementById('hodInput').value = ''
   }
 
   function HandleAddDep(){
 
     const body={
-        facultyName: FacNameRef.current.value,
+        facultyName: locationReact.state.facultyName,
         departmentName: DepNameRef.current.value,
         headOfDepartment:  HodRef.current.value        
      }
@@ -41,13 +40,6 @@ export default function AddDepartment() {
 
 
 
-            <div>
-              <input required={true} ref={FacNameRef} className="input100" id="facnameInput" placeholder="Faculty Name" />
-              <span className="focus-input100"></span>
-              <span className="symbol-input100">
-              </span>
-              <br/>
-					  </div>
 
           <div>
             <input required={true} ref={DepNameRef} className="input100" id="depnameInput" placeholder="Department Name" />

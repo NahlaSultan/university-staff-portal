@@ -29,7 +29,7 @@ export default function SideNav() {
             </li>
 
             {/* start nahla */}
-            {/* {SidebarData.map((item, index) => { */}
+            {SidebarData.map((item, index) => {
             {/* end nahla */}
             {/* /////////////////////////////////////////////// */}
             {/* start sara */}
@@ -38,7 +38,7 @@ export default function SideNav() {
             {/* end sara coor */}
 
             {/* // start sara adacemic */}
-            {SidebarAcademicMember.map((item, index) => {
+            // {SidebarAcademicMember.map((item, index) => {
               // end sara academic
               ///////////////////////////////////////////////////////              
               return (

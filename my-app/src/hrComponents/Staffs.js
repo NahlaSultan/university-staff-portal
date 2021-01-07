@@ -27,10 +27,7 @@ export default function Staffs() {
             <ul >
                 {staffs.map((st, i) => {
                 return <li key={st._id}>
-                <StaffMember name={st.name}  memberID= {st.memberID}
-                   email= {st.email} dayOff={st.dayOff}
-                   annualLeavesBalance={st.annualLeavesBalance}
-                   gender={st.gender} office={st.officeLocation} salary={st.salary} />
+                <StaffMember st={st} />
                 </li>
                 })}
              </ul>

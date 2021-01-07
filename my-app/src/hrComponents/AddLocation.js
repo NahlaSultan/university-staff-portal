@@ -1,22 +1,26 @@
-import React,{useRef} from 'react'
+import React,{useRef,useState} from 'react'
 import axios from 'axios'
 import '../styling/main.css'
 
 export default function AddLocation() {
-  const TypeRef=useRef()
+  const [type, setType] = useState([])
   const NameRef=useRef()
   const CapacityRef=useRef()
 
   function ClearTxtfields(){
-    document.getElementById('typeInput').value = ''
     document.getElementById('nameInput').value = ''
     document.getElementById('capacityInput').value = ''
+  }
+
+  function ChooseType(e){
+    setType(e.target.value)
+      
   }
 
   function HandleAddLocation(){
 
 
-    const body={type:TypeRef.current.value,
+    const body={type:type,
         name: NameRef.current.value,
         capacity: CapacityRef.current.value
      }
@@ -40,14 +44,16 @@ export default function AddLocation() {
 						Add Location
 					</span>
 
-					<div className="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input ref={TypeRef} className="input100" type="text" id="typeInput" placeholder="Location Type" />
-						<span className="focus-input100"></span>
-						<span className="symbol-input100">
-							<i className="fa fa-envelope" aria-hidden="true"></i>
-						</span>
-                        <br/>
+					<div >
+					<label >Type: </label>
+                    <select className='dropbtn' name="types"  onChange={ChooseType}>
+                        <option value="">Choose Type</option>
+					            	<option value="hall">Hall</option>
+                        <option value="lab">Lab</option>
+                        <option value="office">Office</option>
 
+                    </select>
+                        <br/><br/>
 					</div>
 
 

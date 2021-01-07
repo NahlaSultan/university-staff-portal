@@ -150,7 +150,6 @@ console.log(record)
                 {record.map((item, i) => {
                 return <li key={i}>
                 <ul> signIn: {item.signInTime} </ul>
-                <ul> signOut: {item.signOutTime} </ul> 
                 <br/>
                 </li>
                 })}
