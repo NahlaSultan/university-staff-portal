@@ -414,7 +414,8 @@ router.route('/viewProfile')
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
     if(staff){ 
-    res.send(staff)
+    res.send([staff])
+    //console.log([staff])
 }
 })
 //view attendance

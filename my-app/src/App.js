@@ -198,6 +198,11 @@ import Nav from './mainComponents/Nav';
 import Schedule from './academicMembersComponents/ViewSchedule';
 import SendReplacement from './academicMembersComponents/SendReplacement';
 import ChangeDayOff from './academicMembersComponents/ChangeDayOff';
+import ViewReplacementRequest from './academicMembersComponents/ViewReplacementRequest'
+import SendSlotLinkingRequest from './academicMembersComponents/SendSlotLinkingRequest';
+import SubmitLeaveRequest from './academicMembersComponents/SubmitLeaveRequest';
+import Requests from './academicMembersComponents/Requests';
+
 export default function App() {
 
   return (
@@ -217,7 +222,11 @@ export default function App() {
           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
           <Route exact path='/academic/schedule' component={Schedule} />
           <Route exact path='/academic/manageReplacement' component={SendReplacement} />
-          <Route exact path='/academic/changeDayOff' component={SendReplacement} />
+          <Route exact path='/academic/changeDayOff' component={ChangeDayOff} />
+          <Route exact path='/academic/Requests' component={Requests} />
+          <Route exact path='/academic/ViewReplacementRequest' component={ViewReplacementRequest} />
+          <Route exact path='/academic/SendSlotLinkingRequest' component={SendSlotLinkingRequest} />
+          <Route exact path='/academic/SubmitLeaveRequest' component={SubmitLeaveRequest} />
           <Route component={HRprofile} exact path="/homeHR" />
           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
 
@@ -227,6 +236,37 @@ export default function App() {
   )
 
 }
+///////////////////////////////////////////////////////////////////
+// Start HASSAN
+// import React, { useState, useRef } from 'react'
+//  import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+//  import Login from './mainComponents/Login'
+// import ViewAllStaff from './hodComponents/ViewAllStaff'
+// import AssignInstructor from './hodComponents/AssignInstructor'
+// import Nav from './mainComponents/Nav';
+// import HodSideNav from './hodComponents/HodSideNav'
+// import HodProfile from './hodComponents/HodProfile'
+
+//  export default function App() {
+
+//   return (
+
+//     <Router>
+//       <div className='App'>
+//       <h1> app page</h1>
+//         <Route exact path='/' exact component={Login} />
+//         <HodSideNav />
+//         <Route exact path='/home' component={HodProfile} />
+//         <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
+
+//         <Nav />
+//       </div>
+//     </Router>
+//   )
+
+// }
+//END HASSAN
+////////////////////////////////////////////////////////////////
 //END SaraAmjad
 /////////////////////////////////////////////////////////////////////
 // import React, { useState, useRef } from 'react'

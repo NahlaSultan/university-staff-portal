@@ -1,18 +1,18 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
 import '../styling/main.css';
-import CourseStaff from './CourseStaff'
+import MonthAttendance from './MonthAttendance'
 
-export default function ViewCourseStaff() {
-  const [staff, setStaff] = useState([])
-  const courseNameRef=useRef()
-  function HandleViewCourseStaff(){
-    const body={courseName:courseNameRef.current.value}
+export default function ViewMonthAttendance() {
+  const [attendance, setAttendance] = useState([])
+  const monthRef=useRef()
+  function HandleViewMonthAttendance(){
+    const body={month:monthRef.current.value}
  
     axios   
     .post('http://localhost:8000/ci/viewCourseStaff',body,{headers:{'token':localStorage.getItem('token')}})
     .then(res => {
-        setStaff(res.data)
+        setAttendance(res.data)
         console.log("here")
         console.log(res.data)
       });  
@@ -21,7 +21,7 @@ export default function ViewCourseStaff() {
     return (
       <>
           <div >
-              <div className="viewCourseStaff">
+              <div className="viewMonthAttendance">
   
   
                   <span className="login100-form-title">
@@ -32,7 +32,7 @@ export default function ViewCourseStaff() {
   
   
                   <div>
-                      <input required={true} ref={courseNameRef} className="input100" name="memberID" placeholder="Course Name" />
+                      <input required={true} ref={monthRef} className="input100" name="Month" placeholder="specify a month" />
                       <span className="focus-input100"></span>
                       <span className="symbol-input100">
                       </span>
@@ -45,11 +45,11 @@ export default function ViewCourseStaff() {
               <br></br>
               <br></br>
               <div className="buttons">
-                  <button onClick={ HandleViewCourseStaff} className="buttons">
-                      View Staff
+                  <button onClick={ HandleViewMonthAttendance} className="buttons">
+                      View Attendance
           </button>
           <br></br>
-          <ul> <CourseStaff staff={staff} /> </ul>
+          <ul> <MonthAttendance attendance={attendance} /> </ul>
               </div>
   
           </div>

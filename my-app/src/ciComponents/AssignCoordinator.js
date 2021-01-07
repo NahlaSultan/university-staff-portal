@@ -8,7 +8,7 @@ export default function AssignCoordinator() {
   //  console.log(body)
 
    axios   
-   .post('http://localhost:8000/ci/assignCourseCoordinator', body)
+   .post('http://localhost:8000/ci/assignCourseCoordinator', body, {headers:{'token':localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));
    // callAPI()

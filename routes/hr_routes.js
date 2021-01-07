@@ -80,6 +80,9 @@ router.route('/addStaff')
             })
             var faculty;
             var depIndex;
+
+            if(staffType != "hr"){
+
             if (req.body.faculty == null && staffType=="academic") {
                 res.send("must specify faculty name") 
             }
@@ -119,13 +122,14 @@ router.route('/addStaff')
                     console.log("after save")
                 }
             }
-
-            if (req.body.dayOff != null) {
-                newUser.dayOff = req.body.dayOff
-            }
+        }
             if (staffType == "hr") {
                 newUser.dayOff = "Saturday"
             }
+            else if (req.body.dayOff != null) {
+                newUser.dayOff = req.body.dayOff
+            }
+            
 
             if (req.body.attendance != null) {
                 newUser.attendance = req.body.attendance
@@ -196,7 +200,7 @@ router.route('/addLocation')
     const newLocation = new location_model({
         type: req.body.type,
         name: req.body.name,
-        capacity: req.body.capacity,
+        capacity: req.body.capacity
 
     })
 
@@ -222,8 +226,21 @@ router.route('/addLocation')
 router.route('/viewLocations')
 .get(async (req, res) => {
     const locations = await location_model.find()
+    res.send(locations)
 
-        res.send(locations)
+}) 
+
+router.route('/viewFaculties')
+.get(async (req, res) => {
+    const faculties = await faculty_model.find()
+    res.send(faculties)
+
+})
+
+router.route('/viewStaffs')
+.get(async (req, res) => {
+    const staffs = await staff_members_models.find()
+    res.send(staffs)
 
 })
 
@@ -869,7 +886,7 @@ router.route('/updateSalary')
 })
 
 router.route('/viewAttendance')
-.get(async (req, res) => {
+.post(async (req, res) => {
     console.log("veiwing attendance")
     const staff = await staff_members_models.findOne({ memberID: req.body.id })
      
@@ -1548,7 +1565,51 @@ function extraHours(staff,hours,flag,day1,day2){
 staff.markModified("ExtraHours")
 staff.save()
 }
+
+
+router.route('/viewMissingDays')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingDays
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missingDays":arr[arr.length-1]})
+    }
+    }
+
+    console.log("here")
+
+    res.send(resArr)
+
+})
+
+router.route('/viewMissingHours')
+.get(async (req, res) => {
+    const staff =  await staff_members_models.find()
+    var arr;
+    var resArr=[]
+
+    for (var k=0 ; k<staff.length;k++) {
+
+         arr = staff[k].missingHours
+        if(arr.length!=0 && arr[arr.length-1]!=0){
+            //var memID = staff[k].memberID
+        resArr.push({"staffMemberID":staff[k].memberID} , {"missingHours:":arr})
+    }
+    }
+
+    console.log("here")
+
+    res.send(resArr)
+
+})
 //////////////
 
 
-    module.exports = router
+
+module.exports = router

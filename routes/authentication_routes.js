@@ -15,25 +15,7 @@ const tokens_model = require('../models/tokens_model').model
 
 
 
-router.route('/viewLocations')
-    .get(async (req, res) => {
-        const locations = await location_model.find()
 
-
-
-        res.send(locations)
-
-    })
-
-router.route('/viewFaculties')
-    .get(async (req, res) => {
-        const faculties = await faculty_model.find()
-
-
-
-        res.send(faculties)
-
-    })
 
 router.route('/addSampleStaff')
     .post(async (req, res) => {
@@ -240,6 +222,13 @@ router.route('/viewLocations')
     .get(async (req, res) => {
         const locations = await location_model.find()
         res.send(locations)
+
+    })
+//views all locations avalilable
+router.route('/viewSlot')
+    .get(async (req, res) => {
+        const slots = await slot_model.find()
+        res.send(slots)
 
     })
 //views the slot with this certain numberID

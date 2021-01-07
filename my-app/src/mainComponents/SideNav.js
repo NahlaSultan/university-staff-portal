@@ -27,13 +27,20 @@ export default function SideNav() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
+
+            {/* start nahla */}
+            {/* {SidebarData.map((item, index) => { */}
+            {/* end nahla */}
+            {/* /////////////////////////////////////////////// */}
+            {/* start sara */}
             {/* Start sara coor */}
             {/* {SidebarCoordinator.map((item, index) => { */}
             {/* end sara coor */}
 
-              {/* // start sara adacemic */}
-              {SidebarAcademicMember.map((item, index) => {
+            {/* // start sara adacemic */}
+            {SidebarAcademicMember.map((item, index) => {
               // end sara academic
+              ///////////////////////////////////////////////////////              
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>

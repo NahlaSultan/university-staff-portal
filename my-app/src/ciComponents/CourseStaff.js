@@ -1,24 +1,13 @@
-import React,{useRef, useState, useEffect} from 'react'
-import axios from 'axios'
+import React from 'react'
 import '../styling/main.css';
-export default function ViewDepartmentStaff() {
-  const [staff, setStaff] = useState([])
 
-  useEffect(() => {
-    // Update the document title using the browser API
-    axios   
-    .get('http://localhost:8000/ci/viewDepartmentStaff', {headers:{'token':localStorage.getItem('token')}})
-    .then(res => {
-        setStaff(res.data)
-        // console.log("here")
-        // console.log(res.data)
-      });  });
 
-  return (
+
+export default function CourseStaff({staff}) {
+    return (
 
     
         <div>   
-            <h2>Department Staff:</h2>
             <ul>
                 {staff.map((item, i) => {
                 return <li key={i}>
@@ -42,5 +31,4 @@ export default function ViewDepartmentStaff() {
     
 
   )
-
 }
