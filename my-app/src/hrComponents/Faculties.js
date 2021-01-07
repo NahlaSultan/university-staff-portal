@@ -25,23 +25,21 @@ export default function Faculties() {
 
     
         <div>   
-            <h2>Array of Faculties:</h2>
 
             <Link to = '/AddFaculty'>
             <li > Add Faculty  </li>
             </Link> 
-            <Link to = '/AddDepartment' >
-            <li > Add Department  </li>
-            </Link>  
+ 
             <Link to = '/AddCourse' >
             <li > Add Course  </li>
             </Link> 
             <hr/>
+            <h2>GUC Faculties:</h2>
+
 
                 {faculties.map((fac, i) => {
                 return <li key={fac._id}>
-                <Faculty facultyName={fac.facultyName}  departments= {fac.departments}   />             
-                <hr/>
+                <Faculty fac={fac}   />             
                 </li> })}
          
         </div>      

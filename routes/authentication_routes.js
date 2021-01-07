@@ -151,7 +151,7 @@ router.route('/login')
                     res.send(token)
                 }
 
-                res.send(token)
+               // res.send(token)
                 // return res.redirect('/homePage')
             }
             return res.send('Invalid password')

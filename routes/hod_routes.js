@@ -115,6 +115,15 @@ router.route('/updateInstructor')
                                 if(Ninstructor){
 
                                 const instArray=course.instructors
+
+                                if(!instArray.includes(newinstructorid))
+                                instArray.push(newinstructorid)
+                                 else{
+                                    res.send("new instructor is already assigned to this course")
+                                }
+                           
+                                await course.save()
+                                
                                 instArray.forEach(inst => {
                                     if(inst == oldinstructorid)
                                     course.instructors.remove(inst)
@@ -127,21 +136,24 @@ router.route('/updateInstructor')
                                 if(!Ninstructor.course.includes(coursename)){
                                     Ninstructor.course.push(coursename)
                                 }
-                                course.instructors.push(newinstructorid)
                                 await Ninstructor.save()
-                                await course.save()
-
+                               
                                 for(let i=0;i<Oinstructor.course.length;i++){
                                     var crs=Oinstructor.course[i]
                                     if(crs==coursename)
                                         Oinstructor.course.remove(crs)
                                 }
                                 await Oinstructor.save()
+
+                                
+
                                 res.send("instructor updated successfully")
                                 }
                                 else{res.send("no new instructor with this id")}
                             }
                             else{res.send("no old instructor with this id")}
+
+
                     }else{res.send("no course with this id")}
                 return
                 }   
@@ -187,8 +199,7 @@ router.route('/deleteInstructor')
                             if(inst == instructorid){
                                 course.instructors.remove(inst)
                                 await course.save()
-                                donedel=true
-                                return 
+                                donedel=true 
                             }
                             });
                         
@@ -200,8 +211,10 @@ router.route('/deleteInstructor')
                         }
                         await tmp.save()
 
+                        if(donedel)
                             res.send("instructor deleted successfully")   
-   
+                        else    
+                            res.send("instructor is not in this course")   
                     }else{res.send("no course with this id")}
                     return
                 }
@@ -228,17 +241,17 @@ router.route('/viewAllStaff')
 
         staffs.forEach(s => {
             if(s.memberID != staff.memberID)
-                staffArray+=helper(s)+"\n"
+                staffArray.push(helper(s)+"\n")
         });
         res.send(staffArray)
-
+    //    console.log(staffArray[0])
     }
     else{res.send("HOD not found")}
 })
 
 //working 
 router.route('/viewStaffinCourse')
-.get(async(req,res)=>{
+.post(async(req,res)=>{
     const coursename=req.body.courseName
     const staffId=req.user._id;
 
@@ -252,12 +265,12 @@ router.route('/viewStaffinCourse')
             var courses= s.course
             courses.forEach(c => {
                 if(c == coursename)
-                    staffArray+=helper(s)+"\n"
+                    staffArray.push(helper(s)+"\n")
             });
             
         });
         res.send(staffArray)
-
+        console.log(staffArray)
         
 }
     else{res.send("HOD not found")}
@@ -275,7 +288,7 @@ router.route('/viewDayOffAllStaff')
         const staffs=await staff_members_models.find({department:staff.department})
         staffs.forEach(s => {
             if(s.memberID != staff.memberID && s.staffType!="hr")
-                staffArray.push("name: "+ s.name + " day off: "+s.dayOff)
+                staffArray.push("Staff name: "+ s.name + ", Day off: "+s.dayOff)
         });
         res.send(staffArray)
 
@@ -285,7 +298,7 @@ router.route('/viewDayOffAllStaff')
 
 //working
 router.route('/viewDayOffSingleStaff')
-.get(async (req,res)=>{
+.post(async (req,res)=>{
     const staffmemberid=req.body.staffId
     const staffId=req.user._id;
 
@@ -293,9 +306,9 @@ router.route('/viewDayOffSingleStaff')
     const staffMember=await staff_members_models.findOne({ memberID : staffmemberid, department:staff.department})
     if(staff){
         if(staffMember){
-        res.send("name: "+ staffMember.name + " day off: "+staffMember.dayOff)
+        res.send("Staff name: "+ staffMember.name + ", Day off: "+staffMember.dayOff)
         }
-        else{res.send("staff member not found")}
+        else{res.send("Staff member not found, try another staff ID")}
     }
     else{res.send("HOD not found")}
 })
@@ -317,8 +330,8 @@ router.route('/viewAllRequests')
             if(s){
                 var request= await dayoff_model.findOne({senderId: d})
                if(request){
-                    staffRequests.push("Staff name: "+s.name+", change day off request: "+" pending:" + request.pending+", accepted: "+ request.accepted
-                    +", reason: "+ request.reason)
+                    staffRequests.push("Staff name: "+s.name+", Staff ID: "+ s.memberID+", Change day off request: "+" Pending:" + request.pending+", Accepted: "+ request.accepted
+                    +", Reason: "+ request.reason)
                }
                }
         }
@@ -331,8 +344,8 @@ router.route('/viewAllRequests')
             if(leaverequest){
                 var s2= await staff_members_models.findOne({memberID: leaverequest.staffID})
                 if(s2){                
-                    staffRequests.push("Staff name: "+s2.name+", leave request: "+" type:"+ leaverequest.type+", pending:" + leaverequest.pending+", accepted: "+ leaverequest.accepted
-                    +", reason: "+ leaverequest.reason)
+                    staffRequests.push("Staff name: "+s2.name+", Staff ID: "+ s2.memberID+", Leave request: "+" Type:"+ leaverequest.type+" Pending:" + leaverequest.pending+", Accepted: "+ leaverequest.accepted
+                    +", Reason: "+ leaverequest.reason)
                 }   
             }
         }
@@ -359,8 +372,8 @@ router.route('/viewChangeDayOffRequests')
             if(s){
                 var request= await dayoff_model.findOne({senderId: d})
                if(request){
-                    staffRequests.push("Staff name: "+s.name+", change day off request: "+" pending:" + request.pending+", accepted: "+ request.accepted
-                    +", reason: "+ request.reason)
+                    staffRequests.push("Staff name: "+s.name+", Staff ID: "+ s.memberID+", Pending:" + request.pending+", Accepted: "+ request.accepted
+                    +", Reason: "+ request.reason)
                }
                }
         }
@@ -388,8 +401,8 @@ router.route('/viewLeaveRequests')
             if(leaverequest){
                 var s2= await staff_members_models.findOne({memberID: leaverequest.staffID})
                 if(s2){                
-                    staffRequests.push("Staff name: "+s2.name+", leave request: "+" type:"+ leaverequest.type+", pending:" + leaverequest.pending+", accepted: "+ leaverequest.accepted
-                    +", reason: "+ leaverequest.reason)
+                    staffRequests.push("Staff name: "+s2.name+", Staff ID: "+ s2.memberID+", Request Type:"+ leaverequest.type+", Pending:" + leaverequest.pending+", Accepted: "+ leaverequest.accepted
+                    +", Reason: "+ leaverequest.reason)
                 }   
             }
         }
@@ -402,7 +415,7 @@ router.route('/viewLeaveRequests')
 
 //working
 router.route('/viewCourseCoverage')
-.get(async (req,res)=>{
+.post(async (req,res)=>{
     const coursename=req.body.courseName
     const staffId=req.user._id;
 
@@ -445,7 +458,7 @@ router.route('/viewCourseCoverage')
 
 //working
 router.route('/viewTeachingAssignments')
-.get(async(req,res)=>{
+.post(async(req,res)=>{
     const coursename=req.body.courseName
     const staffId=req.user._id;
     var teachingArray=[]
@@ -478,9 +491,9 @@ router.route('/viewTeachingAssignments')
                                 if(slot){
                                     var s=await staff_members_models.findOne({memberID: slot.academicMember})
                                     if(s){
-                                        teachingArray.push("Staff name: "+s.name+ ", course taught: "+coursename+
-                                        ", slot type: "+ slot.type+", day: "+slot.day +", time: "+slot.time+
-                                        ", location: "+slot.location)
+                                        teachingArray.push("Staff name: "+s.name+ ", Course taught: "+coursename+
+                                        ", Slot type: "+ slot.type+", Day: "+slot.day +", Time: "+slot.time+
+                                        ", Location: "+slot.location)
                                     }
                                 }
                             }
@@ -514,29 +527,32 @@ router.route('/acceptChangeDayOffRequest')
                 done=true
                 var request= await dayoff_model.findOne({senderId: sId})
                 if(request){
-                    if(request.pending && !request.accepted){
-                        request.accepted=true
-                        request.pending=false
+                    if(request.pending){
+                    request.accepted=true
+                    request.pending=false
 
-                        await request.save()
+                    await request.save()
 
-                        const s=await staff_members_models.findOne({memberID: staffmemberid})
-                        s.dayOff=request.day
-                        await s.save()
+                    const s=await staff_members_models.findOne({memberID: staffmemberid})
+                    s.dayOff=request.day
+                    await s.save()
 
-                        o="request accepted successfully"
+                    o="Request accepted successfully"
 
-                        
-                    }
-                    else 
-                        o="request is already accepted"
+                }
+                
+                else if(request.accepted){
+                    o="Request is already accepted"
+                }
+                else 
+                        o="Request is already rejected, you can't accept it"
                 }
                 else
                     o="No request with this sender id"
                 }
         }
         if(!done)
-            o="this staff member has no change day off request"
+            o="This staff member has no change day off request"
         res.send(o)
     }
     else{res.send("HOD not found")}
@@ -565,9 +581,15 @@ router.route('/rejectChangeDayOffRequest')
                         request.pending=false
                         if(comment!=null){
                             request.comment=comment
-                        }
+                         }
                         await request.save()
-                        o="request rejected"
+                        o="Request rejected"
+                    }
+                    else if(request.accepted){
+                        o="Request is already accepted, you can't reject it"
+                    }
+                    else{
+                        o="Request is already rejected"
                     }
                 }
                 else{
@@ -584,24 +606,33 @@ router.route('/acceptLeaveRequest')
 .post(async(req,res)=>{
     const staffId=req.user._id;
     const reqId= req.body.requestId;
-
+    var o=""
+    var done=false
+    console.log(reqId)
     const staff=await staff_members_models.findOne({ _id: staffId })
     if(staff){
         const leavesArray=staff.leaveRequestsHOD
-        leavesArray.forEach(async l => {
+        await leavesArray.forEach(async l => {
+            console.log("hey")
+            
+            console.log(l)
             if(l==reqId){
+                console.log("im here")
                  const request = await leaves_model.findOne({_id:l})
+                 console.log(request)
                 if(request){
-                    if(request.pending && !request.accepted){
+                    console.log("entered")
+                    done=true
+                    console.log("1"+done)
+
+                    if(request.pending){
                         request.accepted=true
                         request.pending=false
-                        await request.save()
-                        
-                    }
+                        await request.save()                     
+                    
+                        const type=request.type
 
-                    const type=request.type
-
-                    if(type=="Annual"){
+                        if(type=="Annual"){
                         
                         const s =await staff_members_models.findOne({memberID:request.staffID})
                         s.annualLeavesBalance=s.annualLeavesBalance-1
@@ -637,11 +668,20 @@ router.route('/acceptLeaveRequest')
                         s.compensationSession=true
                         await s.save()
                     }
-                    res.send("request accepted successfully") 
+
+                    res.send("Request accepted successfully")
                     }
-                }
+
+                    else if(request.accepted){
+                        res.send("Request is already accepted")
+                    }
+                    else{
+                        res.send("Request is already rejected, you can't accept it" )
+                    }
+                }}
             });
-        
+
+        // res.send("Request not found")
     }
     else{res.send("HOD not found")}
 })
@@ -668,8 +708,15 @@ router.route('/rejectLeaveRequest')
                           request.comment=comment
                     }
                     await request.save()
-                    res.send("request rejected")
+                    res.send("Request rejected")
+                }
+                else if(request.accepted){
+                    res.send("Request is already accepted, you can't reject it")
                     }
+                else{
+                    res.send("Request is already rejected")
+                    }    
+
             }
         }
     });
@@ -679,23 +726,24 @@ router.route('/rejectLeaveRequest')
 })
 
 function helper(staff){
-    var s="Staff name: "+staff.name
-    s+="\nID: "+staff.memberID
-    s+="\nemail: "+staff.email
-    s+="\nRole: "+staff.role
-    s+="\nDay off: "+staff.dayOff
-    s+="\nOffice location: "+staff.officeLocation
-    s+="\nAttendance: "+staff.attendance
-    s+="\nAnnual leaves balance: "+staff.annualLeavesBalance
-    s+="\nLeaves: "+staff.leaves
-    s+="\nRequest replacement sent: "+staff.requestReplacementSent
-    s+="\nRequest replacement received: "+staff.requestReplacmentReceived
-    s+="\nCoordinator linking requests: "+staff.coordinatorLinkingRequests
-    s+="\nCourses: "+staff.course
-    s+="\nSlots assigned: "+staff.slotsAssigned
-    s+="\nSlots replaced: "+staff.slotsReplaced
-    s+="\nSlots to replace: "+staff.slotsToReplace
-    s+="\nDay off request sent: "+staff.dayOffRequestSent +"\n"
+    var s=[]
+    s.push("Staff name: "+staff.name)
+    s.push("ID: "+staff.memberID)
+    s.push("email: "+staff.email)
+    s.push("Role: "+staff.role)
+    s.push("Day off: "+staff.dayOff)
+    s.push("Office location: "+staff.officeLocation)
+    s.push("Attendance: "+staff.attendance)
+    s.push("Annual leaves balance: "+staff.annualLeavesBalance)
+    s.push("Leaves: "+staff.leaves)
+    s.push("Request replacement sent: "+staff.requestReplacementSent)
+    s.push("Request replacement received: "+staff.requestReplacmentReceived)
+    s.push("Coordinator linking requests: "+staff.coordinatorLinkingRequests)
+    s.push("Courses: "+staff.course)
+    s.push("Slots assigned: "+staff.slotsAssigned)
+    s.push("Slots replaced: "+staff.slotsReplaced)
+    s.push("Slots to replace: "+staff.slotsToReplace)
+    s.push("Day off request sent: "+staff.dayOffRequestSent )
 
     return s
 }
