@@ -25,9 +25,6 @@ export default function HRprofile() {
         <li > Add Faculty  </li>
         </Link>  
 
-        <Link to = '/AddDepartment'>
-        <li > Add Department  </li>
-        </Link>     
 
         <Link to = '/AddCourse'>
         <li > Add Course  </li>

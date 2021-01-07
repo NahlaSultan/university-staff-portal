@@ -152,6 +152,7 @@ export default function Login() {
     console.log(localStorage.getItem('token'))
     return (
       //see which role from header and redirect to a certain homepage
+      
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
       <Redirect to="/home" />

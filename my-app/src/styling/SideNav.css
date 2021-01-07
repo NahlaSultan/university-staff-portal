@@ -17,6 +17,7 @@
     background-color: #060b26;
     width: 350px;
     height: 600px;
+
     display: flex;
     justify-content: start;
     position: fixed;

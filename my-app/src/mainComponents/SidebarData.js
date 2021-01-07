@@ -35,6 +35,12 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
+    title: 'Manage Attendance',
+    path: '/hr/manageAttendance',
+    icon: <IoIcons.IoIosCheckbox />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Messages',
     path: '/messages',
     icon: <FaIcons.FaEnvelopeOpenText />,

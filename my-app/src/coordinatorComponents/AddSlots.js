@@ -121,13 +121,7 @@ export default function AddSlots() {
                     </div> */}
                 <h3>  {headerText} </h3>
                 <div className='whole'>
-                    <label className='textDown'>Choose a Location: </label>
-                    <select className='dropbtn' name="types" id="type" onChange={HandleLocation}>
-                        <option value="">Choose location</option>
-                        {locations.map(item => (
-                            <option key={item.name} value={item.name}>{item.name}</option>
-                        ))}
-                    </select>
+
 
                     <label className='textDown'> Choose A Day: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
