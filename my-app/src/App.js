@@ -84,85 +84,85 @@
 
 
 //NAHLA
-import React, { useState, useRef } from 'react'
-import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
+// import React, { useState, useRef } from 'react'
+// import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
 
-import Home from './mainComponents/Home';
-import Nav from './mainComponents/Nav';
-import SideNav from './mainComponents/SideNav'
-import Locations from './hrComponents/Locations';
-import Faculties from './hrComponents/Faculties'
-import AddStaff from './hrComponents/AddStaff'
-import Login from './mainComponents/Login'
-import Logout from './mainComponents/Logout';
-import HRprofile from './hrComponents/HRprofile'
-import Staffs from './hrComponents/Staffs';
+// import Home from './mainComponents/Home';
+// import Nav from './mainComponents/Nav';
+// import SideNav from './mainComponents/SideNav'
+// import Locations from './hrComponents/Locations';
+// import Faculties from './hrComponents/Faculties'
+// import AddStaff from './hrComponents/AddStaff'
+// import Login from './mainComponents/Login'
+// import Logout from './mainComponents/Logout';
+// import HRprofile from './hrComponents/HRprofile'
+// import Staffs from './hrComponents/Staffs';
 
-import './styling/App.css'
-import './styling/main.css'
-import addLocation from './hrComponents/AddLocation';
-import addDepartment from './hrComponents/AddDepartment';
-import addFaculty from './hrComponents/AddFaculty';
-import addCourse from './hrComponents/AddCourse';
-import StaffsMissingHours from './hrComponents/StaffsMissingHours';
-import StaffsMissingDays from './hrComponents/StaffsMissingDays';
-import ManageAttendance from './hrComponents/ManageAttendance';
-import ViewAttendance from './hrComponents/ViewAttendance'
-import AddSignIn from './hrComponents/AddSignIn';
-import AddSignOut from './hrComponents/AddSignOut';
-import UpdateFaculty from './hrComponents/UpdateFaculty';
-import UpdateDepartment from './hrComponents/UpdateDepartment';
-import UpdateCourse from './hrComponents/UpdateCourse';
-import UpdateStaff from './hrComponents/UpdateStaff';
-import UpdateLocation from './hrComponents/UpdateLocation';
-import UpdateSalary from './hrComponents/UpdateSalary';
+// import './styling/App.css'
+// import './styling/main.css'
+// import addLocation from './hrComponents/AddLocation';
+// import addDepartment from './hrComponents/AddDepartment';
+// import addFaculty from './hrComponents/AddFaculty';
+// import addCourse from './hrComponents/AddCourse';
+// import StaffsMissingHours from './hrComponents/StaffsMissingHours';
+// import StaffsMissingDays from './hrComponents/StaffsMissingDays';
+// import ManageAttendance from './hrComponents/ManageAttendance';
+// import ViewAttendance from './hrComponents/ViewAttendance'
+// import AddSignIn from './hrComponents/AddSignIn';
+// import AddSignOut from './hrComponents/AddSignOut';
+// import UpdateFaculty from './hrComponents/UpdateFaculty';
+// import UpdateDepartment from './hrComponents/UpdateDepartment';
+// import UpdateCourse from './hrComponents/UpdateCourse';
+// import UpdateStaff from './hrComponents/UpdateStaff';
+// import UpdateLocation from './hrComponents/UpdateLocation';
+// import UpdateSalary from './hrComponents/UpdateSalary';
 
 
-export default function App() {
+// export default function App() {
 
-   return (
-   <Router>  
-   <div className='App'> 
+//    return (
+//    <Router>  
+//    <div className='App'> 
 
-   <Route path='/' exact component={Login} />
+//    <Route path='/' exact component={Login} />
 
-    <Nav/>
-    <SideNav/>
-    <Switch> 
-    <Route path='/hr/addStaff' component={AddStaff} />
-    <Route path='/hr/locations' component={Locations} />
-    <Route path='/hr/staffs' component={Staffs} />
-    <Route path='/hr/faculties' component={Faculties} />
-    <Route path='/logout' component={Logout} />
-    <Route path='/home' component={HRprofile} />
-    <Route path='/addLocation' component={addLocation} />
-    <Route path='/hr/addDepartment' component={addDepartment} />
-    <Route path='/addFaculty' component={addFaculty} />
-    <Route path='/addCourse' component={addCourse} />
-    <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
-    <Route path='/hr/viewMissingDays' component={StaffsMissingDays} />
-    <Route path='/hr/manageAttendance' component={ManageAttendance}/>
-    <Route path='/hr/viewAttendance' component={ViewAttendance}/>
-    <Route path='/hr/AddSignIn' component={AddSignIn}/>
-    <Route path='/hr/AddSignOut' component={AddSignOut}/>
-    <Route path= '/hr/updateFaculty' component={UpdateFaculty}/>
-    <Route path= '/hr/updateDepartment' component={UpdateDepartment}/>
-    <Route path= '/hr/updateCourse' component={UpdateCourse}/>
-    <Route path= '/hr/updateStaff' component={UpdateStaff}/>
-    <Route path= '/hr/updateLocation' component={UpdateLocation}/>
-    <Route path= '/hr/updateSalary' component={UpdateSalary}/>
+//     <Nav/>
+//     <SideNav/>
+//     <Switch> 
+//     <Route path='/hr/addStaff' component={AddStaff} />
+//     <Route path='/hr/locations' component={Locations} />
+//     <Route path='/hr/staffs' component={Staffs} />
+//     <Route path='/hr/faculties' component={Faculties} />
+//     <Route path='/logout' component={Logout} />
+//     <Route path='/home' component={HRprofile} />
+//     <Route path='/addLocation' component={addLocation} />
+//     <Route path='/hr/addDepartment' component={addDepartment} />
+//     <Route path='/addFaculty' component={addFaculty} />
+//     <Route path='/addCourse' component={addCourse} />
+//     <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
+//     <Route path='/hr/viewMissingDays' component={StaffsMissingDays} />
+//     <Route path='/hr/manageAttendance' component={ManageAttendance}/>
+//     <Route path='/hr/viewAttendance' component={ViewAttendance}/>
+//     <Route path='/hr/AddSignIn' component={AddSignIn}/>
+//     <Route path='/hr/AddSignOut' component={AddSignOut}/>
+//     <Route path= '/hr/updateFaculty' component={UpdateFaculty}/>
+//     <Route path= '/hr/updateDepartment' component={UpdateDepartment}/>
+//     <Route path= '/hr/updateCourse' component={UpdateCourse}/>
+//     <Route path= '/hr/updateStaff' component={UpdateStaff}/>
+//     <Route path= '/hr/updateLocation' component={UpdateLocation}/>
+//     <Route path= '/hr/updateSalary' component={UpdateSalary}/>
 
 
     
 
 
 
-    </Switch>
-     </div> 
-     </Router>   
-   )
+//     </Switch>
+//      </div> 
+//      </Router>   
+//    )
 
- }
+//  }
 
 //end nahla
 
