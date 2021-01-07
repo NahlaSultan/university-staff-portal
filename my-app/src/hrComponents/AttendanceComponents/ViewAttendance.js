@@ -2,7 +2,7 @@ import AttendanceRecord from './AttendanceRecord';
 import React,{useRef, useState, useEffect} from 'react'
 import {Link}  from 'react-router-dom'
 import axios from 'axios'
-import '../styling/main.css';
+import '../../styling/main.css';
 
 export default  function ViewAttendance() {
     const idRef=useRef()

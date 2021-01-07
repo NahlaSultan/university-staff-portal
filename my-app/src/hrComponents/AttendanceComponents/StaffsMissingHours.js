@@ -1,16 +1,16 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
-import '../styling/main.css';
+import '../../styling/main.css';
 
 
 
-export default function StaffsMissingDays() {
+export default function StaffsMissingHours() {
   const [staffs, setStaffs] = useState([])
 
   useEffect(() => {
     // Update the document title using the browser API
     axios   
-    .get('http://localhost:8000/hr/viewMissingDays',{ headers: { 'token': localStorage.getItem('token') } })
+    .get('http://localhost:8000/hr/viewMissingHours',{ headers: { 'token': localStorage.getItem('token') } })
     .then(res => {
         setStaffs(res.data)
         console.log("here")
@@ -29,7 +29,7 @@ export default function StaffsMissingDays() {
                 {staffs.map((item, i) => {
                 return <li key={i}>
                 <h3> {item.staffMemberID} </h3>
-                <ul> missing days this month: {item.missingDays} </ul>
+                <ul> missing hours this month: {item.missingHours} </ul>
                 
                 <br/>
                 </li>

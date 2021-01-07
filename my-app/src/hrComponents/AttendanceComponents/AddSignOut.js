@@ -1,30 +1,14 @@
 import React,{useRef,useEffect,useState} from 'react'
 import axios from 'axios'
-import '../styling/main.css'
-import '../styling/dropDown.css'
+import '../../styling/main.css';
+import '../../styling/dropDown.css'
 
-export default function AddSignIn() {
+export default function AddSignOut() {
 
   const IdRef=useRef()
   const [date, setDate] = useState("")
   const[record,setRecord ] = useState([])
-  const[id, setId] = useState("")
 
-// useEffect(() => {
-// 	// Update the document title using the browser API
-// 	axios   
-// 	.get('http://localhost:8000/hr/viewOffices',{ headers: { 'token': localStorage.getItem('token') } })
-// 	.then(res => {
-// 		setOffices(res.data)
-// 	  });  
-	
-// 	  axios   
-// 	  .get('http://localhost:8000/hr/viewFaculties',{ headers: { 'token': localStorage.getItem('token') } })
-// 	  .then(res => {
-// 		  setFaculties(res.data)
-// 		});
-	
-// 	});
 
   function HandleDate(e){
       setDate(e.target.value)
@@ -35,15 +19,10 @@ export default function AddSignIn() {
 	document.getElementById('idInput').value = ''
 
 }
-//   "id": "ac-3",
-//   "month": 12,
-//   "day": 5,
-//   "year": 2020,
-//   "hour": 5,
-//   "minute": 10
 
 
-function HandleAddSignIn(){
+
+function HandleAddSignOut(){
 
     const year =  parseInt(date.substring(0, 4));
     const month =  parseInt(date.substring(5, 7));
@@ -62,7 +41,7 @@ function HandleAddSignIn(){
     console.log(body)
 
    axios   
-   .post('http://localhost:8000/hr/addSignIn', body, { headers: { 'token': localStorage.getItem('token') } })
+   .post('http://localhost:8000/hr/addSignOut', body, { headers: { 'token': localStorage.getItem('token') } })
    
    .then(res=>
     console.log(res.data));
@@ -87,7 +66,7 @@ console.log(record)
 
 
 					<span className="login100-form-title">
-						Add SignIn
+						Add SignOut
 					</span>
 
 
@@ -140,8 +119,8 @@ console.log(record)
 
 					 
 					<div className="container-login100-form-btn">
-                    <button onClick={HandleAddSignIn} className="login100-form-btn">
-							Add SignIn Record
+                    <button onClick={HandleAddSignOut} className="login100-form-btn">
+							Add SignOut Record
 						</button>
 					</div>
 
@@ -150,6 +129,7 @@ console.log(record)
                 {record.map((item, i) => {
                 return <li key={i}>
                 <ul> signIn: {item.signInTime} </ul>
+                <ul> signOut: {item.signOutTime} </ul> 
                 <br/>
                 </li>
                 })}

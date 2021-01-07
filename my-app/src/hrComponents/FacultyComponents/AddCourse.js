@@ -1,17 +1,22 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
-import '../styling/main.css'
+import '../../styling/main.css';
+import { useLocation } from "react-router-dom";
 
 
 export default function AddCourse() {
-  const FacNameRef=useRef()
-  const DepNameRef=useRef()
+  // const FacNameRef=useRef()
+  // const DepNameRef=useRef()
   const CourseNameRef=useRef()
   const SlotNoRef=useRef()
+  const locationReact = useLocation();
+
+  const facultyName = locationReact.state.facultyName
+  const departmentName = locationReact.state.departmentName
 
   function ClearTxtfields(){
-    document.getElementById('depnameInput').value = ''
-    document.getElementById('facnameInput').value = ''
+    // document.getElementById('depnameInput').value = ''
+    // document.getElementById('facnameInput').value = ''
     document.getElementById('coursenameInput').value = ''
     document.getElementById('slotNoInput').value = ''
 
@@ -20,11 +25,10 @@ export default function AddCourse() {
   function HandleAddCourse(){
 
     const body={
-        facultyName: FacNameRef.current.value,
-        departmentName: DepNameRef.current.value,
+        facultyName:facultyName,
+        departmentName: departmentName,
         courseName:  CourseNameRef.current.value,
-        teachingSlotsNumber:  SlotNoRef.current.value        
-        
+        teachingSlotsNumber:  SlotNoRef.current.value             
      }
 
    axios   
@@ -46,7 +50,7 @@ export default function AddCourse() {
 
 
 
-            <div>
+            {/* <div>
               <input required={true} ref={FacNameRef} className="input100" id="facnameInput" placeholder="Faculty Name" />
               <span className="focus-input100"></span>
               <span className="symbol-input100">
@@ -60,7 +64,7 @@ export default function AddCourse() {
             <span className="symbol-input100">
             </span>
             <br/>
-					</div>
+					</div> */}
 
           <div>
             <input required={true} ref={CourseNameRef} className="input100" id="coursenameInput" placeholder="Course Name" />

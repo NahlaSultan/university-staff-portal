@@ -261,6 +261,20 @@ router.route('/viewStaffs')
 
 })
 
+router.route('/viewHR')
+.get(async (req, res) => {
+    const staffs = await staff_members_models.find({staffType:"hr"})
+    res.send(staffs)
+
+})
+
+router.route('/viewAC')
+.get(async (req, res) => {
+    const staffs = await staff_members_models.find({staffType:"academic"})
+    res.send(staffs)
+
+})
+
 router.route('/updateLocation')
 .post(async (req, res) => {
     console.log("adding loc")
@@ -1187,17 +1201,17 @@ router.route('/updateStaff')
 .post(async (req, res) => {
     console.log("updating staff")
     const staff = await staff_members_models.findOne({ memberID: req.body.id })
-     
     if (staff) {
 
-        if(req.body.name!=null){
+        if(req.body.name){
             staff.name = req.body.name
         }
-        if(req.body.gender!=null){
-            staff.name = req.body.gender
+        if(req.body.gender && req.body.gender!=""){
+            staff.gender = req.body.gender
         }
-        if(req.body.email!=null){
-
+        if(req.body.email){
+            console.log("email")
+            console.log(req.body.email)
             const found = await staff_members_models.findOne({ email: req.body.email })
             if(found){
                 res.send("email taken, try with another email")
@@ -1205,39 +1219,47 @@ router.route('/updateStaff')
             staff.email = req.body.email
 
         }
-        if(req.body.password!=null){
+        if(req.body.password){
             const salt = await bcrypt.genSalt(10)
             const newPassword = await bcrypt.hash(req.body.password, salt)
             staff.password = newPassword
         }
         var message = ""
-        if(req.body.dayOff!=null){
+        if(req.body.dayOff){
             if(staff.staffType=="hr"){
                 message = "you can't change hr's day off, it must remain as Saturday"
             }
             staff.dayOff = req.body.dayOff
         }
-        if(req.body.annualLeavesBalance!=null){
+        if(req.body.annualLeavesBalance){
+            console.log("annualLeavesBalance")
+            console.log(req.body.annualLeavesBalance)
+
             staff.annualLeavesBalance = req.body.annualLeavesBalance
         }
         
 
-            if (req.body.faculty != null && req.body.faculty!="" && staffType=="academic") {
+            if (req.body.faculty != null && req.body.faculty!="" && staff.staffType=="academic") {
          
-                faculty = await faculty_model.findOne({ facultyName: req.body.faculty })
-                if(faculty)
-                    staff.faculty = req.body.faculty
+                const fac = await faculty_model.findOne({ facultyName: req.body.faculty })
+                console.log(fac)
+                if(fac){
+                    staff.faculty = fac.facultyName
+                    console.log(fac)
+                }
                 else{
                     res.send("this is not a valid faculty, check faculty table and pick an existing one")
                 }
             }
 
             if (req.body.department != null && req.body.department!="")  {
-          
+                const fac = await faculty_model.findOne({ facultyName: staff.faculty })
 
                 var found = false
-                for(var i=0; i<staff.faculty.departments.length; i++){
-                currDep = staff.faculty.departments[i]
+                var currDep;
+                console.log(fac.departments)
+                for(var i=0; i<fac.departments.length; i++){
+                currDep = fac.departments[i]
                 if(req.body.department == currDep.name){
                     found = true
                     break;
@@ -1249,19 +1271,21 @@ router.route('/updateStaff')
             }
             staff.department = req.body.department
         }        
-        if(req.body.office!=null){
-
+        if(req.body.office!=null && req.body.office!=""){
+            console.log(staff.officeLocation)
+            const oldoffice = await location_model.findOne({ name: staff.officeLocation })
+            console.log(oldoffice)
             const newoffice = await location_model.findOne({ name: req.body.office })
+
             if(!newoffice || newoffice.type!="office"){
                 res.send('this is not a valid office')
             }
             if(newoffice.capacity<=newoffice.officeMembers){
                 res.send('this office is already full')
             }
-            const oldofficeName = staff.officeLocation
-            const oldoffice = await location_model.findOne({ name: oldofficeName })
-            oldoffice.officeMembers = oldoffice.officeMembers -1
-
+            if(staff.officeLocation!="unassigned"){
+                oldoffice.officeMembers = oldoffice.officeMembers -1
+            }
             newoffice.officeMembers =  newoffice.officeMembers +1
 
             try {
@@ -1286,7 +1310,7 @@ router.route('/updateStaff')
             console.log(Err)
             res.send("error saving staff member")
         }
-        return res.send({
+        res.send({
             "staff": staff,
             "message": message})    
     }

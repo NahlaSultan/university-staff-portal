@@ -1,6 +1,6 @@
 import React,{useRef, useState} from 'react'
 import axios from 'axios'
-import '../styling/main.css';
+import '../../styling/main.css';
 import { useHistory } from "react-router-dom";
 
 
@@ -24,7 +24,15 @@ export default function Department({facultyName,dep }) {
         history.push({
             pathname: '/hr/updateDepartment',
             state: { facultyName: facultyName,
-            dep:dep }
+            departmentName:dep.name }
+           }) 
+    }
+
+    function HandleAddCourse(){
+        history.push({
+            pathname: '/hr/addCourse',
+            state: { facultyName: facultyName,
+                departmentName:dep.name}
            })
        
     
@@ -53,13 +61,35 @@ export default function Department({facultyName,dep }) {
   return (
 
     
-    <div className='leftDiv'>   
-  
-                <li> HOD: {dep.headOfDepartment} </li>
+   <tr>
+    <td>{dep.name}</td>
+    <td>{dep.headOfDepartment}</td>
+    <td><button className = 'btn' onClick={HandleViewCourses}>   View Courses  </button> 
+    <ul>
 
-                {/* <button className = 'btn' onClick={HandleAddDepartments}>   Add Departments  </button>  */}
-                <button className = 'btn' onClick={HandleViewCourses}>   View Courses  </button> 
-                <ul>
+        <li className='courseList' > 
+            {courses.map((c, i) => {
+            return <ul key={i} className='courseItem'>
+                <h4> {c} </h4>
+            </ul>
+            })}
+        </li>
+
+    </ul> 
+    
+    </td>
+    <td> 
+        <button className = 'btn' onClick={HandleAddCourse}>   Add Course   </button> 
+        <button className = 'btn' onClick={HandleDeleteDepartment}>   Delete   </button> 
+        <button className = 'btn' onClick={HandleUpdateDepartment}>   Update   </button> 
+    </td>
+    </tr>
+
+  )
+
+}
+
+                {/* <ul>
 
                             <li className='courseList' > 
                                 {courses.map((c, i) => {
@@ -70,19 +100,15 @@ export default function Department({facultyName,dep }) {
                             </li>
                             <br/>
 
-                </ul>
-                <button className = 'btn' onClick={HandleDeleteDepartment}>   Delete   </button> 
-                <button className = 'btn' onClick={HandleUpdateDepartment}>   Update   </button> 
-                <br/><br/>
+                </ul> */}
+  
 
-
-        </div>      
+            /* <button className = 'btn' onClick={HandleAddDepartments}>   Add Departments  </button>  */
+               
+         
 
 
     
 
-  )
-
-}
 
 
