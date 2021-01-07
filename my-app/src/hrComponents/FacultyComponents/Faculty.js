@@ -1,8 +1,7 @@
 import React,{useRef, useState} from 'react'
 import axios from 'axios'
-import '../styling/main.css';
+import '../../styling/main.css';
 import { useHistory } from "react-router-dom";
-import Department from './Department';
 
 
 export default function Faculty({fac }) {
@@ -37,14 +36,20 @@ export default function Faculty({fac }) {
    
 
      function HandleViewDepartments(){
-        if(toggle){
+        history.push({
+            pathname: '/hr/departmentsPage',
+            state: { fac: fac }
+           })
+
+
+        // if(toggle){
  
-               setDeps(fac.departments)
-           }
-           else{
-               setDeps([])
-           }  
-        setToggle(toggle => !toggle)
+        //        setDeps(fac.departments)
+        //    }
+        //    else{
+        //        setDeps([])
+        //    }  
+        // setToggle(toggle => !toggle)
     }
 
 
@@ -61,15 +66,7 @@ export default function Faculty({fac }) {
 
                 <button className = 'btn' onClick={HandleAddDepartments}>   Add Departments  </button> 
                 <button className = 'btn' onClick={HandleViewDepartments}>   View Departments  </button> 
-                <ul>
-                        {deps.map((dep, i) => {
-                        return <ul key={dep._id}>
-                            <h4> {dep.name} </h4>
-                            <li>  <Department facultyName={fac.facultyName} dep={dep} />  </li>
-                            <br/>
-                        </ul>
-                        })}
-                </ul>
+                
                 <br/><br/>
 
 
@@ -82,5 +79,6 @@ export default function Faculty({fac }) {
   )
 
 }
+
 
 

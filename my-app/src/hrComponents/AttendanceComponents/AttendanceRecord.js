@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styling/main.css';
+import '../../styling/main.css';
 
 
 

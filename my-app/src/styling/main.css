@@ -83,6 +83,10 @@ ul, li {
 	list-style-type: none;
 }
 
+.listInline {
+  display: inline-block;
+  margin: 0 5px;
+}
 
 /*---------------------------------------------*/
 input {
