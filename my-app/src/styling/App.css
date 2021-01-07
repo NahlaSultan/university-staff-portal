@@ -24,6 +24,9 @@ nav{
     justify-content: space-around;
     align-items: center;
     background: #060b26;
+    color: #ffffff;
+    /* margin-top: 50%; */
+    margin-bottom:100%;
     color: white;
     margin-top:32%
 }

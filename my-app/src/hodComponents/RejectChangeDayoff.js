@@ -1,31 +1,69 @@
-import React,{useRef} from 'react'
+import React,{useRef, useState} from 'react'
 import axios from 'axios'
+export default function RejectChangeDayoff() {
+  const StaffIDRef=useRef()
+  const CommentRef=useRef()
 
-export default function RejectChangeDayOff() {
-    const StaffIDRef=useRef()
-    const CommentRef=useRef()
+  const [resp, setRes] = useState()
 
   function HandleReject(){
-    const body={requestId:StaffIDRef.current.value, comment:CommentRef.current.value}
-    StaffIDRef.current.value=null
-    CommentRef.current.value=null
+    const body={staffId:StaffIDRef.current.value, comment:CommentRef.current.value}
+
 
    axios   
    .post('http://localhost:8000/hod/rejectChangeDayOffRequest', body, {headers:{'token': localStorage.getItem('token')}})
    
-   .then(res=>console.log(res.data));
+   .then(res=>{
+     setRes(res.data)
+    });
 }
 
-  return (
-    <div>
-     Staff ID:
-    <input ref={StaffIDRef} type="text"/>
+   return (
+
+    <>
+    <div >
+        <div className="assignCourse">
+
+
+            <span className="login100-form-title">
+                Reject Change Day off Request
+  </span>
+
+
+            <div>
+                <input required={true} ref={StaffIDRef} className="input100" name="staffID" placeholder="Staff ID" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                </span>
+                <br />
+            </div>
+
+            <div>
+                <input required={false} ref={CommentRef} className="input100" name="comment" placeholder="Comment" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                </span>
+                <br />
+            </div>
+
+        </div>        
+        <br></br>
+        <div className="buttons">
+            <button onClick={HandleReject} className="buttons">
+                Reject Request
+    </button>
     <br></br>
-    Comment:
-    <input ref={CommentRef} type="text"/>
     <br></br>
-    <button onClick={HandleReject}> Reject Leave request </button>
+        </div>
+        <ul className='viewStaff'> {resp} </ul>
+        <br></br><br></br>
     </div>
+
+</>
+
+      
+    
+
   )
 }
 
