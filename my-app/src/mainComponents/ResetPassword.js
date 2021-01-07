@@ -7,20 +7,16 @@ export default function ResetPassword() {
     const [message, setMessage] = useState("")
 
   function HandleResetPassword(){
-      console.log("heyy")
       if(passRef.current.value==conpassRef.current.value){
-        console.log("in if")
         setMessage("")
 
     const body={password:passRef.current.value}
-  //  console.log(body)
 
    axios   
    .post('http://localhost:8000/resetPassword', body,{headers:{'token':localStorage.getItem('token')}})
    
    .then(res=>console.log(res.data));}
    else{
-    console.log("in else")
 
     setMessage("passwords don't match!!")
 
