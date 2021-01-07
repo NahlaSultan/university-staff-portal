@@ -4,42 +4,34 @@ import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/App.css';
 
-export default function SendReplacement() {
+export default function SendSlotLinkingRequest() {
     const [slot, setSlot] = useState([])
     const [chosenSlot, setChosenSlot] = useState("")
     const [headerText, setHeaderText] = useState("")
-    const [staffs, setStaffs] = useState([])
-    const [receiver, setReceiver] = useState("")
     const [buttonHeader, setButtonHeader] = useState("")
-    const DateRef = useRef()
+
     useEffect(() => {
         axios
-            .get('http://localhost:8000/academicMembers/viewSlotsAssigned', { headers: { 'token': localStorage.getItem('token') } })
+            .get('http://localhost:8000/viewSlot', { headers: { 'token': localStorage.getItem('token') } })
             .then(res => {
                 setSlot(res.data)
             });
 
-        axios
-            .get('http://localhost:8000/academicMembers/viewCollegues', { headers: { 'token': localStorage.getItem('token') } })
-            .then(res => {
-                setStaffs(res.data)
-                console.log(res.data)
-            });
+
     });
 
     function HandleChoice(e) {
         setChosenSlot(e.target.value)
         setButtonHeader("You have chosen Slot: " + e.target.value)
     }
-    function HandleColleague(e) {
-        setReceiver(e.target.value)
-    }
+
     function HandleSubmitRequest() {
-        const body = { slot: chosenSlot, receiverId: receiver, dateReplace: DateRef.current.value }
+        const body = { slotId: chosenSlot }
         console.log(body)
         axios
-            .post('http://localhost:8000/academicMembers/sendReplacementRequest', body, { headers: { 'token': localStorage.getItem('token') } })
+            .post('http://localhost:8000/academicMembers/sendSlotLinkingRequest', body, { headers: { 'token': localStorage.getItem('token') } })
             .then(res => {
+                console.log(res.data)
                 setHeaderText(res.data)
 
             });
@@ -47,9 +39,9 @@ export default function SendReplacement() {
     return (
         <div>
             <h1>{headerText}</h1>
-            <h2>Time to send a replacement request to a collegue</h2>
+            <h2>Time to send a SlotLinking Request</h2>
             <br></br>
-            <h3>Kindly choose a slot to be replaced first</h3>
+            <h3>Kindly choose a slot you would like to teach</h3>
             <br></br>
             <h2>{buttonHeader}</h2>
             <div>
@@ -74,26 +66,12 @@ export default function SendReplacement() {
                                 <br></br>
 
                             </div>
-
                         </li>
                     })}
                 </ul>
             </div>
             <br></br>
-            <div className='whole'>
-                <label className='textDown'>Choose Replacement Colleague : </label>
-                <select className='dropbtn' name="types" id="type" onChange={HandleColleague}>
-                    <option value="">Choose Colleague</option>
-                    {staffs.map(item => (
-                        <option key={item.memberID} value={item}>{item}</option>
-                    ))}
-                </select>
-            </div>
             <br></br>
-            <br></br>
-            <div>
-                <input ref={DateRef} className="input100" type="date" name="email" placeholder="Date" />
-            </div>
             <br></br>
             <br></br>
             <div className="buttons">

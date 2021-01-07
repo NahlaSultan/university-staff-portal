@@ -263,48 +263,57 @@
 // }
 ////////////////////////////////////////////////////////////////////////////////
 //startSaraAmjad
-// import React, { useState, useRef } from 'react'
-// import Login from './mainComponents/Login'
-// import AddStaff from './hrComponents/AddStaff'
-// import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-// import HRprofile from './hrComponents/HRprofile';
-// import ManageSlots from './coordinatorComponents/ManageSlots';
-// import AddSlots from './coordinatorComponents/AddSlots';
-// import SideNav from './mainComponents/SideNav'
-// import Nav from './mainComponents/Nav';
-// import Schedule from './academicMembersComponents/ViewSchedule';
-// import SendReplacement from './academicMembersComponents/SendReplacement';
-// import ChangeDayOff from './academicMembersComponents/ChangeDayOff';
-// export default function App() {
+import React, { useState, useRef } from 'react'
+import Login from './mainComponents/Login'
+import AddStaff from './hrComponents/AddStaff'
+import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import HRprofile from './hrComponents/HRprofile';
+import ManageSlots from './coordinatorComponents/ManageSlots';
+import AddSlots from './coordinatorComponents/AddSlots';
+import SideNav from './mainComponents/SideNav'
+import Nav from './mainComponents/Nav';
+import Schedule from './academicMembersComponents/ViewSchedule';
+import SendReplacement from './academicMembersComponents/SendReplacement';
+import ChangeDayOff from './academicMembersComponents/ChangeDayOff';
+import ViewReplacementRequest from './academicMembersComponents/ViewReplacementRequest'
+import SendSlotLinkingRequest from './academicMembersComponents/SendSlotLinkingRequest';
+import SubmitLeaveRequest from './academicMembersComponents/SubmitLeaveRequest';
+import Requests from './academicMembersComponents/Requests';
 
-//   return (
-//     <Router>
-//       <div className='App'>
-//         <h1> app page</h1>
-//         <Route exact path='/' exact component={Login} />
-//         <Nav />
-//         <SideNav />
-//         <Switch>
+export default function App() {
 
-//           {/* {/* <Nav /> */}
+  return (
+    <Router>
+      <div className='App'>
+        <h1> app page</h1>
+        <Route exact path='/' exact component={Login} />
+        <Nav />
+        <SideNav />
+        <Switch>
 
-//           <Route exact path='/hr/addStaff' component={AddStaff} />
-//           <Route exact path='/HRProfile' component={HRprofile} />
-//           <Route exact path='/coordinator/addSlot' component={AddSlots} />
-//           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
-//           <Route exact path='/academic/schedule' component={Schedule} />
-//           <Route exact path='/academic/manageReplacement' component={SendReplacement} />
-//           <Route exact path='/academic/changeDayOff' component={ChangeDayOff} />
-//           <Route component={HRprofile} exact path="/homeHR" />
-//           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
+          {/* {/* <Nav /> */}
 
-//         </Switch>
-//       </div>
-//     </Router>
-//   )
+          <Route exact path='/hr/addStaff' component={AddStaff} />
+          <Route exact path='/HRProfile' component={HRprofile} />
+          <Route exact path='/coordinator/addSlot' component={AddSlots} />
+          <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
+          <Route exact path='/academic/schedule' component={Schedule} />
+          <Route exact path='/academic/manageReplacement' component={SendReplacement} />
+          <Route exact path='/academic/changeDayOff' component={ChangeDayOff} />
+          <Route exact path='/academic/Requests' component={Requests} />
+          <Route exact path='/academic/ViewReplacementRequest' component={ViewReplacementRequest} />
+          <Route exact path='/academic/SendSlotLinkingRequest' component={SendSlotLinkingRequest} />
+          <Route exact path='/academic/SubmitLeaveRequest' component={SubmitLeaveRequest} />
+          <Route component={HRprofile} exact path="/homeHR" />
+          <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
 
-// }
+        </Switch>
+      </div>
+    </Router>
+  )
+
+}
 
 
 //END SaraAmjad
@@ -340,64 +349,72 @@
 
 
 ///////////////////////////////// Start HASSAN  ////////////////////////////////////
-import React, { useState, useRef } from 'react'
- import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
- import Login from './mainComponents/Login'
-import ViewAllStaff from './hodComponents/ViewAllStaff'
-import Nav from './mainComponents/Nav';
-import HodSideNav from './hodComponents/HodSideNav'
-import HodProfile from './hodComponents/HodProfile'
-import ViewStaffinCourse from './hodComponents/ViewStaffinCourse'
-import ViewDayOffAllStaff from './hodComponents/ViewDayOffAllStaff'
-import ViewDayOffSingleStaff from './hodComponents/ViewDayOffSingleStaff'
-import ViewAllRequests from './hodComponents/ViewAllRequests'
-import ViewChangeDayOffRequests from './hodComponents/ViewChangeDayOffRequests'
-import ViewLeaveRequests from './hodComponents/ViewLeaveRequests'
-import ViewCourseCoverage from './hodComponents/ViewCourseCoverage'
-import ViewTeachingAssignments from './hodComponents/ViewTeachingAssignments'
-import AssignInstructor from './hodComponents/AssignInstructor'
-import DeleteInstructor from './hodComponents/DeleteInstructor'
-import UpdateInstructor from './hodComponents/UpdateInstructor'
-import AcceptChangeDayoff from './hodComponents/AcceptChangeDayoff'
-import RejectChangeDayoff from './hodComponents/RejectChangeDayoff'
-import AcceptLeaveRequest from './hodComponents/AcceptLeaveRequest'
-import RejectLeaveRequest from './hodComponents/RejectLeaveRequest'
+// import React, { useState, useRef } from 'react'
+//  import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+//  import Login from './mainComponents/Login'
+// import ViewAllStaff from './hodComponents/ViewAllStaff'
+// import Nav from './mainComponents/Nav';
+// import HodSideNav from './hodComponents/HodSideNav'
+// import HodProfile from './hodComponents/HodProfile'
+// import ViewStaffinCourse from './hodComponents/ViewStaffinCourse'
+// import ViewDayOffAllStaff from './hodComponents/ViewDayOffAllStaff'
+// import ViewDayOffSingleStaff from './hodComponents/ViewDayOffSingleStaff'
+// import ViewAllRequests from './hodComponents/ViewAllRequests'
+// import ViewChangeDayOffRequests from './hodComponents/ViewChangeDayOffRequests'
+// import ViewLeaveRequests from './hodComponents/ViewLeaveRequests'
+// import ViewCourseCoverage from './hodComponents/ViewCourseCoverage'
+// import ViewTeachingAssignments from './hodComponents/ViewTeachingAssignments'
+// import AssignInstructor from './hodComponents/AssignInstructor'
+// import DeleteInstructor from './hodComponents/DeleteInstructor'
+// import UpdateInstructor from './hodComponents/UpdateInstructor'
+// import AcceptChangeDayoff from './hodComponents/AcceptChangeDayoff'
+// import RejectChangeDayoff from './hodComponents/RejectChangeDayoff'
+// import AcceptLeaveRequest from './hodComponents/AcceptLeaveRequest'
+// import RejectLeaveRequest from './hodComponents/RejectLeaveRequest'
 
 
-export default function App() {
 
-  return (
-    <Router>
-      <div className='App'>
+// export default function App() {
 
-      <h1> app page</h1>
+//   return (
+//     <Router>
+//       <div className='App'>
+
+//       <h1> app page</h1>
       
-        <Route exact path='/' exact component={Login} />
+//         <Route exact path='/' exact component={Login} />
         
-        <HodSideNav />
+//         <HodSideNav />
         
-        <Route exact path='/home' component={HodProfile} />
-        <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
-        <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
-        <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />
-        <Route exact path='/hod/viewDayOffSingleStaff' component={ViewDayOffSingleStaff} />
-        <Route exact path='/hod/viewAllRequests' component={ViewAllRequests} />
-        <Route exact path='/hod/viewChangeDayOffRequests' component={ViewChangeDayOffRequests} />
-        <Route exact path='/hod/viewLeaveRequests' component={ViewLeaveRequests} />
-        <Route exact path='/hod/viewCourseCoverage' component={ViewCourseCoverage} />
-        <Route exact path='/hod/viewTeachingAssignments' component={ViewTeachingAssignments} />
-        <Route exact path='/hod/assignInstructor' component={AssignInstructor} />
-        <Route exact path='/hod/deleteInstructor' component={DeleteInstructor} />
-        <Route exact path='/hod/updateInstructor' component={UpdateInstructor} />
-        <Route exact path='/hod/acceptChangeDayOffRequest' component={AcceptChangeDayoff} />
-        <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} />
-        <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} />
-        <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} />
-        <Nav />
-      </div>
-    </Router>
-  )
-}
+//         <Route exact path='/home' component={HodProfile} />
+//         <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
+//         <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
+//         <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />
+//         <Route exact path='/hod/viewDayOffSingleStaff' component={ViewDayOffSingleStaff} />
+//         <Route exact path='/hod/viewAllRequests' component={ViewAllRequests} />
+//         <Route exact path='/hod/viewChangeDayOffRequests' component={ViewChangeDayOffRequests} />
+//         <Route exact path='/hod/viewLeaveRequests' component={ViewLeaveRequests} />
+//         <Route exact path='/hod/viewCourseCoverage' component={ViewCourseCoverage} />
+//         <Route exact path='/hod/viewTeachingAssignments' component={ViewTeachingAssignments} />
+//         <Route exact path='/hod/assignInstructor' component={AssignInstructor} />
+//         <Route exact path='/hod/deleteInstructor' component={DeleteInstructor} />
+//         <Route exact path='/hod/updateInstructor' component={UpdateInstructor} />
+//         <Route exact path='/hod/acceptChangeDayOffRequest' component={AcceptChangeDayoff} />
+//         <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} />
+//         <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} />
+//         <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} />
+    
+
+    
+
+//         </Switch>
+//       </div>
+//     </Router>
+//   )
+// }
+
+///////////////////////////////////////////////////////////////////
+
 
 /////////////////////////// End Hassan ////////////////////////////////////////
 
@@ -440,6 +457,7 @@ export default function App() {
 
 ///////////////////////////////////////////////////////////////////
 // // Start HASSAN
+
 // import React, { useState, useRef } from 'react'
 //  import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 //  import Login from './mainComponents/Login'
@@ -452,7 +470,7 @@ export default function App() {
 //  export default function App() {
 
 //   return (
-    
+
 //     <Router>
 //       <div className='App'>
 //       <h1> app page</h1>
@@ -460,14 +478,14 @@ export default function App() {
 //         <HodSideNav />
 //         <Route exact path='/home' component={HodProfile} />
 //         <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
-        
+
 //         <Nav />
 //       </div>
 //     </Router>
 //   )
 
 // }
-// //END HASSAN
+
 ////////////////////////////////////////////////////////////////
 //END SaraAmjad
 /////////////////////////////////////////////////////////////////////

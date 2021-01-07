@@ -224,6 +224,13 @@ router.route('/viewLocations')
         res.send(locations)
 
     })
+//views all locations avalilable
+router.route('/viewSlot')
+    .get(async (req, res) => {
+        const slots = await slot_model.find()
+        res.send(slots)
+
+    })
 //views the slot with this certain numberID
 router.route('/viewCertainSlot')
     .post(async (req, res) => {
