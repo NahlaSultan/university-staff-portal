@@ -934,7 +934,8 @@ router.route('/updateCourse')
                 //string form
                 course.teachingSlotsNumber = req.body.teachingSlotsNumber
             }
-            if (req.body.newDepartment != null) {
+
+            if (req.body.newDepartment != null && req.body.newDepartment!="") {
                 var newDepartmentFound = false
                 var newDepIndex = -1
                 for (var i = 0; i < faculty.departments.length; i++) {
@@ -948,7 +949,7 @@ router.route('/updateCourse')
                 if (!newDepartmentFound) {
                     res.send("this department isn't in " + req.body.facultyName)
                 }
-                faculty.departments[newDepIndex].courses.push(req.body.courseName)
+                faculty.departments[newDepIndex].courses.push(course.courseName)
                 faculty.departments[depIndex].courses.splice(courseIndex, 1)
                 faculty.markModified('departments.' + newDepIndex);
                 faculty.markModified('departments.' + depIndex);

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import { render } from 'react-dom'
 import HRprofile from '../hrComponents/HRprofile'
 import '../styling/main.css';
@@ -8,62 +8,15 @@ import '../styling/main.css';
 
 export default function Login() {
 
-  //   const EmailRef=useRef()
-  //   const PassRef=useRef()
-  //   const [Login, LoginMessage]=useState("")
-  //   function HandleEmail(){
-  //     const body={email:EmailRef.current.value, password:PassRef.current.value  }
-
-
-  //    axios   
-  //    .post('http://localhost:8000/login', body)
-
-  //    .then(res=>console.log(res.data));
-
-  // }
-  // if (LoginMessage=="Invalid email"){
-  //   return (
-  //     <div>
-  //      Email:
-  //     <input ref={EmailRef} type="text"/>
-  //     <br></br>
-  //     Password:
-  //     <input ref={PassRef} type="text"/>
-  //     <br></br>
-  //     <button onClick={HandleEmail}> login </button>
-  //     <br></br>
-  //       Invalid email
-  //     </div>
-  //   )}
-  //   else if (LoginMessage=="Invalid password"){
-  //     return (
-  //       <div>
-  //        Email:
-  //       <input ref={EmailRef} type="text"/>
-  //       <br></br>
-  //       Password:
-  //       <input ref={PassRef} type="text"/>
-  //       <br></br>
-  //       <button onClick={HandleEmail}> login </button>
-  //       <br></br>
-  //       Invalid Password
-  //       </div>
-  //     )}
-  //     else if (LoginMessage=="reset your password"){
-  //       return <Redirect to="/"/>
-  //     }
-
-  // }
-
+let history = useHistory()
   const [logIn, setlogIn] = useState("")
-  //const [token, setToken] = useState("")
+  const [role, setRole] = useState([])
 
   const EmailRef = useRef()
   const PassRef = useRef()
   var headerText = ""
   function HandleEmail() {
     const body = { email: EmailRef.current.value, password: PassRef.current.value }
-    //  console.log(body)
 
     axios
       .post('http://localhost:8000/login', body)
@@ -81,6 +34,25 @@ export default function Login() {
 
 
     // callAPI()
+  }
+
+  async function HandleRole(){
+    await axios
+      .post('http://localhost:8000/getRoleFromToken', { token: logIn})
+      .then(res => {
+      setRole(res.data)   
+      console.log(res.data)    
+      });
+
+      console.log(role)
+
+      if(role.includes('HR members')){
+        history.push('hr/home') 
+      }
+      else{
+        history.push('/staffProfile') 
+      }
+
   }
 
   if (logIn == "Invalid password" || logIn == "Invalid email" || logIn=="") {
@@ -150,14 +122,24 @@ export default function Login() {
 
     localStorage.setItem('token', logIn)
     console.log(localStorage.getItem('token'))
+    
+    HandleRole()
+
     return (
       //see which role from header and redirect to a certain homepage
+      // <Redirect to="/homeHR" />
+      // <Redirect to="/resetPassword" />
+      // <Redirect to="/home" />
+  //    <Redirect to="/staffProfile" />
+
       
        //<Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
      // <Redirect to="/home" />
-    <Redirect to="/instructorProfile" />
+  //  <Redirect to="/instructorProfile" />
 
+  <>
+  </>
 
     )
   }

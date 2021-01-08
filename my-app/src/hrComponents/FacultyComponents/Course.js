@@ -3,8 +3,9 @@ import axios from 'axios'
 import '../../styling/main.css';
 import { useHistory } from "react-router-dom";
 
-export default function Course({courseName}) {
+export default function Course({courseName,facultyName,departmentName}) {
   const [course, setCourse] = useState([])
+  let history = useHistory()
 
   useEffect(() => {
     // Update the document title using the browser API
@@ -15,8 +16,31 @@ export default function Course({courseName}) {
       });  },[]);
 
 
-  console.log(course.instructors)
-  console.log(course.courseName)
+    function HandleDeleteCourse(){
+
+        const body = {facultyName: facultyName, departmentName:departmentName , courseName:courseName}
+    
+       axios   
+       .post('http://localhost:8000/hr/deleteCourse',body, { headers: { 'token': localStorage.getItem('token') } })
+       .then(res=>console.log(res.data));
+    
+    }
+
+    function HandleUpdateCourse(){
+        history.push({
+            pathname: '/hr/updateCourse',
+            state: {facultyName: facultyName, departmentName:departmentName , courseName:courseName}
+           })
+    }  
+    
+//     }
+//     // function HandleAddCourses(){
+//     //     history.push({
+//     //         pathname: '/hr/addDepartment',
+//     //         state: { facultyName: fac.facultyName }
+//     //        })
+//     // }
+   
 
 
     return(
@@ -26,6 +50,10 @@ export default function Course({courseName}) {
 <td> {course.instructors} </td>
 <td> {course.teachingAssistants} </td>
 <td> {course.teachingSlotsNumber} </td>
+<td> <button className = 'btn' onClick={HandleDeleteCourse}>   Remove from department   </button> 
+ <button className = 'btn' onClick={HandleUpdateCourse}>   Update Course   </button>  </td>              
+
+                 
 
 </>
 

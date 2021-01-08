@@ -345,8 +345,8 @@ iframe {
   line-height: 1.5;
   color: #fff;
   text-transform: uppercase;
-  height: 25px;
-  border-radius: 30px;
+  /* height: 25px;*/
+  border-radius: 30px; 
   background: #b87046;
   display: -webkit-box;
   display: -webkit-flex;

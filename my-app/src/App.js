@@ -1,4 +1,5 @@
 
+
 //Start Sofia
 import React, { useState, useRef } from 'react'
 import Login from './mainComponents/Login'
@@ -79,8 +80,7 @@ export default function App() {
 
 
 
-
-// //NAHLA
+//NAHLA
 // import React, { useState, useRef } from 'react'
 // import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
 
@@ -134,7 +134,7 @@ export default function App() {
 //     <Route path='/hr/staffs' component={Staffs} />
 //     <Route path='/hr/faculties' component={Faculties} />
 //     <Route path='/logout' component={Logout} />
-//     <Route path='/home' component={HRprofile} />
+//     <Route path='/hr/home' component={HRprofile} />
 //     <Route path='/addLocation' component={addLocation} />
 //     <Route path='/hr/addDepartment' component={addDepartment} />
 //     <Route path='/addFaculty' component={addFaculty} />
@@ -166,7 +166,12 @@ export default function App() {
 
 //  }
 
-// //end nahla
+//end nahla
+
+
+
+
+
 
 
 
