@@ -20,9 +20,11 @@ export default function ViewMissingDays() {
         <div>   
             <h2>Missing Days:</h2>
             <ul>
+              
                 {days.map((item, i) => {
-                return <li key={i}>{item}</li>
+                return <li key={i}>{item} </li>
                 })}
+                <br/>
              </ul>
         </div>      
 

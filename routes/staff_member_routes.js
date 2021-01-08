@@ -63,8 +63,10 @@ router.route('/signIn')
       else res.send("you cannot sign in without signing out")
     }
 
-    if(month1!=month2)
+    if(month1!=month2){
     newMonth=true
+    calcSalary(staff)
+}
     missingDays(staff,day1,day2,month1,month2,year1,firstEntry)
    // staff.save()
     res.send("SIGNED IN")
@@ -72,6 +74,18 @@ router.route('/signIn')
        //res.send('/homepage')
 })
 
+ //salary
+ function calcSalary(staff){
+    const mDays= staff.missingDays[missingDays.length-1]
+    staff.monthSalary=staff.salary-(staff.salary/60)*mDays
+    const mHours=staff.missingHours[missingHours.length-1]
+    if(mHours>=3){
+   const hours=Math.floor(mHours)
+   staff.monthSalary=staff.monthSalary-(staff.salary/180)*hours
+   const mins=Math.floor((mHours-hours)*60)
+   staff.monthSalary=staff.monthSalary-(staff.salary/180*60)*mins
+    }
+ }
 //helper for missing days
 function checkMonth(month,day){
     switch(month) {
@@ -321,14 +335,14 @@ router.route('/signOut')
 
            flag=true
     }
-    if(hours<8.24){
-    missingHours(staff,hours,flag,day1)
-    console.log("missingHours")
+    if(hours > 8.24 &&( staff.missingHours[staff.missingHours.length-1]==0||newMonth2==false)){
+        extraHours(staff,hours,flag,day1)
+   
 }
     else{
-   // staff.missingHours.push(0)
-    extraHours(staff,hours,flag,day1)
-    console.log("extraHours")
+        missingHours(staff,hours,flag,day1)
+    
+    
 }  
         
         res.send("SIGNED OUT")
@@ -346,22 +360,22 @@ router.route('/signOut')
 function missingHours(staff,hours,flag,day1,day2){
     if(flag){
         console.log("da5alt")
-    staff.missingHours.push(8.24-hours)
+    staff.missingHours.push(8.4-hours)
     staff.extraHours.push(0)
     newMonth2=false
     
 }
     else{
      if(day1!=day2){
-     var x=staff.missingHours[staff.missingHours.length-1]+(8.24-hours)
+     var x=staff.missingHours[staff.missingHours.length-1]+(8.4-hours)
      if(x<0){
-     extraHours(staff,math.abs(x)+8.24,flag,day1,day2)
+     extraHours(staff,math.abs(x)+8.4,flag,day1,day2)
      x=0}}
      else{
 
      var x = staff.missingHours[staff.missingHours.length-1]-hours
      if(x<0){
-     extraHours(staff,math.abs(x)+8.24,flag,day1,day2)
+     extraHours(staff,math.abs(x)+8.4,flag,day1,day2)
      x=0}
     }
    // console.log("hhhh "+x)
@@ -374,14 +388,14 @@ function missingHours(staff,hours,flag,day1,day2){
 //extra hours
 function extraHours(staff,hours,flag,day1,day2){
     if(flag){
-    staff.extraHours.push(hours-8.24)
+    staff.extraHours.push(hours-8.4)
     staff.missingHours.push(0)
     newMonth2=false
     
 }
     else{
      if(day1!=day2)
-     var x=staff.extraHours[staff.missingHours.length-1]+(hours-8.24)
+     var x=staff.extraHours[staff.missingHours.length-1]+(hours-8.4)
      else{
      var x =hours- staff.extraHours[staff.extraHours.length-1]
     }
