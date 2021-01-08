@@ -1599,13 +1599,67 @@ function checkMonth(month, day) {
             else
                 return false
             break;
+        case 3:
+            if (day == 31)
+                return true
+            else
+                return false
+            break;
+        case 5:
+            if (day == 31)
+                return true
+            else
+                return false
+            break;
+        case 7:
+            if (day == 31)
+                return true
+            else
+                return false
+            break;
+        case 8:
+            if (day == 31)
+                return true
+            else
+                return false
+            break;
+        case 10:
+            if (day == 31)
+                return true
+            else
+                return false
+            break;
+        case 12:
+            if (day == 31)
+                return true
+            else
+                return false
+            break;
         case 2:
             if (day == 29)
                 return true
             else
                 return false
             break;
-        case 4, 6, 9, 11:
+        case 4:
+            if (day == 30)
+                return true
+            else
+                return false
+            break;
+        case 6:
+            if (day == 30)
+                return true
+            else
+                return false
+            break;
+        case 9:
+            if (day == 30)
+                return true
+            else
+                return false
+            break;
+        case 11:
             if (day == 30)
                 return true
             else
@@ -1615,6 +1669,7 @@ function checkMonth(month, day) {
             return false
     }
 }
+
 async function getDates(startDate, endDate) {
     var dates = [],
         currentDate = startDate,
