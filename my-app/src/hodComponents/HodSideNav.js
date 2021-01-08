@@ -29,10 +29,7 @@ export default function HodSideNav() {
             </li>
             {/* Start Nahla */}
             {SidebarHod.map((item, index) => {
-            {/* end nahla */}
-            {/* start sara */}
-            {/* {SidebarCoordinator.map((item, index) => { */}
-            {/* end sara */}
+            
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>

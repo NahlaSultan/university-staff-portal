@@ -1,10 +1,17 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
-import '../styling/main.css'
+import '../../styling/main.css';
+import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
-export default function AddFaculty() {
+
+
+
+export default function UpdateFaculty() {
   const NameRef=useRef()
+  const locationReact = useLocation();
+  let history = useHistory();
 
   function ClearTxtfields(){
     document.getElementById('nameInput').value = ''
@@ -14,11 +21,12 @@ export default function AddFaculty() {
 
 
     const body={
-        name: NameRef.current.value,
+        name: locationReact.state.fac.facultyName,
+        newName: NameRef.current.value
      }
 
    axios   
-   .post('http://localhost:8000/hr/addFaculty', body, { headers: { 'token': localStorage.getItem('token') } })
+   .post('http://localhost:8000/hr/updateFaculty', body, { headers: { 'token': localStorage.getItem('token') } })
    .then(res=>console.log(res.data));
    
    ClearTxtfields()
@@ -30,13 +38,13 @@ export default function AddFaculty() {
 
 
 					<span className="login100-form-title">
-						Add Faculty
+						Update {locationReact.state.fac.facultyName}
 					</span>
 
 
 
             <div>
-              <input required={true} ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
+              <input required={true} ref={NameRef} className="input100" id="nameInput" placeholder="new name" />
               <span className="focus-input100"></span>
               <span className="symbol-input100">
               </span>
@@ -48,7 +56,7 @@ export default function AddFaculty() {
 
 					<div className="container-login100-form-btn">
             <button onClick={HandleAddFac} className="login100-form-btn">
-            Add Faculty </button>
+            Update </button>
 					</div>
 
 	

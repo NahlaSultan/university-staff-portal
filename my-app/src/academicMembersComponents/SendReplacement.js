@@ -10,6 +10,7 @@ export default function SendReplacement() {
     const [headerText, setHeaderText] = useState("")
     const [staffs, setStaffs] = useState([])
     const [receiver, setReceiver] = useState("")
+    const [buttonHeader, setButtonHeader] = useState("")
     const DateRef = useRef()
     useEffect(() => {
         axios
@@ -28,6 +29,7 @@ export default function SendReplacement() {
 
     function HandleChoice(e) {
         setChosenSlot(e.target.value)
+        setButtonHeader("You have chosen Slot: " + e.target.value)
     }
     function HandleColleague(e) {
         setReceiver(e.target.value)
@@ -49,6 +51,7 @@ export default function SendReplacement() {
             <br></br>
             <h3>Kindly choose a slot to be replaced first</h3>
             <br></br>
+            <h2>{buttonHeader}</h2>
             <div>
                 <ul>
                     {slot.map((item, i) => {
@@ -71,23 +74,25 @@ export default function SendReplacement() {
                                 <br></br>
 
                             </div>
-                            <div className='whole'>
-                                <label className='textDown'>Choose Replacement Colleague : </label>
-                                <select className='dropbtn' name="types" id="type" onChange={HandleColleague}>
-                                    <option value="">Choose Colleague</option>
-                                    {staffs.map(item => (
-                                        <option key={item.memberID} value={item}>{item}</option>
-                                    ))}
-                                </select>
-                            </div>
+
                         </li>
                     })}
                 </ul>
             </div>
             <br></br>
+            <div className='whole'>
+                <label className='textDown'>Choose Replacement Colleague : </label>
+                <select className='dropbtn' name="types" id="type" onChange={HandleColleague}>
+                    <option value="">Choose Colleague</option>
+                    {staffs.map(item => (
+                        <option key={item.memberID} value={item}>{item}</option>
+                    ))}
+                </select>
+            </div>
+            <br></br>
             <br></br>
             <div>
-                <input ref={DateRef} className="input100" type="date" name="email" placeholder="Email" />
+                <input ref={DateRef} className="input100" type="date" name="email" placeholder="Date" />
             </div>
             <br></br>
             <br></br>

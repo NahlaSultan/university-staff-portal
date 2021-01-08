@@ -1,7 +1,7 @@
 import React,{useRef,useEffect,useState} from 'react'
 import axios from 'axios'
-import '../styling/main.css'
-import '../styling/dropDown.css'
+import '../../styling/main.css';
+import '../../styling/dropDown.css'
 
 export default function AddStaff() {
   const EmailRef=useRef()
@@ -151,15 +151,14 @@ function HandleAddStaff(){
 					<label >Role: </label>
                     <select className='dropbtn' name="types"  onChange={ChooseRole}>
                         <option value="">Choose Role</option>
-						<option value="HR members">HR Member</option>
                         <option value="headOfdepartments">Head Of Department</option>
                         <option value="courseInstructors">Course Instructor</option>
 						<option value="courseCoordinators">Course Coordinator</option>
 						<option value="teachingAssistants">Teaching Assistant</option>
 
                     </select>
-                        <br/><br/>
-					</div>
+					<br/><br/><br/>	
+				</div>
 
 				
 
@@ -178,34 +177,36 @@ function HandleAddStaff(){
 						<option value="Wednesday">Wednesday</option>
 						<option value="Thursday">Thursday</option>
 
-
                     </select>
-                        <br/><br/>
+                        <br/><br/><br/>
 					</div>
 					 
-					<div id="facultyDiv">
-					<label >Choose an Faculty: </label>
+					<div>
+						
+					<li className='listInline'>
+					<select className='dropbtn' name="types"  onChange={ChooseDepartment}>
+                        <option value="">Choose Department</option>
+                        {facDepartments.map(item => (
+                            <option key={item.name} value={item.name}>{item.name}</option>
+                        ))}
+                    </select>
+
                     <select className='dropbtn' name="types"  onChange={ChooseFaculties}>
                         <option value="">Choose Faculty</option>
                         {faculties.map(item => (
                             <option key={item.facultyName} value={item.facultyName}>{item.facultyName}</option>
                         ))}
                     </select>
+				
+                   
+				
+					</li>
                         <br/><br/>
 					</div>
 
 
 
-					<div id="departmentDiv">
-					<label >Choose a Department: </label>
-                    <select className='dropbtn' name="types"  onChange={ChooseDepartment}>
-                        <option value="">Choose Department</option>
-                        {facDepartments.map(item => (
-                            <option key={item.name} value={item.name}>{item.name}</option>
-                        ))}
-                    </select>
-                        <br/><br/>
-					</div>
+					
 
               
 
@@ -224,6 +225,8 @@ function HandleAddStaff(){
                     <button onClick={HandleAddStaff} className="login100-form-btn">
 							Add Member
 						</button>
+						<br/><br/><br/>
+
 					</div>
 
 

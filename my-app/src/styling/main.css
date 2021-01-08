@@ -83,6 +83,10 @@ ul, li {
 	list-style-type: none;
 }
 
+.listInline {
+  display: inline-block;
+  margin: 0 5px;
+}
 
 /*---------------------------------------------*/
 input {
@@ -166,6 +170,8 @@ iframe {
 
 .limiter {
   width: 100%;
+  height: 100%;
+  position:fixed;
   margin: 0 auto;
 }
 
@@ -526,10 +532,10 @@ iframe {
 
   
 .viewStaff{
-  display: flexbox;
+  display: grid;
   /* justify-content: center; */
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
 }  
 
 .hodhome{

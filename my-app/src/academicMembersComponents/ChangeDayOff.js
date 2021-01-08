@@ -37,16 +37,17 @@ export default function ChangeDayOff() {
             <br></br>
             <br></br>
             <br></br>
-            <label className='textDown'> New Day Off: </label>
-
-            <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
-                <option value="">Choose day</option>
-                <option value="Sunday">Sunday</option>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-            </select>
+            <div className='whole'>
+                <label className='textDown'> New Day Off: </label>
+                <select className='dropbtn' name="types" id="type" onChange={HandleDay}>
+                    <option value="">Choose day</option>
+                    <option value="Sunday">Sunday</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                </select>
+            </div>
             <br></br>
             <br></br> <br></br>
             <h1>Reason: <input ref={ReasonRef} className="input100" type="text" name="pass" placeholder="Reason" /></h1>

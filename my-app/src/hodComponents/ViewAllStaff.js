@@ -14,18 +14,10 @@ export default function ViewAllStaff() {
 
       });  });
 
-   var s=[]
-  //  staff.forEach(st=>{
-  //    s+=st+"\n"
-  //  }) 
-   for(let i=0;i<staff.length;i++){
-    s.push(staff[i])
-    }  
-
   return (
 
         <div>
-          <h2>Staff:</h2>
+          <h2><br></br> Staff: <br></br></h2>
           <ul className='viewStaff' >
              {staff.map((s,i) =>{
                return <li key={i}>{s} <br></br> <br></br></li>               
