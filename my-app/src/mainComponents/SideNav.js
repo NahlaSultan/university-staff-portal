@@ -6,6 +6,7 @@ import { SidebarData } from './SidebarData';
 import '../styling/SideNav.css';
 import { IconContext } from 'react-icons';
 import { SidebarCoordinator } from '../coordinatorComponents/SidebarCoordinator';
+import { SidebarInstructor } from '../ciComponents/SidebarInstructor';
 import { SidebarAcademicMember } from '../academicMembersComponents/SidebarAcademicMember';
 export default function SideNav() {
   const [sidebar, setSidebar] = useState(false);
@@ -27,10 +28,13 @@ export default function SideNav() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
+             {/* Start SOFIA */}
+            {SidebarInstructor.map((item, index) => {
+            {/* end SOFIA */}
 
             {/* start nahla */}
 
-            {SidebarData.map((item, index) => {
+            {/* {SidebarData.map((item, index) => { */}
 
           
 
