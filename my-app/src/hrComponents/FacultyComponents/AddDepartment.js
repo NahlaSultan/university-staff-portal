@@ -11,13 +11,16 @@ export default function AddDepartment() {
 
 
   useEffect(() => {
-    // Update the document title using the browser API
-    
+    const fetchData = async () => {
+      await
       axios   
       .get('http://localhost:8000/hr/viewAC',{ headers: { 'token': localStorage.getItem('token') } })
       .then(res => {
         setAcs(res.data)
         }); 
+    };
+    fetchData();
+
     
     
     },[]);

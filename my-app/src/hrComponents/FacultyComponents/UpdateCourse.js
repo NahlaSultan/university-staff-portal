@@ -19,12 +19,18 @@ export default function UpdateCourse() {
 
 
     useEffect(() => {
-        axios
+        const fetchData = async () => {
+            await
+            axios
             .post('http://localhost:8000/hr/viewDepartments', { fac: facultyName }, { headers: { 'token': localStorage.getItem('token') } })
             .then(res => {
                 setDepartments(res.data)
                 console.log(res.data)
-            });
+            });  
+          };
+          fetchData();
+        
+        
 
 
     }, []);

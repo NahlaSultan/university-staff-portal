@@ -5,43 +5,59 @@ import '../../styling/dropDown.css'
 
 export default function AddSignOut() {
 
-    const IdRef = useRef()
+    const [staffs, setStaffs] = useState([])
     const [date, setDate] = useState("")
     const [record, setRecord] = useState([])
 
+    const [id, setID] = useState("")
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          await
+          axios
+          .get('http://localhost:8000/hr/viewStaffs', { headers: { 'token': localStorage.getItem('token') } })
+          .then(res => {
+            setStaffs(res.data)
+            console.log("here")
+            console.log(res.data)
+          });
+        };
+        fetchData();    
+      }, []);
+
+    function ChooseID(e){
+        setID(e.target.value)
+
+    }
 
     function HandleDate(e) {
         setDate(e.target.value)
 
     }
 
-    function ClearTxtfields() {
-        document.getElementById('idInput').value = ''
-
-    }
 
 
 
-    function HandleAddSignOut() {
+
+    async function HandleAddSignOut() {
 
         const year = parseInt(date.substring(0, 4));
         const month = parseInt(date.substring(5, 7));
         const day = parseInt(date.substring(8, 10));
         const hour = parseInt(date.substring(11, 13));
         const minute = parseInt(date.substring(14, 16));
-        const memberID = IdRef.current.value
 
-        console.log("memberID")
-        console.log(memberID)
+
         const body = {
-            id: memberID,
+            id: id,
             year: year, month: month, day: day, hour: hour,
             minute: minute
         }
         console.log("body")
         console.log(body)
 
-        axios
+        await axios
             .post('http://localhost:8000/hr/addSignOut', body, { headers: { 'token': localStorage.getItem('token') } })
 
             .then(res =>
@@ -49,13 +65,12 @@ export default function AddSignOut() {
 
         console.log(document.getElementById('dateInput').value)
 
-        axios
-            .post('http://localhost:8000/hr/viewAttendanceRec', { id: memberID }, { headers: { 'token': localStorage.getItem('token') } })
+        await axios
+            .post('http://localhost:8000/hr/viewAttendanceRec', { id: id }, { headers: { 'token': localStorage.getItem('token') } })
             .then(res =>
                 setRecord(res.data));
         console.log(record)
 
-        ClearTxtfields()
 
     }
 
@@ -71,13 +86,13 @@ export default function AddSignOut() {
 					</span>
 
 
-            <div>
-                <input required={true} ref={IdRef} className="input100" id="idInput" placeholder="Staff Member ID ac-xx hr-xx" />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                </span>
-                <br />
-            </div>
+                    <label >ID: </label>
+                <select className='dropbutton' name="types"  onChange={ChooseID}>
+                        <option value="">Member ID</option>
+                        {staffs.map(item => (
+                            <option key={item.memberID} value={item.memberID}>{item.memberID}</option>
+                        ))}
+             </select>
 
 
 

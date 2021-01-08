@@ -8,14 +8,14 @@ import '../../styling/main.css';
 export default function ManageAttendane() {
   const [staffs, setStaffs] = useState([])
 
-  useEffect(() => {
-    // Update the document title using the browser API
-    axios
-      .get('http://localhost:8000/hr/viewStaffs', { headers: { 'token': localStorage.getItem('token') } })
-      .then(res => {
-        setStaffs(res.data)
-      });
-  }, []);
+  // useEffect(() => {
+  //   // Update the document title using the browser API
+  //   axios
+  //     .get('http://localhost:8000/hr/viewStaffs', { headers: { 'token': localStorage.getItem('token') } })
+  //     .then(res => {
+  //       setStaffs(res.data)
+  //     });
+  // }, []);
 
 
 

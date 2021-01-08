@@ -116,6 +116,7 @@ import UpdateSalary from './hrComponents/StaffComponents/UpdateSalary';
 import AddHr from './hrComponents/StaffComponents/AddHr';
 import DepartmentPage from './hrComponents/FacultyComponents/DepartmentPage';
 import CoursePage from './hrComponents/FacultyComponents/CoursePage';
+import Profile from './hrComponents/Profile';
 
 
 export default function App() {
@@ -154,6 +155,7 @@ export default function App() {
     <Route path='/hr/addHR' component={AddHr}/>
     <Route path='/hr/departmentsPage' component={DepartmentPage}/>
     <Route path='/hr/coursePage' component={CoursePage}/>
+    <Route path='/home' component={HRprofile}/>
 
     
 
