@@ -78,6 +78,7 @@ router.route('/addStaff')
                 officeLocation: req.body.office,
                 gender: req.body.gender
             })
+            newUser.monthSalary = newUser.salary
             var faculty;
             var depIndex;
 
@@ -1526,14 +1527,27 @@ router.route('/addSignIn')
                 else res.send("you cannot sign in without signing out")
             }
             //const m=staff.attendance.findOne({signInTime.getMonth:2})
-            if (month1 != month2)
+            if (month1 != month2){
                 newMonth = true
+                calcSalary(staff)
+            }
             missingDays(staff, day1, day2, month1, month2, year1, firstEntry)
             // staff.save()
             res.send(staff.attendance)
         }
 
     })
+    function calcSalary(staff){
+        const mDays= staff.missingDays[missingDays.length-1]
+        staff.monthSalary=staff.salary-(staff.salary/60)*mDays
+        const mHours=staff.missingHours[missingHours.length-1]
+        if(mHours>=3){
+       const hours=Math.floor(mHours)
+       staff.monthSalary=staff.monthSalary-(staff.salary/180)*hours
+       const mins=Math.floor((mHours-hours)*60)
+       staff.monthSalary=staff.monthSalary-(staff.salary/180*60)*mins
+        }
+     }
 //helper for missing days
 function checkMonth(month, day) {
     switch (month) {
@@ -1678,14 +1692,15 @@ router.route('/addSignOut')
 
                         flag = true
                     }
-                    if (hours < 8.24) {
+                    if (hours > 8.24 && ( staff.missingHours[staff.missingHours.length-1]==0||newMonth2==false)) {
                         //console.log("heloo")
-                        missingHours(staff, hours, flag, day1)
+                        extraHours(staff, hours, flag, day1)
+                        
 
                     }
                     else {
 
-                        extraHours(staff, hours, flag, day1)
+                        missingHours(staff, hours, flag, day1)
 
                     }
 
@@ -1702,16 +1717,16 @@ router.route('/addSignOut')
 //missing hours
 function missingHours(staff, hours, flag, day1, day2) {
     if (flag) {
-        staff.missingHours.push(8.24 - hours)
+        staff.missingHours.push(8.4 - hours)
         staff.extraHours.push(0)
         newMonth2 = false
 
     }
     else {
         if (day1 != day2) {
-            var x = staff.missingHours[staff.missingHours.length - 1] + (8.24 - hours)
+            var x = staff.missingHours[staff.missingHours.length - 1] + (8.4 - hours)
             if (x < 0) {
-                extraHours(staff, math.abs(x) + 8.24, flag, day1, day2)
+                extraHours(staff, math.abs(x) + 8.4, flag, day1, day2)
                 x = 0
             }
         }
@@ -1719,7 +1734,7 @@ function missingHours(staff, hours, flag, day1, day2) {
 
             var x = staff.missingHours[staff.missingHours.length - 1] - hours
             if (x < 0) {
-                extraHours(staff, math.abs(x) + 8.24, flag, day1, day2)
+                extraHours(staff, math.abs(x) + 8.4, flag, day1, day2)
                 x = 0
             }
         }
@@ -1733,14 +1748,14 @@ function missingHours(staff, hours, flag, day1, day2) {
 //extra hours
 function extraHours(staff, hours, flag, day1, day2) {
     if (flag) {
-        staff.extraHours.push(hours - 8.24)
+        staff.extraHours.push(hours - 8.4)
         staff.missingHours.push(0)
         newMonth2 = false
 
     }
     else {
         if (day1 != day2)
-            var x = staff.extraHours[staff.missingHours.length - 1] + (hours - 8.24)
+            var x = staff.extraHours[staff.extraHours.length - 1] + (hours - 8.4)
         else {
             var x = hours - staff.extraHours[staff.extraHours.length - 1]
         }
