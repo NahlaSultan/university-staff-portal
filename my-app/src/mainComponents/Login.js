@@ -155,8 +155,8 @@ export default function Login() {
       
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
-      <Redirect to="/home" />
-  //    <Redirect to="/staffProfile" />
+     // <Redirect to="/home" />
+    <Redirect to="/staffProfile" />
 
 
     )
