@@ -15,8 +15,8 @@ function CoursePage() {
 
 <>
 <br/>
-<h1>{facultyName}    </h1>
-<h1>course page   </h1>
+<h2>{facultyName}    </h2>
+<h2>{dep.name} courses </h2>
 
 <table className="table">
     <tr className="th">
@@ -24,12 +24,13 @@ function CoursePage() {
     <th>Course Instructors</th>
     <th>TAs</th>
     <th>Number of Slots</th>
+    <th>Manage Course</th>
 
     </tr>
 
         {dep.courses.map((c, i) => {
             return <tr className="th" key={c._id}>  
-            <Course courseName={c} />  
+            <Course courseName={c} facultyName={facultyName} departmentName={dep.name} dep={dep}/>  
                 </tr>
                 })}
 

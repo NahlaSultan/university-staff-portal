@@ -1,9 +1,7 @@
 //Start Sofia
 // import React, { useState, useRef } from 'react'
 // import Login from './mainComponents/Login'
-// import AddStaff from './hrComponents/AddStaff'
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-// import HRprofile from './hrComponents/HRprofile';
 // import AssignSlot from './ciComponents/AssignSlot'
 // import AssignCourse from './ciComponents/AssignCourse'
 // import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
@@ -137,7 +135,7 @@ export default function App() {
     <Route path='/hr/staffs' component={Staffs} />
     <Route path='/hr/faculties' component={Faculties} />
     <Route path='/logout' component={Logout} />
-    <Route path='/home' component={HRprofile} />
+    <Route path='/hr/home' component={HRprofile} />
     <Route path='/addLocation' component={addLocation} />
     <Route path='/hr/addDepartment' component={addDepartment} />
     <Route path='/addFaculty' component={addFaculty} />

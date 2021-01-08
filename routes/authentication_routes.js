@@ -162,6 +162,14 @@ router.route('/login')
     })
 
 
+router.route('/getRoleFromToken')
+.post(async (req, res) => {
+    const token = req.body.token;
+    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log(verified.role)
+    res.send(verified.role)
+})
+
 //logout
 router.route('/logOut')
     .get(async (req, res) => {
