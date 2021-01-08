@@ -1,6 +1,6 @@
 
+// //Start Sofia
 
-//Start Sofia
 // import React, { useState, useRef } from 'react'
 // import Login from './mainComponents/Login'
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
@@ -22,6 +22,7 @@
 // import ViewExtraHours from './smComponent/ViewExtraHours'
 // import ResetPassword from './mainComponents/ResetPassword'
 // import SideNav from './mainComponents/SideNav'
+// import Nav from './mainComponents/Nav';
 // import CourseStaff from './ciComponents/CourseStaff';
 // import MonthAttendance from './smComponent/MonthAttendance';
 // import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
@@ -32,7 +33,13 @@
 //   return (
 //     <Router>
 //       <div className='App'>
-//         <h1> app page</h1>
+
+//         {/* <h1> app page</h1> */}
+//         <Route path='/' exact component={Login} />
+
+//         <Nav/>
+//         <SideNav/>
+
 //         <Switch>
 //         <Route exact path='/' exact component={Login} />
 //           <Route exact path='/ci/assignSlots' component={AssignSlot} />
@@ -63,7 +70,8 @@
 
 // }
 
-//End Sofia
+// //End Sofia
+
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
