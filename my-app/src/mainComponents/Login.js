@@ -136,12 +136,12 @@ let history = useHistory()
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
      // <Redirect to="/home" />
-
+   
     <Redirect to="/staffProfile" />
 
 
-  <>
-  </>
+  //   <>
+  // </>
 
     )
   }
