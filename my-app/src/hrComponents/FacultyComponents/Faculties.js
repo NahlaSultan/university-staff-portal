@@ -16,7 +16,7 @@ export default function Faculties() {
     .get('http://localhost:8000/hr/viewFaculties',{ headers: { 'token': localStorage.getItem('token') } })
     .then(res => {
         setFaculties(res.data)
-      });  });
+      });  },[]);
 
 
 
@@ -34,15 +34,27 @@ export default function Faculties() {
             <li > Add Course  </li>
             </Link> 
             <hr/>
-            <h2>GUC Faculties:</h2>
+        <br/>
+        <h1>Faculties</h1>
+        <table className="table">
+            <tr className="th">
+            <th>Faculty Name</th>
+            <th>Manage Faculty </th>
+            <th>Add Department</th>
+            <th>View Departments</th>
+            </tr>
 
-
-                {faculties.map((fac, i) => {
-                return <li key={fac._id}>
+     
+            {faculties.map((fac, i) => {
+                return <tr key={fac._id}>
                 <Faculty fac={fac}   />             
-                </li> })}
+                </tr> })}
+      
+   
+        </table>
+   
          
-        </div>      
+      </div>      
 
 
     

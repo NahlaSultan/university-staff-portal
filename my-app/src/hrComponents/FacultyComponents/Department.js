@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 
 export default function Department({facultyName,dep }) {
     const [courses, setCourses] = useState([])
-    const [toggle, setToggle] = useState(false)
+    const [toggle, setToggle] = useState(true)
     var facName = facultyName+""
     let history = useHistory();
 
@@ -24,7 +24,15 @@ export default function Department({facultyName,dep }) {
         history.push({
             pathname: '/hr/updateDepartment',
             state: { facultyName: facultyName,
-            departmentName:dep.name }
+            dep:dep }
+           }) 
+    }
+
+    function HandleManageCourses(){
+        history.push({
+            pathname: '/hr/coursePage',
+            state: { facultyName: facultyName,
+            dep:dep }
            }) 
     }
 
@@ -61,10 +69,10 @@ export default function Department({facultyName,dep }) {
   return (
 
     
-   <tr>
-    <td>{dep.name}</td>
-    <td>{dep.headOfDepartment}</td>
-    <td><button className = 'btn' onClick={HandleViewCourses}>   View Courses  </button> 
+   <>
+    <td >{dep.name}</td>
+    <td >{dep.headOfDepartment}</td>
+    <td> <button className = 'btn' onClick={HandleViewCourses}>   View Courses  </button> 
     <ul>
 
         <li className='courseList' > 
@@ -83,7 +91,11 @@ export default function Department({facultyName,dep }) {
         <button className = 'btn' onClick={HandleDeleteDepartment}>   Delete   </button> 
         <button className = 'btn' onClick={HandleUpdateDepartment}>   Update   </button> 
     </td>
-    </tr>
+    <td> 
+        <button className = 'btn' onClick={HandleManageCourses}>   Manage Courses   </button> 
+      
+    </td>
+    </>
 
   )
 

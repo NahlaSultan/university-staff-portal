@@ -1,6 +1,8 @@
 import React,{useRef, useState} from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
+import '../../styling/tables.css';
+
 import { useHistory } from "react-router-dom";
 
 
@@ -57,21 +59,26 @@ export default function Faculty({fac }) {
   return (
 
     
-    <div className='leftDiv'>   
+    <>   
   
-                <h2> {fac.facultyName} 
+            <td><h3> {fac.facultyName}   </h3></td>
+
+            <td> 
                 <button className = 'btn' onClick={HandleDeleteFaculty}>   Delete   </button> 
-                <button className = 'btn' onClick={HandleUpdateFaculty}>   Update   </button> 
-                <br/></h2>
+                <button className = 'btn' onClick={HandleUpdateFaculty}>   Update   </button>
+             </td>
 
-                <button className = 'btn' onClick={HandleAddDepartments}>   Add Departments  </button> 
-                <button className = 'btn' onClick={HandleViewDepartments}>   View Departments  </button> 
+             <td> 
+             <button className = 'btn' onClick={HandleAddDepartments}>   Add Departments  </button> 
+             </td>
+             <td> 
+             <button className = 'btn' onClick={HandleViewDepartments}>   View Departments  </button> 
+             </td>
                 
-                <br/><br/>
 
 
 
-        </div>      
+        </>      
 
 
     
