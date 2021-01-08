@@ -1,4 +1,5 @@
-//Start Sofia
+
+////Start Sofia
 // import React, { useState, useRef } from 'react'
 // import Login from './mainComponents/Login'
 // import AddStaff from './hrComponents/AddStaff'
@@ -23,8 +24,8 @@
 // import SideNav from './mainComponents/SideNav'
 // import CourseStaff from './ciComponents/CourseStaff';
 // import MonthAttendance from './smComponent/MonthAttendance';
-// import viewMonthAttendance from './smComponent/ViewMonthAttendance';
 // import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
+// import UpdateProfile from './smComponent/UpdateProfile';
 
 // export default function App() {
 
@@ -55,17 +56,16 @@
 //           <Route exact path='/ci/courseStaff' component={CourseStaff} />
 //           <Route exact path='/monthAttendance' component={MonthAttendance} />
 //           <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
+//           <Route exact path='/updateProfile' component={UpdateProfile} />
 //         </Switch>
 //       </div>
 //     </Router>
 //   )
 
 
-
 // }
 
 // //End Sofia
-
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -320,33 +320,7 @@ export default function App() {
 //END SaraAmjad
 
 
-//Start Sofia
-// import React, { useState, useRef } from 'react'
-// import Login from './mainComponents/Login'
-// import AddStaff from './hrComponents/AddStaff'
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-// import HRprofile from './hrComponents/HRprofile';
-// import AssignSlot from './ciComponents/AssignSlot'
-// import AssignCourse from './ciComponents/AssignCourse'
-// import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
-// import AssignCoordinator from './ciComponents/AssignCoordinator'
-// import ViewSlots from './ciComponents/ViewSlots'
-// import InstructorProfile from './ciComponents/InstructorProfile'
-// import ViewDepartmentStaff from './ciComponents/ViewDepartmentStaff'
-// import ViewCourseStaff from './ciComponents/ViewCourseStaff'
-// import CourseCoverage from './ciComponents/CourseCoverage'
-// import ViewProfile from './smComponent/ViewProfile'
-// import StaffProfile from './smComponent/StaffProfile'
-// import ViewAttendance from './smComponent/ViewAttendance'
-// import ViewMissingDays from './smComponent/ViewMissingDays'
-// import ViewMissingHours from './smComponent/ViewMissingHours'
-// import ViewExtraHours from './smComponent/ViewExtraHours'
-// import ResetPassword from './mainComponents/ResetPassword'
-// import SideNav from './mainComponents/SideNav'
-// import CourseStaff from './ciComponents/CourseStaff';
-// import MonthAttendance from './smComponent/MonthAttendance';
-// import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
-// import UpdateProfile from './smComponent/UpdateProfile';
+
 
 
 ///////////////////////////////// Start HASSAN  ////////////////////////////////////
@@ -417,77 +391,9 @@ export default function App() {
 ///////////////////////////////////////////////////////////////////
 
 
-//Start Sofia
-// import React, { useState, useRef } from 'react'
-// import Login from './mainComponents/Login'
-// import AddStaff from './hrComponents/AddStaff'
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-// import HRprofile from './hrComponents/HRprofile';
-// import AssignSlot from './ciComponents/AssignSlot'
-// import AssignCourse from './ciComponents/AssignCourse'
-// import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
-// import AssignCoordinator from './ciComponents/AssignCoordinator'
-// import ViewSlots from './ciComponents/ViewSlots'
-// import InstructorProfile from './ciComponents/InstructorProfile'
-// import ViewDepartmentStaff from './ciComponents/ViewDepartmentStaff'
-// import ViewCourseStaff from './ciComponents/ViewCourseStaff'
-// import CourseCoverage from './ciComponents/CourseCoverage'
-// import ViewProfile from './smComponent/ViewProfile'
-// import StaffProfile from './smComponent/StaffProfile'
-// import ViewAttendance from './smComponent/ViewAttendance'
-// import ViewMissingDays from './smComponent/ViewMissingDays'
-// import ViewMissingHours from './smComponent/ViewMissingHours'
-// import ViewExtraHours from './smComponent/ViewExtraHours'
-// import ResetPassword from './mainComponents/ResetPassword'
-// import SideNav from './mainComponents/SideNav'
-// import CourseStaff from './ciComponents/CourseStaff';
-// import MonthAttendance from './smComponent/MonthAttendance';
-// import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
-// import UpdateProfile from './smComponent/UpdateProfile';
-
-// export default function App() {
-
-//   return (
-//     <Router>
-//       <div className='App'>
-/////////////////////////// End Hassan ////////////////////////////////////////
 
 
 
-//         <Nav />
-//         <h1> app page</h1>
-//         <Switch>
-//         <Route exact path='/' exact component={Login} />
-//           <Route exact path='/hr/addStaff' component={AddStaff} />
-//           <Route exact path='/HRProfile' component={HRprofile} />
-//           <Route exact path='/ci/assignSlots' component={AssignSlot} />
-//           <Route exact path='/ci/updateAssignedCourse' component={AssignCourse} />
-//           <Route exact path='/ci/removeAssignedCourse' component={RemoveAssignedCourse} />
-//           <Route exact path='/ci/assignCourseCoordinator' component={AssignCoordinator} />
-//           <Route exact path='/ci/viewSlots' component={ViewSlots} />
-//           <Route exact path='/instructorProfile' component={InstructorProfile} />
-//           <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
-//           <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
-//           <Route exact path='/ci/viewCoverage' component={CourseCoverage} />
-//           <Route exact path='/viewProfile' component={ViewProfile} />
-//           <Route exact path='/staffProfile' component={StaffProfile} />
-//           <Route exact path='/viewAttendance' component={ViewAttendance} />
-//           <Route exact path='/viewMissingDays' component={ViewMissingDays} />
-//           <Route exact path='/viewMissingHours' component={ViewMissingHours} />
-//           <Route exact path='/viewExtraHours' component={ViewExtraHours} />
-//           <Route exact path='/resetPassword' component={ResetPassword} />
-//           <Route exact path='/ci/courseStaff' component={CourseStaff} />
-//           <Route exact path='/monthAttendance' component={MonthAttendance} />
-//           <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
-//           <Route exact path='/updateProfile' component={UpdateProfile} />
-//         </Switch>
-//       </div>
-//     </Router>
-//   )
-
-
-// }
-//End Sofia
 
 ///////////////////////////////////////////////////////////////////
 // // Start HASSAN
