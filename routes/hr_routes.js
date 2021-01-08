@@ -78,6 +78,7 @@ router.route('/addStaff')
                 officeLocation: req.body.office,
                 gender: req.body.gender
             })
+            newUser.monthSalary = newUser.salary
             var faculty;
             var depIndex;
 
