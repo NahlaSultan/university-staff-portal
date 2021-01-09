@@ -530,6 +530,7 @@ router.route('/acceptChangeDayOffRequest')
                     if(request.pending){
                     request.accepted=true
                     request.pending=false
+                    request.notified=true
 
                     await request.save()
 
@@ -579,6 +580,8 @@ router.route('/rejectChangeDayOffRequest')
                     if(request.pending){
                         request.accepted=false
                         request.pending=false
+                        request.notified=true
+                        
                         if(comment!=null){
                             request.comment=comment
                          }
@@ -628,6 +631,7 @@ router.route('/acceptLeaveRequest')
                     if(request.pending){
                         request.accepted=true
                         request.pending=false
+                        request.notified=true
                         await request.save()                     
                     
                         const type=request.type
@@ -704,6 +708,8 @@ router.route('/rejectLeaveRequest')
                 if(request.pending){
                     request.accepted=false
                     request.pending=false
+                    request.notified=true
+                    await request.save()
                     if(comment!=null){
                           request.comment=comment
                     }

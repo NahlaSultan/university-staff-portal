@@ -129,17 +129,19 @@ let history = useHistory()
       //see which role from header and redirect to a certain homepage
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
-      // <Redirect to="/home" />
+      //  <Redirect to="/homeHOD" />
   //    <Redirect to="/staffProfile" />
 
       
-       //<Redirect to="/homeHR" />
+       <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
      // <Redirect to="/home" />
-  //  <Redirect to="/instructorProfile" />
+   
+    // <Redirect to="/staffProfile" />
 
-  <>
-  </>
+
+  //   <>
+  // </>
 
     )
   }

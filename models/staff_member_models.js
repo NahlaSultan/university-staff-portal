@@ -41,7 +41,7 @@ const staffSchema = new mongoose.Schema(
             required: true
         },
         monthSalary: {
-            type: Number,
+            type: Number
           
         },
         staffType: {
