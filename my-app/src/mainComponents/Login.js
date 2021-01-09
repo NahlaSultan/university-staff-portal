@@ -103,8 +103,6 @@ export default function Login() {
                                 </img>
                             </div>
 
-
-
                             <span className="login100-form-title">
                                 GUC Staff Login
               </span>

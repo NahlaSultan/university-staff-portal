@@ -148,13 +148,14 @@ router.route('/login')
 
                 if (firstLogin) {
                     console.log("first login")
-                    res.send(token)
+                    return res.send(token)
                 }
 
-               // res.send(token)
+                // res.send(token)
                 // return res.redirect('/homePage')
             }
-            return res.send('Invalid password')
+            else
+                return res.send('Invalid password')
         }
 
 
@@ -242,4 +243,15 @@ router.route('/viewCertainSlot')
         res.send(arr)
     })
 
+router.route('/viewUnassignedSlots')
+    .get(async (req, res) => {
+        var arr = []
+        const slot = await slot_model.find()
+        for (let i = 0; i < slot.length; i++) {
+            if (slot[i].assignedFlag == false) {
+                arr.push(slot[i])
+            }
+        }
+        res.send(arr)
+    })
 module.exports = router

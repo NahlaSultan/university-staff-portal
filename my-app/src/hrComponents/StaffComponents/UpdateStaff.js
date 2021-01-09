@@ -1,13 +1,13 @@
 import React,{useRef,useEffect,useState} from 'react'
 import axios from 'axios'
-import '../styling/main.css'
-import '../styling/dropDown.css'
+import '../../styling/main.css';
+import '../../styling/dropDown.css'
 import { useLocation,useHistory } from "react-router-dom";
 
 
 export default function UpdateStaff() {
   const EmailRef=useRef()
-  const NameRef=useRef()
+  const NewNameRef=useRef()
   const AnnualLeavesRef=useRef()
   const PasswordRef=useRef() 
   const [offices, setOffices] = useState([])
@@ -36,7 +36,7 @@ useEffect(() => {
 		  setFaculties(res.data)
 		});
 	
-	});
+	},[]);
   
  function ChooseLocation(e) {
 	setLocation(e.target.value)
@@ -85,7 +85,7 @@ function HandleUpdateStaff(){
     
 
     const body={id:locationReact.state.memberID 
-        ,email:EmailRef.current.value, name:NameRef.current.value ,
+        ,email:EmailRef.current.value, name:NewNameRef.current.value ,
         password: PasswordRef.current.value ,dayOff:dayOff ,
         annualLeavesBalance: AnnualLeavesRef.current.value,  
         office:location ,
@@ -125,7 +125,7 @@ function HandleUpdateStaff(){
 
                     <h5>  name: {locationReact.state.name}  </h5>
                     <div>
-						<input required={true} ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
+						<input required={true} ref={NewNameRef} className="input100" id="nameInput" placeholder="Name" />
 						<span className="focus-input100"></span>
 						<span className="symbol-input100">
 						</span>

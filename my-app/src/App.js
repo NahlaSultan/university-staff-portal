@@ -90,32 +90,34 @@
 // import Home from './mainComponents/Home';
 // import Nav from './mainComponents/Nav';
 // import SideNav from './mainComponents/SideNav'
-// import Locations from './hrComponents/Locations';
-// import Faculties from './hrComponents/Faculties'
-// import AddStaff from './hrComponents/AddStaff'
+// import Locations from './hrComponents/LocationComponents/Locations';
+// import Faculties from './hrComponents/FacultyComponents/Faculties'
+// import AddStaff from './hrComponents/StaffComponents/AddStaff'
 // import Login from './mainComponents/Login'
 // import Logout from './mainComponents/Logout';
 // import HRprofile from './hrComponents/HRprofile'
-// import Staffs from './hrComponents/Staffs';
+// import Staffs from './hrComponents/StaffComponents/Staffs';
 
 // import './styling/App.css'
 // import './styling/main.css'
-// import addLocation from './hrComponents/AddLocation';
-// import addDepartment from './hrComponents/AddDepartment';
-// import addFaculty from './hrComponents/AddFaculty';
-// import addCourse from './hrComponents/AddCourse';
-// import StaffsMissingHours from './hrComponents/StaffsMissingHours';
-// import StaffsMissingDays from './hrComponents/StaffsMissingDays';
-// import ManageAttendance from './hrComponents/ManageAttendance';
-// import ViewAttendance from './hrComponents/ViewAttendance'
-// import AddSignIn from './hrComponents/AddSignIn';
-// import AddSignOut from './hrComponents/AddSignOut';
-// import UpdateFaculty from './hrComponents/UpdateFaculty';
-// import UpdateDepartment from './hrComponents/UpdateDepartment';
-// import UpdateCourse from './hrComponents/UpdateCourse';
-// import UpdateStaff from './hrComponents/UpdateStaff';
-// import UpdateLocation from './hrComponents/UpdateLocation';
-// import UpdateSalary from './hrComponents/UpdateSalary';
+// import addLocation from './hrComponents/LocationComponents/AddLocation';
+// import addDepartment from './hrComponents/FacultyComponents/AddDepartment';
+// import addFaculty from './hrComponents/FacultyComponents/AddFaculty';
+// import addCourse from './hrComponents/FacultyComponents/AddCourse';
+// import StaffsMissingHours from './hrComponents/AttendanceComponents/StaffsMissingHours';
+// import StaffsMissingDays from './hrComponents/AttendanceComponents/StaffsMissingDays';
+// import ManageAttendance from './hrComponents/AttendanceComponents/ManageAttendance';
+// import ViewAttendance from './hrComponents/AttendanceComponents/ViewAttendance'
+// import AddSignIn from './hrComponents/AttendanceComponents/AddSignIn';
+// import AddSignOut from './hrComponents/AttendanceComponents/AddSignOut';
+// import UpdateFaculty from './hrComponents/FacultyComponents/UpdateFaculty';
+// import UpdateDepartment from './hrComponents/FacultyComponents/UpdateDepartment';
+// import UpdateCourse from './hrComponents/FacultyComponents/UpdateCourse';
+// import UpdateStaff from './hrComponents/StaffComponents/UpdateStaff';
+// import UpdateLocation from './hrComponents/LocationComponents/UpdateLocation';
+// import UpdateSalary from './hrComponents/StaffComponents/UpdateSalary';
+// import AddHr from './hrComponents/StaffComponents/AddHr';
+// import DepartmentPage from './hrComponents/FacultyComponents/DepartmentPage';
 
 
 // export default function App() {
@@ -138,7 +140,7 @@
 //     <Route path='/addLocation' component={addLocation} />
 //     <Route path='/hr/addDepartment' component={addDepartment} />
 //     <Route path='/addFaculty' component={addFaculty} />
-//     <Route path='/addCourse' component={addCourse} />
+//     <Route path='/hr/addCourse' component={addCourse} />
 //     <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
 //     <Route path='/hr/viewMissingDays' component={StaffsMissingDays} />
 //     <Route path='/hr/manageAttendance' component={ManageAttendance}/>
@@ -151,6 +153,8 @@
 //     <Route path= '/hr/updateStaff' component={UpdateStaff}/>
 //     <Route path= '/hr/updateLocation' component={UpdateLocation}/>
 //     <Route path= '/hr/updateSalary' component={UpdateSalary}/>
+//     <Route path='/hr/addHR' component={AddHr}/>
+//     <Route path='/hr/departmentsPage' component={DepartmentPage}/>
 
 
 
@@ -265,12 +269,12 @@
 //startSaraAmjad
 import React, { useState, useRef } from 'react'
 import Login from './mainComponents/Login'
-import AddStaff from './hrComponents/AddStaff'
 import coordinatorProfile from './coordinatorComponents/coordinatorProfile'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import HRprofile from './hrComponents/HRprofile';
 import ManageSlots from './coordinatorComponents/ManageSlots';
 import AddSlots from './coordinatorComponents/AddSlots';
+import ManageLinkingRequest from './coordinatorComponents/ManageLinkingRequest';
 import SideNav from './mainComponents/SideNav'
 import Nav from './mainComponents/Nav';
 import Schedule from './academicMembersComponents/ViewSchedule';
@@ -280,7 +284,14 @@ import ViewReplacementRequest from './academicMembersComponents/ViewReplacementR
 import SendSlotLinkingRequest from './academicMembersComponents/SendSlotLinkingRequest';
 import SubmitLeaveRequest from './academicMembersComponents/SubmitLeaveRequest';
 import Requests from './academicMembersComponents/Requests';
-
+import ViewStatus from './academicMembersComponents/ViewStatus';
+import ViewAccepted from './academicMembersComponents/ViewAccepted';
+import ViewRejected from './academicMembersComponents/ViewRejected';
+import viewPending from './academicMembersComponents/ViewPending';
+import CangelDayOff from './academicMembersComponents/CangelDayOff';
+import CancelSlotLinking from './academicMembersComponents/CancelSlotLinking';
+import CancelLeaveRequest from './academicMembersComponents/CancelLeaveRequest';
+import Bell from './academicMembersComponents/Bell';
 export default function App() {
 
   return (
@@ -294,10 +305,10 @@ export default function App() {
 
           {/* {/* <Nav /> */}
 
-          <Route exact path='/hr/addStaff' component={AddStaff} />
           <Route exact path='/HRProfile' component={HRprofile} />
           <Route exact path='/coordinator/addSlot' component={AddSlots} />
           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
+          <Route exact path='/coordinator/ManageLinkingRequest' component={ManageLinkingRequest} />
           <Route exact path='/academic/schedule' component={Schedule} />
           <Route exact path='/academic/manageReplacement' component={SendReplacement} />
           <Route exact path='/academic/changeDayOff' component={ChangeDayOff} />
@@ -305,6 +316,14 @@ export default function App() {
           <Route exact path='/academic/ViewReplacementRequest' component={ViewReplacementRequest} />
           <Route exact path='/academic/SendSlotLinkingRequest' component={SendSlotLinkingRequest} />
           <Route exact path='/academic/SubmitLeaveRequest' component={SubmitLeaveRequest} />
+          <Route exact path='/academic/Requests/ViewStatus' component={ViewStatus} />
+          <Route exact path='/academic/Requests/ViewAccepted' component={ViewAccepted} />
+          <Route exact path='/academic/Requests/ViewRejected' component={ViewRejected} />
+          <Route exact path='/academic/Requests/ViewPending' component={viewPending} />
+          <Route exact path='/academic/Requests/CancelDayOff' component={CangelDayOff} />
+          <Route exact path='/academic/Requests/CancelSlotLinking' component={CancelSlotLinking} />
+          <Route exact path='/academic/Requests/CancelLeaveRequest' component={CancelLeaveRequest} />
+          <Route exact path='/academic/Bell' component={Bell} />
           <Route component={HRprofile} exact path="/homeHR" />
           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
 
@@ -415,6 +434,40 @@ export default function App() {
 
 ///////////////////////////////////////////////////////////////////
 
+
+//Start Sofia
+// import React, { useState, useRef } from 'react'
+// import Login from './mainComponents/Login'
+// import AddStaff from './hrComponents/AddStaff'
+// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+// import HRprofile from './hrComponents/HRprofile';
+// import AssignSlot from './ciComponents/AssignSlot'
+// import AssignCourse from './ciComponents/AssignCourse'
+// import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
+// import AssignCoordinator from './ciComponents/AssignCoordinator'
+// import ViewSlots from './ciComponents/ViewSlots'
+// import InstructorProfile from './ciComponents/InstructorProfile'
+// import ViewDepartmentStaff from './ciComponents/ViewDepartmentStaff'
+// import ViewCourseStaff from './ciComponents/ViewCourseStaff'
+// import CourseCoverage from './ciComponents/CourseCoverage'
+// import ViewProfile from './smComponent/ViewProfile'
+// import StaffProfile from './smComponent/StaffProfile'
+// import ViewAttendance from './smComponent/ViewAttendance'
+// import ViewMissingDays from './smComponent/ViewMissingDays'
+// import ViewMissingHours from './smComponent/ViewMissingHours'
+// import ViewExtraHours from './smComponent/ViewExtraHours'
+// import ResetPassword from './mainComponents/ResetPassword'
+// import SideNav from './mainComponents/SideNav'
+// import CourseStaff from './ciComponents/CourseStaff';
+// import MonthAttendance from './smComponent/MonthAttendance';
+// import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
+// import UpdateProfile from './smComponent/UpdateProfile';
+
+// export default function App() {
+
+//   return (
+//     <Router>
+//       <div className='App'>
 
 /////////////////////////// End Hassan ////////////////////////////////////////
 

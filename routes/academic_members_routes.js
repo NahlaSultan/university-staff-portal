@@ -8,6 +8,8 @@ const dayOffRequest_model = require('../models/dayOffRequest').model
 const department_model = require('../models/department_model').model
 const newLeave_model = require('../models/leaves_model').model
 const faculty_model = require('../models/faculty_model').model
+const replacement_model = require('../models/replacement_requests').model
+const notification_model = require('../models/notifications').model
 const express = require('express')
 const { compareSync } = require('bcrypt')
 const router = express.Router()
@@ -40,47 +42,148 @@ router.route('/viewSchedule')
             var Wednesday = []
             var Thursday = []
             var Saturday = []
+            for (let i = 0; i < 5; i++) {
+                Saturday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+                Sunday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+                Monday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+                Tuesday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+                Wednesday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+                Thursday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+            }
             var arr = []
             for (let i = 0; i < slotsArray.length; i++) {
                 const slotArr = await slot_model.findOne({ numberID: slotsArray[i] })
                 if (slotArr.day == "Saturday") {
-                    Saturday.push(slotArr)
+                    if (slotArr.time == "First Slot") {
+                        Saturday[0] = slotArr
+                    }
+                    if (slotArr.time == "Second Slot") {
+                        Saturday[1] = slotArr
+                    }
+                    if (slotArr.time == "Third Slot") {
+                        Saturday[2] = slotArr
+                    }
+                    if (slotArr.time == "Fourth Slot") {
+                        Saturday[3] = slotArr
+                    }
+                    if (slotArr.time == "Fifth Slot") {
+                        Saturday[4] = slotArr
+                    }
+                    // Saturday.push(slotArr)
                 }
                 if (slotArr.day == "Sunday") {
-                    Sunday.push(slotArr)
+                    if (slotArr.time == "First Slot") {
+                        Sunday[0] = slotArr
+                    }
+                    if (slotArr.time == "Second Slot") {
+                        Sunday[1] = slotArr
+                    }
+                    if (slotArr.time == "Third Slot") {
+                        Sunday[2] = slotArr
+                    }
+                    if (slotArr.time == "Fourth Slot") {
+                        Sunday[3] = slotArr
+                    }
+                    if (slotArr.time == "Fifth Slot") {
+                        Sunday[4] = slotArr
+                    }
+                    // Sunday.push(slotArr)
                 }
                 if (slotArr.day == "Monday") {
-                    Monday.push(slotArr)
+                    if (slotArr.time == "First Slot") {
+                        Monday[0] = slotArr
+                    }
+                    if (slotArr.time == "Second Slot") {
+                        Monday[1] = slotArr
+                    }
+                    if (slotArr.time == "Third Slot") {
+                        Monday[2] = slotArr
+                    }
+                    if (slotArr.time == "Fourth Slot") {
+                        Monday[3] = slotArr
+                    }
+                    if (slotArr.time == "Fifth Slot") {
+                        Monday[4] = slotArr
+                    }
+                    // Monday.push(slotArr)
                 }
                 if (slotArr.day == "Tuesday") {
-                    Tuesday.push(slotArr)
+
+                    if (slotArr.time == "First Slot") {
+                        Tuesday[0] = slotArr
+                    }
+                    if (slotArr.time == "Second Slot") {
+                        Tuesday[1] = slotArr
+                    }
+                    if (slotArr.time == "Third Slot") {
+                        Tuesday[2] = slotArr
+                    }
+                    if (slotArr.time == "Fourth Slot") {
+                        Tuesday[3] = slotArr
+                    }
+                    if (slotArr.time == "Fifth Slot") {
+                        Tuesday[4] = slotArr
+                    }
+                    // Tuesday.push(slotArr)
                 }
                 if (slotArr.day == "Wednesday") {
-                    Wednesday.push(slotArr)
+
+                    if (slotArr.time == "First Slot") {
+                        Wednesday[0] = slotArr
+                    }
+                    if (slotArr.time == "Second Slot") {
+                        Wednesday[1] = slotArr
+                    }
+                    if (slotArr.time == "Third Slot") {
+                        Wednesday[2] = slotArr
+                    }
+                    if (slotArr.time == "Fourth Slot") {
+                        Wednesday[3] = slotArr
+                    }
+                    if (slotArr.time == "Fifth Slot") {
+                        Wednesday[4] = slotArr
+                    }
+                    // Wednesday.push(slotArr)
                 }
                 if (slotArr.day == "Thursday") {
-                    Thursday.push(slotArr)
+
+                    if (slotArr.time == "First Slot") {
+                        Thursday[0] = slotArr
+                    }
+                    if (slotArr.time == "Second Slot") {
+                        Thursday[1] = slotArr
+                    }
+                    if (slotArr.time == "Third Slot") {
+                        Thursday[2] = slotArr
+                    }
+                    if (slotArr.time == "Fourth Slot") {
+                        Thursday[3] = slotArr
+                    }
+                    if (slotArr.time == "Fifth Slot") {
+                        Thursday[4] = slotArr
+                    }
+                    // Thursday.push(slotArr)
                 }
 
             }
-            while (Saturday.length < 5) {
-                Saturday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
-            }
-            while (Sunday.length < 5) {
-                Sunday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
-            }
-            while (Monday.length < 5) {
-                Monday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
-            }
-            while (Tuesday.length < 5) {
-                Tuesday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
-            }
-            while (Wednesday.length < 5) {
-                Wednesday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
-            }
-            while (Thursday.length < 5) {
-                Thursday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
-            }
+            // while (Saturday.length < 5) {
+            //     Saturday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+            // }
+            // while (Sunday.length < 5) {
+            //     Sunday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+            // }
+            // while (Monday.length < 5) {
+            //     Monday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+            // }
+            // while (Tuesday.length < 5) {
+            //     Tuesday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+            // }
+            // while (Wednesday.length < 5) {
+            //     Wednesday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+            // }
+            // while (Thursday.length < 5) {
+            //     Thursday.push({ type: "Free", location: "Home", time: "NoAlaram", courseTaught: "Relaxing" })
+            // }
             arr.push(
                 Saturday
             )
@@ -148,6 +251,65 @@ router.route('/viewSchedule')
         res.send(arr)
 
     })
+router.route('/viewStatusDayOff')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            if (dayOffRequest)
+                resArr.push(
+                    dayOffRequest
+                )
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewStatusSlotLinking')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const slotLinkingRequests = staff.staffLinkingRequests
+            var slotLinkingArr = []
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewLeave')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const leaveRequests = staff.leaves
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
 
 router.route('/viewStatusOfRequests')
     .get(async (req, res) => {
@@ -156,7 +318,7 @@ router.route('/viewStatusOfRequests')
         var resArr = []
         if (staff) {
             const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
-            console.log(dayOffRequest)
+
             const slotLinkingRequests = staff.staffLinkingRequests
             console.log(slotLinkingRequests)
             const replacement_requests = staff.requestReplacementSent
@@ -220,6 +382,123 @@ router.route('/viewStatusOfRequests')
         else {
             res.send("not staff")
         }
+    })
+
+router.route('/viewAcceptedReplacementRequestReceived')
+    .get(async (req, res) => {
+        var sentArray = [];
+        var temp;
+        var tempDate;
+        var requstTemp;
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            console.log("In staff")
+            var lastIndex = 0;
+            var startIndex = 0
+            for (let counter = 0; counter < staff.requestReplacmentReceived.length; counter++) {
+                temp = staff.requestReplacmentReceived[counter]
+                requstTemp = await newReplacement.findOne({ _id: temp._id })
+                if (requstTemp.accepted == true) {
+                    sentArray[lastIndex] = requstTemp
+                    lastIndex++
+                }
+            }
+            res.send(sentArray)
+
+        }
+        res.send("Invalid staff member")
+
+    })
+router.route('/viewAcceptedReplacementRequestSent')
+    .get(async (req, res) => {
+        var sentArray = [];
+        var temp;
+        var tempDate;
+        var requstTemp;
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            console.log("In staff")
+            var lastIndex = 0;
+            var startIndex = 0
+            for (let index = 0; index < staff.requestReplacementSent.length; index++) {
+                console.log("I entered here")
+                temp = staff.requestReplacementSent[index]
+                requstTemp = await newReplacement.findOne({ _id: temp })
+                if (requstTemp && requstTemp.accepted == true) {
+                    sentArray[lastIndex] = requstTemp
+                    lastIndex++
+                }
+
+            }
+
+            res.send(sentArray)
+
+        }
+        res.send("Invalid staff member")
+
+    })
+
+
+router.route('/viewAcceptedDayOff')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            if (dayOffRequest.accepted == true) {
+                resArr.push(
+                    dayOffRequest
+                )
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewAcceptedSlotLinking')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const slotLinkingRequests = staff.staffLinkingRequests
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest && curRequest.accepted == true) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewAcceptedLeave')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const leaveRequests = staff.leaves
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest && curRequest.accepted == true) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
     })
 router.route('/viewAcceptedRequests')
     .get(async (req, res) => {
@@ -307,6 +586,122 @@ router.route('/viewAcceptedRequests')
             res.send("not staff")
         }
     })
+router.route('/viewPendingReplacementRequestReceived')
+    .get(async (req, res) => {
+        var sentArray = [];
+        var temp;
+        var tempDate;
+        var requstTemp;
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            console.log("In staff")
+            var lastIndex = 0;
+            var startIndex = 0
+            for (let counter = 0; counter < staff.requestReplacmentReceived.length; counter++) {
+                temp = staff.requestReplacmentReceived[counter]
+                requstTemp = await newReplacement.findOne({ _id: temp._id })
+                if (requstTemp.pending == true) {
+                    sentArray[lastIndex] = requstTemp
+                    lastIndex++
+                }
+            }
+            res.send(sentArray)
+
+        }
+        res.send("Invalid staff member")
+
+    })
+router.route('/viewPendingdReplacementRequestSent')
+    .get(async (req, res) => {
+        var sentArray = [];
+        var temp;
+        var tempDate;
+        var requstTemp;
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            console.log("In staff")
+            var lastIndex = 0;
+            var startIndex = 0
+            for (let index = 0; index < staff.requestReplacementSent.length; index++) {
+                console.log("I entered here")
+                temp = staff.requestReplacementSent[index]
+                requstTemp = await newReplacement.findOne({ _id: temp })
+                if (requstTemp && requstTemp.pending == true) {
+                    sentArray[lastIndex] = requstTemp
+                    lastIndex++
+                }
+
+            }
+
+            res.send(sentArray)
+
+        }
+        res.send("Invalid staff member")
+
+    })
+
+
+router.route('/viewPendingDayOff')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            if (dayOffRequest.pending == true) {
+                resArr.push(
+                    dayOffRequest
+                )
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewPendingSlotLinking')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const slotLinkingRequests = staff.staffLinkingRequests
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest && curRequest.pending == true) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewPendingLeave')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const leaveRequests = staff.leaves
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest && curRequest.pending == true) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
 router.route('/viewPendingRequests')
     .get(async (req, res) => {
         const staffId = req.user._id;
@@ -392,6 +787,122 @@ router.route('/viewPendingRequests')
         else {
             res.send("not staff")
         }
+    })
+router.route('/viewRejectedReplacementRequestReceived')
+    .get(async (req, res) => {
+        var sentArray = [];
+        var temp;
+        var tempDate;
+        var requstTemp;
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            console.log("In staff")
+            var lastIndex = 0;
+            var startIndex = 0
+            for (let counter = 0; counter < staff.requestReplacmentReceived.length; counter++) {
+                temp = staff.requestReplacmentReceived[counter]
+                requstTemp = await newReplacement.findOne({ _id: temp._id })
+                if (requstTemp.accepted == false && requstTemp.pending == false) {
+                    sentArray[lastIndex] = requstTemp
+                    lastIndex++
+                }
+            }
+            res.send(sentArray)
+
+        }
+        res.send("Invalid staff member")
+
+    })
+router.route('/viewRejectedReplacementRequestSent')
+    .get(async (req, res) => {
+        var sentArray = [];
+        var temp;
+        var tempDate;
+        var requstTemp;
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        if (staff) {
+            console.log("In staff")
+            var lastIndex = 0;
+            var startIndex = 0
+            for (let index = 0; index < staff.requestReplacementSent.length; index++) {
+                console.log("I entered here")
+                temp = staff.requestReplacementSent[index]
+                requstTemp = await newReplacement.findOne({ _id: temp })
+                if (requstTemp.accepted == false && requstTemp.pending == false) {
+                    sentArray[lastIndex] = requstTemp
+                    lastIndex++
+                }
+
+            }
+
+            res.send(sentArray)
+
+        }
+        res.send("Invalid staff member")
+
+    })
+
+
+router.route('/viewRejectedDayOff')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
+            if (dayOffRequest.accepted == false && dayOffRequest.pending == false) {
+                resArr.push(
+                    dayOffRequest
+                )
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewRejectedSlotLinking')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const slotLinkingRequests = staff.staffLinkingRequests
+            for (var i = 0; i < slotLinkingRequests.length; i++) {
+                curRequest = await newSlotlinking.findOne({ _id: slotLinkingRequests[i] })
+                if (curRequest && curRequest.accepted == false && curRequest.pending == false) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
+    })
+router.route('/viewRejectedLeave')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        var resArr = []
+        if (staff) {
+            const leaveRequests = staff.leaves
+            for (var i = 0; i < leaveRequests.length; i++) {
+                curRequest = await newLeave_model.findOne({ _id: leaveRequests[i] })
+                if (curRequest && curRequest.accepted == false && curRequest.pending == false) {
+                    resArr.push(curRequest)
+                }
+            }
+            return res.send(resArr)
+        }
+        else {
+            res.send("not staff")
+        }
+
     })
 router.route('/viewRejectedRequests')
     .get(async (req, res) => {
@@ -542,7 +1053,7 @@ router.route('/sendReplacementRequest')
         // var year = slotDateinitial.getUTCFullYear();
         const slotDate = new Date(req.body.dateReplace)
         slotDate.setDate(slotDate.getDate() + 1)
-
+        slotDate.setHours(0, 0, 0, 0)
         // const slotDate = new Date(year + "/" + month + "/" + day)
         // slotDate.setHours(1)
         if (receiver == null || slotReplacement == null || slotDate == null) {
@@ -789,7 +1300,7 @@ router.route('/acceptReplacementRequest')
                         else {
                             requstTemp.pending = false
                             requstTemp.accepted = true
-                            requstTemp.notified = true
+                            requstTemp.notify = true
                             try {
                                 requstTemp.save()
                             }
@@ -854,7 +1365,7 @@ router.route('/rejectReplacementRequest')
                         else {
                             requstTemp.pending = false
                             requstTemp.accepted = false
-                            requstTemp.notified = true
+                            requstTemp.notify = true
                             try {
                                 requstTemp.save()
                             }
@@ -980,7 +1491,7 @@ router.route('/cancelDayoffRequest')
                         try {
                             await staff.save()
                             await hod.save()
-                            await request.save()
+                            await request.delete()
                         }
                         catch (Err) {
                             return res.send("Mongo error")
@@ -1149,6 +1660,13 @@ router.route('/cancelSlotLinkingRequest')
                 return res.send("Problem cancelling slot linking request")
             }
         }
+    })
+
+router.route('/viewCertainReplacement')
+    .post(async (req, res) => {
+        const id = req.body.replacementID
+        const request = await replacement_model.findOne({ _id: id })
+        res.send(request)
     })
 //enter the _id of the leave request you wish to delete
 router.route('/cancelLeaveRequest')
@@ -1321,7 +1839,7 @@ router.route('/submitLeave')
                             else {
                                 let now = Date()
                                 const replacementDate = new Date(req.body.start)
-                                replacementDate.setDate(replacementDate.getDate()+1)
+                                replacementDate.setDate(replacementDate.getDate() + 1)
                                 console.log(replacementDate)
                                 // replacementDate.setDate(replacementDate.getDate())
                                 console.log("New date" + replacementDate)
@@ -1329,7 +1847,8 @@ router.route('/submitLeave')
                                     return res.send("leaves should be submitted before the targeted day.")
                                 }
                                 else {
-                                    leave.start =replacementDate.setHours(0,0,0,0)
+                                    leave.start = replacementDate.setHours(0, 0, 0, 0)
+                                    leave.end = replacementDate.setHours(0, 0, 0, 0)
                                     if (req.body.replacementRequestID != null && req.body.replacementRequestID != "") {
                                         leave.replacementRequest = req.body.replacementRequestID
                                         console.log(req.body.replacementRequestID)
@@ -1347,7 +1866,7 @@ router.route('/submitLeave')
                                                 }
                                                 else {
                                                     if (replacementRequest.date - replacementDate != 0) {
-                                                     
+
                                                         console.log(replacementDate)
 
                                                         console.log(replacementRequest.date)
@@ -1417,7 +1936,8 @@ router.route('/submitLeave')
                                 submission: now.setHours(0, 0, 0, 0),
                                 pending: true,
                                 accepted: false,
-                                start: startDateUpdate
+                                start: startDateUpdate.setHours(0, 0, 0, 0),
+                                end: startDateUpdate.setHours(0, 0, 0, 0)
                             })
                             //check the difference between start and end is not greater than 6
                             // const difference = dateDiffInDays(req.body.start, req.body.end);
@@ -1470,34 +1990,42 @@ router.route('/submitLeave')
                                 submission: now.setHours(0, 0, 0, 0),
                                 pending: true,
                                 accepted: false,
-                                start: startDateUpdate,
-                                end: endDate
+                                start: startDateUpdate.setHours(0, 0, 0, 0),
+                                end: endDate.setHours(0, 0, 0, 0)
                             })
-                            // leave.leaveDates.push(now)
-                            const difference = dateDiffInDays(startDateUpdate, leave.submission);
-                            //  const test = Math.abs(difference);
-                            if (difference > 3) {
-                                console.log("I entered here")
-                                return res.send("Must be submitted by maximum three days after the sick day.")
+                            const endStart = dateDiffInDays(startDateUpdate, endDate);
+
+                            if (endStart < 0) {
+                                return res.send("You must have chosen uncorrectly.End date should be after the start date")
                             }
                             else {
-                                if (req.body.documentLinks == null) {
-                                    return res.send("Must submit the documents")
+                                // leave.leaveDates.push(now)
+                                const difference = dateDiffInDays(startDateUpdate, leave.submission);
+                                //  const test = Math.abs(difference);
+                                console.log(difference + "Difference is")
+                                if (difference < 3) {
+                                    console.log("I entered here")
+                                    return res.send("Must be submitted by maximum three days after the sick day.")
                                 }
                                 else {
-                                    leave.documentLinks = req.body.documentLinks
-
-                                    if (req.body.description != null)
-                                        leave.commentWhySent = req.body.description
-                                    hod.leaveRequestsHOD.push(leave._id)
-                                    staff.leaves.push(leave._id)
-                                    try {
-                                        await leave.save()
-                                        await staff.save()
-                                        await hod.save()
+                                    if (req.body.documentLinks == null) {
+                                        return res.send("Must submit the documents")
                                     }
-                                    catch (Err) {
-                                        return res.send("Mongo error")
+                                    else {
+                                        leave.documentLinks = req.body.documentLinks
+
+                                        if (req.body.description != null)
+                                            leave.commentWhySent = req.body.description
+                                        hod.leaveRequestsHOD.push(leave._id)
+                                        staff.leaves.push(leave._id)
+                                        try {
+                                            await leave.save()
+                                            await staff.save()
+                                            await hod.save()
+                                        }
+                                        catch (Err) {
+                                            return res.send("Mongo error")
+                                        }
                                     }
                                 }
                             }
@@ -1529,22 +2057,28 @@ router.route('/submitLeave')
                                         submission: now.setHours(0, 0, 0, 0),
                                         pending: true,
                                         accepted: false,
-                                        start: startDateUpdate,
-                                        end: endDate,
+                                        start: startDateUpdate.setHours(0, 0, 0, 0),
+                                        end: endDate.setHours(0, 0, 0, 0),
                                         documentLinks: req.body.documentLinks
                                     })
+                                    const endStart = dateDiffInDays(startDateUpdate, endDate);
 
-                                    if (req.body.description != null)
-                                        leave.commentWhySent = req.body.description
-                                    hod.leaveRequestsHOD.push(leave._id)
-                                    staff.leaves.push(leave._id)
-                                    try {
-                                        await leave.save()
-                                        await staff.save()
-                                        await hod.save()
+                                    if (endStart < 0) {
+                                        return res.send("You must have chosen uncorrectly.End date should be after the start date")
                                     }
-                                    catch (Err) {
-                                        return res.send("Mongo error")
+                                    else {
+                                        if (req.body.description != null)
+                                            leave.commentWhySent = req.body.description
+                                        hod.leaveRequestsHOD.push(leave._id)
+                                        staff.leaves.push(leave._id)
+                                        try {
+                                            await leave.save()
+                                            await staff.save()
+                                            await hod.save()
+                                        }
+                                        catch (Err) {
+                                            return res.send("Mongo error")
+                                        }
                                     }
                                 }
                             }
@@ -1570,7 +2104,11 @@ router.route('/submitLeave')
                                     const compensationDay = new Date(req.body.compensation)
                                     console.log("initial compensationdayis" + compensationDay)
                                     compensationDay.setDate(compensationDay.getDate() + 1)
-                                    if (compensationDay.getMonth() != startDateUpdate.getMonth()) {
+                                    compensationDay.setHours(0, 0, 0, 0);
+                                    startDateUpdate.setHours(0, 0, 0, 0);
+                                    const difference = dateDiffInDays(startDateUpdate, compensationDay);
+                                    console.log(difference + "That's the difference")
+                                    if (difference > 30) {
                                         return res.send("The compensation should be in the same month")
                                     }
                                     else {
@@ -1593,6 +2131,7 @@ router.route('/submitLeave')
                                             pending: true,
                                             accepted: false,
                                             start: startDateUpdate,
+                                            end: startDateUpdate,
                                             compensatingDay: compensationDay,
                                             commentWhySent: req.body.description
                                         })
@@ -1624,5 +2163,85 @@ router.route('/submitLeave')
             }
 
         }
+    })
+router.route('/notified')
+    .get(async (req, res) => {
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        var result = []
+        //first index(dayoff)
+        var dayOff = []
+        //second index(replacement)
+        var replacementArr = []
+        //third index(slotlinking)
+        var slotLinkingArr = []
+        //fourth index(leave requests)
+        var leaveArr = []
+        const dayoffRequests = await dayOffRequest_model.findOne({ senderId: staff.memberID, notified: true })
+        if (dayoffRequests) {
+            if (dayoffRequests.notified == true) {
+                dayOff.push(dayoffRequests)
+                dayoffRequests.notified = false
+                try {
+                    dayoffRequests.save()
+                }
+                catch (e) {
+                    console.log(e)
+                }
+            }
+        }
+        const replacement = await replacement_model.find({ senderId: staff.memberID, notify: true })
+        for (let i = 0; i < replacement.length; i++) {
+            replacementArr.push(replacement[i])
+            replacement[i].notify = false
+            replacement[i].save()
+        }
+
+        const slotLinking = await newSlotlinking.find({ senderId: staff.memberID, notified: true })
+        for (let i = 0; i < slotLinking.length; i++) {
+            slotLinkingArr.push(slotLinking[i])
+            slotLinking[i].notified = false
+            slotLinking[i].save()
+        }
+
+        const leave = await newLeave_model.find({ staffID: staff.memberID, notified: true })
+        for (let i = 0; i < leave.length; i++) {
+            leaveArr.push(leave[i])
+            leave[i].notified = false
+            leave[i].save()
+        }
+        if (dayOff.length != 0)
+            result.push(dayOff)
+        if (replacementArr.length != 0)
+            result.push(replacementArr)
+        if (slotLinkingArr.length != 0)
+            result.push(slotLinkingArr)
+        if (leaveArr.length != 0)
+            result.push(leaveArr)
+        var notification = new notification_model({
+            staff: staff.memberID,
+            dayOff: dayOff,
+            replacement: replacementArr,
+            slotLinking: slotLinkingArr,
+            leave: leaveArr
+        })
+        notification.save()
+        res.send(result)
+    })
+router.route('/viewNotificaitonsAccepted')
+    .get(async (req, res) => {
+        const senderId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: senderId })
+        const notfications = await notification_model.find({ staff: staff.memberID })
+        var arr = []
+        console.log(notfications[0])
+        arr.push(notfications[0].staff)
+        arr.push(notfications[0].dayOff)
+        arr.push(notfications[0].replacement)
+        arr.push(notfications[0].slotLinking)
+        arr.push(notfications[0].leave)
+
+        //  console.log(arr)
+        return res.send(arr)
     })
 module.exports = router

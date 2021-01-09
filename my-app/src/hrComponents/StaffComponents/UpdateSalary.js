@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import {useRef} from 'react'
 import axios from 'axios'
 import { useHistory } from "react-router-dom";
+import '../../styling/main.css';
+
 
 function UpdateSalary() {
     const SalaryRef=useRef()

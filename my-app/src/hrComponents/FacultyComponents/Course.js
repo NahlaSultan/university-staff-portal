@@ -1,6 +1,6 @@
 import React,{useRef, useState} from 'react'
 import axios from 'axios'
-import '../styling/main.css';
+import '../../styling/main.css';
 import { useHistory } from "react-router-dom";
 
 
