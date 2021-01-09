@@ -38,6 +38,16 @@ export default function ManageAttendane() {
           <Link to='/hr/viewAttendance'>
             <li > View Attendace  </li>
           </Link>  </button> </ul>
+        
+          <ul><button className='btn' >
+          <Link to='/hr/viewMissingHours'>
+            <li > View Staff Members with Missing Hours  </li>
+          </Link>  </button> </ul>
+
+          <ul><button className='btn' >
+          <Link to='/hr/viewMissingDays'>
+            <li >  View Staff Members with Missing Days  </li>
+          </Link>  </button> </ul>
 
       </div>
 

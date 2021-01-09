@@ -1,7 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import '../../styling/dropDown.css'
+import { Link } from 'react-router-dom'
 
 export default function AddSignOut() {
 
@@ -79,6 +80,7 @@ export default function AddSignOut() {
     return (
 
         <div className="addStaff">
+        <Link to='/hr/manageAttendance' className="linkPrev">&laquo;</ Link> <br/>
 
 
             <span className="login100-form-title">
