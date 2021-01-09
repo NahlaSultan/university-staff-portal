@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLocation } from "react-router-dom";
+import {Link} from 'react-router-dom'
 import {useRef} from 'react'
 import axios from 'axios'
 import { useHistory } from "react-router-dom";
@@ -28,6 +29,8 @@ function UpdateSalary() {
     
     return (
     <div className='leftDiv'>   
+    			        <Link to='/hr/staffs' className="linkPrev">&laquo;</ Link> <br/>
+
   
         <h3> {locationReact.state.name} </h3>
         <ul>  {locationReact.state.memberID} </ul>

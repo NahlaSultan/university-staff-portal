@@ -17,13 +17,10 @@ const staffSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            minlength: 5
+            minlength: 2
         },
         numberID: {
             type: Number
-            //unique: true
-            // required: true
-
         },
         email: {
             type: String,

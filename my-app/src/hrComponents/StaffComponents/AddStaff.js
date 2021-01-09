@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import axios from 'axios'
 import '../../styling/main.css';
 import '../../styling/dropDown.css'
@@ -109,16 +111,17 @@ export default function AddStaff() {
 
 
 	return (
-		<>
-			<div className="addStaff">
+		<div className="addStaff">
+			        <Link to='/hr/staffs' className="linkPrev">&laquo;</ Link> <br/>
 
 
+			<form>
 				<span className="login100-form-title">
 					Add Staff Member
 					</span>
 
 				<div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-					<input ref={EmailRef} className="input100" type="text" id="emailInput" placeholder="Email" />
+					<input ref={EmailRef} required='required' className="input100" type="text" id="emailInput" placeholder="Email" />
 					<span className="focus-input100"></span>
 					<span className="symbol-input100">
 						<i className="fa fa-envelope" aria-hidden="true"></i>
@@ -129,7 +132,7 @@ export default function AddStaff() {
 
 
 				<div>
-					<input required={true} ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
+					<input required='required' ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
 					<span className="focus-input100"></span>
 					<span className="symbol-input100">
 					</span>
@@ -137,7 +140,7 @@ export default function AddStaff() {
 				</div>
 
 				<div>
-					<input required={true} ref={SalaryRef} className="input100" id="salaryInput" type='number' placeholder="Salary" />
+					<input required='required' ref={SalaryRef} className="input100" id="salaryInput" type='number' placeholder="Salary" />
 					<span className="focus-input100"></span>
 					<span className="symbol-input100">
 					</span>
@@ -148,7 +151,7 @@ export default function AddStaff() {
 
 				<div>
 					<label >Gender: </label>
-					<input type="radio" id="male" name="gender" value="male" />
+					<input required='required' type="radio" id="male" name="gender" value="male" />
 					<label for="male">Male</label> &nbsp;
 					&nbsp;
 
@@ -160,7 +163,7 @@ export default function AddStaff() {
 
 				<div >
 					<label >Role: </label>
-					<select className='dropbtn' name="types" onChange={ChooseRole}>
+					<select required=' required' className='dropbtn'  onChange={ChooseRole}>
 						<option value="">Choose Role</option>
 						<option value="headOfdepartments">Head Of Department</option>
 						<option value="courseInstructors">Course Instructor</option>
@@ -179,7 +182,7 @@ export default function AddStaff() {
 
 				<div >
 					<label >Day Off: </label>
-					<select className='dropbtn' name="types" onChange={ChooseDayOff}>
+					<select required=' required' className='dropbtn'  onChange={ChooseDayOff}>
 						<option value="">Day Off</option>
 						<option value="Saturday">Saturday</option>
 						<option value="Sunday">Sunday</option>
@@ -195,14 +198,14 @@ export default function AddStaff() {
 				<div>
 
 					<li className='listInline'>
-						<select className='dropbtn' name="types" onChange={ChooseDepartment}>
+						<select required='required' className='dropbtn'  onChange={ChooseDepartment}>
 							<option value="">Choose Department</option>
 							{facDepartments.map(item => (
 								<option key={item.name} value={item.name}>{item.name}</option>
 							))}
 						</select>
 
-						<select className='dropbtn' name="types" onChange={ChooseFaculties}>
+						<select required='required' className='dropbtn'  onChange={ChooseFaculties}>
 							<option value="">Choose Faculty</option>
 							{faculties.map(item => (
 								<option key={item.facultyName} value={item.facultyName}>{item.facultyName}</option>
@@ -223,7 +226,7 @@ export default function AddStaff() {
 
 				<div>
 					<label >Choose an office: </label>
-					<select className='dropbtn' name="types" onChange={ChooseLocation}>
+					<select required='required' className='dropbtn' name="types" onChange={ChooseLocation}>
 						<option value="">Choose office</option>
 						{offices.map(item => (
 							<option key={item.name} value={item.name}>{item.name}</option>
@@ -231,6 +234,7 @@ export default function AddStaff() {
 					</select>
 					<br /><br />
 				</div>
+
 
 				<div className="container-login100-form-btn">
 					<button onClick={HandleAddStaff} className="login100-form-btn">
@@ -240,16 +244,16 @@ export default function AddStaff() {
 
 				</div>
 
+			</form>
 
 
 
 
 
+		</div>
 
-			</div>
 
 
-		</>
 
 	)
 }

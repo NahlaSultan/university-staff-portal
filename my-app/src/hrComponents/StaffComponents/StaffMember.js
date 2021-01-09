@@ -7,9 +7,9 @@ import { useHistory } from "react-router-dom";
 
 export default function StaffMember({st}) {
     const [attendance, setAttendance] = useState([])
-    const [toggle, setToggle] = useState(true)
     const SalaryRef=useRef()
     let history = useHistory();
+
 
 
 // useEffect(() => {
@@ -31,15 +31,15 @@ function HandleDeleteStaff(){
 }
 
      function HandleViewAttendance(){
+      setAttendance(st.attendance)
 
-        if(toggle){
-          setAttendance(st.attendance)
-           }
-           else{
-               setAttendance([])
-   
-           }  
-          setToggle(toggle => !toggle);
+      var x = document.getElementById(st.memberID);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    
 
 
     
@@ -92,10 +92,13 @@ function HandleDeleteStaff(){
 					
 					</div>  </ul>
           <button className = 'btn' onClick={HandleViewAttendance}>   View attendance  </button>
-                <ul> <AttendanceRecord attendance={attendance} /> </ul>
-
+          
           <button className = 'btn' onClick={HandleDeleteStaff}>   Delete Member  </button> 
           <button className = 'btn' onClick={HandleUpdateStaff}>   Update Member  </button>  
+ 
+            <div id={st.memberID} style={{display: "none"}}>
+                <ul> <AttendanceRecord attendance={attendance} /> </ul>
+            </div>
 
           <br/>
           <br/>

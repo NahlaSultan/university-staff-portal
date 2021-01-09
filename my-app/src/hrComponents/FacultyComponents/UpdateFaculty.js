@@ -1,7 +1,7 @@
 import React,{useRef} from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
-import { useLocation } from "react-router-dom";
+import { useLocation,Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 
@@ -34,6 +34,8 @@ export default function UpdateFaculty() {
 
   return (
     <>
+            <Link to='/hr/faculties' className="linkPrev">&laquo;</ Link> <br/>
+
     <div className="addStaff">		
 
 
