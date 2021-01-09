@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default function AssignCourse() {
     const memberIDRef=useRef()
-   // const courseRef=useRef()
+    const courseRef=useRef()
     const [courses, setCourses] = useState([])
     const [course, setCourse] = useState("")
     const [message, setMessage] = useState("")

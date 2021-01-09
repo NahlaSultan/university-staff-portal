@@ -29,12 +29,12 @@ export default function SideNav() {
               </Link>
             </li>
              {/* Start SOFIA */}
-            {SidebarInstructor.map((item, index) => {
+            {/* {SidebarInstructor.map((item, index) => { */}
             {/* end SOFIA */}
 
             {/* start nahla */}
 
-            {/* {SidebarData.map((item, index) => { */}
+            {SidebarData.map((item, index) => {
 
           
 
