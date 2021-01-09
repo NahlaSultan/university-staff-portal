@@ -88,7 +88,8 @@ export default function App() {
 
 
 
-// //NAHLA
+//NAHLA
+
 // import React, { useState, useRef } from 'react'
 // import {BrowserRouter as Router, Switch, Route, Link}  from 'react-router-dom'
 
@@ -124,6 +125,8 @@ export default function App() {
 // import AddHr from './hrComponents/StaffComponents/AddHr';
 // import DepartmentPage from './hrComponents/FacultyComponents/DepartmentPage';
 // import CoursePage from './hrComponents/FacultyComponents/CoursePage';
+// import Profile from './hrComponents/Profile';
+
 
 
 // export default function App() {
@@ -162,6 +165,7 @@ export default function App() {
 //     <Route path='/hr/addHR' component={AddHr}/>
 //     <Route path='/hr/departmentsPage' component={DepartmentPage}/>
 //     <Route path='/hr/coursePage' component={CoursePage}/>
+//     <Route path='/home' component={HRprofile}/>
 
     
 

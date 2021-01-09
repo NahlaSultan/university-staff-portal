@@ -19,18 +19,27 @@ export default function UpdateDepartment() {
     const dep = locationReact.state.dep
 
     useEffect(() => {
-        // Update the document title using the browser API
-        axios   
-        .get('http://localhost:8000/hr/viewFaculties',{ headers: { 'token': localStorage.getItem('token') } })
-        .then(res => {
-            setFaculties(res.data)
-          });  
+        const fetchData = async () => {
+            await
+            axios   
+            .get('http://localhost:8000/hr/viewFaculties',{ headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                setFaculties(res.data)
+              });  
+          };
+          fetchData();
+          
+          const fetchStaff = async () => {
+            await
+            axios   
+            .get('http://localhost:8000/hr/viewAC',{ headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+              setAcs(res.data)
+              });  
+          };
+          fetchStaff();
         
-          axios   
-          .get('http://localhost:8000/hr/viewAC',{ headers: { 'token': localStorage.getItem('token') } })
-          .then(res => {
-            setAcs(res.data)
-            }); 
+    
         
         
         },[]);
@@ -51,7 +60,7 @@ export default function UpdateDepartment() {
         setNewFac(e.target.value)
     }
 
-    function HandleUpdateDepartment() {
+    async function HandleUpdateDepartment() {
 
         const body = {
             facultyName: facultyName,
@@ -63,7 +72,7 @@ export default function UpdateDepartment() {
 
         console.log(body)
 
-        axios
+       await  axios
             .post('http://localhost:8000/hr/updateDepartment', body, { headers: { 'token': localStorage.getItem('token') } })
             .then(res => console.log(res.data));
 

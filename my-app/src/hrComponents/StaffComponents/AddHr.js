@@ -13,11 +13,14 @@ export default function AddHr() {
 
 useEffect(() => {
 	// Update the document title using the browser API
-	axios   
-	.get('http://localhost:8000/hr/viewOffices',{ headers: { 'token': localStorage.getItem('token') } })
-	.then(res => {
-		setOffices(res.data)
-	  });  
+	const fetchOffices = async () => {
+		await
+			axios.get('http://localhost:8000/hr/viewOffices', { headers: { 'token': localStorage.getItem('token') } })
+				.then(res => {
+					setOffices(res.data)
+				});
+	};
+	fetchOffices();
 	
 
 	});
