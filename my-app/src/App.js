@@ -1,74 +1,74 @@
 
 //Start Sofia
 
-import React, { useState, useRef } from 'react'
-import Login from './mainComponents/Login'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import HRprofile from './hrComponents/HRprofile';
-import AssignSlot from './ciComponents/AssignSlot'
-import AssignCourse from './ciComponents/AssignCourse'
-import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
-import AssignCoordinator from './ciComponents/AssignCoordinator'
-import ViewSlots from './ciComponents/ViewSlots'
-import InstructorProfile from './ciComponents/InstructorProfile'
-import ViewDepartmentStaff from './ciComponents/ViewDepartmentStaff'
-import ViewCourseStaff from './ciComponents/ViewCourseStaff'
-import CourseCoverage from './ciComponents/CourseCoverage'
-import ViewProfile from './smComponent/ViewProfile'
-import StaffProfile from './smComponent/StaffProfile'
-import ViewAttendance from './smComponent/ViewAttendance'
-import ViewMissingDays from './smComponent/ViewMissingDays'
-import ViewMissingHours from './smComponent/ViewMissingHours'
-import ViewExtraHours from './smComponent/ViewExtraHours'
-import ResetPassword from './mainComponents/ResetPassword'
-import SideNav from './mainComponents/SideNav'
-import Nav from './mainComponents/Nav';
-import CourseStaff from './ciComponents/CourseStaff';
-import MonthAttendance from './smComponent/MonthAttendance';
-import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
-import UpdateProfile from './smComponent/UpdateProfile';
+// import React, { useState, useRef } from 'react'
+// import Login from './mainComponents/Login'
+// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+// import HRprofile from './hrComponents/HRprofile';
+// import AssignSlot from './ciComponents/AssignSlot'
+// import AssignCourse from './ciComponents/AssignCourse'
+// import RemoveAssignedCourse from './ciComponents/RemoveAssignedCourse'
+// import AssignCoordinator from './ciComponents/AssignCoordinator'
+// import ViewSlots from './ciComponents/ViewSlots'
+// import InstructorProfile from './ciComponents/InstructorProfile'
+// import ViewDepartmentStaff from './ciComponents/ViewDepartmentStaff'
+// import ViewCourseStaff from './ciComponents/ViewCourseStaff'
+// import CourseCoverage from './ciComponents/CourseCoverage'
+// import ViewProfile from './smComponent/ViewProfile'
+// import StaffProfile from './smComponent/StaffProfile'
+// import ViewAttendance from './smComponent/ViewAttendance'
+// import ViewMissingDays from './smComponent/ViewMissingDays'
+// import ViewMissingHours from './smComponent/ViewMissingHours'
+// import ViewExtraHours from './smComponent/ViewExtraHours'
+// import ResetPassword from './mainComponents/ResetPassword'
+// import SideNav from './mainComponents/SideNav'
+// import Nav from './mainComponents/Nav';
+// import CourseStaff from './ciComponents/CourseStaff';
+// import MonthAttendance from './smComponent/MonthAttendance';
+// import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
+// import UpdateProfile from './smComponent/UpdateProfile';
 
-export default function App() {
+// export default function App() {
 
-  return (
-    <Router>
-      <div className='App'>
+//   return (
+//     <Router>
+//       <div className='App'>
 
-        {/* <h1> app page</h1> */}
-        <Route path='/' exact component={Login} />
+//         {/* <h1> app page</h1> */}
+//         <Route path='/' exact component={Login} />
 
-        <Nav/>
-        <SideNav/>
+//         <Nav/>
+//         <SideNav/>
 
-        <Switch>
-        <Route exact path='/' exact component={Login} />
-          <Route exact path='/ci/assignSlots' component={AssignSlot} />
-          <Route exact path='/ci/updateAssignedCourse' component={AssignCourse} />
-          <Route exact path='/ci/removeAssignedCourse' component={RemoveAssignedCourse} />
-          <Route exact path='/ci/assignCourseCoordinator' component={AssignCoordinator} />
-          <Route exact path='/ci/viewSlots' component={ViewSlots} />
-          <Route exact path='/instructorProfile' component={InstructorProfile} />
-          <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
-          <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
-          <Route exact path='/ci/viewCoverage' component={CourseCoverage} />
-          <Route exact path='/viewProfile' component={ViewProfile} />
-          <Route exact path='/staffProfile' component={StaffProfile} />
-          <Route exact path='/viewAttendance' component={ViewAttendance} />
-          <Route exact path='/viewMissingDays' component={ViewMissingDays} />
-          <Route exact path='/viewMissingHours' component={ViewMissingHours} />
-          <Route exact path='/viewExtraHours' component={ViewExtraHours} />
-          <Route exact path='/resetPassword' component={ResetPassword} />
-          <Route exact path='/ci/courseStaff' component={CourseStaff} />
-          <Route exact path='/monthAttendance' component={MonthAttendance} />
-          <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
-          <Route exact path='/updateProfile' component={UpdateProfile} />
-        </Switch>
-      </div>
-    </Router>
-  )
+//         <Switch>
+//         <Route exact path='/' exact component={Login} />
+//           <Route exact path='/ci/assignSlots' component={AssignSlot} />
+//           <Route exact path='/ci/updateAssignedCourse' component={AssignCourse} />
+//           <Route exact path='/ci/removeAssignedCourse' component={RemoveAssignedCourse} />
+//           <Route exact path='/ci/assignCourseCoordinator' component={AssignCoordinator} />
+//           <Route exact path='/ci/viewSlots' component={ViewSlots} />
+//           <Route exact path='/instructorProfile' component={InstructorProfile} />
+//           <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
+//           <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
+//           <Route exact path='/ci/viewCoverage' component={CourseCoverage} />
+//           <Route exact path='/viewProfile' component={ViewProfile} />
+//           <Route exact path='/staffProfile' component={StaffProfile} />
+//           <Route exact path='/viewAttendance' component={ViewAttendance} />
+//           <Route exact path='/viewMissingDays' component={ViewMissingDays} />
+//           <Route exact path='/viewMissingHours' component={ViewMissingHours} />
+//           <Route exact path='/viewExtraHours' component={ViewExtraHours} />
+//           <Route exact path='/resetPassword' component={ResetPassword} />
+//           <Route exact path='/ci/courseStaff' component={CourseStaff} />
+//           <Route exact path='/monthAttendance' component={MonthAttendance} />
+//           <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
+//           <Route exact path='/updateProfile' component={UpdateProfile} />
+//         </Switch>
+//       </div>
+//     </Router>
+//   )
 
 
-}
+// }
 
 //End Sofia
 
@@ -338,109 +338,69 @@ export default function App() {
 
 
 ///////////////////////////////// Start HASSAN  ////////////////////////////////////
-// import React, { useState, useRef } from 'react'
-//  import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-//  import Login from './mainComponents/Login'
-// import ViewAllStaff from './hodComponents/ViewAllStaff'
-// import Nav from './mainComponents/Nav';
-// import HodSideNav from './hodComponents/HodSideNav'
-// import HodProfile from './hodComponents/HodProfile'
-// import ViewStaffinCourse from './hodComponents/ViewStaffinCourse'
-// import ViewDayOffAllStaff from './hodComponents/ViewDayOffAllStaff'
-// import ViewDayOffSingleStaff from './hodComponents/ViewDayOffSingleStaff'
-// import ViewAllRequests from './hodComponents/ViewAllRequests'
-// import ViewChangeDayOffRequests from './hodComponents/ViewChangeDayOffRequests'
-// import ViewLeaveRequests from './hodComponents/ViewLeaveRequests'
-// import ViewCourseCoverage from './hodComponents/ViewCourseCoverage'
-// import ViewTeachingAssignments from './hodComponents/ViewTeachingAssignments'
-// import AssignInstructor from './hodComponents/AssignInstructor'
-// import DeleteInstructor from './hodComponents/DeleteInstructor'
-// import UpdateInstructor from './hodComponents/UpdateInstructor'
-// import AcceptChangeDayoff from './hodComponents/AcceptChangeDayoff'
-// import RejectChangeDayoff from './hodComponents/RejectChangeDayoff'
-// import AcceptLeaveRequest from './hodComponents/AcceptLeaveRequest'
-// import RejectLeaveRequest from './hodComponents/RejectLeaveRequest'
+import React, { useState, useRef } from 'react'
+ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+ import Login from './mainComponents/Login'
+import ViewAllStaff from './hodComponents/ViewAllStaff'
+import Nav from './mainComponents/Nav';
+import HodSideNav from './hodComponents/HodSideNav'
+import HodProfile from './hodComponents/HodProfile'
+import ViewStaffinCourse from './hodComponents/ViewStaffinCourse'
+import ViewDayOffAllStaff from './hodComponents/ViewDayOffAllStaff'
+import ViewDayOffSingleStaff from './hodComponents/ViewDayOffSingleStaff'
+import ViewAllRequests from './hodComponents/ViewAllRequests'
+import ViewChangeDayOffRequests from './hodComponents/ViewChangeDayOffRequests'
+import ViewLeaveRequests from './hodComponents/ViewLeaveRequests'
+import ViewCourseCoverage from './hodComponents/ViewCourseCoverage'
+import ViewTeachingAssignments from './hodComponents/ViewTeachingAssignments'
+import AssignInstructor from './hodComponents/AssignInstructor'
+import DeleteInstructor from './hodComponents/DeleteInstructor'
+import UpdateInstructor from './hodComponents/UpdateInstructor'
+import AcceptChangeDayoff from './hodComponents/AcceptChangeDayoff'
+import RejectChangeDayoff from './hodComponents/RejectChangeDayoff'
+import AcceptLeaveRequest from './hodComponents/AcceptLeaveRequest'
+import RejectLeaveRequest from './hodComponents/RejectLeaveRequest'
 
 
 
-// export default function App() {
+export default function App() {
 
-//   return (
-//     <Router>
-//       <div className='App'>
+  return (
+    <Router>
+      <div className='App'>
 
-//       <h1> app page</h1>
+      <h1> app page</h1>
       
-//         <Route exact path='/' exact component={Login} />
+        <Route exact path='/' exact component={Login} />
         
-//         <HodSideNav />
-        
-//         <Route exact path='/home' component={HodProfile} />
-//         <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
-//         <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
-//         <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />
-//         <Route exact path='/hod/viewDayOffSingleStaff' component={ViewDayOffSingleStaff} />
-//         <Route exact path='/hod/viewAllRequests' component={ViewAllRequests} />
-//         <Route exact path='/hod/viewChangeDayOffRequests' component={ViewChangeDayOffRequests} />
-//         <Route exact path='/hod/viewLeaveRequests' component={ViewLeaveRequests} />
-//         <Route exact path='/hod/viewCourseCoverage' component={ViewCourseCoverage} />
-//         <Route exact path='/hod/viewTeachingAssignments' component={ViewTeachingAssignments} />
-//         <Route exact path='/hod/assignInstructor' component={AssignInstructor} />
-//         <Route exact path='/hod/deleteInstructor' component={DeleteInstructor} />
-//         <Route exact path='/hod/updateInstructor' component={UpdateInstructor} />
-//         <Route exact path='/hod/acceptChangeDayOffRequest' component={AcceptChangeDayoff} />
-//         <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} />
-//         <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} />
-//         <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} />
+        <HodSideNav />
+        <Switch>
+        <Route exact path='/homeHOD' component={HodProfile} />
+        <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
+        <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
+        <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />
+        <Route exact path='/hod/viewDayOffSingleStaff' component={ViewDayOffSingleStaff} />
+        <Route exact path='/hod/viewAllRequests' component={ViewAllRequests} />
+        <Route exact path='/hod/viewChangeDayOffRequests' component={ViewChangeDayOffRequests} />
+        <Route exact path='/hod/viewLeaveRequests' component={ViewLeaveRequests} />
+        <Route exact path='/hod/viewCourseCoverage' component={ViewCourseCoverage} />
+        <Route exact path='/hod/viewTeachingAssignments' component={ViewTeachingAssignments} />
+        <Route exact path='/hod/assignInstructor' component={AssignInstructor} />
+        <Route exact path='/hod/deleteInstructor' component={DeleteInstructor} />
+        <Route exact path='/hod/updateInstructor' component={UpdateInstructor} />
+        <Route exact path='/hod/acceptChangeDayOffRequest' component={AcceptChangeDayoff} />
+        <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} />
+        <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} />
+        <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} />
     
+        </Switch>
+      </div>
+    </Router>
+  )
+}
 
-    
+//////////////////////////// END HASSAN ///////////////////////////////////////
 
-//         </Switch>
-//       </div>
-//     </Router>
-//   )
-// }
-
-///////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////
-// // Start HASSAN
-
-// import React, { useState, useRef } from 'react'
-//  import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-//  import Login from './mainComponents/Login'
-// import ViewAllStaff from './hodComponents/ViewAllStaff'
-// import AssignInstructor from './hodComponents/AssignInstructor'
-// import Nav from './mainComponents/Nav';
-// import HodSideNav from './hodComponents/HodSideNav'
-// import HodProfile from './hodComponents/HodProfile'
-
-//  export default function App() {
-
-//   return (
-
-//     <Router>
-//       <div className='App'>
-//       <h1> app page</h1>
-//         <Route exact path='/' exact component={Login} />
-//         <HodSideNav />
-//         <Route exact path='/home' component={HodProfile} />
-//         <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
-
-//         <Nav />
-//       </div>
-//     </Router>
-//   )
-
-// }
-
-////////////////////////////////////////////////////////////////
 //END SaraAmjad
 /////////////////////////////////////////////////////////////////////
 // import React, { useState, useRef } from 'react'
