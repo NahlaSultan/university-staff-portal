@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
-import { useHistory,Redirect } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { render } from 'react-dom'
 import HRprofile from '../hrComponents/HRprofile'
 import '../styling/main.css';
@@ -14,15 +14,13 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import SideNav from './SideNav';
-var navArray = []
-
 
 // const jwt =require("jsonwebtoken")
 function Login() {
+  var navArray = []
   let history = useHistory()
   const [logIn, setlogIn] = useState("")
   const [role, setRole] = useState([])
-
   const EmailRef = useRef()
   const PassRef = useRef()
   var headerText = ""
@@ -47,67 +45,70 @@ function Login() {
     // callAPI()
   }
 
-   async function HandleRole(){
-     await axios
-      .post('http://localhost:8000/getRoleFromToken', { token: logIn})
+  async function HandleRole() {
+    await axios
+      .post('http://localhost:8000/getRoleFromToken', { token: logIn })
       .then(res => {
-      setRole(res.data)   
-      console.log(res.data)    
+        setRole(res.data)
+        console.log(res.data)
       });
 
-      console.log(role)
+    console.log(role)
 
 
-      if(role.includes('HR members')){
-        console.log("HR IF")
+    if (role.includes('HR members')) {
+      console.log("HR IF")
 
-        //append the array of hr sidenav
-        navArray = SidebarData
-        console.log(navArray)
-        localStorage.setItem('navArray', JSON.stringify(navArray))
-        console.log(localStorage.getItem('navArray'))
-        history.push('hr/home') 
-
-
-      }
-      else{
-                console.log("AC IF")
-
-        //append array with academic members 
-
-        navArray.push(...SidebarAcademicMember)
-
-        for(var i=0; i<role.length;i++){
-          var currRole = role[i]
-
-          if(currRole == "courseInstructors"){
-            navArray.push(...SidebarInstructor)
-
-          }
-
-          if(currRole == "courseCoordinators"){
-            navArray.push(...SidebarCoordinator)
+      //append the array of hr sidenav
+      navArray = SidebarData
+      //  console.log(navArray)
+      localStorage.setItem('navArray', JSON.stringify(navArray))
+      console.log(localStorage.getItem('navArray'))
+      history.push('hr/home')
 
 
-          }
+    }
+    else {
+      console.log("In else")
+      console.log(navArray)
+      console.log('Before')
+      //append array with academic members 
+      navArray.push(...SidebarAcademicMember)
+      console.log('After')
+      console.log(navArray)
 
-          if(currRole == "headOfdepartments"){
-            navArray.push(...SidebarHod)
+      for (var i = 0; i < role.length; i++) {
+        var currRole = role[i]
 
-          }
+        if (currRole == "courseInstructors") {
+          navArray.push(...SidebarInstructor)
 
         }
-        console.log(navArray)
-        localStorage.setItem('navArray', JSON.stringify(navArray))
-        console.log(localStorage.getItem('navArray'))
-        history.push('/staffProfile') 
+
+        if (currRole == "courseCoordinators") {
+          navArray.push(...SidebarCoordinator)
+
+
+        }
+
+        if (currRole == "headOfdepartments") {
+          navArray.push(...SidebarHod)
+
+        }
+
+
       }
+      // console.log(navArray)
+      localStorage.setItem('navArray', JSON.stringify(navArray))
+      //console.log(localStorage.getItem('navArray'))
+      history.push('/staffProfile')
+    }
 
 
 
   }
 
-  if (logIn == "Invalid password" || logIn == "Invalid email" || logIn=="") {
+  if (logIn == "Invalid password" || logIn == "Invalid email" || logIn == "") {
     if (logIn == "Invalid password") {
       headerText = "Invalid password"
     }
@@ -174,7 +175,7 @@ function Login() {
 
     localStorage.setItem('token', logIn)
     console.log(localStorage.getItem('token'))
-    
+
     HandleRole()
 
     return (
@@ -182,19 +183,19 @@ function Login() {
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
       // <Redirect to="/home" />
-  //    <Redirect to="/staffProfile" />
+      //    <Redirect to="/staffProfile" />
 
-      
+
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
-     // <Redirect to="/home" />
-   
-   // <Redirect to="/InstructorProfile" />
+      // <Redirect to="/home" />
+
+      // <Redirect to="/InstructorProfile" />
 
 
-    <>
-  </>
-  
+      <>
+      </>
+
 
     )
   }

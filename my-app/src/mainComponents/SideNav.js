@@ -49,12 +49,6 @@ console.log(array)
             {/* {SidebarCoordinator.map((item, index) => { */}
               {/* end sara coor */ } 
 
-              {/* // start sara adacemic */}
-//              {SidebarAcademicMember.map((item, index) => {
-
-            {/* {SidebarAcademicMember.map((item, index) => { */}
-
-            {/* // {SidebarAcademicMember.map((item, index) => { */}
 
               // end sara academic
               ///////////////////////////////////////////////////////              

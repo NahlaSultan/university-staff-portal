@@ -329,12 +329,12 @@ router.route('/viewSlotLinkingRequest')
 
             }
 
-           return res.send(sentArray)
+
+            return res.send(sentArray)
 
         }
-       
-       else
-       return res.send("Invalid staff member")
+        else
+            return res.send("Invalid staff member")
 
     })
 //inputs the requestID that he wishes to reject

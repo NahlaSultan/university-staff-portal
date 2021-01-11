@@ -1442,8 +1442,8 @@ router.route('/sendChangeDayOff')
                             catch (Err) {
                                 return res.send("Mongo error")
                             }
-
-                            hod.dayOffRequestsHOD.push(staff.memberID)
+                            if (!(hod.dayOffRequestsHOD.includes(staff.memberID)))
+                                hod.dayOffRequestsHOD.push(staff.memberID)
                             staff.dayOffRequestSent = staff.memberID
                             try {
                                 await hod.save()
@@ -2253,13 +2253,20 @@ router.route('/viewNotificaitons')
                 dayOffArr.push(notfications[i].dayOff[0])
             }
             if (notfications[i].replacement.length != 0) {
-                replacementArr.push(notfications[i].replacement)
+                for (var j = 0; j < notfications[i].replacement.length; j++) {
+                    replacementArr.push(notfications[i].replacement[j])
+                }
             }
             if (notfications[i].slotLinking.length != 0) {
-                slotLinkingArr.push(notfications[i].slotLinking)
+                for (var j = 0; j < notfications[i].slotLinking.length; j++) {
+                    slotLinkingArr.push(notfications[i].slotLinking[j])
+                }
+
             }
             if (notfications[i].leave.length != 0) {
-                leaveArr.push(notfications[i].leave)
+                for (var j = 0; j < notfications[i].leave.length; j++) {
+                    leaveArr.push(notfications[i].leave[j])
+                }
             }
 
         }

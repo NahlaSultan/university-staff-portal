@@ -254,26 +254,28 @@ export default function App() {
                     <Route exact path='/academic/Bell' component={Bell} />
                     <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
                     {/* ci and staff members */}
-//           <Route exact path='/ci/assignSlots' component={AssignSlot} />
-//           <Route exact path='/ci/updateAssignedCourse' component={AssignCourse} />
-//           <Route exact path='/ci/removeAssignedCourse' component={RemoveAssignedCourse} />
-//           <Route exact path='/ci/assignCourseCoordinator' component={AssignCoordinator} />
-//           <Route exact path='/ci/viewSlots' component={ViewSlots} />
-//           <Route exact path='/instructorProfile' component={InstructorProfile} />
-//           <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
-//           <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
-//           <Route exact path='/ci/viewCoverage' component={CourseCoverage} />
-//           <Route exact path='/sm/viewProfile' component={ViewProfile} />
-//           <Route exact path='/sm/staffProfile' component={StaffProfile} />
-//           <Route exact path='/sm/viewAttendance' component={ViewSmAttendance} />
-//           <Route exact path='/sm/viewMissingDays' component={ViewMissingDays} />
-//           <Route exact path='/sm/viewMissingHours' component={ViewMissingHours} />
-//           <Route exact path='/sm/viewExtraHours' component={ViewExtraHours} />
-//           <Route exact path='/sm/resetPassword' component={ResetPassword} />
-//           <Route exact path='/ci/courseStaff' component={CourseStaff} />
-//           <Route exact path='/sm/monthAttendance' component={MonthAttendance} />
-//           <Route exact path='/sm/viewMonthAttendance' component={ViewMonthAttendance} />
-//           <Route exact path='/sm/updateProfile' component={UpdateProfile} />
+
+          <Route exact path='/ci/assignSlots' component={AssignSlot} />
+          <Route exact path='/ci/updateAssignedCourse' component={AssignCourse} />
+          <Route exact path='/ci/removeAssignedCourse' component={RemoveAssignedCourse} />
+          <Route exact path='/ci/assignCourseCoordinator' component={AssignCoordinator} />
+          <Route exact path='/ci/viewSlots' component={ViewSlots} />
+          <Route exact path='/instructorProfile' component={InstructorProfile} />
+          <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
+          <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
+          <Route exact path='/ci/viewCoverage' component={CourseCoverage} />
+
+          <Route exact path='/sm/viewProfile' component={ViewProfile} />
+          <Route exact path='/sm/staffProfile' component={StaffProfile} />
+          <Route exact path='/sm/viewAttendance' component={ViewSmAttendance} />
+          <Route exact path='/sm/viewMissingDays' component={ViewMissingDays} />
+          <Route exact path='/sm/viewMissingHours' component={ViewMissingHours} />
+          <Route exact path='/sm/viewExtraHours' component={ViewExtraHours} />
+          <Route exact path='/sm/resetPassword' component={ResetPassword} />
+          <Route exact path='/ci/courseStaff' component={CourseStaff} />
+    <Route exact path='/monthAttendance' component={MonthAttendance} />
+          <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
+          <Route exact path='/sm/updateProfile' component={UpdateProfile} />
 
                     {/* hod components */}
                     <Route exact path='/homeHOD' component={HodProfile} />
@@ -299,6 +301,7 @@ export default function App() {
             </div>
         </Router>
     )
+
 
 }
 

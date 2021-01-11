@@ -8,6 +8,7 @@ export default function CangelDayOff() {
     const [dayOffHeader, setDayOffHeader] = useState("")
     const [DayOffRequest, setDayOff] = useState([])
     const [headerText, setHeaderText] = useState("")
+    useEffect(() => {
     axios
         .get('http://localhost:8000/academicMembers/viewStatusDayOff', { headers: { 'token': localStorage.getItem('token') } })
         .then(res => {
@@ -19,6 +20,7 @@ export default function CangelDayOff() {
                 setDayOffHeader("No Requests")
             }
         });
+    }, [])
     function HandleDayOff(e) {
         const body = {}
         // console.log(body)

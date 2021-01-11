@@ -16,6 +16,7 @@ export const SidebarAcademicMember = [
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
+
   // {
   //   title: 'Send Replacements',
   //   path: '/academic/manageReplacement',

@@ -42,17 +42,21 @@ export default function Nav() {
   }
   useEffect(() => {
     console.log("I entered")
+
     axios
       .get('http://localhost:8000/academicMembers/notified', { headers: { 'token': localStorage.getItem('token') } })
       .then(res => {
         console.log(res.data)
         if (res.data.length > 0) {
           setButtonHeader(true)
+          console.log(bellHeader)
           setPlay("playOff")
+
         }
 
       })
-  }, [])
+
+  })
   function HandleClick(e) {
     console.log("Here")
     setButtonHeader(false)
@@ -76,16 +80,19 @@ export default function Nav() {
           </li>
           <li>
             <div class="navdropdown" >
+
               <button class="navdropbtn" onClick={HandleSignIn}>
               <Link  >Sign In</Link>
 
               </button>   
+
             </div>
           </li>
 
 
           <li>
             <div class="navdropdown" >
+
               <button class="navdropbtn"onClick={HandleSignOut} >
               <Link >Sign Out</Link>
               </button>   
@@ -94,33 +101,35 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link> My Profile</Link>
+                <Link> My Profile</Link>
               </button>
               <div class="navdropdown-content" >
+
               <Link to='/sm/viewProfile' > view profile </Link>
               <Link to='/sm/resetPassword' > Reset Password </Link>
               <Link to='/logout' > </Link>
 
+
               </div>
             </div>
           </li>
-          
-           
-    <div style={{marginTop:'1%'}} className="Bell">
+
+
+          <div style={{ marginTop: '1%' }} className="Bell">
             <button onClick={HandleClick} >
               <Link to='/academic/Bell'>
                 <BellIcon className="bell" width='40' active={bellHeader} animate={bellHeader} color='#fff' />
               </Link>
             </button>
           </div>
-    
+
 
 
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='/logout' > Log out </Link>
-              </button>   
+                <Link to='/logout' > Log out </Link>
+              </button>
             </div>
           </li>
 
