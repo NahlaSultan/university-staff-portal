@@ -2,60 +2,69 @@ import React from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
-
+import * as BsIcons from "react-icons/bs";
+import * as BiIcons from "react-icons/bi";
 export const SidebarInstructor = [
   {
     title: 'Home',
-    path: '/ci/InstructorProfile',
-    icon: <AiIcons.AiFillHome />,
+    path: '/StaffProfile',
+    // icon: <AiIcons.AiFillHome />,
     cName: 'nav-text'
   },
   {
     title: 'Assign Coordinator',
     path: '/ci/assignCourseCoordinator',
-    icon: <IoIcons.IoIosPaper />,
+    // icon: <AiIcons.AiOutlineUserAdd />,
     cName: 'nav-text'
   },
   {
     title: 'Assign Course',
     path: '/ci/updateAssignedCourse',
-    icon: <FaIcons.FaAirbnb />,
+    // icon: <AiIcons.AiOutlineSolution />,
     cName: 'nav-text'
   },
   {
     title: 'Assign Slot',
     path: '/ci/assignSlots',
-    icon: <IoIcons.IoMdPeople />,
+    // icon: <AiIcons.AiOutlineFieldTime />,
     cName: 'nav-text'
   },
   {
     title: 'View Course Coverage',
-    path: '/ci/viewCoverages',
+
+    path: '/ci/viewCoverage',
     icon: <IoIcons.IoIosCheckbox />,
+
     cName: 'nav-text'
   },
   {
     title: 'Remove Assigned Course',
     path: '/ci/removeAssignedCourse',
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    // icon: <BsIcons.BsFillTrashFill/>,
     cName: 'nav-text'
   },
   {
     title: 'View Course Staff',
     path: '/ci/viewCourseStaff',
-    icon: <IoIcons.IoIosPaper />,
+    // icon: <BiIcons.BiGroup/>,
     cName: 'nav-text'
   },
   {
     title: 'View Department Staff',
     path: '/ci/viewDepartmentStaff',
-    icon: <IoIcons.IoMdHelpCircle />,
+    // icon: <BiIcons.BiGroup />,
     cName: 'nav-text'
   },
   {
     title: 'View My Slots',
     path: '/ci/viewSlots',
-    icon: <IoIcons.IoIosPaper />,
+    // icon: <AiIcons.AiTwotoneSchedule />,
     cName: 'nav-text'
-  },
+  }, {
+    title: '',
+    
+    cName: 'nav-text'
+  }
+  
+  
 ];

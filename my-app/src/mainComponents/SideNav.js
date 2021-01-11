@@ -8,11 +8,14 @@ import { IconContext } from 'react-icons';
 import { SidebarCoordinator } from '../coordinatorComponents/SidebarCoordinator';
 import { SidebarInstructor } from '../ciComponents/SidebarInstructor';
 import { SidebarAcademicMember } from '../academicMembersComponents/SidebarAcademicMember';
+
 export default function SideNav() {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
 
+const array = JSON.parse(localStorage.getItem('navArray'))
+console.log(array)
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
@@ -34,7 +37,8 @@ export default function SideNav() {
 
             {/* start nahla */}
 
-            {/* {SidebarData.map((item, index) => { */}
+
+            {array.map((item, index) => {
 
 
 
@@ -46,7 +50,7 @@ export default function SideNav() {
               {/* end sara coor */ } 
 
               {/* // start sara adacemic */}
-             {SidebarAcademicMember.map((item, index) => {
+//              {SidebarAcademicMember.map((item, index) => {
 
             {/* {SidebarAcademicMember.map((item, index) => { */}
 
@@ -57,7 +61,7 @@ export default function SideNav() {
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>
-                    {item.icon}
+                    {/* {item.icon} */}
                     <span>{item.title}</span>
                   </Link>
                 </li>

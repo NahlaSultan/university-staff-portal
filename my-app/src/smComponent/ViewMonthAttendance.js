@@ -44,10 +44,12 @@ export default function ViewMonthAttendance() {
              
               <br></br>
               <br></br>
-              <div className="buttons">
-                  <button onClick={ HandleViewMonthAttendance} className="buttons">
-                      View Attendance
-          </button>
+              <div >
+                  <button className="btn" onClick={ HandleViewMonthAttendance} style={{height: "50px"}} > View Attendance </button>
+                      
+          
+          <br></br>
+          <br></br>
           <br></br>
           <ul> <MonthAttendance attendance={attendance} /> </ul>
               </div>

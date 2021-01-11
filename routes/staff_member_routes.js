@@ -425,12 +425,12 @@ router.route('/signOut')
                     flag = true
                 }
                 if (hours > 8.24 && (staff.missingHours[staff.missingHours.length - 1] == 0 || newMonth2 == false)) {
-                    extraHours(staff, hours, flag, day1)
+                    extraHours(staff, hours, flag, day1,day2)
 
                 }
 
                 else {
-                    missingHours(staff, hours, flag, day1)
+                    missingHours(staff, hours, flag, day1,day2)
 
 
                 }
@@ -456,7 +456,10 @@ function missingHours(staff, hours, flag, day1, day2) {
 
     }
     else {
+        console.log(day1)
+        console.log(day2)
         if (day1 != day2) {
+            console.log("heyy222")
             var x = staff.missingHours[staff.missingHours.length - 1] + (8.4 - hours)
             if (x < 0) {
                 extraHours(staff, math.abs(x) + 8.4, flag, day1, day2)
@@ -464,6 +467,7 @@ function missingHours(staff, hours, flag, day1, day2) {
             }
         }
         else {
+            console.log("heyy")
 
             var x = staff.missingHours[staff.missingHours.length - 1] - hours
             if (x < 0) {

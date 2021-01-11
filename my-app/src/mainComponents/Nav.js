@@ -1,4 +1,5 @@
 
+
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
@@ -35,34 +36,79 @@ export default function Nav() {
     setButtonHeader(false)
   }
 
+
   return (
+
     <div className='nav'>
+
       <div >
-        <ul className='nav-links'>
+        <ul className="navList">
 
 
-
-          <Link to='/home' >
-            <li >
+          <li >
+            <Link to='/home' >
               <img className="nav-pic" src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
-              </img>       </li>
-          </Link>
-          <div style={{ marginTop: '2%' }} className="Bell">
+              </img>
+            </Link>
+          </li>
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn">
+              <Link to='/logout' >Sign In</Link>
+              </button>   
+            </div>
+          </li>
+
+
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn">
+              <Link to='/logout' >Sign Out</Link>
+              </button>   
+            </div>
+          </li>
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn">
+              <Link> My Profile</Link>
+              </button>
+              <div class="navdropdown-content" >
+              <Link to='/logout' > view profile </Link>
+              <Link to='/logout' > Reset Password </Link>
+              <Link to='/logout' > </Link>
+
+              </div>
+            </div>
+          </li>
+          
+           
+    <div style={{marginTop:'1%'}} className="Bell">
             <button onClick={HandleClick} >
               <Link to='/academic/Bell'>
                 <BellIcon className="bell" width='40' active={bellHeader} animate={bellHeader} color='#fff' />
               </Link>
             </button>
           </div>
-          {/* <ul className= "nav-links"> */}
-          <Link to='/logout' >
-            <li > Log Out  </li>
-          </Link>
+    
+
+
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn">
+              <Link to='/logout' > Log out </Link>
+              </button>   
+            </div>
+          </li>
+
+
         </ul>
       </div>
+
+
+
+
 
     </div>
 
   )
 }
-
