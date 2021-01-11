@@ -29,6 +29,7 @@ export default function StaffProfile() {
         <>
         <Nav/>
     <SideNav/>
+    
             <div className='App'>
                 <h1>Homepage</h1>
             </div>
