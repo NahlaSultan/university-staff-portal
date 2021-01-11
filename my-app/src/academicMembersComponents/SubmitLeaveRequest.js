@@ -32,6 +32,9 @@ export default function SubmitLeaveRequest() {
 
         }
     });
+    function HandleBack() {
+        setType("")
+    }
     //set type"" once you submit the leave request
     function submitAnnualLeave() {
         const body = { type: "Annual", start: DateRef.current.value, replacementRequestID: "5fe6476ba4f2e5bb7c04fe25" }
@@ -43,7 +46,7 @@ export default function SubmitLeaveRequest() {
                 console.log(res.data)
                 if (res.data == "Successfully submitted") {
                     setType("")
-                    setHeaderText("")
+                  // setHeaderText("")
                 }
                 else {
                     setHeaderText(res.data)
@@ -150,6 +153,7 @@ export default function SubmitLeaveRequest() {
     if (type == "") {
         return (
             <div>
+                <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
                 <button value="Compensation" className="btn" onClick={HandleChoice} >Compensation Leaves</button>
                 <button value="Maternity" className="btn" onClick={HandleChoice} >Maternity Leaves</button>
                 <button value="Sick" className="btn" onClick={HandleChoice} >Sick Leaves</button>
@@ -161,8 +165,10 @@ export default function SubmitLeaveRequest() {
     else if (type == "Compensation") {
         return (
             <div>
-                {/* <div> */}
                 <h1>{headerText}</h1>
+                <button className='btn' onClick={HandleBack}> Back </button>
+                {/* <div> */}
+
                 <h2>Start Date : </h2>
                 <input ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" required />
                 <br></br>
@@ -182,7 +188,7 @@ export default function SubmitLeaveRequest() {
     else if (type == "Maternity") {
         return (
             <div>
-                {/* <div> */}
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
                 <h2>Start Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
@@ -204,7 +210,7 @@ export default function SubmitLeaveRequest() {
     else if (type == "Sick") {
         return (
             <div>
-                {/* <div> */}
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
                 <h2>Sick Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
@@ -228,7 +234,7 @@ export default function SubmitLeaveRequest() {
 
         return (
             <div>
-                {/* <div> */}
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
                 <h2>Start Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
@@ -246,6 +252,7 @@ export default function SubmitLeaveRequest() {
     else if (type == "Annual") {
         return (
             <div>
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
                 <h1>Choose a replacement request if you want: </h1>
                 <div>

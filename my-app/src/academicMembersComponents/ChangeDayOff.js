@@ -8,14 +8,19 @@ export default function ChangeDayOff() {
     const [dayOff, setDayOff] = useState("")
     const [Day, setDay] = useState("")
     const [headerText, setHeaderText] = useState("")
+    const [counter, setCounter] = useState("")
+
     const ReasonRef = useRef()
     useEffect(() => {
-        axios
-            .get('http://localhost:8000/academicMembers/dayOff', { headers: { 'token': localStorage.getItem('token') } })
-            .then(res => {
-                console.log(res.data)
-                setDayOff(res.data)
-            })
+        if (counter <= 3) {
+            setCounter(counter + 1)
+            axios
+                .get('http://localhost:8000/academicMembers/dayOff', { headers: { 'token': localStorage.getItem('token') } })
+                .then(res => {
+                    console.log(res.data)
+                    setDayOff(res.data)
+                })
+        }
     });
     function HandleDay(e) {
         setDay(e.target.value)

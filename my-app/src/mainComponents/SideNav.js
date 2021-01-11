@@ -37,6 +37,7 @@ console.log(array)
 
             {/* start nahla */}
 
+
             {array.map((item, index) => {
 
 
@@ -49,7 +50,7 @@ console.log(array)
               {/* end sara coor */ } 
 
               {/* // start sara adacemic */}
-            {/* // {SidebarAcademicMember.map((item, index) => { */}
+//              {SidebarAcademicMember.map((item, index) => {
 
             {/* {SidebarAcademicMember.map((item, index) => { */}
 

@@ -17,11 +17,9 @@ import SideNav from './SideNav';
 var navArray = []
 
 
-
 // const jwt =require("jsonwebtoken")
 function Login() {
   let history = useHistory()
-
   const [logIn, setlogIn] = useState("")
   const [role, setRole] = useState([])
 
@@ -159,6 +157,10 @@ function Login() {
               </div>
 
 
+
+
+
+
             </div>
 
           </div>
@@ -187,19 +189,15 @@ function Login() {
       // <Redirect to="/resetPassword" />
      // <Redirect to="/home" />
    
-
    // <Redirect to="/InstructorProfile" />
-
 
 
     <>
   </>
   
 
-
     )
   }
 }
 
 export default Login
-

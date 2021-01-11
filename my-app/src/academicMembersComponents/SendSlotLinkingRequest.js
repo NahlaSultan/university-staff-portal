@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -38,6 +39,7 @@ export default function SendSlotLinkingRequest() {
     }
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>{headerText}</h1>
             <h2>Time to send a SlotLinking Request</h2>
             <br></br>
