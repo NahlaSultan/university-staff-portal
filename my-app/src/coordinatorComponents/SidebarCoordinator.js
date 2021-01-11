@@ -28,5 +28,8 @@ export const SidebarCoordinator = [
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
-
+  {
+    title: '',
+    cName: 'nav-text'
+  },
 ];
