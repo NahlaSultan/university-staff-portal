@@ -10,7 +10,7 @@ export default function SubmitLeaveRequest() {
     const DateRef = useRef()
     const EndRef = useRef()
     const Documents = useRef()
-    const Comments = useRef
+    const Comments = useRef()
     const [replacementID, setReplacementID] = useState("")
     const [replacementSent, setReplacementSent] = useState([])
     const [replacementReceived, setReplacementReceived] = useState([])
@@ -29,13 +29,7 @@ export default function SubmitLeaveRequest() {
                 .then(res => {
                     setReplacementSent(res.data)
                 });
-            axios
-                .get('http://localhost:8000/academicMembers/viewReplacementRequestReceived', { headers: { 'token': localStorage.getItem('token') } })
-                .then(res => {
-                    console.log(res.data)
-                    setReplacementReceived(res.data)
 
-                });
         }
     });
     //set type"" once you submit the leave request
@@ -49,6 +43,7 @@ export default function SubmitLeaveRequest() {
                 console.log(res.data)
                 if (res.data == "Successfully submitted") {
                     setType("")
+                    setHeaderText("")
                 }
                 else {
                     setHeaderText(res.data)
@@ -58,7 +53,74 @@ export default function SubmitLeaveRequest() {
             });
     }
     function submitSickLeave() {
+        const body = { type: "Sick", start: DateRef.current.value, end: EndRef.current.value, documentLinks: Documents.current.value, description: Comments.current.value }
+        axios
+            .post('http://localhost:8000/academicMembers/submitLeave', body, { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                console.log(res.data)
+                if (res.data == "Successfully submitted") {
+                    setType("")
+                    setHeaderText("")
+                }
+                else {
+                    setHeaderText(res.data)
+                }
 
+
+            });
+
+    }
+    function submitCompensation() {
+        const body = { type: "Compensation", start: DateRef.current.value, compensation: EndRef.current.value, description: Comments.current.value }
+        axios
+            .post('http://localhost:8000/academicMembers/submitLeave', body, { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                console.log(res.data)
+                if (res.data == "Successfully submitted") {
+                    setType("")
+                    setHeaderText("")
+                }
+                else {
+                    setHeaderText(res.data)
+                }
+
+
+            });
+    }
+    function submitAccidental() {
+        const body = { type: "Accidental", start: DateRef.current.value, description: Comments.current.value }
+        axios
+            .post('http://localhost:8000/academicMembers/submitLeave', body, { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                console.log(res.data)
+                if (res.data == "Successfully submitted") {
+                    setType("")
+                    setHeaderText("")
+                }
+                else {
+                    setHeaderText(res.data)
+                }
+
+
+            });
+
+    }
+    function submitMaternity() {
+        const body = { type: "Maternity", start: DateRef.current.value, end: EndRef.current.value, documentLinks: Documents.current.value, description: Comments.current.value }
+        axios
+            .post('http://localhost:8000/academicMembers/submitLeave', body, { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                console.log(res.data)
+                if (res.data == "Successfully submitted") {
+                    setType("")
+                    setHeaderText("")
+                }
+                else {
+                    setHeaderText(res.data)
+                }
+
+
+            });
     }
     function HandleReplacementID(e) {
         setReplacementID(e.target.value)
@@ -97,30 +159,66 @@ export default function SubmitLeaveRequest() {
         )
     }
     else if (type == "Compensation") {
+        return (
+            <div>
+                {/* <div> */}
+                <h1>{headerText}</h1>
+                <h2>Start Date : </h2>
+                <input ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" required />
+                <br></br>
+                <h2>Compensation Date : <input required ref={EndRef} className="input100" type="date" name="email" placeholder="Should be one of you dayoffs" /></h2>
+                <br></br>
+                <h2>Description: <input required ref={Comments} className="input100" type="text" name="link" placeholder="Descriprion" /></h2>
+                <br></br>
+                <br></br>
+                <div>
+                    <button value="Annual" className="buttons" onClick={submitCompensation} >Submit Compensation Request</button>
+                </div>
+            </div >
+        )
+
 
     }
     else if (type == "Maternity") {
+        return (
+            <div>
+                {/* <div> */}
+                <h1>{headerText}</h1>
+                <h2>Start Date : </h2>
+                <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
+                <br></br>
+                <h2>End Date : <input required ref={EndRef} className="input100" type="date" name="email" placeholder="Date Of Leave" /></h2>
+                <br></br>
+                <h2>Kindly put the doctor report in a google drive and place the link here : <input required ref={Documents} className="input100" type="text" name="link" placeholder="Link" /></h2>
+                <br></br>
+                <h2>Comments: <input ref={Comments} className="input100" type="text" name="link" placeholder="Descriprion" /></h2>
+                <br></br>
+                <br></br>
+                <div>
+                    <button value="Annual" className="buttons" onClick={submitMaternity} >Submit Maternity Request</button>
+                </div>
+            </div >
+        )
 
     }
     else if (type == "Sick") {
         return (
             <div>
                 {/* <div> */}
-                <h2>Start Date : </h2>
+                <h1>{headerText}</h1>
+                <h2>Sick Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
-                <h2>End Date : <input required ref={EndRef} className="input100" type="date" name="email" placeholder="Date Of Leave" /></h2>
-                <h2>Enter Links of your doctor report : <input required ref={Documents} className="input100" type="text" name="link" placeholder="Link" /></h2>
-                {/* // <div>
-                // </div>
-                // <div>
-               
-                // </div>
-                // <div>
-                //     <h2>Comments: <input ref={Comments} className="input100" type="text" name="Comments" placeholder="Comments" /></h2>
-                // </div>
-                // <div>
-                //     <button value="Annual" className="buttons" onClick={submitSickLeave} >Submit Sick Request</button>
-                // </div> */}
+                <br></br>
+                <h2>End of leave Date : <input required ref={EndRef} className="input100" type="date" name="email" placeholder="Date Of Leave" /></h2>
+                <br></br>
+                <h2>Kindly put the doctor report in a google drive and place the link here : <input required ref={Documents} className="input100" type="text" name="link" placeholder="Link" /></h2>
+                <br></br>
+                <h2>Comments:<input ref={Comments} className="input100" type="text" name="link" placeholder="Descriprion" /></h2>
+                <br></br>
+                <br></br>
+                <div>
+                    <button value="Annual" className="buttons" onClick={submitSickLeave} >Submit Sick Request</button>
+                </div>
             </div >
         )
 
@@ -128,6 +226,21 @@ export default function SubmitLeaveRequest() {
     }
     else if (type == "Accidental") {
 
+        return (
+            <div>
+                {/* <div> */}
+                <h1>{headerText}</h1>
+                <h2>Start Date : </h2>
+                <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
+                <br></br>
+                <h2>Comments:  <input ref={Comments} className="input100" type="text" name="link" placeholder="Descriprion" /></h2>
+                <br></br>
+                <br></br>
+                <div>
+                    <button value="Annual" className="buttons" onClick={submitAccidental} >Submit Accidential Request</button>
+                </div>
+            </div >
+        )
 
     }
     else if (type == "Annual") {
@@ -167,33 +280,7 @@ export default function SubmitLeaveRequest() {
                         })}
 
                     </ul>
-                    <h1>Requests Received:</h1>
-                    <ul>
-                        {replacementReceived.map((item, i) => {
-                            return <li key={i}>
-                                <h1>Request: </h1>
-                                <h3 className="elemntsInside">Pending: {item.pending + ""}</h3>
-                                <h4 className="elemntsInside">Accepted: {item.accepted + ""}</h4>
-                                <h4 className="elemntsInside">ReceiverID: {item.receiverId}</h4>
-                                <h4 className="elemntsInside">Date: {item.date}</h4>
-                                <br></br>
-                                <div className="divider">
-                                    <button value={item.slot} className="btn" onClick={HandleViewAttendance}>
-                                        View Slot Details
-                            </button>
-                                    <div className="divider">
-                                        <button value={item._id} className="btn" onClick={HandleViewAttendance}>
-                                            Choose Request
-                            </button>
-                                    </div>
-                                </div>
-                                <ul> <Slot SlotToView={SlotToView} /> </ul>
-                                <br></br>
-                                <br></br>
-                            </li>
-                        })}
 
-                    </ul>
                 </div>
                 <div>
                     <input ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />

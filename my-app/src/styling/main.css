@@ -347,7 +347,7 @@ iframe {
   text-transform: uppercase;
   /* height: 25px;*/
   border-radius: 30px; 
-  background: #b87046;
+  background: #0b2c5e;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -362,7 +362,7 @@ iframe {
 }
 
 .btn:hover {
-  background: #333333;
+  background: #136275;
 }
 
 
@@ -389,7 +389,7 @@ iframe {
   width: 100%;
   height: 50px;
   border-radius: 25px;
-  background: #b87046;
+  background: #0b2c5e;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -406,7 +406,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-  background: #333333;
+  background: #136275;
 }
 
 

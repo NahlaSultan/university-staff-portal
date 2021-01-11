@@ -22,7 +22,7 @@ export default function ViewSchedule() {
         //console.log(counter)
         if (counter <= 1) {
             setCounter(counter + 1)
-           
+
             axios
                 .get('http://localhost:8000/academicMembers/viewSchedule', { headers: { 'token': localStorage.getItem('token') } })
                 .then(res => {
@@ -48,12 +48,12 @@ export default function ViewSchedule() {
             <h1>Weekly Schedule:</h1>
             <table className="table">
                 <tr className="td">
-                    <th className="thFirst">Days</th>
-                    <th className="thFirst">Slot 1</th>
-                    <th className="thFirst">Slot 2</th>
-                    <th className="thFirst">Slot 3</th>
-                    <th className="thFirst">Slot 4</th>
-                    <th className="thFirst">Slot 5</th>
+                    <th className="thFirst">Days/Slots</th>
+                    <th className="thFirst">First</th>
+                    <th className="thFirst">Second</th>
+                    <th className="thFirst">Third</th>
+                    <th className="thFirst">Fourth</th>
+                    <th className="thFirst">Fifth</th>
                 </tr>
 
                 <tr className="td">
@@ -130,19 +130,18 @@ export default function ViewSchedule() {
                     })}
                 </tr>
             </table>
+            <hr></hr>
             <h2>Slots Replaced For you</h2>
             <h3>Date: {ReplacedDate}</h3>
             <ul>
                 {ReplacedSlot.map((item, i) => {
                     return <li key={i}>
                         <h3 className="get">SLOT ID: {item.numberID}</h3>
-                        <br></br>
                         <h3 className="elemntsInside">Type: {item.type}</h3>
                         <h4 className="elemntsInside">Location: {item.location}</h4>
                         <h4 className="elemntsInside">Time: {item.time}</h4>
                         <h4 className="elemntsInside">Day: {item.day}</h4>
                         <h4 className="elemntsInside">CourseTaught: {item.courseTaught}</h4>
-                        <h4 className="elemntsInside">Assigned: {item.assignedFlag + ""}</h4>
                         <h4 className="elemntsInside">Taught by: {item.academicMember}</h4>
                         <br></br>
 
@@ -151,6 +150,7 @@ export default function ViewSchedule() {
                     </li>
                 })}
             </ul>
+            <hr></hr>
             {/* </table> */}
             <h2>Slots you will replace</h2>
             <h3>Date: {toReplaceDate}</h3>
@@ -158,22 +158,18 @@ export default function ViewSchedule() {
                 {toReplace.map((item, i) => {
                     return <li key={i}>
                         <h3 className="get">SLOT ID: {item.numberID}</h3>
-                        <br></br>
                         <h3 className="elemntsInside">Type: {item.type}</h3>
                         <h4 className="elemntsInside">Location: {item.location}</h4>
                         <h4 className="elemntsInside">Time: {item.time}</h4>
                         <h4 className="elemntsInside">Day: {item.day}</h4>
                         <h4 className="elemntsInside">CourseTaught: {item.courseTaught}</h4>
-                        <h4 className="elemntsInside">Assigned: {item.assignedFlag + ""}</h4>
                         <h4 className="elemntsInside">Taught by: {item.academicMember}</h4>
-                        <br></br>
 
-                        <br></br>
-                        <br></br>
                     </li>
                 })}
             </ul>
-
+            <hr></hr>
+            <br></br>
         </div>
 
     )

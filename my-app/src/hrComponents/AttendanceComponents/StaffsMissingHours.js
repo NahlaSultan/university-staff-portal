@@ -8,14 +8,17 @@ export default function StaffsMissingHours() {
   const [staffs, setStaffs] = useState([])
 
   useEffect(() => {
-    // Update the document title using the browser API
-    axios
+    const fetchData = async () => {
+      await
+      axios
       .get('http://localhost:8000/hr/viewMissingHours', { headers: { 'token': localStorage.getItem('token') } })
       .then(res => {
         setStaffs(res.data)
         console.log("here")
         console.log(res.data)
       });
+    };
+    fetchData();    
   }, []);
 
 

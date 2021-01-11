@@ -271,6 +271,7 @@ router.route('/viewStaffs')
         res.send(staffs)
 
     })
+    
 
 router.route('/viewHR')
     .get(async (req, res) => {
@@ -285,6 +286,43 @@ router.route('/viewAC')
         res.send(staffs)
 
     })
+
+   // $in: ["HR members", "teachingAssistants", "courseInstructors", "courseCoordinators", "headOfdepartments"]
+
+
+router.route('/viewTAs')
+    .get(async (req, res) => {
+        const staffs = await staff_members_models.find({ role: "teachingAssistants" })
+
+        res.send(staffs)
+
+    })
+
+router.route('/viewCCs')
+    .get(async (req, res) => {
+        const staffs = await staff_members_models.find({ role: "courseCoordinators" })
+
+        res.send(staffs)
+
+    })
+
+router.route('/viewHODs')
+    .get(async (req, res) => {
+        const staffs = await staff_members_models.find({ role: "headOfdepartments" })
+
+        res.send(staffs)
+
+    })
+
+router.route('/viewCIs')
+    .get(async (req, res) => {
+        const staffs = await staff_members_models.find({ role: "courseInstructors" })
+
+        res.send(staffs)
+
+    })
+
+
 
 router.route('/updateLocation')
     .post(async (req, res) => {

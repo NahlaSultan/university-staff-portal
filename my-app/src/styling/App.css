@@ -67,7 +67,7 @@ nav{
 
 .nav-pic {
   margin-top: 35px;
-  margin-left: 40px;
+  margin-left: 60px;
   margin-right: 1150px;
   width: 60px;
   justify-content: start;
@@ -226,3 +226,6 @@ a:link {
     color: black;
   
   }
+.bell{
+  color:#fff
+}
