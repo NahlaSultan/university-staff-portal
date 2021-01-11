@@ -38,14 +38,18 @@ export default function CancelLeaveRequest() {
         setToggleReplacement(!toggleReplacement);
         //  console.log(toggle)
     }
-    axios
-        .get('http://localhost:8000/academicMembers/viewLeave', { headers: { 'token': localStorage.getItem('token') } })
-        .then(res => {
-            setLeaveRequests(res.data)
-            if (res.data != "not staff" && res.data.length != 0) {
-                setLeaveRequestHeader("Leave Requests Received")
-            }
-        });
+    useEffect(() => {
+
+
+        axios
+            .get('http://localhost:8000/academicMembers/viewLeave', { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                setLeaveRequests(res.data)
+                if (res.data != "not staff" && res.data.length != 0) {
+                    setLeaveRequestHeader("Leave Requests Received")
+                }
+            });
+    }, [])
     function HandleCancel(e) {
         const body = { requestId: e.target.value }
         // console.log(body)

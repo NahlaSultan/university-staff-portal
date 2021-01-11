@@ -8,15 +8,9 @@ export default function coordinatorProfile() {
             <div className='App'>
                 <h1>Coordinator Homepage</h1>
             </div>
-            <ul className='link_list'>
-                <Link className='a' to='/coordinator/manageSlots'>
-                    <li>Manage Slots </li>
-                </Link>
-                {/* <Link to='/'>
-                    <li> login  </li>
-                </Link> */}
-
-            </ul>
+          <div>
+              <h1 style={{fontSize:'90%'}}>Refresh every now and then to view notifications</h1>
+          </div>
 
         </>
 

@@ -23,7 +23,7 @@ export default function ManageLinkingRequest() {
                     setSlotLinkingHeader("No requests")
                 }
             });
-    })
+    },[])
 
     function HandleViewAttendance(e) {
         if (toggle) {
