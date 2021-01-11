@@ -8,16 +8,42 @@ import '../styling/dropDown.css';
 import '../styling/App.css';
 import BellIcon from 'react-bell-icon';
 import useSound from 'use-sound';
+import { Alert } from 'react-st-modal';
 import boopSfx from './bell.mp3';
 
 export default function Nav() {
   const [bellHeader, setButtonHeader] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [play, setPlay] = useState("")
+  const [message, setMessage] = useState()
+    const [message2, setMessage2] = useState()
   const [playOff] = useSound(
     './bell.mp3',
     { volume: 0.25 }
   );
+
+
+
+ async function HandleSignIn(){
+    
+    await axios   
+    .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
+    
+    .then(res=>setMessage(res.data))
+    var temp=message
+    
+ 
+ }
+ async function HandleSignOut(){
+ 
+     await axios   
+     .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
+     
+     .then(res=>setMessage2(res.data)).then(async () => {
+      const result = await Alert(message2,'Signing out:');
+    })
+  
+  }
   useEffect(() => {
     console.log("I entered")
     axios
@@ -53,8 +79,9 @@ export default function Nav() {
           </li>
           <li>
             <div class="navdropdown" >
-              <button class="navdropbtn">
-              <Link to='/logout' >Sign In</Link>
+              <button class="navdropbtn" onClick={HandleSignIn}>
+              <Link  >Sign In</Link>
+
               </button>   
             </div>
           </li>
@@ -62,8 +89,8 @@ export default function Nav() {
 
           <li>
             <div class="navdropdown" >
-              <button class="navdropbtn">
-              <Link to='/logout' >Sign Out</Link>
+              <button class="navdropbtn"onClick={HandleSignOut} >
+              <Link >Sign Out</Link>
               </button>   
             </div>
           </li>
@@ -73,8 +100,8 @@ export default function Nav() {
               <Link> My Profile</Link>
               </button>
               <div class="navdropdown-content" >
-              <Link to='/logout' > view profile </Link>
-              <Link to='/logout' > Reset Password </Link>
+              <Link to='/sm/viewProfile' > view profile </Link>
+              <Link to='/sm/resetPassword' > Reset Password </Link>
               <Link to='/logout' > </Link>
 
               </div>
