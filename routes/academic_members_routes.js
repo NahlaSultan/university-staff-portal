@@ -2003,7 +2003,7 @@ router.route('/submitLeave')
                                 const difference = dateDiffInDays(startDateUpdate, leave.submission);
                                 //  const test = Math.abs(difference);
                                 console.log(difference + "Difference is")
-                                if (difference < 3) {
+                                if (difference > 3) {
                                     console.log("I entered here")
                                     return res.send("Must be submitted by maximum three days after the sick day.")
                                 }
@@ -2228,7 +2228,7 @@ router.route('/notified')
         notification.save()
         res.send(result)
     })
-router.route('/viewNotificaitonsAccepted')
+router.route('/viewNotificaitons')
     .get(async (req, res) => {
         const senderId = req.user._id;
         const staff = await staff_members_models.findOne({ _id: senderId })

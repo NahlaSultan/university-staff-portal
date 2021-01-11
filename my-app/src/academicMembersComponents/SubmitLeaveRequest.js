@@ -189,7 +189,7 @@ export default function SubmitLeaveRequest() {
                 <br></br>
                 <h2>End Date : <input required ref={EndRef} className="input100" type="date" name="email" placeholder="Date Of Leave" /></h2>
                 <br></br>
-                <h2>Enter Links of your doctor report : <input required ref={Documents} className="input100" type="text" name="link" placeholder="Link" /></h2>
+                <h2>Kindly put the doctor report in a google drive and place the link here : <input required ref={Documents} className="input100" type="text" name="link" placeholder="Link" /></h2>
                 <br></br>
                 <h2>Comments: <input ref={Comments} className="input100" type="text" name="link" placeholder="Descriprion" /></h2>
                 <br></br>
@@ -206,12 +206,12 @@ export default function SubmitLeaveRequest() {
             <div>
                 {/* <div> */}
                 <h1>{headerText}</h1>
-                <h2>Start Date : </h2>
+                <h2>Sick Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
                 <br></br>
-                <h2>End Date : <input required ref={EndRef} className="input100" type="date" name="email" placeholder="Date Of Leave" /></h2>
+                <h2>End of leave Date : <input required ref={EndRef} className="input100" type="date" name="email" placeholder="Date Of Leave" /></h2>
                 <br></br>
-                <h2>Enter Links of your doctor report : <input required ref={Documents} className="input100" type="text" name="link" placeholder="Link" /></h2>
+                <h2>Kindly put the doctor report in a google drive and place the link here : <input required ref={Documents} className="input100" type="text" name="link" placeholder="Link" /></h2>
                 <br></br>
                 <h2>Comments:<input ref={Comments} className="input100" type="text" name="link" placeholder="Descriprion" /></h2>
                 <br></br>
