@@ -13,6 +13,7 @@ export default function StaffProfile() {
        .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
        
        .then(res=>setMessage(res.data));
+       setMessage2("")
     
     }
     function HandleSignOut(){
@@ -21,6 +22,7 @@ export default function StaffProfile() {
         .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
         
         .then(res=>setMessage2(res.data));
+        setMessage("")
      
      }
     return (
@@ -79,7 +81,7 @@ export default function StaffProfile() {
             </ul>
             <br></br>
             <br></br>
-            <div className="buttons">
+            <div className="buttons`">
                 <button onClick={HandleSignIn} className="buttons">
                     Sign In
         </button>
