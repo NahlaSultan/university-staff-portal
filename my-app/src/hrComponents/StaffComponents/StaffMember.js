@@ -1,4 +1,4 @@
-import React,{useRef, useState, useEffect} from 'react'
+import React,{useRef, useState} from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import AttendanceRecord from '../AttendanceComponents/AttendanceRecord'
@@ -93,7 +93,6 @@ function HandleDeleteStaff(){
 					</div>  </ul>
           <button className = 'btn' onClick={HandleViewAttendance}>   View attendance  </button>
                 <ul> <AttendanceRecord attendance={attendance} /> </ul>
-                <br/>
 
           <button className = 'btn' onClick={HandleDeleteStaff}>   Delete Member  </button> 
           <button className = 'btn' onClick={HandleUpdateStaff}>   Update Member  </button>  

@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { useHistory,Redirect } from "react-router-dom";
 import { render } from 'react-dom'
 import HRprofile from '../hrComponents/HRprofile'
 import '../styling/main.css';
 // const jwt =require("jsonwebtoken")
 
 export default function Login() {
+
 
     //   const EmailRef=useRef()
     //   const PassRef=useRef()
@@ -81,6 +82,58 @@ export default function Login() {
 
 
         // callAPI()
+
+let history = useHistory()
+  const [logIn, setlogIn] = useState("")
+  const [role, setRole] = useState([])
+
+  const EmailRef = useRef()
+  const PassRef = useRef()
+  var headerText = ""
+  function HandleEmail() {
+    const body = { email: EmailRef.current.value, password: PassRef.current.value }
+
+    axios
+      .post('http://localhost:8000/login', body)
+      .then(res => {
+        setlogIn(res.data)
+        console.log("here")
+        console.log(res.headers)
+
+        // const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        // setToken(verified)
+        // console.log(verified.role)
+        console.log(res.data)
+      });
+
+
+
+    // callAPI()
+  }
+
+  async function HandleRole(){
+    await axios
+      .post('http://localhost:8000/getRoleFromToken', { token: logIn})
+      .then(res => {
+      setRole(res.data)   
+      console.log(res.data)    
+      });
+
+      console.log(role)
+
+      if(role.includes('HR members')){
+        history.push('hr/home') 
+      }
+      else{
+        history.push('/staffProfile') 
+      }
+
+  }
+
+  if (logIn == "Invalid password" || logIn == "Invalid email" || logIn=="") {
+    if (logIn == "Invalid password") {
+      headerText = "Invalid password"
+
     }
 
     if (logIn == "Invalid password" || logIn == "Invalid email" || logIn == "") {
@@ -151,13 +204,38 @@ export default function Login() {
         return (
             //see which role from header and redirect to a certain homepage
 
+
             // <Redirect to="/homeHR" />
             // <Redirect to="/resetPassword" />
          //   <Redirect to="/home" />
              <Redirect to="/staffProfile" />
+          
+       <Redirect to="/homeHR" />
+
+    localStorage.setItem('token', logIn)
+    console.log(localStorage.getItem('token'))
+    
+    HandleRole()
+
+//     return (
+//       //see which role from header and redirect to a certain homepage
+//       // <Redirect to="/homeHR" />
+//       // <Redirect to="/resetPassword" />
+//       //  <Redirect to="/homeHOD" />
+//   //    <Redirect to="/staffProfile" />
 
 
-        )
+      
+//       // <Redirect to="/resetPassword" />
+//      // <Redirect to="/home" />
+   
+//     // <Redirect to="/staffProfile" />
+
+
+//   //   <>
+//   // </>
+
+//         )
     }
 }
 

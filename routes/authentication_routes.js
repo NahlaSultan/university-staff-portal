@@ -163,6 +163,27 @@ router.route('/login')
     })
 
 
+router.route('/getRoleFromToken')
+.post(async (req, res) => {
+    const token = req.body.token;
+    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log(verified.role)
+    res.send(verified.role)
+})
+
+router.route('/getStaffFromToken')
+.post(async (req, res) => {
+    const token = req.body.token;
+    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log("verified")
+
+    console.log(verified)
+     const id = verified. _id
+    console.log(id)
+    const staff = await staff_members_models.find({ _id: id})
+    res.send(staff)
+})
+
 //logout
 router.route('/logOut')
     .get(async (req, res) => {
