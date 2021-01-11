@@ -22,6 +22,7 @@ var navArray = []
 function Login() {
   let history = useHistory()
 
+
   const [logIn, setlogIn] = useState("")
   const [role, setRole] = useState([])
 
@@ -158,7 +159,6 @@ function Login() {
                 </button>
               </div>
 
-
             </div>
 
           </div>
@@ -186,10 +186,13 @@ function Login() {
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
      // <Redirect to="/home" />
-   
+
 
    // <Redirect to="/InstructorProfile" />
 
+
+  //   <>
+  // </>
 
 
     <>

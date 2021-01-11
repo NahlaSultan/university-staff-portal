@@ -538,7 +538,6 @@
 //     <Router>
 //       <div className='App'>
 
-/////////////////////////// End Hassan ////////////////////////////////////////
 
 //END SaraAmjad
 
@@ -578,6 +577,36 @@
 //   return (
 //     <Router>
 //       <div className='App'>
+
+//       <h1> app page</h1>
+      
+//         <Route exact path='/' exact component={Login} />
+        
+//         <HodSideNav />
+//         <Switch>
+//         <Route exact path='/homeHOD' component={HodProfile} />
+//         <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
+//         <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
+//         <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />
+//         <Route exact path='/hod/viewDayOffSingleStaff' component={ViewDayOffSingleStaff} />
+//         {/* <Route exact path='/hod/viewAllRequests' component={ViewAllRequests} /> */}
+//         <Route exact path='/hod/viewChangeDayOffRequests' component={ViewChangeDayOffRequests} />
+//         <Route exact path='/hod/viewLeaveRequests' component={ViewLeaveRequests} />
+//         <Route exact path='/hod/viewCourseCoverage' component={ViewCourseCoverage} />
+//         <Route exact path='/hod/viewTeachingAssignments' component={ViewTeachingAssignments} />
+//         <Route exact path='/hod/assignInstructor' component={AssignInstructor} />
+//         <Route exact path='/hod/deleteInstructor' component={DeleteInstructor} />
+//         <Route exact path='/hod/updateInstructor' component={UpdateInstructor} />
+//         {/* <Route exact path='/hod/acceptChangeDayOffRequest' component={AcceptChangeDayoff} /> */}
+//         {/* <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} /> */}
+//         {/* <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} /> */}
+//         {/* <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} /> */}
+    
+//         </Switch>
+//       </div>
+//     </Router>
+//   )
+// }
 
 //       <h1> app page</h1>
 
