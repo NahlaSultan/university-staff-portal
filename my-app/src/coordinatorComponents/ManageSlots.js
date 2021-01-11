@@ -15,6 +15,8 @@ export default function ManageSlots() {
     const [Day, setDay] = useState("")
     const [Location, setLocation] = useState("")
     const [headerText, setHeaderText] = useState("")
+    const [courses, setCourses] = useState([])
+    const [course, setCourse] = useState("")
     var numberId;
 
     useEffect(() => {
@@ -25,10 +27,11 @@ export default function ManageSlots() {
                 .then(res => {
                     setSlot(res.data)
                 });
+
         }
         else {
             const body = { numberID: updateSlot }
-            if (count < 3)
+            if (count < 20)
                 setCount(count + 1)
             axios
                 .post('http://localhost:8000/viewCertainSlot', body)
@@ -44,7 +47,7 @@ export default function ManageSlots() {
     });
 
     // });
-    if (updateSlot != "" && count == 1) {
+    if (updateSlot != "" && count <= 2) {
         console.log("ENTERED")
         axios
             .get('http://localhost:8000/viewLocations')
@@ -52,6 +55,13 @@ export default function ManageSlots() {
                 setLocations(res.data)
 
             });
+        axios
+            .get('http://localhost:8000/coordinator/viewCourseCoordinators', { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                setCourses(res.data)
+
+            });
+
     }
     async function HandleType(e) {
         setSlotType(e.target.value)
@@ -74,6 +84,9 @@ export default function ManageSlots() {
         setCount(1)
         setUpdateSlot(e.target.value)
         console.log(updateSlot)
+    }
+    async function HandleCourse(e) {
+        await setCourse(e.target.value)
     }
 
     function HandleDelete(e) {
@@ -143,6 +156,7 @@ export default function ManageSlots() {
                     {certainSlot.map((item, i) => {
                         return <li key={i}>
                             <h3 className="get">SLOT ID: {item.numberID}</h3>
+                            <br></br>
                             <div>
                                 <h2>Type: {item.type}</h2>
                                 <div className='whole'>
@@ -196,13 +210,19 @@ export default function ManageSlots() {
                                     </select>
                                 </div>
                             </div>
-                            <br></br>
-                            <br></br>
-                            <div>
-                                <h2>CourseTaught: {item.courseTaught}</h2>
-                                to do
 
+                            <div className="whole">
+                                <h2>Course:{item.courseTaught}</h2>
+                                <label className='textDown'>Choose Course: </label>
+                                <select className='dropbtn' name="types" id="type" onChange={HandleCourse}>
+                                    <option value="">Choose Course</option>
+                                    {courses.map(s => (
+                                        <option key={s} value={s}>{s}</option>
+                                    ))}
+                                </select>
+                                <br></br>
                             </div>
+                            <br></br>
                             <br></br>
                             <div className="divider">
                                 <button value={item.numberID} className="btn" onClick={HandleSubmit}>

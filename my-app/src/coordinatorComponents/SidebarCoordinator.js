@@ -22,5 +22,11 @@ export const SidebarCoordinator = [
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
+  {
+    title: 'Manage Slot Linking Request',
+    path: '/coordinator/ManageLinkingRequest',
+    icon: <IoIcons.IoIosPaper />,
+    cName: 'nav-text'
+  },
 
 ];

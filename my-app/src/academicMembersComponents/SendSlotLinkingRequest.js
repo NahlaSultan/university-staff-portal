@@ -12,7 +12,7 @@ export default function SendSlotLinkingRequest() {
 
     useEffect(() => {
         axios
-            .get('http://localhost:8000/viewSlot', { headers: { 'token': localStorage.getItem('token') } })
+            .get('http://localhost:8000/viewUnassignedSlots', { headers: { 'token': localStorage.getItem('token') } })
             .then(res => {
                 setSlot(res.data)
             });

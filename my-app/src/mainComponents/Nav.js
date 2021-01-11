@@ -1,11 +1,40 @@
 
-import React, { useState, useRef } from 'react'
-import { Link, Redirect } from 'react-router-dom'
-import '../styling/App.css'
-import '../styling/dropDown.css'
 
+import React, { useState, useRef, useEffect } from 'react'
+import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import axios from 'axios'
+import '../styling/main.css';
+import '../styling/dropDown.css';
+import '../styling/App.css';
+import BellIcon from 'react-bell-icon';
+import useSound from 'use-sound';
+import boopSfx from './bell.mp3';
 
 export default function Nav() {
+  const [bellHeader, setButtonHeader] = useState(false)
+  const [clicked, setClicked] = useState(false)
+  const [play, setPlay] = useState("")
+  const [playOff] = useSound(
+    './bell.mp3',
+    { volume: 0.25 }
+  );
+  useEffect(() => {
+    console.log("I entered")
+    axios
+      .get('http://localhost:8000/academicMembers/notified', { headers: { 'token': localStorage.getItem('token') } })
+      .then(res => {
+        console.log(res.data)
+        if (res.data.length > 0) {
+          setButtonHeader(true)
+          setPlay("playOff")
+        }
+
+      })
+  })
+  function HandleClick(e) {
+    console.log("Here")
+    setButtonHeader(false)
+  }
 
 
   return (
@@ -51,7 +80,16 @@ export default function Nav() {
               </div>
             </div>
           </li>
-
+          
+           <li>
+    <div style={{marginTop:'2%'}} className="Bell">
+            <button onClick={HandleClick} >
+              <Link to='/academic/Bell'>
+                <BellIcon className="bell" width='40' active={bellHeader} animate={bellHeader} color='#fff' />
+              </Link>
+            </button>
+          </div>
+    </li>
 
 
           <li>
@@ -65,6 +103,7 @@ export default function Nav() {
 
         </ul>
       </div>
+
 
 
 

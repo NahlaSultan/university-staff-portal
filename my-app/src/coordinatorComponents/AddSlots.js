@@ -10,8 +10,10 @@ export default function AddSlots() {
     const [Type, setType] = useState("")
     const [Time, setTime] = useState("")
     const [Day, setDay] = useState("")
-    const [Location, setLocation] = useState("")
+    const [location, setLocation] = useState("")
     const [Output, setOutput] = useState("")
+    const [courses, setCourses] = useState([])
+    const [course, setCourse] = useState("")
     const locs = ['1', '2', '3']
     // var headerText=""
     //if the course is not found (azabtha fl backend)
@@ -32,7 +34,10 @@ export default function AddSlots() {
     }
     async function HandleLocation(e) {
         await setLocation(e.target.value)
-        console.log(Location)
+        console.log(location)
+    }
+    async function HandleCourse(e) {
+        await setCourse(e.target.value)
     }
     const [locations, setLocations] = useState([])
     const [headerText, setHeaderText] = useState("")
@@ -40,7 +45,7 @@ export default function AddSlots() {
 
         const body = {
             type: Type, time: Time,
-            courseTaught: CourseTaughtRef.current.value, location: Location,
+            courseTaught: course, location: location,
             day: Day
         }
         //  console.log(body)
@@ -65,16 +70,20 @@ export default function AddSlots() {
             setLocations(res.data)
 
         });
+    axios
+        .get('http://localhost:8000/viewLocations')
+        .then(res => {
+            setLocations(res.data)
 
-    // if (Output == "Maximum number of slots added to this course,cannot add a new one") {
-    //     headerText = "Maximum number of slots added to this course,cannot add a new one"
-    // }
-    // else if (Output == "Overlapping slots") {
-    //     headerText = "Overlapping slots"
-    // }
-    // else if (Output == "Added successfully") {
-    //     headerText = "Added successfully"
-    // }
+        });
+
+    axios
+        .get('http://localhost:8000/coordinator/viewCourseCoordinators', { headers: { 'token': localStorage.getItem('token') } })
+        .then(res => {
+            setCourses(res.data)
+
+        });
+
 
     return (
         <>
@@ -84,43 +93,28 @@ export default function AddSlots() {
                     Add Slot
                 </span>
 
-                {/* <div class="dropdown"> */}
-                {/* <button class="dropbtn">Type</button>
-                        <div class="dropdown-content"> */}
-
-                {/* <div>
-                        <input required={true} ref={TimeRef} className="input100" name="time" placeholder="Time" />
-                        <span className="focus-input100"></span>
-                        <span className="symbol-input100">
-                        </span>
-                        <br />
-                    </div> */}
-
-                <div>
-                    <input required={true} ref={CourseTaughtRef} className="input100" name="courseTaught" placeholder="Course Taught" />
-                    <span className="focus-input100"></span>
-                    <span className="symbol-input100">
-                    </span>
-                    <br />
-                </div>
-
-                {/* <div>
-                        <input required={true} ref={DayRef} className="input100" name="day" type='checkbox' placeholder="Day" />
-                        <span className="focus-input100"></span>
-                        <span className="symbol-input100">
-                        </span>
-                        <br />
-                    </div> */}
-
-                {/* <div>
-                        <input required={true} ref={LocationRef} className="input100" name="location" placeholder="Slot's Location" />
-                        <span className="focus-input100"></span>
-                        <span className="symbol-input100">
-                        </span>
-                        <br />
-                    </div> */}
-                <h3>  {headerText} </h3>
                 <div className='whole'>
+
+                    <label className='textDown'>Choose Course: </label>
+                    <select className='dropbtn' name="types" id="type" onChange={HandleCourse}>
+                        <option value="">Choose Course</option>
+                        {courses.map(s => (
+                            <option key={s} value={s}>{s}</option>
+                        ))}
+                    </select>
+                    <br></br>
+
+
+                </div>
+                <br></br>
+                <div className='whole'>
+                    <label className='textDown'>Choose Location: </label>
+                    <select className='dropbtn' name="types" id="type" onChange={HandleLocation}>
+                        <option value="">Choose location</option>
+                        {locations.map(s => (
+                            <option key={s.name} value={s.name}>{s.name}</option>
+                        ))}
+                    </select>
 
 
                     <label className='textDown'> Choose A Day: </label>
@@ -182,25 +176,25 @@ export default function AddSlots() {
 
         // <div>
         //  Name:
-        // <input ref={NameRef} type="text"/>
+        // <input ref={NameRef} type="text" />
         // <br></br>
         // Email:
-        // <input ref={EmailRef} type="text"/>
+        // <input ref={EmailRef} type="text" />
         // <br></br>
         // Role:
-        // <input ref={RoleRef} type="text"/>
+        // <input ref={RoleRef} type="text" />
         // <br></br>
         // Day Off:
-        // <input ref={DayOffRef} type="text"/>
+        // <input ref={DayOffRef} type="text" />
         // <br></br>
         // Salary:
-        // <input ref={SalaryRef} type="text"/>
+        // <input ref={SalaryRef} type="text" />
         // <br></br>
         // Office number:
-        // <input ref={OfficeRef} type="text"/>
+        // <input ref={OfficeRef} type="text" />
         // <br></br>
         // Gender:
-        // <input ref={GenderRef} type="text"/>
+        // <input ref={GenderRef} type="text" />
         // <br></br>
         // <button onClick={HandleAddStaff}> Add </button>
         // </div>

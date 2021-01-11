@@ -16,6 +16,13 @@ const { staffSchema } = require('../models/staff_member_models')
 const e = require('express')
 const location_model = require('../models/location_model').model
 //inputs are type,time,courseTaught,location and date and it is obligatory to enter them all
+router.route('/viewCourseCoordinators')
+    .get(async (req, res) => {
+        const staffId = req.user._id;
+        const staff = await staff_members_models.findOne({ _id: staffId })
+        res.send(staff.coordinatorCourse)
+
+    })
 router.route('/addSlot')
     .post(async (req, res) => {
         const staffId = req.user._id;
@@ -304,12 +311,12 @@ router.route('/viewSlotLinkingRequest')
         var temp;
         var tempDate;
         var requstTemp;
-        sentArray[0] = "Slot linking requests are:"
+        // sentArray[0] = "Slot linking requests are:"
         const staffId = req.user._id;
         const staff = await staff_members_models.findOne({ _id: staffId })
         if (staff) {
             console.log("In staff")
-            var lastIndex = 1;
+            var lastIndex = 0;
             var startIndex = 0
             for (let index = 0; index < staff.coordinatorLinkingRequests.length; index++) {
                 console.log("I entered here")
@@ -317,8 +324,9 @@ router.route('/viewSlotLinkingRequest')
                 requstTemp = await newSlotLinking.findOne({ _id: temp })
                 if (requstTemp) {
                     sentArray[lastIndex] = requstTemp
+                    lastIndex++
                 }
-                lastIndex++
+
             }
 
             res.send(sentArray)
@@ -386,9 +394,11 @@ router.route('/acceptSlotLinkingRequest')
                     requstTemp = await newSlotLinking.findOne({ _id: slotID })
                     if (requstTemp) {
                         if (requstTemp.pending == false && requstTemp.accepted == true) {
-                            return res.send("already acceoted")
+                            return res.send("already accepted")
                         }
                         else {
+                            const slot = await slot_model.findOne({ numberID: requstTemp.slotID })
+                            console.log(slot)
                             requstTemp.pending = false
                             requstTemp.accepted = true
                             requstTemp.notified = true
@@ -403,6 +413,8 @@ router.route('/acceptSlotLinkingRequest')
                             const slotNumberId = requstTemp.slotID
                             const slotCurrent = await slot_model.findOne({ numberID: requstTemp.slotID })
                             slotCurrent.assignedFlag = true
+                            slotCurrent.academicMember = senderStaff.memberID
+
                             // slotCurrent.requstTemp.senderId
                             try {
                                 slotCurrent.save()
@@ -410,6 +422,7 @@ router.route('/acceptSlotLinkingRequest')
                             catch (Err) {
                                 return res.send("Mongoose error")
                             }
+
                             console.log("current slotId", slotCurrent)
                             const courseName = slotCurrent.courseTaught
                             const course = await course_model.findOne({ courseName: courseName })
@@ -444,8 +457,11 @@ router.route('/acceptSlotLinkingRequest')
                             }
 
 
+
+
                             return res.send("Successfully accepted")
                         }
+
                     }
                     else {
                         return res.send("This request is not found")
