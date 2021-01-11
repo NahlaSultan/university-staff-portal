@@ -8,7 +8,6 @@ import '../styling/dropDown.css';
 import '../styling/App.css';
 import BellIcon from 'react-bell-icon';
 import useSound from 'use-sound';
-import { Alert } from 'react-st-modal';
 import boopSfx from './bell.mp3';
 
 export default function Nav() {
@@ -16,7 +15,6 @@ export default function Nav() {
   const [clicked, setClicked] = useState(false)
   const [play, setPlay] = useState("")
   const [message, setMessage] = useState()
-    const [message2, setMessage2] = useState()
   const [playOff] = useSound(
     './bell.mp3',
     { volume: 0.25 }
@@ -24,24 +22,22 @@ export default function Nav() {
 
 
 
- async function HandleSignIn(){
+  function HandleSignIn(){
     
-    await axios   
+     axios   
     .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
     
-    .then(res=>setMessage(res.data))
-    var temp=message
+    .then(res=> setMessage(res.data))
+    
+    
     
  
  }
- async function HandleSignOut(){
- 
-     await axios   
+  function HandleSignOut(){
+      axios   
      .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
      
-     .then(res=>setMessage2(res.data)).then(async () => {
-      const result = await Alert(message2,'Signing out:');
-    })
+     .then(res=>setMessage(res.data))
   
   }
   useEffect(() => {
@@ -64,7 +60,8 @@ export default function Nav() {
 
 
   return (
-
+    <>
+    <r1>{message}</r1>
     <div className='nav'>
 
       <div >
@@ -136,6 +133,7 @@ export default function Nav() {
 
 
     </div>
+    </>
 
   )
 }
