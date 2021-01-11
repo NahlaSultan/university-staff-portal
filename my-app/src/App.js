@@ -166,6 +166,7 @@ import ResetPassword from './mainComponents/ResetPassword'
 import CourseStaff from './ciComponents/CourseStaff';
 import MonthAttendance from './smComponent/MonthAttendance';
 import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
+import ViewSmAttendance from './smComponent/ViewAttendance';
 import UpdateProfile from './smComponent/UpdateProfile';
 import ViewAllStaff from './hodComponents/ViewAllStaff'
 import HodSideNav from './hodComponents/HodSideNav'
@@ -262,17 +263,17 @@ export default function App() {
 //           <Route exact path='/ci/viewDepartmentStaff' component={ViewDepartmentStaff} />
 //           <Route exact path='/ci/viewCourseStaff' component={ViewCourseStaff} />
 //           <Route exact path='/ci/viewCoverage' component={CourseCoverage} />
-//           <Route exact path='/viewProfile' component={ViewProfile} />
-//           <Route exact path='/staffProfile' component={StaffProfile} />
-//           <Route exact path='/viewAttendance' component={ViewAttendance} />
-//           <Route exact path='/viewMissingDays' component={ViewMissingDays} />
-//           <Route exact path='/viewMissingHours' component={ViewMissingHours} />
-//           <Route exact path='/viewExtraHours' component={ViewExtraHours} />
-//           <Route exact path='/resetPassword' component={ResetPassword} />
+//           <Route exact path='/sm/viewProfile' component={ViewProfile} />
+//           <Route exact path='/sm/staffProfile' component={StaffProfile} />
+//           <Route exact path='/sm/viewAttendance' component={ViewSmAttendance} />
+//           <Route exact path='/sm/viewMissingDays' component={ViewMissingDays} />
+//           <Route exact path='/sm/viewMissingHours' component={ViewMissingHours} />
+//           <Route exact path='/sm/viewExtraHours' component={ViewExtraHours} />
+//           <Route exact path='/sm/resetPassword' component={ResetPassword} />
 //           <Route exact path='/ci/courseStaff' component={CourseStaff} />
-//           <Route exact path='/monthAttendance' component={MonthAttendance} />
-//           <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
-//           <Route exact path='/updateProfile' component={UpdateProfile} />
+//           <Route exact path='/sm/monthAttendance' component={MonthAttendance} />
+//           <Route exact path='/sm/viewMonthAttendance' component={ViewMonthAttendance} />
+//           <Route exact path='/sm/updateProfile' component={UpdateProfile} />
 
                     {/* hod components */}
                     <Route exact path='/homeHOD' component={HodProfile} />
