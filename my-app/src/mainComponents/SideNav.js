@@ -32,14 +32,12 @@ console.log(array)
               </Link>
             </li>
              {/* Start SOFIA */}
-            {SidebarInstructor.map((item, index) => {
+            {/* {SidebarInstructor.map((item, index) => { */}
             {/* end SOFIA */}
 
             {/* start nahla */}
 
-
             {array.map((item, index) => {
-
 
 
 
@@ -74,5 +72,3 @@ console.log(array)
     </>
   );
 }
-
-
