@@ -27,25 +27,27 @@ export default function Bsell() {
             .get('http://localhost:8000/academicMembers/viewNotificaitons', { headers: { 'token': localStorage.getItem('token') } })
             .then(res => {
                 setStaff(res.data[0])
-                setDayOff(res.data[1])
-                if (res.data[1].length > 0) {
+                setDayOff(res.data[0])
+
+                if (res.data[0].length > 0) {
                     setDayOffHeader("Accepted/Rejected Day Off Request: ")
                 }
-                setReplacement(res.data[2])
-                if (res.data[2].length > 0) {
+                setReplacement(res.data[1])
+                if (res.data[1].length > 0) {
                     setReplacementHeader("Accepted/Rejected Replacement Requests:")
                 }
-                setSlotLinking(res.data[3])
-                if (res.data[3].length > 0) {
+                setSlotLinking(res.data[2])
+                if (res.data[2].length > 0) {
                     setSlotLinkingHeader("Accepted/Rejected SlotLinking Requests:")
                 }
-                setLeave(res.data[4])
-                if (res.data[4].length > 0) {
+                setLeave(res.data[3])
+                console.log(res.data[3])
+                if (res.data[3].length > 0) {
                     setLeaverHeader("Accepted/Rejected Leave Requests:")
                 }
 
             });
-    })
+    },[])
     function HandleViewAttendance(e) {
         if (toggle) {
             console.log("Entered")
@@ -119,6 +121,7 @@ export default function Bsell() {
     return (
         < div >
             <h1>{dayOffHeader}</h1>
+
             <ul>
                 {dayOff.map((item, i) => {
                     return <li key={i}>
@@ -197,6 +200,7 @@ export default function Bsell() {
             <ul>
                 <Slot SlotToView={SlotToView1} /> </ul>
             <hr></hr>
+
         </div >
     )
 }

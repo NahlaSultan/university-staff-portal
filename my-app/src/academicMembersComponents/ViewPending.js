@@ -143,6 +143,7 @@ export default function ViewStatus() {
 
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>{dayOffHeader}</h1>
             <ul>
                 {DayOffRequest.map((item, i) => {

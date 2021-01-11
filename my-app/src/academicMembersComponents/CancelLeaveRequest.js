@@ -11,7 +11,7 @@ export default function CancelLeaveRequest() {
     const [LeaveRequests, setLeaveRequests] = useState([])
     const [toggleReplacement, setToggleReplacement] = useState(true)
     const [headerText, setHeaderText] = useState("")
-    const[leaveRequestHeader,setLeaveRequestHeader]=useState("")
+    const [leaveRequestHeader, setLeaveRequestHeader] = useState("")
     function HandleViewReplacement(e) {
         if (toggleReplacement) {
             console.log("Entered")
@@ -60,6 +60,7 @@ export default function CancelLeaveRequest() {
 
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>{headerText}</h1>
             <h1>{leaveRequestHeader}</h1>
             <br></br>
