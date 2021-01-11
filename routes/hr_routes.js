@@ -38,10 +38,9 @@ router.route('/addStaff')
                 staffType = "academic"
             }
 
-            const officeName = req.body.office
 
-            if (req.body.office == null) {
-                res.send('must specify an office (try c2.110)')
+            if (req.body.office == null || req.body.office == "")  {
+                res.send('must specify an office')
             }
             const office = await location_model.findOne({ name: req.body.office })
             if (!office || office.type != "office") {
@@ -84,7 +83,7 @@ router.route('/addStaff')
 
             if (staffType != "hr") {
 
-                if (req.body.faculty == null && staffType == "academic") {
+                if ((req.body.faculty == null || req.body.faculty == "" )&& staffType == "academic") {
                     res.send("must specify faculty name")
                 }
                 else {
@@ -96,7 +95,7 @@ router.route('/addStaff')
                     }
                 }
 
-                if (req.body.department == null && staffType == "academic") {
+                if ((req.body.department == null || req.body.department == "") && staffType == "academic") {
                     res.send("must specify department name")
                 }
                 else {
@@ -133,9 +132,6 @@ router.route('/addStaff')
             }
 
 
-            if (req.body.attendance != null) {
-                newUser.attendance = req.body.attendance
-            }
             if (req.body.annualLeavesBalance != null) {
                 newUser.annualLeavesBalance = req.body.annualLeavesBalance
             }
@@ -1592,7 +1588,7 @@ router.route('/addSignIn')
                     await staff.save()
                     //res.send(staff)
                 }
-                else res.send("you cannot sign in without signing out")
+                else res.send("you cannot sign in without signing out first")
             }
             //const m=staff.attendance.findOne({signInTime.getMonth:2})
             if (month1 != month2){
@@ -1601,7 +1597,7 @@ router.route('/addSignIn')
             }
             missingDays(staff, day1, day2, month1, month2, year1, firstEntry)
             // staff.save()
-            res.send(staff.attendance)
+            res.send("success")
         }
 
     })

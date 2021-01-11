@@ -33,10 +33,11 @@ export default function Faculties() {
 
     <div>
 
-      <Link to='/AddFaculty'>
-        <li > Add Faculty  </li>
-      </Link>
-
+    <br/>
+      <button className='btn'  style={{height: "50px"}}>
+        <Link to='/hr/AddFaculty'>
+         <li> Add New Faculty </li> 
+            </Link>  </button>
       <hr />
       <br />
       <h1>Faculties</h1>

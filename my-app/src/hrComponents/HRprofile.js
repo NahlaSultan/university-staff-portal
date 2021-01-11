@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react'
 import {Link}  from 'react-router-dom'
 
 
-
+import SideNav from '../mainComponents/SideNav'
+import Nav from '../mainComponents/Nav';
 import '../styling/App.css'
 import '../styling/main.css';
 
@@ -12,6 +13,8 @@ export default function HRprofile() {
 
    return (
     <>
+  <Nav/>
+    <SideNav/>
     <div className='App'> 
             <h2>HR PROFILE</h2>        <br/>
 

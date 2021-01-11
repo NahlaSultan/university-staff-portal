@@ -8,55 +8,57 @@ export const SidebarInstructor = [
   {
     title: 'Home',
     path: '/StaffProfile',
-    icon: <AiIcons.AiFillHome />,
+    // icon: <AiIcons.AiFillHome />,
     cName: 'nav-text'
   },
   {
     title: 'Assign Coordinator',
     path: '/ci/assignCourseCoordinator',
-    icon: <AiIcons.AiOutlineUserAdd />,
+    // icon: <AiIcons.AiOutlineUserAdd />,
     cName: 'nav-text'
   },
   {
     title: 'Assign Course',
     path: '/ci/updateAssignedCourse',
-    icon: <AiIcons.AiOutlineSolution />,
+    // icon: <AiIcons.AiOutlineSolution />,
     cName: 'nav-text'
   },
   {
     title: 'Assign Slot',
     path: '/ci/assignSlots',
-    icon: <AiIcons.AiOutlineFieldTime />,
+    // icon: <AiIcons.AiOutlineFieldTime />,
     cName: 'nav-text'
   },
   {
     title: 'View Course Coverage',
+
     path: '/ci/viewCoverage',
     icon: <IoIcons.IoIosCheckbox />,
+
     cName: 'nav-text'
   },
   {
     title: 'Remove Assigned Course',
     path: '/ci/removeAssignedCourse',
-    icon: <BsIcons.BsFillTrashFill/>,
+    // icon: <BsIcons.BsFillTrashFill/>,
     cName: 'nav-text'
   },
   {
     title: 'View Course Staff',
     path: '/ci/viewCourseStaff',
-    icon: <BiIcons.BiGroup/>,
+    // icon: <BiIcons.BiGroup/>,
     cName: 'nav-text'
   },
   {
     title: 'View Department Staff',
     path: '/ci/viewDepartmentStaff',
-    icon: <BiIcons.BiGroup />,
+    // icon: <BiIcons.BiGroup />,
     cName: 'nav-text'
   },
   {
     title: 'View My Slots',
     path: '/ci/viewSlots',
-    icon: <AiIcons.AiTwotoneSchedule />,
+    // icon: <AiIcons.AiTwotoneSchedule />,
     cName: 'nav-text'
   }, {
     title: '',

@@ -1,4 +1,5 @@
 import React,{useRef,useEffect,useState} from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import '../../styling/main.css';
 import '../../styling/dropDown.css'
@@ -70,7 +71,9 @@ function HandleAddStaff(){
 
   return (
     <>
-    <div className="addStaff">		
+    <div className="addStaff">	
+	<Link to='/hr/staffs' className="linkPrev">&laquo;</ Link> <br/>
+	
 
 
 					<span className="login100-form-title">
