@@ -229,7 +229,9 @@ let history = useHistory()
 //       // <Redirect to="/resetPassword" />
 //      // <Redirect to="/home" />
    
-//     // <Redirect to="/staffProfile" />
+
+    <Redirect to="/InstructorProfile" />
+
 
 
 //   //   <>

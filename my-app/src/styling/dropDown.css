@@ -22,7 +22,6 @@
   align-self: center;
   align-content: center;
   text-align: center;
-  
   background-color: #176ed1;;
   color: white;
   align-items: center;
@@ -65,7 +64,9 @@
 .dropbtn:hover .dropdown-content {display: block;}
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
+
 .dropbtn:hover {background-color:   rgb(18, 42, 87);}
+
 
 
 .dropbtn {
