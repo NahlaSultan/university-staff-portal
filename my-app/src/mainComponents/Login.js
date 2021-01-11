@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
-import { useHistory } from "react-router-dom";
+import { useHistory,Redirect } from "react-router-dom";
 import { render } from 'react-dom'
 import HRprofile from '../hrComponents/HRprofile'
 import '../styling/main.css';
@@ -137,7 +137,7 @@ let history = useHistory()
       // <Redirect to="/resetPassword" />
      // <Redirect to="/home" />
    
-    <Redirect to="/staffProfile" />
+    <Redirect to="/InstructorProfile" />
 
 
   //   <>
