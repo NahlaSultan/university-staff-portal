@@ -7,17 +7,17 @@ import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/App.css';
 import BellIcon from 'react-bell-icon';
-import useSound from 'use-sound';
+// import useSound from 'use-sound';
 import boopSfx from './bell.mp3';
 
 export default function Nav() {
   const [bellHeader, setButtonHeader] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [play, setPlay] = useState("")
-  const [playOff] = useSound(
-    './bell.mp3',
-    { volume: 0.25 }
-  );
+  // const [playOff] = useSound(
+  //   './bell.mp3',
+  //   { volume: 0.25 }
+  // );
   useEffect(() => {
     console.log("I entered")
     axios
