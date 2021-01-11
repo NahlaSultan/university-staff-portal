@@ -120,7 +120,7 @@ router.route('/assignCourseCoordinator')
     if(staff){  
         if(coordinator){
         const course = await course_model.findOne({ courseName: req.body.courseName })
-        if(staff.course.includes(req.body.courseName)){
+        if(!coordinator.role.includes("courseCoordinators")){
             if(coordinator.course.includes(req.body.courseName) ){
                 course.courseCoordinator=coordinator.memberID
                 //console.log(coordinator._id)
@@ -135,7 +135,7 @@ router.route('/assignCourseCoordinator')
         }
     }
         else{
-            res.send("The course is not yours.You cannot change in")
+            res.send("This academic member is already a coordinator of a course")
         }
     }   
 }

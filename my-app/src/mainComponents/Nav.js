@@ -14,10 +14,32 @@ export default function Nav() {
   const [bellHeader, setButtonHeader] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [play, setPlay] = useState("")
+  const [message, setMessage] = useState()
   const [playOff] = useSound(
     './bell.mp3',
     { volume: 0.25 }
   );
+
+
+
+  function HandleSignIn(){
+    
+     axios   
+    .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
+    
+    .then(res=> setMessage(res.data))
+    
+    
+    
+ 
+ }
+  function HandleSignOut(){
+      axios   
+     .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
+     
+     .then(res=>setMessage(res.data))
+  
+  }
   useEffect(() => {
     console.log("I entered")
 
@@ -42,7 +64,8 @@ export default function Nav() {
 
 
   return (
-
+    <>
+    <r1>{message}</r1>
     <div className='nav'>
 
       <div >
@@ -57,18 +80,22 @@ export default function Nav() {
           </li>
           <li>
             <div class="navdropdown" >
-              <button class="navdropbtn">
-                <Link to='/logout' >Sign In</Link>
-              </button>
+
+              <button class="navdropbtn" onClick={HandleSignIn}>
+              <Link  >Sign In</Link>
+
+              </button>   
+
             </div>
           </li>
 
 
           <li>
             <div class="navdropdown" >
-              <button class="navdropbtn">
-                <Link to='/logout' >Sign Out</Link>
-              </button>
+
+              <button class="navdropbtn"onClick={HandleSignOut} >
+              <Link >Sign Out</Link>
+              </button>   
             </div>
           </li>
           <li>
@@ -77,9 +104,11 @@ export default function Nav() {
                 <Link> My Profile</Link>
               </button>
               <div class="navdropdown-content" >
-                <Link to='/logout' > view profile </Link>
-                <Link to='/logout' > Reset Password </Link>
-                <Link to='/logout' > </Link>
+
+              <Link to='/sm/viewProfile' > view profile </Link>
+              <Link to='/sm/resetPassword' > Reset Password </Link>
+              <Link to='/logout' > </Link>
+
 
               </div>
             </div>
@@ -113,6 +142,7 @@ export default function Nav() {
 
 
     </div>
+    </>
 
   )
 }
