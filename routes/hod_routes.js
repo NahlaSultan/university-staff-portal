@@ -241,7 +241,7 @@ router.route('/viewAllStaff')
 
         staffs.forEach(s => {
             if(s.memberID != staff.memberID)
-                staffArray.push(helper(s)+"\n")
+                staffArray.push(s)
         });
         res.send(staffArray)
     //    console.log(staffArray[0])

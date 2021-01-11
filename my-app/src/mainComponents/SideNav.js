@@ -72,5 +72,3 @@ console.log(array)
     </>
   );
 }
-
-
