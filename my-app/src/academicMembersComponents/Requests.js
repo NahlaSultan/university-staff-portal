@@ -13,6 +13,10 @@ export default function Requests() {
     const [manageReplacement, setManageReplacement] = useState(false)
     const [sendLeave, setSubmitLeave] = useState(false)
     const [cancelleave, setCancelLeave] = useState(false)
+    const [viewStatus, setViewStatus] = useState(false)
+    const [viewAccepted, setAccepted] = useState(false)
+    const [viewRejected, setRejected] = useState(false)
+    const [viewPending, setPending] = useState(false)
     function HandleDayOff(e) {
         setChangeDay(true)
     }
@@ -41,15 +45,28 @@ export default function Requests() {
     function manageLeave() {
         setCancelLeave(true)
     }
+    function status() {
+        setViewStatus(true)
+    }
+    function penidng() {
+        setPending(true)
+    }
+    function rejected() {
+        setRejected(true)
+    }
+    function accepted() {
+        setAccepted(true)
+    }
+
     if (changeDay == true) {
         return (
             <Redirect to="/academic/changeDayOff" />
         )
     }
     if (cancelDay == true) {
-        // return (
-        //     <Redirect to="/academic/changeDayOff" />
-        // )
+        return (
+            <Redirect to="/academic/Requests/CancelDayOff" />
+        )
     }
     if (slotLinking == true) {
         return (
@@ -57,7 +74,9 @@ export default function Requests() {
         )
     }
     if (cancelSlot) {
-
+        return (
+            <Redirect to="/academic/Requests/CancelSlotLinking" />
+        )
     }
     if (replacement) {
         return (
@@ -76,12 +95,47 @@ export default function Requests() {
         )
     }
     if (cancelleave) {
+        return (
+            <Redirect to="/academic/Requests/CancelLeaveRequest" />
+        )
+    }
+    if (viewStatus) {
+        return (
+            <Redirect to="/academic/Requests/ViewStatus" />
+        )
+    }
+    if (viewAccepted) {
+        return (
+            <Redirect to="/academic/Requests/ViewAccepted" />
+        )
+
+    }
+    if (viewRejected) {
+        return (
+            <Redirect to="/academic/Requests/ViewRejected" />
+        )
+
+    }
+    if (viewPending) {
+        return (
+            <Redirect to="/academic/Requests/ViewPending" />
+        )
 
     }
 
     else {
         return (
             <>
+                <div className="whole">
+                    <br></br>
+                    <button value="View Status" className="dropbtn" onClick={status} >View Status Of Requests</button>
+                    <button value="View Accepted" className="dropbtn" onClick={accepted} >View Accepted Requests</button>
+                    <button value="View Status" className="dropbtn" onClick={rejected} >View Rejected Requests</button>
+                    <button value="View Status" className="dropbtn" onClick={penidng} >View Pending Requests</button>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                </div>
                 <div>
                     <h1>Day Off Requests:</h1>
                     <button value="DayOff" className="btn" onClick={HandleDayOff}>Send Day Off Request </button>

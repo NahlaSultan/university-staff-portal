@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import Location from './Location'
+import { Link } from 'react-router-dom'
 
 
 export default function Locations() {
@@ -25,6 +26,13 @@ export default function Locations() {
 
 
     <div>
+      <br />
+      <button className='btn' style={{ height: "50px" }}>
+        <Link to='/hr/addLocation'>
+          <li> Add New Location </li>
+        </Link>  </button>
+      <hr />
+      <br />
       <h2>Locations</h2>
       <ul>
         {locations.map((loc, i) => {

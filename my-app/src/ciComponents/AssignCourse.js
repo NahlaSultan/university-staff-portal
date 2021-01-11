@@ -1,6 +1,7 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
-
+import '../styling/main.css';
+import '../styling/dropDown.css';
 export default function AssignCourse() {
     const memberIDRef=useRef()
     const courseRef=useRef()
@@ -12,7 +13,7 @@ export default function AssignCourse() {
         console.log(Location)
     }
   function HandleAssCourse(){
-    const body={memberID:memberIDRef.current.value, courseName:courseRef.current.value  }
+    const body={memberID:memberIDRef.current.value, courseName:course  }
 
    axios   
    .post('http://localhost:8000/ci/updateAssignedCourse', body, {headers:{'token':localStorage.getItem('token')}})
@@ -47,6 +48,7 @@ return (
               </div>
               <br></br>
           <br></br>
+          <div className='whole'>
           <label className='textDown'>Choose a course: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleCourses}>
                         <option value="">Choose a Course</option>
@@ -54,7 +56,7 @@ return (
                             <option key={item} value={item}>{item}</option>
                         ))}
                     </select>
-
+</div>
               
           </div>
           <br></br>

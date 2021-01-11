@@ -3,6 +3,7 @@ import axios from 'axios'
 import '../../styling/main.css';
 import StaffMember from './StaffMember';
 
+import { Link } from 'react-router-dom'
 
 
 export default function Staffs() {
@@ -78,6 +79,21 @@ export default function Staffs() {
 
 
     <div >
+      <br />
+      <button className='btn'  style={{height: "50px"}}>
+        <Link to='/hr/addStaff'>
+         <li> Add Academic Member </li> 
+            </Link>  </button> &nbsp;
+
+      <button className='btn'  style={{height: "50px"}} >
+        <Link to='/hr/addHR'>
+        <li>  
+          Add HR Members </li> 
+        </Link>  </button>
+
+      <br />      <hr />
+<br />
+
       <h2>Heads of Departments</h2>
       <ul >
         {hod.map((st, i) => {
