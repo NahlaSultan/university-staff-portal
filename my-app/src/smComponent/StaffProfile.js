@@ -5,26 +5,26 @@ import { Link } from 'react-router-dom'
 import SideNav from '../mainComponents/SideNav';
 import Nav from '../mainComponents/Nav';
 export default function StaffProfile() {
-    const [message, setMessage] = useState("")
-    const [message2, setMessage2] = useState("")
-    function HandleSignIn(){
+    // const [message, setMessage] = useState("")
+    // const [message2, setMessage2] = useState("")
+    // function HandleSignIn(){
     
-       axios   
-       .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
+    //    axios   
+    //    .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
        
-       .then(res=>setMessage(res.data));
-       setMessage2("")
+    //    .then(res=>setMessage(res.data));
+    //    setMessage2("")
     
-    }
-    function HandleSignOut(){
+    // }
+    // function HandleSignOut(){
     
-        axios   
-        .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
+    //     axios   
+    //     .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
         
-        .then(res=>setMessage2(res.data));
-        setMessage("")
+    //     .then(res=>setMessage2(res.data));
+    //     setMessage("")
      
-     }
+    //  }
     return (
         <>
         <Nav/>
@@ -32,11 +32,11 @@ export default function StaffProfile() {
             <div className='App'>
                 <h1>Homepage</h1>
             </div>
-            <ul className='link_list'>
+            {/* <ul className='link_list'>
                 <Link className='a' to='/sm/viewProfile'>
                     <li>View Profile </li>
                 </Link>
-            </ul>
+            </ul> */}
             <br></br>
             <br></br>
             <ul className='link_list'>
@@ -81,7 +81,7 @@ export default function StaffProfile() {
             </ul>
             <br></br>
             <br></br>
-            <div className="buttons`">
+            {/* <div className="buttons`">
                 <button onClick={HandleSignIn} className="buttons">
                     Sign In
         </button>
@@ -95,8 +95,8 @@ export default function StaffProfile() {
         </button>
         <r1> {message2}</r1>
         <br></br>
-            <br></br>
-            </div>
+            <br></br> */}
+            {/* </div> */}
         </>
 
     )

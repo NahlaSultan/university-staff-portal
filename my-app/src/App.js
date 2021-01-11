@@ -169,6 +169,8 @@ import MonthAttendance from './smComponent/MonthAttendance';
 import ViewMonthAttendance from './smComponent/ViewMonthAttendance';
 import UpdateProfile from './smComponent/UpdateProfile';
 import ViewSmAttendance from './smComponent/ViewAttendance';
+import SignIn from './smComponent/SignIn';
+import SignOut from './smComponent/SignOut';
 export default function App() {
 
    return (
@@ -246,6 +248,8 @@ export default function App() {
 //           <Route exact path='/sm/monthAttendance' component={MonthAttendance} />
 //           <Route exact path='/sm/viewMonthAttendance' component={ViewMonthAttendance} />
 //           <Route exact path='/sm/updateProfile' component={UpdateProfile} />
+             <Route exact path='/sm/signIn' component={SignIn} />
+             <Route exact path='/sm/signOut' component={SignOut} />
 
 
     </Switch>
