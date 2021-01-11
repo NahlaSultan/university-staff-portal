@@ -33,49 +33,49 @@ export default function StaffProfile() {
                 <h1>Homepage</h1>
             </div>
             <ul className='link_list'>
-                <Link className='a' to='/viewProfile'>
+                <Link className='a' to='/sm/viewProfile'>
                     <li>View Profile </li>
                 </Link>
             </ul>
             <br></br>
             <br></br>
             <ul className='link_list'>
-                <Link className='a' to='/viewAttendance'>
+                <Link className='a' to='/sm/viewAttendance'>
                     <li>View Attendance </li>
                 </Link>
             </ul>
             <br></br>
             <br></br>
             <ul className='link_list'>
-                <Link className='a' to='/viewMonthAttendance'>
+                <Link className='a' to='/sm/viewMonthAttendance'>
                     <li>View Month Attendance </li>
                 </Link>
             </ul>
             <br></br>
             <br></br>
             <ul className='link_list'>
-                <Link className='a' to='/viewMissingDays'>
+                <Link className='a' to='/sm/viewMissingDays'>
                     <li>View Missing Days </li>
                 </Link>
             </ul>
             <br></br>
             <br></br>
             <ul className='link_list'>
-                <Link className='a' to='/viewMissingHours'>
+                <Link className='a' to='/sm/viewMissingHours'>
                     <li>View Missing Hours </li>
                 </Link>
             </ul>
             <br></br>
             <br></br>
             <ul className='link_list'>
-                <Link className='a' to='/viewExtraHours'>
+                <Link className='a' to='/sm/viewExtraHours'>
                     <li>View Extra Hours </li>
                 </Link>
             </ul>
             <br></br>
             <br></br>
             <ul className='link_list'>
-                <Link className='a' to='/updateProfile'>
+                <Link className='a' to='/sm/updateProfile'>
                     <li>Update Profile</li>
                 </Link>
             </ul>
