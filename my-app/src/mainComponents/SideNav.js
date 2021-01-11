@@ -34,7 +34,7 @@ export default function SideNav() {
 
             {/* start nahla */}
 
-            {SidebarData.map((item, index) => {
+            {/* {SidebarData.map((item, index) => { */}
 
 
 
@@ -46,7 +46,7 @@ export default function SideNav() {
               {/* end sara coor */ } 
 
               {/* // start sara adacemic */}
-            {/* // {SidebarAcademicMember.map((item, index) => { */}
+             {SidebarAcademicMember.map((item, index) => {
 
             {/* {SidebarAcademicMember.map((item, index) => { */}
 

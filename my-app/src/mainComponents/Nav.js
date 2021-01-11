@@ -29,7 +29,7 @@ export default function Nav() {
         }
 
       })
-  })
+  }, [])
   function HandleClick(e) {
     console.log("Here")
     setButtonHeader(false)
@@ -47,7 +47,7 @@ export default function Nav() {
               <img className="nav-pic" src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
               </img>       </li>
           </Link>
-          <div style={{marginTop:'2%'}} className="Bell">
+          <div style={{ marginTop: '2%' }} className="Bell">
             <button onClick={HandleClick} >
               <Link to='/academic/Bell'>
                 <BellIcon className="bell" width='40' active={bellHeader} animate={bellHeader} color='#fff' />

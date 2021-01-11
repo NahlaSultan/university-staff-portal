@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -46,6 +47,7 @@ export default function SendReplacement() {
     }
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>{headerText}</h1>
             <h2>Time to send a replacement request to a collegue</h2>
             <br></br>
