@@ -1829,13 +1829,13 @@ router.route('/addSignOut')
                     }
                     if (hours > 8.24 && ( staff.missingHours[staff.missingHours.length-1]==0||newMonth2==false)) {
                         //console.log("heloo")
-                        extraHours(staff, hours, flag, day1)
+                        extraHours(staff, hours, flag, day1,day2)
                         
 
                     }
                     else {
 
-                        missingHours(staff, hours, flag, day1)
+                        missingHours(staff, hours, flag, day1,day2)
 
                     }
 

@@ -31,7 +31,7 @@ export const SidebarInstructor = [
   },
   {
     title: 'View Course Coverage',
-    path: '/ci/viewCoverages',
+    path: '/ci/viewCoverage',
     icon: <IoIcons.IoIosCheckbox />,
     cName: 'nav-text'
   },
@@ -63,5 +63,6 @@ export const SidebarInstructor = [
     
     cName: 'nav-text'
   }
+  
   
 ];
