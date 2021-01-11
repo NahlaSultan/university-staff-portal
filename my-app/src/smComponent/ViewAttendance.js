@@ -1,6 +1,7 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
 import '../styling/main.css';
+import '../styling/tables.css';
 export default function ViewAttendance() {
     const [attendance, setAttendance] = useState([])
 
@@ -13,22 +14,45 @@ export default function ViewAttendance() {
         });  });
   
       return (
-  
+        <div>   
+            <h2>Attendance:</h2>
+      <br></br>
+      <br></br>
+        <table className="table">
+    
+        <tr className="th">
+        <th>Sign In Time</th>
+        <th>Sign Out Time </th>
+     
+        </tr>
+    
+    
+        {attendance.map((item, i) => {
+              return <tr key={i}>
+                <td> {item.signInTime} </td>
+                <td> {item.signOutTime} </td>
+    
+                <br />
+              </tr>
+            })}
+    
+    </table>
+    </div>
       
-          <div>   
-              <h2>Attendance:</h2>
-              <ul>
-                  {attendance.map((item, i) => {
-                  return <li key={i}>
-               <ul> signIn: {item.signInTime} </ul>
-                <ul> signOut: {item.signOutTime} </ul>
-                  <br/>
+          // <div>   
+          //     <h2>Attendance:</h2>
+          //     <ul>
+          //         {attendance.map((item, i) => {
+          //         return <li key={i}>
+          //      <ul> signIn: {item.signInTime} </ul>
+          //       <ul> signOut: {item.signOutTime} </ul>
+          //         <br/>
                   
                   
-                  </li>
+          //         </li>
   
-                  })}
-               </ul>
-              </div>
+          //         })}
+          //      </ul>
+          //     </div>
   )
 }

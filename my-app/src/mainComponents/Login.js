@@ -4,11 +4,25 @@ import { useHistory,Redirect } from "react-router-dom";
 import { render } from 'react-dom'
 import HRprofile from '../hrComponents/HRprofile'
 import '../styling/main.css';
+import { SidebarCoordinator } from '../coordinatorComponents/SidebarCoordinator';
+import { SidebarInstructor } from '../ciComponents/SidebarInstructor';
+import { SidebarAcademicMember } from '../academicMembersComponents/SidebarAcademicMember';
+import { SidebarData } from './SidebarData';
+import { SidebarHod } from '../hodComponents/SidebarHod';
+import { IconContext } from 'react-icons';
+import * as FaIcons from 'react-icons/fa';
+import * as AiIcons from 'react-icons/ai';
+import * as IoIcons from 'react-icons/io';
+import SideNav from './SideNav';
+var navArray = []
+
+
+
 // const jwt =require("jsonwebtoken")
+function Login() {
+  let history = useHistory()
 
-export default function Login() {
 
-let history = useHistory()
   const [logIn, setlogIn] = useState("")
   const [role, setRole] = useState([])
 
@@ -36,8 +50,8 @@ let history = useHistory()
     // callAPI()
   }
 
-  async function HandleRole(){
-    await axios
+   async function HandleRole(){
+     await axios
       .post('http://localhost:8000/getRoleFromToken', { token: logIn})
       .then(res => {
       setRole(res.data)   
@@ -46,12 +60,53 @@ let history = useHistory()
 
       console.log(role)
 
+
       if(role.includes('HR members')){
+        console.log("HR IF")
+
+        //append the array of hr sidenav
+        navArray = SidebarData
+        console.log(navArray)
+        localStorage.setItem('navArray', JSON.stringify(navArray))
+        console.log(localStorage.getItem('navArray'))
         history.push('hr/home') 
+
+
       }
       else{
+                console.log("AC IF")
+
+        //append array with academic members 
+
+        navArray.push(...SidebarAcademicMember)
+
+        for(var i=0; i<role.length;i++){
+          var currRole = role[i]
+
+          if(currRole == "courseInstructors"){
+            navArray.push(...SidebarInstructor)
+
+          }
+
+          if(currRole == "courseCoordinators"){
+            navArray.push(...SidebarCoordinator)
+
+
+          }
+
+          if(currRole == "headOfdepartments"){
+            navArray.push(...SidebarHod)
+
+          }
+
+        }
+        console.log(navArray)
+        localStorage.setItem('navArray', JSON.stringify(navArray))
+        console.log(localStorage.getItem('navArray'))
         history.push('/staffProfile') 
       }
+
+
 
   }
 
@@ -104,11 +159,6 @@ let history = useHistory()
                 </button>
               </div>
 
-
-
-
-
-
             </div>
 
           </div>
@@ -136,13 +186,23 @@ let history = useHistory()
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
      // <Redirect to="/home" />
-   
-    <Redirect to="/InstructorProfile" />
+
+
+   // <Redirect to="/InstructorProfile" />
 
 
   //   <>
   // </>
 
+
+    <>
+  </>
+  
+
+
     )
   }
 }
+
+export default Login
+
