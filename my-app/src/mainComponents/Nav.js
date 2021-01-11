@@ -81,15 +81,15 @@ export default function Nav() {
             </div>
           </li>
           
-           <li>
-    <div style={{marginTop:'2%'}} className="Bell">
+           
+    <div style={{marginTop:'1%'}} className="Bell">
             <button onClick={HandleClick} >
               <Link to='/academic/Bell'>
                 <BellIcon className="bell" width='40' active={bellHeader} animate={bellHeader} color='#fff' />
               </Link>
             </button>
           </div>
-    </li>
+    
 
 
           <li>

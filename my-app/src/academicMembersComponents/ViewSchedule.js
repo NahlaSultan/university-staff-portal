@@ -4,6 +4,7 @@ import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/tables.css';
 import '../styling/App.css';
+
 export default function ViewSchedule() {
     const [schedule, setSchedule] = useState([])
     const [Saturday, setSaturday] = useState([])

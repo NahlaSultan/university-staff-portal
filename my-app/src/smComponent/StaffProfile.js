@@ -2,7 +2,8 @@ import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
 import '../styling/App.css';
 import { Link } from 'react-router-dom'
-
+import SideNav from '../mainComponents/SideNav';
+import Nav from '../mainComponents/Nav';
 export default function StaffProfile() {
     const [message, setMessage] = useState("")
     const [message2, setMessage2] = useState("")
@@ -24,6 +25,8 @@ export default function StaffProfile() {
      }
     return (
         <>
+        <Nav/>
+    <SideNav/>
             <div className='App'>
                 <h1>Homepage</h1>
             </div>
