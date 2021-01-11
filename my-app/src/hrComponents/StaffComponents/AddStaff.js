@@ -132,7 +132,7 @@ export default function AddStaff() {
 
 
 				<div>
-					<input required='required' ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
+					<input minlength="2" required='required' ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
 					<span className="focus-input100"></span>
 					<span className="symbol-input100">
 					</span>

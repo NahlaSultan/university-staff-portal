@@ -270,10 +270,11 @@ iframe {
 
 /* The alert message box */
 .alert {
-  padding: 20px;
-  background-color: #f44336; /* Red */
-  color: white;
-  margin-bottom: 15px;
+  padding: 10px;
+  color: rgb(255, 0, 0);
+  margin-bottom: 10px;
+  font-family: Poppins-Medium;
+  font-size: 12px;
 }
 
 /* The close button */

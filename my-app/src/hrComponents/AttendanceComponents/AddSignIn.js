@@ -2,16 +2,17 @@ import React, { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import '../../styling/dropDown.css'
-import { Link } from 'react-router-dom'
+import { Link ,useHistory} from 'react-router-dom'
 
 export default function AddSignIn() {
-
+let history = useHistory()
     const [staffs, setStaffs] = useState([])
     const [date, setDate] = useState("")
     const [record, setRecord] = useState([])
     const [id, setID] = useState("")
     const [message, setMessage] = useState("")
-
+    const [message2, setMessage2] = useState("")
+    const [res, setRes] = useState("")
 
 
     useEffect(() => {
@@ -51,7 +52,19 @@ export default function AddSignIn() {
             setMessage("must specify memberID")
             return;
         }
+        else{
+            setMessage("")
 
+        }
+
+        if (date == "") {
+            setMessage2("must specify date and time")
+            return;
+        }
+        else{
+            setMessage2("")
+
+        }
 
         const year = parseInt(date.substring(0, 4));
         const month = parseInt(date.substring(5, 7));
@@ -72,7 +85,7 @@ export default function AddSignIn() {
             .post('http://localhost:8000/hr/addSignIn', body, { headers: { 'token': localStorage.getItem('token') } })
 
             .then(res =>
-                console.log(res.data));
+                setRes(res.data));
 
 
         await axios
@@ -80,6 +93,11 @@ export default function AddSignIn() {
             .then(res =>
                 setRecord(res.data));
         console.log(record)
+
+        if(res=='success'){
+            history.push('/hr/manageAttendance')
+    
+        }
 
 
     }
@@ -106,8 +124,7 @@ export default function AddSignIn() {
                 ))}
             </select>
             <div class="alert">
-                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                {message}
+            {message}
             </div>
 
 
@@ -118,6 +135,9 @@ export default function AddSignIn() {
 
                 min="2020-01-01" max="2021-12-31" onChange={HandleDate} />
 
+            <div class="alert">
+            {message2}
+            </div>
             {/* <div >
 					<label >Year: </label>
                     <select className='dropbtn' name="types"  onChange={ChooseYear}>
@@ -154,6 +174,10 @@ export default function AddSignIn() {
                 <button type="submit" onClick={HandleAddSignIn} className="login100-form-btn">
                     Add SignIn Record
 						</button >
+            </div>
+
+            <div class="alert">
+            {res}
             </div>
 
             <div>

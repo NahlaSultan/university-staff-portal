@@ -1558,7 +1558,7 @@ router.route('/addSignIn')
                     await staff.save()
                     //res.send(staff)
                 }
-                else res.send("you cannot sign in without signing out")
+                else res.send("you cannot sign in without signing out first")
             }
             //const m=staff.attendance.findOne({signInTime.getMonth:2})
             if (month1 != month2){
@@ -1567,7 +1567,7 @@ router.route('/addSignIn')
             }
             missingDays(staff, day1, day2, month1, month2, year1, firstEntry)
             // staff.save()
-            res.send(staff.attendance)
+            res.send("success")
         }
 
     })
