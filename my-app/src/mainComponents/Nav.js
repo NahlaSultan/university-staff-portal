@@ -56,7 +56,7 @@ export default function Nav() {
         }
 
       })
-  })
+  }, [])
   function HandleClick(e) {
     console.log("Here")
     setButtonHeader(false)
@@ -139,4 +139,3 @@ export default function Nav() {
 
   )
 }
-

@@ -13,26 +13,25 @@ export default function HRprofile() {
 
    return (
     <>
-  <Nav/>
-    <SideNav/>
+
     <div className='App'> 
             <h2>HR PROFILE</h2>        <br/>
 
         </div> 
 
         <ul className= "listItem">
-        <Link to = '/AddLocation'>
+        <Link to = '/hr/AddLocation'>
         <li > Add Location  </li>        <br/>
 
         </Link>   
 
-        <Link to = '/AddFaculty'>
+        <Link to = '/hr/AddFaculty'>
         <li > Add Faculty  </li>        <br/>
 
         </Link>  
 
 
-        <Link to = '/AddCourse'>
+        <Link to = '/hr/AddCourse'>
         <li > Add Course  </li>
         <br/>
         </Link> 

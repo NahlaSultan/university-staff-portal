@@ -24,7 +24,7 @@ export default function ViewStatus() {
     const [LeaveRequests, setLeaveRequests] = useState([])
     const [toggleReplacement, setToggleReplacement] = useState(true)
     useEffect(() => {
-        if (counter <= 200) {
+        if (counter <= 3) {
             setCounter(counter + 1)
             axios
                 .get('http://localhost:8000/academicMembers/viewReplacementRequestSent', { headers: { 'token': localStorage.getItem('token') } })
@@ -143,6 +143,7 @@ export default function ViewStatus() {
 
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>{dayOffHeader}</h1>
             <ul>
                 {DayOffRequest.map((item, i) => {
