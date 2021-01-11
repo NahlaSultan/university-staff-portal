@@ -96,6 +96,8 @@
 // import Home from './mainComponents/Home';
 // import Nav from './mainComponents/Nav';
 // import SideNav from './mainComponents/SideNav'
+// import SideNavHR from './hrComponents/SideNavHR'
+
 // import Locations from './hrComponents/LocationComponents/Locations';
 // import Faculties from './hrComponents/FacultyComponents/Faculties'
 // import AddStaff from './hrComponents/StaffComponents/AddStaff'
@@ -146,9 +148,9 @@
 //     <Route path='/hr/faculties' component={Faculties} />
 //     <Route path='/logout' component={Logout} />
 //     <Route path='/hr/home' component={HRprofile} />
-//     <Route path='/addLocation' component={addLocation} />
+//     <Route path='/hr/addLocation' component={addLocation} />
 //     <Route path='/hr/addDepartment' component={addDepartment} />
-//     <Route path='/addFaculty' component={addFaculty} />
+//     <Route path='/hr/addFaculty' component={addFaculty} />
 //     <Route path='/hr/addCourse' component={addCourse} />
 //     <Route path='/hr/viewMissingHours' component={StaffsMissingHours} />
 //     <Route path='/hr/viewMissingDays' component={StaffsMissingDays} />

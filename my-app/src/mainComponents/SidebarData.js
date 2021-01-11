@@ -22,14 +22,9 @@ export const SidebarData = [
     icon: <FaIcons.FaAirbnb />,
     cName: 'nav-text'
   },
+
   {
-    title: 'Add Staff',
-    path: '/hr/addStaff',
-    icon: <IoIcons.IoMdPeople />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Staffs',
+    title: 'Manage Staff',
     path: '/hr/staffs',
     icon: <IoIcons.IoMdPeople />,
     cName: 'nav-text'

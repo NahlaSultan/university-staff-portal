@@ -51,6 +51,8 @@ export default function ViewAttendance() {
     return (
         <div>
             <br />
+            <Link to='/hr/manageAttendance' className="linkPrev">&laquo;</ Link> <br/>
+
             <br />
 
   

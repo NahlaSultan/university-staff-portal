@@ -41,9 +41,9 @@ body, html {
 
 /*---------------------------------------------*/
 a {
-	font-family: Poppins-Regular;
-	font-size: 14px;
-	line-height: 1.7;
+	font-family:Poppins-Regular;
+	font-size: 10px;
+	line-height: 1;
 	color: #666666;
 	margin: 0px;
 	transition: all 0.4s;
@@ -60,6 +60,26 @@ a:hover {
 	text-decoration: none;
   color: #57b846;
 }
+
+
+.linkPrev {
+  position: absolute;
+  left: 300px;
+  font-size: 10px;
+  background-color:#0b2c5e;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 30px; 
+
+}
+
+.linkPrev:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+
 
 /*---------------------------------------------*/
 h1,h2,h3,h4,h5,h6 {
@@ -171,12 +191,12 @@ iframe {
 .limiter {
   width: 100%;
   height: 100%;
-  /* position:fixed; */
+
   margin: 0 auto;
 }
 
 .addStaff {
-  width: 40%;
+  width: 60%;
   margin: 0 auto;
 }
 
@@ -245,8 +265,35 @@ iframe {
   padding-top: 30px;
   padding-bottom: 30px;
 }
+.attendanceDiv{
+  display:"none"
+}
 
+/* The alert message box */
+.alert {
+  padding: 10px;
+  color: rgb(255, 0, 0);
+  margin-bottom: 10px;
+  font-family: Poppins-Medium;
+  font-size: 12px;
+}
 
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
 /*---------------------------------------------*/
 .wrap-input100 {
   position: relative;
@@ -553,3 +600,4 @@ iframe {
   transition: margin-left .5s;
   padding: 20px;
 }
+

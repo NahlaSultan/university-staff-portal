@@ -2,30 +2,32 @@ import React, { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import '../../styling/dropDown.css'
+import { Link ,useHistory} from 'react-router-dom'
 
 export default function AddSignIn() {
-
+let history = useHistory()
     const [staffs, setStaffs] = useState([])
     const [date, setDate] = useState("")
     const [record, setRecord] = useState([])
     const [id, setID] = useState("")
+    const [message, setMessage] = useState("")
+    const [message2, setMessage2] = useState("")
+    const [res, setRes] = useState("")
 
 
     useEffect(() => {
         const fetchData = async () => {
-          await
-          axios
-          .get('http://localhost:8000/hr/viewStaffs', { headers: { 'token': localStorage.getItem('token') } })
-          .then(res => {
-            setStaffs(res.data)
-            console.log("here")
-            console.log(res.data)
-          });
+            await
+                axios
+                    .get('http://localhost:8000/hr/viewStaffs', { headers: { 'token': localStorage.getItem('token') } })
+                    .then(res => {
+                        setStaffs(res.data)
+                    });
         };
-        fetchData();    
-      }, []);
+        fetchData();
+    }, []);
 
-    function ChooseID(e){
+    function ChooseID(e) {
         setID(e.target.value)
 
     }
@@ -34,7 +36,7 @@ export default function AddSignIn() {
 
     }
 
- 
+
     //   "id": "ac-3",
     //   "month": 12,
     //   "day": 5,
@@ -44,6 +46,25 @@ export default function AddSignIn() {
 
 
     async function HandleAddSignIn() {
+        console.log(document.getElementById("datetime"))
+        if (document.getElementById("staffid").value == "") {
+            console.log("if")
+            setMessage("must specify memberID")
+            return;
+        }
+        else{
+            setMessage("")
+
+        }
+
+        if (date == "") {
+            setMessage2("must specify date and time")
+            return;
+        }
+        else{
+            setMessage2("")
+
+        }
 
         const year = parseInt(date.substring(0, 4));
         const month = parseInt(date.substring(5, 7));
@@ -64,15 +85,19 @@ export default function AddSignIn() {
             .post('http://localhost:8000/hr/addSignIn', body, { headers: { 'token': localStorage.getItem('token') } })
 
             .then(res =>
-                console.log(res.data));
+                setRes(res.data));
 
-        console.log(document.getElementById('dateInput').value)
 
         await axios
             .post('http://localhost:8000/hr/viewAttendanceRec', { id: id }, { headers: { 'token': localStorage.getItem('token') } })
             .then(res =>
                 setRecord(res.data));
         console.log(record)
+
+        if(res=='success'){
+            history.push('/hr/manageAttendance')
+    
+        }
 
 
     }
@@ -83,28 +108,36 @@ export default function AddSignIn() {
 
         <div className="addStaff">
 
+            <Link to='/hr/manageAttendance' className="linkPrev">&laquo;</ Link> <br />
+
 
             <span className="login100-form-title">
                 Add SignIn
 					</span>
 
 
-                <label >ID: </label>
-                <select className='dropbutton' name="types"  onChange={ChooseID}>
-                        <option value="">Member ID</option>
-                        {staffs.map(item => (
-                            <option key={item.memberID} value={item.memberID}>{item.memberID}</option>
-                        ))}
-             </select>
+            <label >ID: </label>
+            <select className='dropbutton' id="staffid" onChange={ChooseID}>
+                <option value="">Member ID</option>
+                {staffs.map(item => (
+                    <option key={item.memberID} value={item.memberID}>{item.memberID}</option>
+                ))}
+            </select>
+            <div class="alert">
+            {message}
+            </div>
 
 
 
             <label for="start">date:</label>
 
-            <input type="datetime-local" id="dateInput" name="trip-start"
+            <input id="datetime" required="required" type="datetime-local" id="dateInput"
 
                 min="2020-01-01" max="2021-12-31" onChange={HandleDate} />
 
+            <div class="alert">
+            {message2}
+            </div>
             {/* <div >
 					<label >Year: </label>
                     <select className='dropbtn' name="types"  onChange={ChooseYear}>
@@ -137,10 +170,14 @@ export default function AddSignIn() {
 
 
 
-            <div className="container-login100-form-btn">
-                <button onClick={HandleAddSignIn} className="login100-form-btn">
+            <div className="container-login100-form-btn" >
+                <button type="submit" onClick={HandleAddSignIn} className="login100-form-btn">
                     Add SignIn Record
-						</button>
+						</button >
+            </div>
+
+            <div class="alert">
+            {res}
             </div>
 
             <div>
@@ -153,6 +190,7 @@ export default function AddSignIn() {
                     })}
                 </ul>
             </div>
+
 
         </div>
 

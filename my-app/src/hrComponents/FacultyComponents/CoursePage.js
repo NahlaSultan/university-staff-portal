@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation } from "react-router-dom";
+import { useLocation ,Link} from "react-router-dom";
 import Course from './Course'
 
     
@@ -8,6 +8,13 @@ function CoursePage() {
     const facultyName = locationReact.state.facultyName
     const dep = locationReact.state.dep
 
+    // function backtodep(){
+    //     history.push({
+    //         pathname: '/hr/departmentsPage',
+    //         state: { facultyName: fac.facultyName }
+    //        })
+    // }
+
 
     return (
 
@@ -15,6 +22,8 @@ function CoursePage() {
 
 <>
 <br/>
+<Link to='/hr/departmentsPage' className="linkPrev">&laquo;</ Link> <br/>
+
 <h2>{facultyName}    </h2>
 <h2>{dep.name} courses </h2>
 
