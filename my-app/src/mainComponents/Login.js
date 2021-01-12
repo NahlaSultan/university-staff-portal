@@ -15,6 +15,9 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import SideNav from './SideNav';
 
+export default function Login() {
+
+let history = useHistory()
 // const jwt =require("jsonwebtoken")
 function Login() {
   var navArray = []
@@ -66,6 +69,54 @@ function Login() {
       console.log(localStorage.getItem('navArray'))
       history.push('hr/home')
 
+  if (logIn == "Invalid password" || logIn == "Invalid email" || logIn=="") {
+    if (logIn == "Invalid password") {
+      headerText = "Invalid password"
+    }
+    else if (logIn == "Invalid email") {
+      headerText = "Invalid email"
+    }
+    return (
+      <div>
+        <div className="limiter">
+
+          <div className="container-login100">
+
+            <div className="wrap-login100">
+
+              <div className="login100-pic js-tilt" data-tilt>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
+                </img>
+              </div>
+
+
+
+              <span className="login100-form-title">
+                GUC Staff Login
+              </span>
+
+              <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                <input ref={EmailRef} className="input100" type="text" name="email" placeholder="Email" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <i className="fa fa-envelope" aria-hidden="true"></i>
+                </span>
+              </div>
+              <h3>  {headerText} </h3>
+
+              <div className="wrap-input100 validate-input" data-validate="Password is required">
+                <input ref={PassRef} className="input100" type="password" name="pass" placeholder="Password" />
+                <span className="focus-input100"></span>
+                <span className="symbol-input100">
+                  <i className="fa fa-lock" aria-hidden="true"></i>
+                </span>
+              </div>
+
+              <div className="container-login100-form-btn">
+                <button onClick={HandleEmail} className="login100-form-btn">
+                  Login
+                </button>
+              </div>
 
     }
     else {
@@ -182,6 +233,23 @@ function Login() {
       //see which role from header and redirect to a certain homepage
       // <Redirect to="/homeHR" />
       // <Redirect to="/resetPassword" />
+      <Redirect to="/homeHOD" />
+  //    <Redirect to="/staffProfile" />
+
+      
+      // <Redirect to="/homeHR" />
+      // <Redirect to="/resetPassword" />
+     // <Redirect to="/home" />
+   
+    // <Redirect to="/InstructorProfile" />
+
+
+  //   <>
+  // </>
+
+    )
+  }
+}
       // <Redirect to="/home" />
       //    <Redirect to="/staffProfile" />
 

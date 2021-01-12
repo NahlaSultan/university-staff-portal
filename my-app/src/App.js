@@ -445,6 +445,31 @@ export default function App() {
 //           <Route component={HRprofile} exact path="/homeHR" />
 //           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
 
+
+//           {/* {/* <Nav /> */}
+
+//           <Route exact path='/HRProfile' component={HRprofile} />
+//           <Route exact path='/coordinator/addSlot' component={AddSlots} />
+//           <Route exact path='/coordinator/manageSlots' component={ManageSlots} />
+//           <Route exact path='/coordinator/ManageLinkingRequest' component={ManageLinkingRequest} />
+//           <Route exact path='/academic/schedule' component={Schedule} />
+//           <Route exact path='/academic/manageReplacement' component={SendReplacement} />
+//           <Route exact path='/academic/changeDayOff' component={ChangeDayOff} />
+//           <Route exact path='/academic/Requests' component={Requests} />
+//           <Route exact path='/academic/ViewReplacementRequest' component={ViewReplacementRequest} />
+//           <Route exact path='/academic/SendSlotLinkingRequest' component={SendSlotLinkingRequest} />
+//           <Route exact path='/academic/SubmitLeaveRequest' component={SubmitLeaveRequest} />
+//           <Route exact path='/academic/Requests/ViewStatus' component={ViewStatus} />
+//           <Route exact path='/academic/Requests/ViewAccepted' component={ViewAccepted} />
+//           <Route exact path='/academic/Requests/ViewRejected' component={ViewRejected} />
+//           <Route exact path='/academic/Requests/ViewPending' component={viewPending} />
+//           <Route exact path='/academic/Requests/CancelDayOff' component={CangelDayOff} />
+//           <Route exact path='/academic/Requests/CancelSlotLinking' component={CancelSlotLinking} />
+//           <Route exact path='/academic/Requests/CancelLeaveRequest' component={CancelLeaveRequest} />
+//           <Route exact path='/academic/Bell' component={Bell} />
+//           <Route component={HRprofile} exact path="/homeHR" />
+//           <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
+
 //         </Switch>
 //       </div>
 //     </Router>
@@ -583,9 +608,9 @@ export default function App() {
 //       <div className='App'>
 
 //       <h1> app page</h1>
-
+      
 //         <Route exact path='/' exact component={Login} />
-
+        
 //         <HodSideNav />
 //         <Switch>
 //         <Route exact path='/homeHOD' component={HodProfile} />
@@ -593,7 +618,7 @@ export default function App() {
 //         <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
 //         <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />
 //         <Route exact path='/hod/viewDayOffSingleStaff' component={ViewDayOffSingleStaff} />
-//         <Route exact path='/hod/viewAllRequests' component={ViewAllRequests} />
+//         {/* <Route exact path='/hod/viewAllRequests' component={ViewAllRequests} /> */}
 //         <Route exact path='/hod/viewChangeDayOffRequests' component={ViewChangeDayOffRequests} />
 //         <Route exact path='/hod/viewLeaveRequests' component={ViewLeaveRequests} />
 //         <Route exact path='/hod/viewCourseCoverage' component={ViewCourseCoverage} />
@@ -601,11 +626,11 @@ export default function App() {
 //         <Route exact path='/hod/assignInstructor' component={AssignInstructor} />
 //         <Route exact path='/hod/deleteInstructor' component={DeleteInstructor} />
 //         <Route exact path='/hod/updateInstructor' component={UpdateInstructor} />
-//         <Route exact path='/hod/acceptChangeDayOffRequest' component={AcceptChangeDayoff} />
-//         <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} />
-//         <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} />
-//         <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} />
-
+//         {/* <Route exact path='/hod/acceptChangeDayOffRequest' component={AcceptChangeDayoff} /> */}
+//         {/* <Route exact path='/hod/rejectChangeDayOffRequest' component={RejectChangeDayoff} /> */}
+//         {/* <Route exact path='/hod/acceptLeaveRequest' component={AcceptLeaveRequest} /> */}
+//         {/* <Route exact path='/hod/rejectLeaveRequest' component={RejectLeaveRequest} /> */}
+    
 //         </Switch>
 //       </div>
 //     </Router>
@@ -613,6 +638,7 @@ export default function App() {
 // }
 
 //////////////////////////// END HASSAN ///////////////////////////////////////
+
 
 //END SaraAmjad
 /////////////////////////////////////////////////////////////////////
