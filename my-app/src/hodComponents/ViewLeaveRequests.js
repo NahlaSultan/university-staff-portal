@@ -55,6 +55,7 @@ if(type==""){
         <div>
           <h2><br></br> Leave Requests: <br></br> <br></br> </h2>
           <ul className='viewStaff' >
+          <h3 className='viewStaff'> {resp} <br></br> <br></br></h3>
              {requests.map((item,i) =>{
                return <li key={i}><h2>Leave</h2>
                <h3 className="elemntsInside">Type: {item.type}</h3>
@@ -77,8 +78,7 @@ if(type==""){
                                 Reject Request
                             </button>
                         </div>
-                        <ul className='viewStaff'> {resp} </ul>
-           
+          
                <br></br><br></br>
                </li>               
              })}
@@ -120,7 +120,6 @@ else{
     <br></br>
     <br></br>
         </div>
-        <ul className='viewStaff'> {resp} </ul>
         <br></br><br></br>
     </div>
 

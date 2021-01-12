@@ -20,7 +20,7 @@ export default function ViewAllStaff() {
 
         <div>
           <h2><br></br></h2>
-          <ul className='viewStaff' >
+          <ul className="assignCourse" >
              {staff.map((st,i) =>{
                return <li key={i}>
                  <h1>
@@ -33,10 +33,14 @@ export default function ViewAllStaff() {
                    Day Off: {st.dayOff}<br></br>
                    Office Locaion: {st.officeLocation}<br></br>
                    Annual leaves balance: {st.annualLeavesBalance}<br></br>
-                   Leaves: {st.leaves}<br></br>
+                   Leaves: 
+                   {st.leaves}
+                    {/* {(st.leaves).map((l,j) =>{
+                     <h4 key={j}>{l}<br></br></h4>
+                   })} */}
+                   <br></br>
                    Request replacement sent: {st.requestReplacementSent}<br></br>
                    Request replacement received: {st.requestReplacmentReceived}<br></br>
-                   Coordinator linking requests: {st.coordinatorLinkingRequests}<br></br>
                    Courses: {st.course}<br></br>
                    Slots assigned: {st.slotsAssigned}<br></br>
                    Slots replaced: {st.slotsReplaced}<br></br>

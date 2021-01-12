@@ -9,7 +9,7 @@ export default function StaffinCourse({staff}) {
     
         <div>  
             
-             <ul className='viewStaff' >
+             <ul  className="assignCourse" >
              {staff.map((st,i) =>{
                return <li key={i}>
                  <h1>

@@ -18,7 +18,7 @@ export default function ViewChangeDayOffRequests() {
         setrequest(res.data)
 
       });  
-    // console.log(requests)
+    // setRes("")
   });
 
       function HandleRejectReq(){
@@ -54,6 +54,7 @@ if(type==""){
         <div>
           <h2><br></br> Change Day Off Requests: <br></br> <br></br> </h2>
           <ul className='viewStaff' >
+          <h3 className='viewStaff'> {resp} <br></br> <br></br></h3>
              {requests.map((item,i) =>{
                return <li key={i}><h2>Change Day off</h2>
                 <h4 className="elemntsInside">Staff ID: {item.senderId}</h4>
@@ -70,8 +71,7 @@ if(type==""){
                             <button value={item.senderId} className="btn" onClick={HandleReject} >
                                 Reject Request
                             </button>
-                        </div>
-                        <ul className='viewStaff'> {resp} </ul>
+                        </div>                      
            
                <br></br><br></br>
                </li>               
@@ -114,7 +114,6 @@ if(type==""){
     <br></br>
     <br></br>
         </div>
-        <ul className='viewStaff'> {resp} </ul>
         <br></br><br></br>
     </div>
 
