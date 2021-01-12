@@ -44,7 +44,7 @@ export default function ManageSlots() {
             // Update the document title using the browser API
 
         }
-    });
+    },[]);
 
     // });
     if (updateSlot != "" && count <= 2) {

@@ -35,5 +35,6 @@ const dayOffSchema = new mongoose.Schema({
         type: String
     }
 })
+
 module.exports.model = mongoose.model('dayOffChange_requests', dayOffSchema)
 module.exports.dayOffSchema = dayOffSchema

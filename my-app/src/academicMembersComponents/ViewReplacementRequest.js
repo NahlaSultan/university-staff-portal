@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -13,7 +14,7 @@ export default function ViewReplacementRequest() {
     const [SlotToView1, setTheSlot1] = useState([])
     const [headerText, setHeaderText] = useState("")
     useEffect(() => {
-        if (counter <= 600) {
+        if (counter <= 20) {
             setCounter(counter + 1)
             axios
                 .get('http://localhost:8000/academicMembers/viewReplacementRequestSent', { headers: { 'token': localStorage.getItem('token') } })
@@ -112,6 +113,7 @@ export default function ViewReplacementRequest() {
     }
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>Request Sent:</h1>
             <h2>{headerText}</h2>
             <ul>

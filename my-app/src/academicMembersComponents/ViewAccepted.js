@@ -15,7 +15,7 @@ export default function ViewStatus() {
     const [counter, setCounter] = useState(0)
     const [toggle, setToggle] = useState(true)
     const [SlotToView, setTheSlot] = useState([])
-    const[SlotToView1,setTheSlot1]=useState([])
+    const [SlotToView1, setTheSlot1] = useState([])
     const [ReplacementToView, setTheReplacement] = useState([])
     const [replacementSent, setReplacementSent] = useState([])
     const [replacementReceived, setReplacementReceived] = useState([])
@@ -143,6 +143,7 @@ export default function ViewStatus() {
 
     return (
         <div>
+            <Link to='/academic/Requests'className="linkPrev">&laquo;</ Link> <br />
             <h1>{dayOffHeader}</h1>
             <ul>
                 {DayOffRequest.map((item, i) => {

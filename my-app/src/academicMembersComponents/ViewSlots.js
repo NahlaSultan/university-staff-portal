@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -8,7 +9,6 @@ export default function ViewSlots({ SlotToView }) {
 
     return (
         <div>
-
             <ul>
                 {SlotToView.map((item, i) => {
                     <h2>Slot Details: </h2>
