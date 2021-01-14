@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React,{useRef,useState} from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import { useLocation,Link } from "react-router-dom";
@@ -12,11 +12,10 @@ export default function UpdateFaculty() {
   const NameRef=useRef()
   const locationReact = useLocation();
   let history = useHistory();
+  const [res, setRes] = useState("")
 
-  function ClearTxtfields(){
-    document.getElementById('nameInput').value = ''
-  }
 
+ 
   function HandleAddFac(){
 
 
@@ -27,9 +26,14 @@ export default function UpdateFaculty() {
 
    axios   
    .post('http://localhost:8000/hr/updateFaculty', body, { headers: { 'token': localStorage.getItem('token') } })
-   .then(res=>console.log(res.data));
+   .then(res=>{
+     console.log(res.data)
+     if(res.data=="success")
+      history.push('/hr/faculties')
+      setRes(res.data)
+    
+    });
    
-   ClearTxtfields()
   }
 
   return (
@@ -38,11 +42,9 @@ export default function UpdateFaculty() {
 
     <div className="addStaff">		
 
-
 					<span className="login100-form-title">
 						Update {locationReact.state.fac.facultyName}
 					</span>
-
 
 
             <div>
@@ -61,7 +63,11 @@ export default function UpdateFaculty() {
             Update </button>
 					</div>
 
-	
+          <div className="alert">
+            {res}
+          </div>
+
+
 
 
 	</div>

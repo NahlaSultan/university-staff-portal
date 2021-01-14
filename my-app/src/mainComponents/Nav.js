@@ -8,6 +8,7 @@ import '../styling/dropDown.css';
 import '../styling/App.css';
 import BellIcon from 'react-bell-icon';
 import useSound from 'use-sound';
+import { Alert } from 'react-st-modal';
 import boopSfx from './bell.mp3';
 import {Alert} from 'react-st-modal';
 
@@ -18,6 +19,7 @@ export default function Nav() {
   const [message, setMessage] = useState()
   const [message2, setMessage2] = useState()
   
+
   const [playOff] = useSound(
     './bell.mp3',
     { volume: 0.25 }
@@ -25,31 +27,27 @@ export default function Nav() {
 
 
 
-  function HandleSignIn(){
+ async function HandleSignIn(){
     
-     axios   
+    await axios   
     .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
     
-    .then(res=> setMessage(res.data))
-    
-    
+    .then(res=>setMessage(res.data))
+    var temp=message
     
  
  }
-  function HandleSignOut(){
-      axios   
+ async function HandleSignOut(){
+ 
+     await axios   
      .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
-     
+  
      .then(res=>setMessage2(res.data))
+
+
   
   }
-//   function HandleLogOut(){
-//     axios   
-//    .get('http://localhost:8000/logOut', {headers:{'token':localStorage.getItem('token')}})
-   
-//    .then(res=>setMessage3(res.data))
 
-// }
 
   useEffect(async() => {
 
@@ -85,8 +83,10 @@ await Alert(message,'Sign In')
 
 
   return (
+
     <>
-    {/* <r1>{message}</r1> */}
+    
+
     <div className='nav'>
 
       <div >
@@ -94,15 +94,24 @@ await Alert(message,'Sign In')
 
 
           <li >
-            <Link to='/home' >
+            <Link to='/sm/staffProfile' >
               <img className="nav-pic" src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
               </img>
             </Link>
           </li>
+
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn" >
+              <Link to='/sm/staffProfile' > Home </Link>
+              </button>   
+            </div>
+          </li>
+
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignIn}>
-              <Link  >Sign In</Link>
+              <Link to="sm/signIn" >Sign In</Link>
 
               </button>   
             </div>
@@ -112,7 +121,7 @@ await Alert(message,'Sign In')
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn"onClick={HandleSignOut} >
-              <Link >Sign Out</Link>
+              <Link to="sm/signOut" >Sign Out</Link>
               </button>   
             </div>
           </li>
@@ -130,6 +139,7 @@ await Alert(message,'Sign In')
             </div>
           </li>
           
+     
            
     <div style={{marginTop:'1%'}} className="Bell">
             <button onClick={HandleClick} >
@@ -144,7 +154,7 @@ await Alert(message,'Sign In')
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='/logout' > Log out </Link>
+              <Link to='sm/logout' > Log out </Link>
               </button>   
             </div>
           </li>
@@ -158,7 +168,6 @@ await Alert(message,'Sign In')
 
 
     </div>
-    </>
 
   )
 }

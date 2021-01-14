@@ -47,7 +47,7 @@ export default function Bsell() {
                 }
 
             });
-    },[])
+    }, [])
     function HandleViewAttendance(e) {
         if (toggle) {
             console.log("Entered")
@@ -157,7 +157,7 @@ export default function Bsell() {
             <ul>
                 {leave.map((item, i) => {
                     return <li key={i}>
-                        <h2>Accepted: {item.accepted}</h2>
+                        <h2>Accepted: {item.accepted + ""}</h2>
                         <h3 className="elemntsInside">Type: {item.type}</h3>
                         <h4 className="elemntsInside">ID: {item._id}</h4>
                         <h4 className="elemntsInside">Start Date: {item.start}</h4>

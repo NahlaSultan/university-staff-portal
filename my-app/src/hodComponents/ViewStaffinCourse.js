@@ -1,4 +1,4 @@
-import React,{useRef, useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import '../styling/main.css';
 import StaffinCourse from './StaffinCourse'
@@ -6,11 +6,27 @@ import StaffinCourse from './StaffinCourse'
 
 export default function ViewStaffinCourse() {
   const [staff, setStaff] = useState([])
-  const CourseRef=useRef()
+  const [Course,setCourse]=useState()
+  const [courses,setCrs]= useState([])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await
+      axios   
+      .get('http://localhost:8000/hod/viewCourses',{ headers: { 'token': localStorage.getItem('token') } })
+      .then(res => {
+        setCrs(res.data)
+        }); 
+
+    };
+    fetchData();
+    
+    },[]);
 
 
      function HandleView(){
-        const body={courseName: CourseRef.current.value }
+        const body={courseName: Course }
 
       axios   
         .post('http://localhost:8000/hod/viewStaffinCourse',body,{headers:{'token': localStorage.getItem('token')}})
@@ -19,6 +35,9 @@ export default function ViewStaffinCourse() {
           });
     }  
 
+function ChooseCourse(e){
+  setCourse(e.target.value)
+}
 
   return (
 
@@ -32,13 +51,17 @@ export default function ViewStaffinCourse() {
   </span>
 
 
-            <div>
-                <input required={true} ref={CourseRef} className="input100" name="courseName" placeholder="Course Name" />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                </span>
-                <br />
-            </div>
+  <div >
+                  <label >Course Name:  </label>
+                  
+                  <select className='dropbtn' name="types"  onChange={ChooseCourse}>
+                      <option value=""> Course Name</option>
+                      {courses.map(c => (
+                          <option key={c} value={c}>{c}</option>
+                      ))}
+                  </select>
+                  <br /><br /><br />
+              </div>
 
         </div>        
         <br></br>
@@ -49,7 +72,7 @@ export default function ViewStaffinCourse() {
     <br></br>
     <br></br>
         </div>
-        <ul className='viewStaff'> <StaffinCourse staff={staff} /></ul>
+        <ul className="assignCourse"> <StaffinCourse staff={staff} /></ul>
 
         <br></br><br></br>
     </div>

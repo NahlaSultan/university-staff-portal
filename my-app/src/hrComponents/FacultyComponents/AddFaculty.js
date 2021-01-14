@@ -1,30 +1,46 @@
-import React, { useRef } from 'react'
+import React, { useRef,useState } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
+import { useHistory,Link} from 'react-router-dom'
 
 
 export default function AddFaculty() {
+  let history = useHistory()
   const NameRef = useRef()
+  const [res, setRes] = useState("")
 
-  function ClearTxtfields() {
-    document.getElementById('nameInput').value = ''
-  }
+  
 
-  function HandleAddFac() {
+
+
+  async function HandleAddFac() {
+
+    if(!NameRef.current.value || NameRef.current.value==""){
+      setRes("must sepcify faculty name")
+      return
+    } 
+
+  
+
     const body = {
       name: NameRef.current.value,
     }
 
-    axios
+    await axios
       .post('http://localhost:8000/hr/addFaculty', body, { headers: { 'token': localStorage.getItem('token') } })
-      .then(res => console.log(res.data));
+      .then( res => {
+        setRes(res.data)
+        if(res.data=="success")
+          history.push('/hr/faculties')
 
-    ClearTxtfields()
+      });
+
   }
 
   return (
     <>
       <div className="addStaff">
+      <Link to='/hr/faculties' className="linkPrev">&laquo;</ Link> <br />
 
 
         <span className="login100-form-title">
@@ -49,7 +65,9 @@ export default function AddFaculty() {
             Add Faculty </button>
         </div>
 
-
+        <div class="alert">
+            {res}
+            </div>
 
 
       </div>

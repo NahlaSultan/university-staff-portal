@@ -1,15 +1,30 @@
-import React,{useRef, useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import '../styling/main.css';
 
 
 export default function ViewCourseCoverage() {
   const [coverage, setCoverage] = useState()
-  const CourseRef=useRef()
+  const [Course,setCourse]=useState()
+  const [courses,setCrs]= useState([])
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await
+      axios   
+      .get('http://localhost:8000/hod/viewCourses',{ headers: { 'token': localStorage.getItem('token') } })
+      .then(res => {
+        setCrs(res.data)
+        }); 
+
+    };
+    fetchData();
+    
+    },[]);
 
      function HandleView(){
-        const body={courseName: CourseRef.current.value }
+        const body={courseName: Course}
 
         axios   
         .post('http://localhost:8000/hod/viewCourseCoverage',body,{headers:{'token': localStorage.getItem('token')}})
@@ -18,7 +33,10 @@ export default function ViewCourseCoverage() {
           });
     }  
 
-
+    function ChooseCourse(e){
+      setCourse(e.target.value)
+    }
+    
   return (
 
     <>
@@ -32,11 +50,15 @@ export default function ViewCourseCoverage() {
 
 
             <div>
-                <input required={true} ref={CourseRef} className="input100" name="courseName" placeholder="Course Name" />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                </span>
-                <br />
+            <label >Course Name:  </label>
+                  
+                  <select className='dropbtn' name="types"  onChange={ChooseCourse}>
+                      <option value=""> Course Name</option>
+                      {courses.map(c => (
+                          <option key={c} value={c}>{c}</option>
+                      ))}
+                  </select>
+                  <br /><br /><br />
             </div>
 
         </div>        

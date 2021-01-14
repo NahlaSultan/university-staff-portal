@@ -491,6 +491,32 @@ iframe {
   transition: opacity 0.4s;
 }
 
+/* The alert message box */
+.alert {
+  padding: 10px;
+  color: rgb(255, 0, 0);
+  margin-bottom: 10px;
+  font-family: Poppins-Medium;
+  font-size: 12px;
+}
+
+.linkPrev {
+  position: absolute;
+  left: 300px;
+  font-size: 10px;
+  background-color:#0b2c5e;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 30px; 
+
+}
+
+.linkPrev:hover {
+  background-color: #ddd;
+  color: black;
+}
+
 .alert-validate::after {
   content: "\f06a";
   font-family: FontAwesome;
@@ -511,6 +537,7 @@ iframe {
   visibility: visible;
   opacity: 1;
 }
+
 
 @media (max-width: 992px) {
   .alert-validate::before {
@@ -553,4 +580,20 @@ iframe {
 #main {
   transition: margin-left .5s;
   padding: 20px;
+}
+.linkPrev {
+  position: absolute;
+  left: 300px;
+  font-size: 10px;
+  background-color:#0b2c5e;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 30px; 
+
+}
+
+.linkPrev:hover {
+  background-color: #ddd;
+  color: black;
 }

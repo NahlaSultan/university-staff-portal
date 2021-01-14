@@ -13,12 +13,14 @@ import { IconContext } from 'react-icons';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
+
 import SideNav from './SideNav';
 var navArray = []
 
 
 // const jwt =require("jsonwebtoken")
 function Login() {
+  navArray = []
   let history = useHistory()
   const [logIn, setlogIn] = useState("")
   const [role, setRole] = useState([])
@@ -66,42 +68,59 @@ function Login() {
         console.log(navArray)
         localStorage.setItem('navArray', JSON.stringify(navArray))
         console.log(localStorage.getItem('navArray'))
-        history.push('hr/home') 
 
 
       }
+
+
       else{
                 console.log("AC IF")
+                console.log(navArray)
 
         //append array with academic members 
-
         navArray.push(...SidebarAcademicMember)
+        console.log("ac: ")
+        console.log(SidebarAcademicMember)
 
-        for(var i=0; i<role.length;i++){
-          var currRole = role[i]
+        console.log("append ac")
+        console.log(navArray)
 
-          if(currRole == "courseInstructors"){
+        
+
+          if(role.includes("courseInstructors")){
+            console.log("append ci")
+
             navArray.push(...SidebarInstructor)
+            console.log(navArray)
+
 
           }
 
-          if(currRole == "courseCoordinators"){
+          if(role.includes("courseCoordinators")){
+            console.log("append cc")
+
             navArray.push(...SidebarCoordinator)
+            console.log(navArray)
+
 
 
           }
 
-          if(currRole == "headOfdepartments"){
+          if(role.includes("headOfdepartments")){
+            console.log("append hod")
+
             navArray.push(...SidebarHod)
+            console.log(navArray)
+
 
           }
 
-        }
+        
         console.log(navArray)
         localStorage.setItem('navArray', JSON.stringify(navArray))
         console.log(localStorage.getItem('navArray'))
-        history.push('/staffProfile') 
       }
+      history.push('/sm/staffProfile') 
 
 
 

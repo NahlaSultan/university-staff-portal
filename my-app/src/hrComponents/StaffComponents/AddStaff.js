@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import axios from 'axios'
 import '../../styling/main.css';
@@ -18,6 +18,8 @@ export default function AddStaff() {
 	const [role, setRole] = useState("")
 	const [location, setLocation] = useState("")
 	var genderRadio = ""
+	let history = useHistory()
+	const [res, setRes] = useState("")
 
 	useEffect(() => {
 		// Update the document title using the browser API
@@ -43,7 +45,7 @@ export default function AddStaff() {
 
 
 
-	});
+	},[]);
 
 	function ChooseLocation(e) {
 		setLocation(e.target.value)
@@ -72,18 +74,58 @@ export default function AddStaff() {
 	function ChooseDepartment(e) {
 		setDepartment(e.target.value)
 	}
-	function ClearTxtfields() {
-		document.getElementById('emailInput').value = ''
-		document.getElementById('nameInput').value = ''
-		document.getElementById('nameInput').value = ''
-		document.getElementById('salaryInput').value = ''
-		document.getElementById('male').checked = false
-		document.getElementById('female').checked = false
 
-
-	}
 
 	function HandleAddStaff() {
+		if (!EmailRef.current.value || EmailRef.current.value == "") {
+			setRes("must sepcify an email")
+			return
+		}
+
+		if (!NameRef.current.value || NameRef.current.value == "") {
+			setRes("must sepcify a name")
+			return
+		}
+		else {
+			if (NameRef.current.value.length < 2) {
+				setRes("the name must be at least 2 charachters long")
+				return
+			}
+		}
+		if (!SalaryRef.current.value || SalaryRef.current.value == "") {
+			setRes("must sepcify the salary")
+			return
+		}
+
+		if (!document.getElementById('male').checked && !document.getElementById('female').checked) {
+			setRes("must specify gender")
+			return;
+		}
+		if (role == "") {
+			setRes("must specify role")
+			return;
+		}
+		if (dayOff == "") {
+			setRes("must specify day off")
+			return;
+		}
+	
+		if (faculty == "") {
+			setRes("must specify a faculty")
+			return;
+		} if (department == "") {
+			setRes("must specify a department")
+			return;
+		} 
+
+		if (location == "") {
+			setRes("must specify an office")
+			return;
+		}
+
+
+
+
 		if (document.getElementById('male').checked) {
 			genderRadio = "Male"
 		}
@@ -102,9 +144,15 @@ export default function AddStaff() {
 		axios
 			.post('http://localhost:8000/hr/addStaff', body, { headers: { 'token': localStorage.getItem('token') } })
 
-			.then(res => console.log(res.data));
+			.then(res => {
+				console.log(res.data)
+				setRes(res.data)
+				if (res.data == "success") {
+					history.push('/hr/staffs')
+				}
 
-		ClearTxtfields()
+			});
+
 
 	}
 
@@ -112,139 +160,143 @@ export default function AddStaff() {
 
 	return (
 		<div className="addStaff">
-			        <Link to='/hr/staffs' className="linkPrev">&laquo;</ Link> <br/>
+			<Link to='/hr/staffs' className="linkPrev">&laquo;</ Link> <br />
 
 
-			<form>
-				<span className="login100-form-title">
-					Add Staff Member
+			<span className="login100-form-title">
+				Add Staff Member
 					</span>
 
-				<div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-					<input ref={EmailRef} required='required' className="input100" type="text" id="emailInput" placeholder="Email" />
-					<span className="focus-input100"></span>
-					<span className="symbol-input100">
-						<i className="fa fa-envelope" aria-hidden="true"></i>
-					</span>
-					<br />
+			<div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+				<input ref={EmailRef} required='required' className="input100" type="text" id="emailInput" placeholder="Email" />
+				<span className="focus-input100"></span>
+				<span className="symbol-input100">
+					<i className="fa fa-envelope" aria-hidden="true"></i>
+				</span>
+				<br />
 
-				</div>
-
-
-				<div>
-					<input minlength="2" required='required' ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
-					<span className="focus-input100"></span>
-					<span className="symbol-input100">
-					</span>
-					<br />
-				</div>
-
-				<div>
-					<input required='required' ref={SalaryRef} className="input100" id="salaryInput" type='number' placeholder="Salary" />
-					<span className="focus-input100"></span>
-					<span className="symbol-input100">
-					</span>
-					<br />
-				</div>
+			</div>
 
 
+			<div>
+				<input minlength="2" required='required' ref={NameRef} className="input100" id="nameInput" placeholder="Name" />
+				<span className="focus-input100"></span>
+				<span className="symbol-input100">
+				</span>
+				<br />
+			</div>
 
-				<div>
-					<label >Gender: </label>
-					<input required='required' type="radio" id="male" name="gender" value="male" />
-					<label for="male">Male</label> &nbsp;
+			<div>
+				<input required='required' ref={SalaryRef} className="input100" id="salaryInput" type='number' placeholder="Salary" />
+				<span className="focus-input100"></span>
+				<span className="symbol-input100">
+				</span>
+				<br />
+			</div>
+
+
+
+			<div>
+				<label >Gender: </label>
+				<input required='required' type="radio" id="male" name="gender" value="male" />
+				<label for="male">Male</label> &nbsp;
 					&nbsp;
 
 					<input type="radio" id="female" name="gender" value="female" />
-					<label for="female">Female</label> <br />
-					<br />
-				</div>
+				<label for="female">Female</label> <br />
+				<br />
+			</div>
 
 
-				<div >
-					<label >Role: </label>
-					<select required=' required' className='dropbtn'  onChange={ChooseRole}>
-						<option value="">Choose Role</option>
-						<option value="headOfdepartments">Head Of Department</option>
-						<option value="courseInstructors">Course Instructor</option>
-						<option value="courseCoordinators">Course Coordinator</option>
-						<option value="teachingAssistants">Teaching Assistant</option>
+			<div >
+				<label >Role: </label>
+				<select required=' required' className='dropbtn' onChange={ChooseRole}>
+					<option value="">Choose Role</option>
+					<option value="headOfdepartments">Head Of Department</option>
+					<option value="courseInstructors">Course Instructor</option>
+					<option value="courseCoordinators">Course Coordinator</option>
+					<option value="teachingAssistants">Teaching Assistant</option>
 
+				</select>
+				<br /><br /><br />
+			</div>
+
+
+
+
+
+
+
+			<div >
+				<label >Day Off: </label>
+				<select required=' required' className='dropbtn' onChange={ChooseDayOff}>
+					<option value="">Day Off</option>
+					<option value="Saturday">Saturday</option>
+					<option value="Sunday">Sunday</option>
+					<option value="Monday">Monday</option>
+					<option value="Tuesday">Tuesday</option>
+					<option value="Wednesday">Wednesday</option>
+					<option value="Thursday">Thursday</option>
+
+				</select>
+				<br /><br /><br />
+			</div>
+
+			<div>
+
+				<li className='listInline'>
+				<select required='required' className='dropbtn' onChange={ChooseFaculties}>
+						<option value="">Choose Faculty</option>
+						{faculties.map(item => (
+							<option key={item.facultyName} value={item.facultyName}>{item.facultyName}</option>
+						))}
 					</select>
-					<br /><br /><br />
-				</div>
 
-
-
-
-
-
-
-				<div >
-					<label >Day Off: </label>
-					<select required=' required' className='dropbtn'  onChange={ChooseDayOff}>
-						<option value="">Day Off</option>
-						<option value="Saturday">Saturday</option>
-						<option value="Sunday">Sunday</option>
-						<option value="Monday">Monday</option>
-						<option value="Tuesday">Tuesday</option>
-						<option value="Wednesday">Wednesday</option>
-						<option value="Thursday">Thursday</option>
-
-					</select>
-					<br /><br /><br />
-				</div>
-
-				<div>
-
-					<li className='listInline'>
-						<select required='required' className='dropbtn'  onChange={ChooseDepartment}>
-							<option value="">Choose Department</option>
-							{facDepartments.map(item => (
-								<option key={item.name} value={item.name}>{item.name}</option>
-							))}
-						</select>
-
-						<select required='required' className='dropbtn'  onChange={ChooseFaculties}>
-							<option value="">Choose Faculty</option>
-							{faculties.map(item => (
-								<option key={item.facultyName} value={item.facultyName}>{item.facultyName}</option>
-							))}
-						</select>
-
-
-
-					</li>
-					<br /><br />
-				</div>
-
-
-
-
-
-
-
-				<div>
-					<label >Choose an office: </label>
-					<select required='required' className='dropbtn' name="types" onChange={ChooseLocation}>
-						<option value="">Choose office</option>
-						{offices.map(item => (
+					<select required='required' className='dropbtn' onChange={ChooseDepartment}>
+						<option value="">Choose Department</option>
+						{facDepartments.map(item => (
 							<option key={item.name} value={item.name}>{item.name}</option>
 						))}
 					</select>
-					<br /><br />
-				</div>
+
+				
 
 
-				<div className="container-login100-form-btn">
-					<button onClick={HandleAddStaff} className="login100-form-btn">
-						Add Member
+
+				</li>
+				<br /><br />
+			</div>
+
+
+
+
+
+
+
+			<div>
+				<label >Choose an office: </label>
+				<select required='required' className='dropbtn' name="types" onChange={ChooseLocation}>
+					<option value="">Choose office</option>
+					{offices.map(item => (
+						<option key={item.name} value={item.name}>{item.name}</option>
+					))}
+				</select>
+				<br /><br />
+			</div>
+
+
+			<div className="container-login100-form-btn">
+				<button onClick={HandleAddStaff} className="login100-form-btn">
+					Add Member
 						</button>
-					<br /><br /><br />
 
+				<div class="alert">
+					{res}
 				</div>
+				<br /><br /><br />
 
-			</form>
+			</div>
+
 
 
 

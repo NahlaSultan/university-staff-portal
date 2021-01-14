@@ -12,6 +12,7 @@ export default function SendSlotLinkingRequest() {
     const [buttonHeader, setButtonHeader] = useState("")
 
     useEffect(() => {
+        //     console.log("I m here")
         axios
             .get('http://localhost:8000/viewUnassignedSlots', { headers: { 'token': localStorage.getItem('token') } })
             .then(res => {
@@ -26,7 +27,7 @@ export default function SendSlotLinkingRequest() {
         setButtonHeader("You have chosen Slot: " + e.target.value)
     }
 
-    function HandleSubmitRequest() {
+    async function HandleSubmitRequest() {
         const body = { slotId: chosenSlot }
         console.log(body)
         axios

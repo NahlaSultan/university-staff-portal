@@ -29,6 +29,8 @@ export default function ViewProfile() {
                 <ul> Department: {item.department} </ul> 
                 <ul> Office: {item.officeLocation} </ul> 
                 <ul> Salary: {item.salary} </ul> 
+                <ul> Salary this month: {item.monthSalary} </ul> 
+
                 <br/>
                 
                 

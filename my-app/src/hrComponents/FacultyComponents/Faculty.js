@@ -40,7 +40,8 @@ export default function Faculty({fac }) {
      function HandleViewDepartments(){
         history.push({
             pathname: '/hr/departmentsPage',
-            state: { fac: fac }
+            state: { facultyName: fac.facultyName ,
+            departmentArray: fac.departments}
            })
 
 

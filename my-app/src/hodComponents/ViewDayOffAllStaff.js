@@ -17,10 +17,16 @@ export default function ViewDayOffAllStaff() {
   return (
 
         <div>
-          <h2> <br></br> Staff Day off: <br></br> <br></br></h2>
-          <ul className='viewStaff' >
+          <ul className="assignCourse" >
              {staff.map((s,i) =>{
-               return <li key={i}>{s} <br></br> <br></br></li>               
+               return <li key={i}>
+                 <br></br>
+                 <h2>{s[0]}</h2>
+                 <h4>{s[1]}<br></br>
+                 {s[2]}<br></br>
+                 </h4>
+                   <br></br>
+               </li>               
              })}
           </ul>
           
