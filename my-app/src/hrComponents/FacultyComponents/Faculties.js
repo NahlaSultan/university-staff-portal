@@ -11,7 +11,6 @@ export default function Faculties() {
   const [faculties, setFaculties] = useState([])
 
   useEffect(() => {
-    // Update the document title using the browser API
 
     const fetchData = async () => {
       await
@@ -23,7 +22,7 @@ export default function Faculties() {
     };
     fetchData();
 
-  }, []);
+  }, [faculties]);
 
 
 

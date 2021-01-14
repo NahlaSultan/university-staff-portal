@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState ,useEffect} from 'react'
 import '../../styling/main.css';
 import '../../styling/tables.css';
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import { useLocation } from "react-router-dom";
@@ -8,8 +9,24 @@ import Department from './Department'
 
 function DepartmentPage() {
     let locationReact=useLocation()
-    const facultyName = locationReact.state.fac.facultyName
-    const deps = locationReact.state.fac.departments
+    const facultyName = locationReact.state.facultyName
+    const [departmentArray,setDepartmentArray] = useState([])
+
+
+    useEffect(() => {
+        // Update the document title using the browser API
+    
+        const fetchData = async () => {
+          await
+            axios
+              .post('http://localhost:8000/hr/viewDepartments',{fac: facultyName}, { headers: { 'token': localStorage.getItem('token') } })
+              .then(res => {
+                setDepartmentArray(res.data)
+              });
+        };
+        fetchData();
+    
+      }, [departmentArray]);
 
     return (
 
@@ -29,7 +46,7 @@ function DepartmentPage() {
             </tr>
 
      
-                {deps.map((dep, i) => {
+                {departmentArray.map((dep, i) => {
                     return <tr className="th" key={dep._id}>  
                     <Department facultyName={facultyName} dep={dep} />  
                         </tr>

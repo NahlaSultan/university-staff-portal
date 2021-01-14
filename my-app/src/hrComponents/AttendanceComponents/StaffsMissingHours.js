@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
-
+import {Link} from 'react-router-dom'
 
 
 export default function StaffsMissingHours() {
@@ -26,21 +26,29 @@ export default function StaffsMissingHours() {
 
   return (
 
+<>
+<Link to='/hr/manageAttendance' className="linkPrev">&laquo;</ Link> <br /> <br /> <br />
 
-    <div>
-      <h2>Array of Staffs:</h2>
-      <ul >
-        {staffs.map((item, i) => {
-          return <li key={i}>
-            <h3> {item.staffMemberID} </h3>
-            <ul> missing hours this month: {item.missingHours} </ul>
+    <table className="table">
+    <tr className="th">
+    <th>Member ID</th>
+    <th>Missing Hours this Month</th>
+ 
+    </tr>
+
+
+    {staffs.map((item, i) => {
+          return <tr key={i}>
+            <td> {item.staffMemberID} </td>
+            <td> {item.missingHours} </td>
 
             <br />
-          </li>
+          </tr>
         })}
-      </ul>
-    </div>
 
+</table>
+
+</>
 
 
 

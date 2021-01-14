@@ -10,7 +10,7 @@ export default function UpdateLocation() {
   const CapacityRef=useRef()
   const locationReact = useLocation();
   let history = useHistory();
-
+  const [res, setRes] = useState("")
 
   
 
@@ -27,9 +27,15 @@ export default function UpdateLocation() {
    axios   
    .post('http://localhost:8000/hr/updateLocation', body, { headers: { 'token': localStorage.getItem('token') } })
    
-   .then(res=>console.log(res.data));
+   .then(res=>{
+    console.log(res.data)
+    setRes(res.data)
+    if (res.data == "success") {
+      history.push('/hr/locations')
+    }
 
-    history.push('/hr/locations')
+  });
+
 
 
 }
@@ -71,7 +77,9 @@ export default function UpdateLocation() {
                         Update  </button>
 					</div>
 
-	
+	        <div class="alert">
+          {res}
+        </div>
 
 
 	</div>

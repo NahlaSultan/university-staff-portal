@@ -2,12 +2,15 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { Alert } from 'react-st-modal';
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/App.css';
 import BellIcon from 'react-bell-icon';
-import boopSfx from './bell.mp3';
+
+
+
 
 export default function Nav() {
 
@@ -17,7 +20,8 @@ export default function Nav() {
   const [clicked, setClicked] = useState(false)
   const [play, setPlay] = useState("")
   const [message, setMessage] = useState()
-
+  const [message2, setMessage2] = useState()
+  
 
   function HandleSignIn() {
 
@@ -63,6 +67,20 @@ export default function Nav() {
 
 
   }
+  useEffect(async () => {
+
+    if (message != null)
+      await Alert(message, 'Sign In')
+
+  }, [message]);
+
+
+  useEffect(async () => {
+
+    if (message2 != null)
+      await Alert(message2, 'Sign Out')
+
+  }, [message2]);
 
 
   return (
