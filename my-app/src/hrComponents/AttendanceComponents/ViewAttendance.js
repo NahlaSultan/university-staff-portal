@@ -8,7 +8,7 @@ export default function ViewAttendance() {
     const [attendance, setAttendance] = useState([])
     const [staffs, setStaffs] = useState([])
     const [id, setID] = useState("")
-
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,6 +31,15 @@ export default function ViewAttendance() {
 
   
     function HandleViewAttendance() {
+        if (document.getElementById("staffid").value == "") {
+            console.log("if")
+            setMessage("must specify memberID")
+            return;
+        }
+        else{
+            setMessage("")
+
+        }
 
         const body = { id: id }
 
@@ -43,6 +52,9 @@ export default function ViewAttendance() {
             ).catch(error => {
                 console.log(error)
             })
+
+        document.getElementById("attendanceTable").style.display = "block"
+        
 
     }
 
@@ -58,23 +70,24 @@ export default function ViewAttendance() {
   
 
             <label >ID: </label> 
-                <select className='dropbutton' name="types"  onChange={ChooseID}>
+                <select className='dropbutton' name="types" id="staffid"  onChange={ChooseID}>
                         <option value="">Member ID</option>
                         {staffs.map(item => (
                             <option key={item.memberID} value={item.memberID}>{item.memberID}</option>
                         ))}
              </select><br/>
 
-            <div className="container-login100-form-btn">
+            <div  className="container-login100-form-btn"  >
                 <button onClick={HandleViewAttendance} className="login100-form-btn">
                     View Attendace
 				</button>
             </div>
             <br/>
-
-
+            <div class="alert">
+            {message}
+            </div>
             
-            <div>
+            <div id="attendanceTable" style={{display: "none"}}>
                 <h3>Attendace:</h3>
                 <AttendanceRecord attendance={attendance} />
             </div>

@@ -1,28 +1,26 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 
 export default function AddCourse() {
-  // const FacNameRef=useRef()
-  // const DepNameRef=useRef()
+
   const CourseNameRef = useRef()
   const SlotNoRef = useRef()
   const locationReact = useLocation();
-
+  const [res, setRes] = useState("")
+  let history = useHistory()
   const facultyName = locationReact.state.facultyName
   const departmentName = locationReact.state.departmentName
 
-  function ClearTxtfields() {
-    // document.getElementById('depnameInput').value = ''
-    // document.getElementById('facnameInput').value = ''
-    document.getElementById('coursenameInput').value = ''
-    document.getElementById('slotNoInput').value = ''
-
-  }
 
   function HandleAddCourse() {
+
+    if(!CourseNameRef.current.value || CourseNameRef.current.value==""){
+      setRes("must sepcify course name")
+      return
+    }
 
     const body = {
       facultyName: facultyName,
@@ -34,13 +32,21 @@ export default function AddCourse() {
     axios
       .post('http://localhost:8000/hr/addCourse', body, { headers: { 'token': localStorage.getItem('token') } })
 
-      .then(res => console.log(res.data));
-    ClearTxtfields()
+      .then(res => {
+        if (res.data == "success") {
+          history.push({
+            pathname: '/hr/departmentsPage',
+            state: { facultyName: facultyName }
+         }) }
+        setRes(res.data)
+        });
+
+    
+
   }
 
   return (
     <>
-      <form>
         <div className="addStaff">
 
 
@@ -48,23 +54,9 @@ export default function AddCourse() {
             Add Course
 					</span>
 
+        
 
-
-          {/* <div>
-              <input required={true} ref={FacNameRef} className="input100" id="facnameInput" placeholder="Faculty Name" />
-              <span className="focus-input100"></span>
-              <span className="symbol-input100">
-              </span>
-              <br/>
-					  </div>
-
-          <div>
-            <input required={true} ref={DepNameRef} className="input100" id="depnameInput" placeholder="Department Name" />
-            <span className="focus-input100"></span>
-            <span className="symbol-input100">
-            </span>
-            <br/>
-					</div> */}
+  
 
           <div>
             <input required={true} ref={CourseNameRef} className="input100" id="coursenameInput" placeholder="Course Name" />
@@ -90,11 +82,13 @@ export default function AddCourse() {
 			  </button>
           </div>
 
+          <div class="alert">
+            {res}
+            </div>
 
 
 
         </div>
-      </form>
 
     </>
 

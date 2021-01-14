@@ -72,15 +72,24 @@ export default function Nav() {
 
 
           <li >
-            <Link to='/home' >
+            <Link to='/sm/staffProfile' >
               <img className="nav-pic" src="https://upload.wikimedia.org/wikipedia/commons/0/00/The_German_University_in_Cairo_Official_logo.jpg" alt="IMG" >
               </img>
             </Link>
           </li>
+
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn" >
+              <Link to='/sm/staffProfile' > Home </Link>
+              </button>   
+            </div>
+          </li>
+
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignIn}>
-              <Link  >Sign In</Link>
+              <Link to="sm/signIn" >Sign In</Link>
 
               </button>   
             </div>
@@ -90,7 +99,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn"onClick={HandleSignOut} >
-              <Link >Sign Out</Link>
+              <Link to="sm/signOut" >Sign Out</Link>
               </button>   
             </div>
           </li>
@@ -108,6 +117,7 @@ export default function Nav() {
             </div>
           </li>
           
+     
            
     <div style={{marginTop:'1%'}} className="Bell">
             <button onClick={HandleClick} >
@@ -122,7 +132,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='/logout' > Log out </Link>
+              <Link to='sm/logout' > Log out </Link>
               </button>   
             </div>
           </li>

@@ -40,11 +40,11 @@ router.route('/addStaff')
 
 
             if (req.body.office == null || req.body.office == "")  {
-                res.send('must specify an office')
+                return res.send('must specify an office')
             }
             const office = await location_model.findOne({ name: req.body.office })
             if (!office || office.type != "office") {
-                res.send('this is not a valid office')
+                return res.send('this is not a valid office')
             }
             if (office.officeMembers < office.capacity) {
                 office.officeMembers = office.officeMembers + 1
@@ -55,12 +55,12 @@ router.route('/addStaff')
                 }
                 catch (Err) {
                     console.log(Err)
-                    res.send("error saving office")
+                    return res.send("error saving office")
                 }
 
             }
             else
-                res.send('this office is already full')
+                return res.send('this office is already full')
 
 
             const arr = []
@@ -84,19 +84,19 @@ router.route('/addStaff')
             if (staffType != "hr") {
 
                 if ((req.body.faculty == null || req.body.faculty == "" )&& staffType == "academic") {
-                    res.send("must specify faculty name")
+                    return res.send("must specify faculty name")
                 }
                 else {
                     faculty = await faculty_model.findOne({ facultyName: req.body.faculty })
                     if (faculty)
                         newUser.faculty = req.body.faculty
                     else {
-                        res.send("this is not a valid faculty, check faculty table and pick an existing one")
+                        return res.send("this is not a valid faculty, check faculty table and pick an existing one")
                     }
                 }
 
                 if ((req.body.department == null || req.body.department == "") && staffType == "academic") {
-                    res.send("must specify department name")
+                    return res.send("must specify department name")
                 }
                 else {
 
@@ -115,11 +115,8 @@ router.route('/addStaff')
                     else {
                         console.log("heree")
 
-                        res.send({
-                            "message": "this is not a valid department in" + req.body.faculty + " pick one of these departments or add a department first",
-                            "facultyDepartments": faculty.departments
-                        })
-                        res.send()
+                        return res.send("this is not a valid department in" + req.body.faculty + " pick one of these departments or add a department first"
+                        )
                         console.log("after save")
                     }
                 }
@@ -183,9 +180,9 @@ router.route('/addStaff')
                 console.log(Err)
                 res.send("Mongo error")
             }
-            return res.send(newUser)
+            return res.send("success")
         }
-        res.send('Email already registered')
+        return res.send('Email already registered')
     })
 
 
@@ -213,7 +210,7 @@ router.route('/addLocation')
                 console.log(Err)
                 res.send("error adding location")
             }
-            return res.send(newLocation)
+            return res.send("success")
         }
 
         res.send('location ' + req.body.name + ' is already there')
@@ -341,7 +338,7 @@ router.route('/updateLocation')
             if (req.body.newName != null && req.body.newName != '') {
                 const usedName = await location_model.findOne({ name: req.body.newName })
                 if (usedName)
-                    res.send('name ' + req.body.newName + 'is already in use')
+                    res.send('name ' + req.body.newName + ' is already in use')
 
                 if (location.type == "office") {
 
@@ -370,7 +367,7 @@ router.route('/updateLocation')
                 console.log(Err)
                 res.send("error saving location")
             }
-            return res.send(location)
+            return res.send("success")
         }
 
         res.send('location ' + req.body.name + ' doesnt exist')
@@ -434,8 +431,9 @@ router.route('/addFaculty')
             catch (Err) {
                 console.log(Err)
                 res.send("error adding faculty")
+                return
             }
-            res.send(newFaculty)
+            res.send("success")
 
         }
         res.send('faculty ' + req.body.name + ' is already there')
@@ -488,7 +486,6 @@ router.route('/updateFaculty')
         const faculty = await faculty_model.findOne({ facultyName: req.body.name })
 
         if (faculty) {
-            const name = req.body.name
 
             if (req.body.addDepartments != null) {
                 array = req.body.addDepartments
@@ -523,9 +520,11 @@ router.route('/updateFaculty')
             }
 
             if (req.body.newName != null) {
-                const usedName = await location_model.findOne({ name: req.body.newName })
-                if (usedName)
-                    res.send('name ' + req.body.newName + 'is already in use')
+                const usedName = await faculty_model.findOne({ facultyName: req.body.newName })
+                if (usedName){
+                    res.send('name ' + req.body.newName + ' is already in use')
+                    return
+                }
 
                 const staff = await staff_members_models.find({ faculty: req.body.name })
                 console.log(staff.length)
@@ -536,6 +535,8 @@ router.route('/updateFaculty')
                         await staff[k].save()
                     } catch (error) {
                         res.send("error saving staff")
+                        return
+
 
                     }
                 }
@@ -548,8 +549,10 @@ router.route('/updateFaculty')
             catch (Err) {
                 console.log(Err)
                 res.send("error saving faculty")
+                return
+
             }
-            return res.send(faculty)
+            return res.send("success")
         }
 
         res.send('faculty ' + req.body.name + ' doesnt exist')
@@ -573,6 +576,7 @@ router.route('/addDepartment')
             }
             if (found) {
                 res.send("this department is already in " + req.body.facultyName)
+                return
             }
             const department = new department_model({
                 name: req.body.departmentName,
@@ -592,10 +596,12 @@ router.route('/addDepartment')
                     catch (Err) {
                         console.log(Err)
                         res.send("error saving hod")
+                        return
                     }
                 }
                 else {
                     res.send("the hod's id doesn't exist, add this staff member first "+ req.body.headOfDepartment)
+                    return
                 }
 
             }
@@ -619,8 +625,9 @@ router.route('/addDepartment')
             catch (Err) {
                 console.log(Err)
                 res.send("error adding faculty")
+                return
             }
-            res.send(department)
+            res.send("success")
 
         }
         res.send('faculty ' + req.body.facultyName + ' isnt there')
@@ -694,8 +701,21 @@ router.route('/updateDepartment')
 
 
             if (req.body.newName != null && req.body.newName!="" ) {
-                if (faculty.departments.includes(req.body.newName))
-                    res.send('name ' + req.body.newName + 'is already in use')
+
+                var usedName = false
+                for (var i = 0; i < faculty.departments.length; i++) {
+                    currDep = faculty.departments[i]
+                    if (req.body.newName == currDep.name) {
+                        usedName = true
+
+                        break;
+    
+                    }
+                }
+                if (usedName){
+                    res.send('name ' + req.body.newName + ' is already in use')
+                    return
+                }
 
                 dep.name = req.body.newName
 
@@ -781,7 +801,7 @@ router.route('/updateDepartment')
                 console.log(Err)
                 res.send("error saving faculty")
             }
-            res.send(faculty)
+            res.send("success")
         }
 
 
@@ -807,6 +827,7 @@ router.route('/addCourse')
             }
             if (!departmentFound) {
                 res.send("this department isn't in " + req.body.facultyName)
+                return
             }
             const dep = faculty.departments[depIndex]
             var courseFound = false
@@ -818,8 +839,11 @@ router.route('/addCourse')
                     courseIndex = i
                 }
             }
-            if (courseFound)
+            if (courseFound){
                 res.send("this course is already in " + req.body.departmentName)
+                return
+
+            }
 
 
             const course = new course_model({
@@ -827,13 +851,14 @@ router.route('/addCourse')
                 teachingSlotsNumber: req.body.teachingSlotsNumber
 
             })
-            if (req.body.teachingSlotsNumber == null) {
-                res.send("each course must have a number of teaching slots, please specify in req.body.teachingSlotsNumber ")
+            if (req.body.teachingSlotsNumber == null || req.body.teachingSlotsNumber == "" )  {
+                res.send("each course must have a number of teaching slots")
+                return
             }
             // hr cannot assign course to academic member, so we dont add anything in the instructor/ta/coordinator arrays
 
             faculty.markModified('departments.' + depIndex + '.courses');
-            faculty.departments[depIndex].courses.push(req.body.courseName)
+            await faculty.departments[depIndex].courses.push(req.body.courseName)
 
             try {
                 await course.save()
@@ -841,16 +866,18 @@ router.route('/addCourse')
             catch (Err) {
                 console.log(Err)
                 res.send("error adding course")
+                return
             }
             try {
                 await faculty.save()
             }
             catch (Err) {
                 console.log(Err)
-                res.send("error adding faculty")
+                res.send("error saving course in faculty")
+                return
             }
 
-            res.send(faculty)
+            res.send("success")
 
         }
         res.send('faculty ' + req.body.facultyName + ' isnt there')
@@ -944,13 +971,17 @@ router.route('/updateCourse')
                 }
             }
             if (!courseFound)
-                res.send("this course is not in " + req.body.departmentName)
+                return res.send("this course is not in " + req.body.departmentName)
 
 
 
             if (req.body.newName != null && req.body.newName!="" ) {
                 console.log("newName not null")
                 //array form
+
+                if(faculty.departments[depIndex].courses.includes(req.body.newName)){
+                    return res.send("this course is already in "+ req.body.departmentName)
+                }
                 course.courseName = req.body.newName
                 faculty.departments[depIndex].courses[courseIndex] = course.courseName
                 faculty.markModified('departments.' + depIndex + '.courses');
@@ -964,7 +995,7 @@ router.route('/updateCourse')
 
             }
 
-            if (req.body.teachingSlotsNumber != null) {
+            if (req.body.teachingSlotsNumber != null && req.body.teachingSlotsNumber !="") {
                 console.log("teachingSlotsNumber not null")
                 //string form
                 course.teachingSlotsNumber = req.body.teachingSlotsNumber
@@ -982,7 +1013,7 @@ router.route('/updateCourse')
                     }
                 }
                 if (!newDepartmentFound) {
-                    res.send("this department isn't in " + req.body.facultyName)
+                    return res.send("this department isn't in " + req.body.facultyName)
                 }
                 faculty.departments[newDepIndex].courses.push(course.courseName)
                 faculty.departments[depIndex].courses.splice(courseIndex, 1)
@@ -1004,7 +1035,7 @@ router.route('/updateCourse')
                 console.log(Err)
                 res.send("error adding faculty")
             }
-            res.send(course)
+            res.send("success")
 
         }
         res.send('faculty ' + req.body.facultyName + ' isnt there')
@@ -1017,7 +1048,15 @@ router.route('/updateSalary')
         const staff = await staff_members_models.findOne({ memberID: req.body.id })
 
         if (staff) {
+            if(req.body.salary!=null && req.body.salary!= "")
             staff.salary = req.body.salary
+
+            if(req.body.monthSalary!=null && req.body.monthSalary!= ""){
+                staff.monthSalary = req.body.monthSalary
+                console.log("updating MM salary")
+
+
+            }
 
             try {
 
@@ -1260,7 +1299,7 @@ router.route('/updateStaff')
             if (req.body.gender && req.body.gender != "") {
                 staff.gender = req.body.gender
             }
-            if (req.body.email) {
+            if (req.body.email && req.body.email!="") {
                 console.log("email")
                 console.log(req.body.email)
                 const found = await staff_members_models.findOne({ email: req.body.email })
@@ -1270,19 +1309,17 @@ router.route('/updateStaff')
                 staff.email = req.body.email
 
             }
-            if (req.body.password) {
+            if (req.body.password && req.body.password!="") {
                 const salt = await bcrypt.genSalt(10)
                 const newPassword = await bcrypt.hash(req.body.password, salt)
                 staff.password = newPassword
             }
-            var message = ""
-            if (req.body.dayOff) {
+            if (req.body.dayOff && req.body.dayOff!="") {
                 if (staff.staffType == "hr") {
-                    message = "you can't change hr's day off, it must remain as Saturday"
                 }
                 staff.dayOff = req.body.dayOff
             }
-            if (req.body.annualLeavesBalance) {
+            if (req.body.annualLeavesBalance && req.body.annualLeavesBalance!="") {
                 console.log("annualLeavesBalance")
                 console.log(req.body.annualLeavesBalance)
 
@@ -1361,10 +1398,7 @@ router.route('/updateStaff')
                 console.log(Err)
                 res.send("error saving staff member")
             }
-            res.send({
-                "staff": staff,
-                "message": message
-            })
+            res.send("success")
         }
 
         res.send('staff member with id ' + req.body.id + ' doesnt exist')
@@ -1765,7 +1799,7 @@ router.route('/addSignOut')
         const staff = await staff_members_models.findOne({ memberID: req.body.id })
         if (staff) {
             if (hrID == staff._id) {
-                res.send("cannot add sign in for yourself")
+                res.send("cannot add sign out record for yourself")
             }
             if (staff.attendance[staff.attendance.length - 1].signOutTime == null) {
 
@@ -1800,7 +1834,7 @@ router.route('/addSignOut')
                     }
                     catch (Err) {
                         console.log(Err)
-                        res.send("error saving staff")
+                        res.send("error saving attendance record")
                     }
 
                     var signIn = currentTime2.signInTime
@@ -1835,10 +1869,10 @@ router.route('/addSignOut')
 
                     }
 
-                    res.send(staff.attendance)
+                    res.send("success")
                 }
             }
-            else res.send("you cannot sign out without signing in")
+            else res.send("you cannot sign out without signing in first")
         }
         else
 
@@ -1909,7 +1943,7 @@ router.route('/viewMissingDays')
             arr = staff[k].missingDays
             if (arr.length != 0 && arr[arr.length - 1] != 0) {
                 //var memID = staff[k].memberID
-                resArr.push({ "staffMemberID": staff[k].memberID }, { "missingDays": arr[arr.length - 1] })
+                resArr.push({ "staffMemberID": staff[k].memberID , "missingDays": arr[arr.length - 1] })
             }
         }
 
@@ -1930,7 +1964,7 @@ router.route('/viewMissingHours')
             arr = staff[k].missingHours
             if (arr.length != 0 && arr[arr.length - 1] != 0) {
                 //var memID = staff[k].memberID
-                resArr.push({ "staffMemberID": staff[k].memberID }, { "missingHours:": arr })
+                resArr.push({ "staffMemberID": staff[k].memberID ,  "missingHours": arr[arr.length - 1]  })
             }
         }
 

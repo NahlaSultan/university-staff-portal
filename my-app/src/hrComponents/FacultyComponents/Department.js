@@ -4,7 +4,7 @@ import '../../styling/main.css';
 import { useHistory } from "react-router-dom";
 
 
-export default function Department({facultyName,dep }) {
+export default function Department({facultyName,dep ,departmentArray}) {
     const [courses, setCourses] = useState([])
     const [toggle, setToggle] = useState(true)
     var facName = facultyName+""
@@ -24,7 +24,9 @@ export default function Department({facultyName,dep }) {
         history.push({
             pathname: '/hr/updateDepartment',
             state: { facultyName: facultyName,
-            dep:dep }
+            dep:dep,
+            departmentArray: departmentArray
+         }
            }) 
     }
 
