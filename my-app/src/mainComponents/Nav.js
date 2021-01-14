@@ -1,5 +1,3 @@
-
-
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { Alert } from 'react-st-modal';
