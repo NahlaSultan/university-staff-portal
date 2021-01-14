@@ -257,11 +257,14 @@ router.route('/viewStatusDayOff')
         const staff = await staff_members_models.findOne({ _id: staffId })
         var resArr = []
         if (staff) {
-            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
-            if (dayOffRequest)
+            const dayOffRequest = await dayOffRequest_model.find({ senderId: staff.dayOffRequestSent })
+            for (let i = 0; i < dayOffRequest.length; i++) {
                 resArr.push(
-                    dayOffRequest
+                    dayOffRequest[i]
                 )
+            }
+
+
             return res.send(resArr)
         }
         else {
@@ -609,7 +612,8 @@ router.route('/viewPendingReplacementRequestReceived')
             res.send(sentArray)
 
         }
-        res.send("Invalid staff member")
+        else
+            res.send("Invalid staff member")
 
     })
 router.route('/viewPendingdReplacementRequestSent')
@@ -1245,10 +1249,11 @@ router.route('/viewReplacementRequestSent')
                 lastIndex++
             }
 
-            res.send(sentArray)
+            return res.send(sentArray)
 
         }
-        res.send("Invalid staff member")
+        else
+            return res.send("Invalid staff member")
 
     })
 router.route('/viewReplacementRequestReceived')

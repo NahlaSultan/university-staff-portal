@@ -25,6 +25,7 @@ function Login() {
   const PassRef = useRef()
   var headerText = ""
   function HandleEmail() {
+    console.log("I entered")
     const body = { email: EmailRef.current.value, password: PassRef.current.value }
 
     axios
