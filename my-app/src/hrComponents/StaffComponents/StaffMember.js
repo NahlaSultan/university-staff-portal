@@ -50,7 +50,9 @@ function HandleDeleteStaff(){
 
       history.push({
         pathname: '/hr/updateSalary',
-        state: { memberID: st.memberID 
+        state: { memberID: st.memberID ,
+          salary: st.salary ,
+          monthSalary: st.monthSalary 
     }
        })
 
@@ -87,7 +89,9 @@ function HandleDeleteStaff(){
                 <ul> annualLeavesBalance: {st.annualLeavesBalance} </ul>
                 <ul> gender: {st.gender} </ul> 
                 <ul> office : {st.officeLocation} </ul>
-                <ul> salary : {st.salary}    <button className = 'btn' onClick={HandleUpdateSalary}> Update Salary  </button>
+                <ul> salary : {st.salary} &nbsp;
+monthSalary : {st.monthSalary}    &nbsp;
+<button className = 'btn' onClick={HandleUpdateSalary}> Update Salary  </button>
                 <div>
 					
 					</div>  </ul>

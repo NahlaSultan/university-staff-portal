@@ -2,39 +2,46 @@ import React, { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import { useLocation } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { set } from 'mongoose';
+import { useHistory, Link } from "react-router-dom";
 
 export default function UpdateCourse() {
 
     const NameRef = useRef()
-    const SlotNoRef= useRef()
-    const [hod, setHod] = useState("")
+    const SlotNoRef = useRef()
+    let history = useHistory()
     const [newDep, setNewDep] = useState("")
     const [facDepartments, setDepartments] = useState([])
     const locationReact = useLocation();
     const facultyName = locationReact.state.facultyName
     const departmentName = locationReact.state.departmentName
     const courseName = locationReact.state.courseName
+    const [res, setRes] = useState("")
 
 
     useEffect(() => {
         const fetchData = async () => {
             await
-            axios
-            .post('http://localhost:8000/hr/viewDepartments', { fac: facultyName }, { headers: { 'token': localStorage.getItem('token') } })
-            .then(res => {
-                setDepartments(res.data)
-                console.log(res.data)
-            });  
-          };
-          fetchData();
-        
-        
+                axios
+                    .post('http://localhost:8000/hr/viewDepartments', { fac: facultyName }, { headers: { 'token': localStorage.getItem('token') } })
+                    .then(res => {
+                        setDepartments(res.data)
+                        console.log(res.data)
+                    });
+        };
+        fetchData();
+
+
 
 
     }, []);
 
+    function backtodep() {
+        console.log("back to dep")
+        history.push({
+            pathname: '/hr/departmentsPage',
+            state: { facultyName: facultyName }
+        })
+    }
 
     function ChooseDepartment(e) {
         setNewDep(e.target.value)
@@ -50,21 +57,36 @@ export default function UpdateCourse() {
             newName: NameRef.current.value,
             teachingSlotsNumber: SlotNoRef.current.value,
             newDepartment: newDep
-            
+
         }
 
         console.log(body)
 
         axios
             .post('http://localhost:8000/hr/updateCourse', body, { headers: { 'token': localStorage.getItem('token') } })
-            .then(res => console.log(res.data));
+            .then(res => {
+                console.log(res.data)
+                if (res.data == "success")
+                history.push({
+                    pathname: '/hr/departmentsPage',
+                    state: { facultyName: facultyName }
+                })
+                setRes(res.data)
+
+
+            });
 
     }
 
     return (
         <>
             <div className="addStaff">
+                <br />
+                <button onClick={backtodep} className="linkPrev">
+                    <Link  >&laquo;</ Link>
+                </button>
 
+                <br />
 
                 <span className="login100-form-title">
                     Update {courseName}
@@ -104,7 +126,9 @@ export default function UpdateCourse() {
                         Update </button>
                 </div>
 
-
+                <div className="alert">
+                    {res}
+                </div>
 
 
             </div>

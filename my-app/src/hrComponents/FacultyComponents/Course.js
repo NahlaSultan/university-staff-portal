@@ -20,7 +20,7 @@ export default function Course({ courseName, facultyName, departmentName }) {
     fetchData();
 
 
-  }, []);
+  }, [course]);
 
 
   function HandleDeleteCourse() {

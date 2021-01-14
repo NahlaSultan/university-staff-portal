@@ -1,19 +1,22 @@
 import React from 'react'
-import { useLocation ,Link} from "react-router-dom";
+import { useLocation ,Link, useHistory} from "react-router-dom";
 import Course from './Course'
 
     
 function CoursePage() {
+    let history = useHistory()
     let locationReact=useLocation()
     const facultyName = locationReact.state.facultyName
     const dep = locationReact.state.dep
+     
 
-    // function backtodep(){
-    //     history.push({
-    //         pathname: '/hr/departmentsPage',
-    //         state: { facultyName: fac.facultyName }
-    //        })
-    // }
+    function backtodep(){
+        console.log("back to dep")
+        history.push({
+            pathname: '/hr/departmentsPage',
+            state: { facultyName: facultyName }
+           })
+    }
 
 
     return (
@@ -22,7 +25,11 @@ function CoursePage() {
 
 <>
 <br/>
-<Link to='/hr/departmentsPage' className="linkPrev">&laquo;</ Link> <br/>
+<button onClick={backtodep} className="linkPrev">
+<Link  >&laquo;</ Link> 
+    </button>
+    
+    <br/>
 
 <h2>{facultyName}    </h2>
 <h2>{dep.name} courses </h2>
