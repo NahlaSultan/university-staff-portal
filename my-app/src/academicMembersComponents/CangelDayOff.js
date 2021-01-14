@@ -8,17 +8,19 @@ export default function CangelDayOff() {
     const [dayOffHeader, setDayOffHeader] = useState("")
     const [DayOffRequest, setDayOff] = useState([])
     const [headerText, setHeaderText] = useState("")
-    axios
-        .get('http://localhost:8000/academicMembers/viewStatusDayOff', { headers: { 'token': localStorage.getItem('token') } })
-        .then(res => {
-            setDayOff(res.data)
-            if (res.data != "not staff" && res.data.length != 0) {
-                setDayOffHeader("Day Off Request")
-            }
-            if (res.data.length == 0) {
-                setDayOffHeader("No Requests")
-            }
-        });
+    useEffect(() => {
+        axios
+            .get('http://localhost:8000/academicMembers/viewStatusDayOff', { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                setDayOff(res.data)
+                if (res.data != "not staff" && res.data.length != 0) {
+                    setDayOffHeader("Day Off Request")
+                }
+                if (res.data.length == 0) {
+                    setDayOffHeader("No Requests")
+                }
+            });
+    }, [])
     function HandleDayOff(e) {
         const body = {}
         // console.log(body)
@@ -32,6 +34,7 @@ export default function CangelDayOff() {
     }
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>{headerText}</h1>
             <h1>{dayOffHeader}</h1>
             <ul>
@@ -45,6 +48,8 @@ export default function CangelDayOff() {
                             <button value={item.slotID} className="btn" onClick={HandleDayOff}>
                                 Cancel Request
                             </button>
+                            <br></br>
+                            <br></br>
                         </div>
                     </li>
                 })}

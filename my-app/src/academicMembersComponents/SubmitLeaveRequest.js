@@ -17,6 +17,7 @@ export default function SubmitLeaveRequest() {
     const [counter, setCounter] = useState(0)
     const [toggle, setToggle] = useState(true)
     const [SlotToView, setTheSlot] = useState([])
+    const [requestHeader, setRequestHeader] = useState("")
     function HandleChoice(e) {
         setType(e.target.value)
         console.log(type)
@@ -34,6 +35,7 @@ export default function SubmitLeaveRequest() {
     });
     function HandleBack() {
         setType("")
+        setRequestHeader("")
     }
     //set type"" once you submit the leave request
     function submitAnnualLeave() {
@@ -46,7 +48,7 @@ export default function SubmitLeaveRequest() {
                 console.log(res.data)
                 if (res.data == "Successfully submitted") {
                     setType("")
-                  // setHeaderText("")
+                    // setHeaderText("")
                 }
                 else {
                     setHeaderText(res.data)
@@ -127,6 +129,7 @@ export default function SubmitLeaveRequest() {
     }
     function HandleReplacementID(e) {
         setReplacementID(e.target.value)
+        setRequestHeader('Request Chosen: ' + e.target.value)
     }
     function HandleViewAttendance(e) {
         if (toggle) {
@@ -254,10 +257,12 @@ export default function SubmitLeaveRequest() {
             <div>
                 <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
+
                 <h1>Choose a replacement request if you want: </h1>
                 <div>
                     <h1>Request Sent:</h1>
                     <ul>
+                        <h2>{requestHeader}</h2>
                         {replacementSent.map((item, i) => {
                             return <li key={i}>
                                 <h1>Request: </h1>
@@ -265,6 +270,7 @@ export default function SubmitLeaveRequest() {
                                 <h4 className="elemntsInside">Accepted: {item.accepted + ""}</h4>
                                 <h4 className="elemntsInside">ReceiverID: {item.receiverId}</h4>
                                 <h4 className="elemntsInside">Date: {item.date}</h4>
+                                <h4 className="elementInside">Request ID: {item._id}</h4>
                                 <br></br>
                                 <div className="divider">
                                     <button value={item.slot} className="btn" onClick={HandleViewAttendance}>

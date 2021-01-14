@@ -10,18 +10,20 @@ export default function CancelSlotLinking() {
     const [SlotLinkingRequest, setSlotLinkingRequest] = useState([])
     const [slotLinkingHeader, setSlotLinkingHeader] = useState("")
     const [toggle, setToggle] = useState(true)
-    const [headerText,setHeaderText]=useState("")
-    axios
-        .get('http://localhost:8000/academicMembers/viewStatusSlotLinking', { headers: { 'token': localStorage.getItem('token') } })
-        .then(res => {
-            setSlotLinkingRequest(res.data)
-            if (res.data != "not staff" && res.data.length != 0) {
-                setSlotLinkingHeader("Slot Linking Requests")
-            }
-            if( res.data.length == 0){
-                setSlotLinkingHeader("No requests")
-            }
-        });
+    const [headerText, setHeaderText] = useState("")
+    useEffect(() => {
+        axios
+            .get('http://localhost:8000/academicMembers/viewStatusSlotLinking', { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                setSlotLinkingRequest(res.data)
+                if (res.data != "not staff" && res.data.length != 0) {
+                    setSlotLinkingHeader("Slot Linking Requests")
+                }
+                if (res.data.length == 0) {
+                    setSlotLinkingHeader("No requests")
+                }
+            });
+    }, [])
     function HandleViewAttendance(e) {
         if (toggle) {
             console.log("Entered")
@@ -44,8 +46,8 @@ export default function CancelSlotLinking() {
         setToggle(!toggle);
         //  console.log(toggle)
     }
-    function HandleCancel(e){
-        const body = {requestId:e.target.value}
+    function HandleCancel(e) {
+        const body = { requestId: e.target.value }
         // console.log(body)
         axios
             .post('http://localhost:8000/academicMembers/cancelSlotLinkingRequest', body, { headers: { 'token': localStorage.getItem('token') } })

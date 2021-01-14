@@ -17,6 +17,7 @@ export default function ManageSlots() {
     const [headerText, setHeaderText] = useState("")
     const [courses, setCourses] = useState([])
     const [course, setCourse] = useState("")
+
     var numberId;
 
     useEffect(() => {
@@ -88,7 +89,9 @@ export default function ManageSlots() {
     async function HandleCourse(e) {
         await setCourse(e.target.value)
     }
-
+    function HandleBack() {
+        setUpdateSlot("")
+    }
     function HandleDelete(e) {
         numberId = e.target.value
         console.log(e.target.value)
@@ -152,6 +155,7 @@ export default function ManageSlots() {
         return (
 
             <div>
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <ul>
                     {certainSlot.map((item, i) => {
                         return <li key={i}>

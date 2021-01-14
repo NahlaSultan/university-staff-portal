@@ -8,11 +8,19 @@ export default function StaffinCourse({teachAss}) {
 
     
         <div>  
-             <ul className="login100-form-title">Teaching Assignments: <br></br></ul>
+             {/* <ul className="login100-form-title">Teaching Assignments: <br></br></ul> */}
             <ul>
-                {teachAss.map((item, i) => {
+                {teachAss.map((s, i) => {
                 return <li key={i}>
-               {item}
+                <h2>Slot</h2>
+                <h4>
+                    {s[0]}<br></br>
+                    {s[1]}<br></br>
+                    {s[2]}<br></br>
+                    {s[3]}<br></br>
+                    {s[4]}<br></br>
+                    {s[5]}<br></br>
+                </h4>                   
                <br></br>
                <br></br>
                 
