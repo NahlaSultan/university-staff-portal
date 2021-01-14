@@ -30,15 +30,7 @@ export default function RejectLeaveRequest() {
   </span>
 
 
-            <div>
-                <input required={true} ref={RequestIDRef} className="input100" name="requestID" placeholder="Request ID" />
-                <span className="focus-input100"></span>
-                <span className="symbol-input100">
-                </span>
-                <br />
-            </div>
-
-            <div>
+             <div>
                 <input required={false} ref={CommentRef} className="input100" name="comment" placeholder="Comment" />
                 <span className="focus-input100"></span>
                 <span className="symbol-input100">

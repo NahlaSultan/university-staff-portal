@@ -53,19 +53,13 @@ export const SidebarHod = [
     cName: 'nav-text'
   },
   {
-    title: 'View All Requests',
-    path: '/hod/viewAllRequests',
-    icon: <IoIcons.IoIosPaper />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'View Change Day off Requests',
+    title: 'Manage Change Day off Requests',
     path: '/hod/viewChangeDayOffRequests',
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
   {
-    title: 'View Leave Requests',
+    title: 'Manage Leave Requests',
     path: '/hod/viewLeaveRequests',
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
@@ -82,27 +76,33 @@ export const SidebarHod = [
     icon: <IoIcons.IoMdHelpCircle />,
     cName: 'nav-text'
   },
+  // {
+  //   title: 'Accept Change Day off Request',
+  //   path: '/hod/acceptChangeDayOffRequest',
+  //   icon: <IoIcons.IoMdHelpCircle />,
+  //   cName: 'nav-text'
+  // },
+  // {
+  //   title: 'Reject Change Day off Request',
+  //   path: '/hod/rejectChangeDayOffRequest',
+  //   icon: <IoIcons.IoMdHelpCircle />,
+  //   cName: 'nav-text'
+  // },
+  // {
+  //   title: 'Accept Leave Request',
+  //   path: '/hod/acceptLeaveRequest',
+  //   icon: <IoIcons.IoMdHelpCircle />,
+  //   cName: 'nav-text'
+  // },
+  // {
+  //   title: 'Reject Leave Request',
+  //   path: '/hod/rejectLeaveRequest',
+  //   icon: <IoIcons.IoMdHelpCircle />,
+  //   cName: 'nav-text'
+  // },
   {
-    title: 'Accept Change Day off Request',
-    path: '/hod/acceptChangeDayOffRequest',
-    icon: <IoIcons.IoMdHelpCircle />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Reject Change Day off Request',
-    path: '/hod/rejectChangeDayOffRequest',
-    icon: <IoIcons.IoMdHelpCircle />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Accept Leave Request',
-    path: '/hod/acceptLeaveRequest',
-    icon: <IoIcons.IoMdHelpCircle />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Reject Leave Request',
-    path: '/hod/rejectLeaveRequest',
+    title: '',
+    path: '/',
     icon: <IoIcons.IoMdHelpCircle />,
     cName: 'nav-text'
   }
