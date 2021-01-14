@@ -10,7 +10,7 @@ import BellIcon from 'react-bell-icon';
 import useSound from 'use-sound';
 import { Alert } from 'react-st-modal';
 import boopSfx from './bell.mp3';
-import {Alert} from 'react-st-modal';
+
 
 export default function Nav() {
   const [bellHeader, setButtonHeader] = useState(false)
@@ -18,7 +18,7 @@ export default function Nav() {
   const [play, setPlay] = useState("")
   const [message, setMessage] = useState()
   const [message2, setMessage2] = useState()
-  
+
 
   const [playOff] = useSound(
     './bell.mp3',
@@ -27,42 +27,42 @@ export default function Nav() {
 
 
 
- async function HandleSignIn(){
-    
-    await axios   
-    .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
-    
-    .then(res=>setMessage(res.data))
-    var temp=message
-    
- 
- }
- async function HandleSignOut(){
- 
-     await axios   
-     .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
-  
-     .then(res=>setMessage2(res.data))
+  async function HandleSignIn() {
+
+    await axios
+      .get('http://localhost:8000/signIn', { headers: { 'token': localStorage.getItem('token') } })
+
+      .then(res => setMessage(res.data))
+    var temp = message
 
 
-  
+  }
+  async function HandleSignOut() {
+
+    await axios
+      .get('http://localhost:8000/signOut', { headers: { 'token': localStorage.getItem('token') } })
+
+      .then(res => setMessage2(res.data))
+
+
+
   }
 
 
-  useEffect(async() => {
+  useEffect(async () => {
 
-if (message!=null)
-await Alert(message,'Sign In')
+    if (message != null)
+      await Alert(message, 'Sign In')
 
-  },[message]);
+  }, [message]);
 
-  
-  useEffect(async() => {
 
-    if (message2!=null)
-    await Alert(message2,'Sign Out')
-    
-      },[message2]);
+  useEffect(async () => {
+
+    if (message2 != null)
+      await Alert(message2, 'Sign Out')
+
+  }, [message2]);
   useEffect(() => {
     console.log("I entered")
     axios
@@ -84,8 +84,8 @@ await Alert(message,'Sign In')
 
   return (
 
-    <>
-    
+
+
 
     <div className='nav'>
 
@@ -103,59 +103,59 @@ await Alert(message,'Sign In')
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" >
-              <Link to='/sm/staffProfile' > Home </Link>
-              </button>   
+                <Link to='/sm/staffProfile' > Home </Link>
+              </button>
             </div>
           </li>
 
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignIn}>
-              <Link to="sm/signIn" >Sign In</Link>
+                <Link to="sm/signIn" >Sign In</Link>
 
-              </button>   
+              </button>
             </div>
           </li>
 
 
           <li>
             <div class="navdropdown" >
-              <button class="navdropbtn"onClick={HandleSignOut} >
-              <Link to="sm/signOut" >Sign Out</Link>
-              </button>   
+              <button class="navdropbtn" onClick={HandleSignOut} >
+                <Link to="sm/signOut" >Sign Out</Link>
+              </button>
             </div>
           </li>
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link> My Profile</Link>
+                <Link> My Profile</Link>
               </button>
               <div class="navdropdown-content" >
-              <Link to='/sm/viewProfile' > view profile </Link>
-              <Link to='/sm/resetPassword' > Reset Password </Link>
-              <Link to='/logout' > </Link>
+                <Link to='/sm/viewProfile' > view profile </Link>
+                <Link to='/sm/resetPassword' > Reset Password </Link>
+                <Link to='/logout' > </Link>
 
               </div>
             </div>
           </li>
-          
-     
-           
-    <div style={{marginTop:'1%'}} className="Bell">
+
+
+
+          <div style={{ marginTop: '1%' }} className="Bell">
             <button onClick={HandleClick} >
               <Link to='/academic/Bell'>
                 <BellIcon className="bell" width='40' active={bellHeader} animate={bellHeader} color='#fff' />
               </Link>
             </button>
           </div>
-    
+
 
 
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='sm/logout' > Log out </Link>
-              </button>   
+                <Link to='sm/logout' > Log out </Link>
+              </button>
             </div>
           </li>
 
