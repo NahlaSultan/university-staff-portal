@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { Link, Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/App.css';
@@ -23,6 +23,7 @@ export default function ViewStatus() {
     const [SlotLinkingRequest, setSlotLinkingRequest] = useState([])
     const [LeaveRequests, setLeaveRequests] = useState([])
     const [toggleReplacement, setToggleReplacement] = useState(true)
+    let history = useHistory()
     useEffect(() => {
         if (counter <= 3) {
             setCounter(counter + 1)
@@ -70,6 +71,28 @@ export default function ViewStatus() {
                 });
         }
     });
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (res.data.includes('HR members')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
+
     function HandleViewAttendance(e) {
         if (toggle) {
             console.log("Entered")

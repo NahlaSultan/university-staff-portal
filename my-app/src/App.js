@@ -167,7 +167,7 @@ export default function App() {
                     <Route exact path='/academic/Requests/CancelSlotLinking' component={CancelSlotLinking} />
                     <Route exact path='/academic/Requests/CancelLeaveRequest' component={CancelLeaveRequest} />
                     <Route exact path='/academic/Bell' component={Bell} />
-                    <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
+                   
                     {/* ci and staff members */}
 
           <Route exact path='/ci/assignSlots' component={AssignSlot} />
