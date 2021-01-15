@@ -30,18 +30,29 @@ export default function ViewProfile() {
 
     <div>
       <h2>My Profile:</h2>
+
+      <br />
       <ul>
         {staff.map((item, i) => {
           return <li key={i}>
             <ul> Name: {item.name} </ul>
+            <br />
             <ul> Email: {item.email} </ul>
+            <br />
             <ul> Member ID: {item.memberID} </ul>
+            <br />
             <ul> Role: {item.role} </ul>
+            <br />
             <ul> Courses: {item.course} </ul>
+            <br />
             <ul> Faculty: {item.faculty} </ul>
+            <br />
             <ul> Department: {item.department} </ul>
+            <br />
             <ul> Office: {item.officeLocation} </ul>
+            <br />
             <ul> Salary: {item.salary} </ul>
+            <br />
             <ul> Salary this month: {item.monthSalary} </ul>
 
             <br />
