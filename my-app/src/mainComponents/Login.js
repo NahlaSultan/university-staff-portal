@@ -15,12 +15,11 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 
 import SideNav from './SideNav';
-var navArray = []
 
 
 // const jwt =require("jsonwebtoken")
 function Login() {
-  navArray = []
+  var navArray = []
   let history = useHistory()
   const [logIn, setlogIn] = useState("")
   const [role, setRole] = useState([])

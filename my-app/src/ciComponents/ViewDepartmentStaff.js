@@ -49,6 +49,7 @@ export default function ViewDepartmentStaff() {
         {staff.map((item, i) => {
           return <li key={i}>
             <ul> Name: {item.name} </ul>
+            <ul> ID: {item.memberID} </ul>
             <ul> Email: {item.email} </ul>
             <ul> Role: {item.role} </ul>
             <ul> Courses: {item.course} </ul>
