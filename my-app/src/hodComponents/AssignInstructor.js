@@ -119,7 +119,7 @@ function ChooseInst(e){
     <br></br>
     <br></br>
         </div>
-        <ul className='viewStaff'> {resp} </ul>
+        <r1 className='viewStaff'> {resp} </r1>
         <br></br><br></br>
     </div>
 

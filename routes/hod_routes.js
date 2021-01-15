@@ -212,9 +212,6 @@ router.route('/deleteInstructor')
                             if(crs==coursename)
                             tmp.course.remove(crs)
                         }
-                        if(tmp.role.includes("courseInstructors")){
-                            tmp.role.remove(courseInstructors)
-                        }
                         await tmp.save()
 
                         if(donedel)

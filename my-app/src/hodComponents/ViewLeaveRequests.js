@@ -79,7 +79,7 @@ if(type==""){
         <div>
           <h2><br></br> Leave Requests: <br></br> <br></br> </h2>
           <ul className='viewStaff' >
-          <h3 className='viewStaff'> {resp} <br></br> <br></br></h3>
+          <r1 className='viewStaff'> {resp} <br></br> <br></br></r1>
              {requests.map((item,i) =>{
                return <li key={i}><h2>Leave</h2>
                <h3 className="elemntsInside">Type: {item.type}</h3>
