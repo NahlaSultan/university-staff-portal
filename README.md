@@ -2,7 +2,7 @@
 
 
 
-> milestone 1, team 38
+TEAM 38
 
 ## Install
 
@@ -17,8 +17,7 @@ npm start
 ```
 
 ## DEPLOYED APP
-https://60015e12f0a0cbdc86c76853--zen-lewin-d5a924.netlify.app
-
+https://zen-lewin-d5a924.netlify.app/
 
 ## UML
 https://drive.google.com/file/d/1WPWap3Ugs9aUj_pZEs6rPmgMuE81hGA1/view?usp=sharing
@@ -26,6 +25,7 @@ https://drive.google.com/file/d/1WPWap3Ugs9aUj_pZEs6rPmgMuE81hGA1/view?usp=shari
 
 ## Functionalities and Routes
 
+port 8000
 
 <h4>Seeding the database: </h4>
 
