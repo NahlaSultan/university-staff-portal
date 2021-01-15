@@ -7,6 +7,7 @@ import '../styling/App.css';
 import BellIcon from 'react-bell-icon';
 import { Alert } from 'react-st-modal';
 
+import { IconContext } from 'react-icons';
 
 export default function Nav() {
   const [bellHeader, setButtonHeader] = useState(false)
@@ -83,7 +84,7 @@ export default function Nav() {
 
       <div >
         <ul className="navList">
-
+       
 
           <li >
             <Link to='/sm/staffProfile' >

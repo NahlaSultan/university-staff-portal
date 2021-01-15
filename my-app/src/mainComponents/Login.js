@@ -19,7 +19,8 @@ import SideNav from './SideNav';
 
 // const jwt =require("jsonwebtoken")
 function Login() {
- var navArray = []
+  var navArray = []
+
   let history = useHistory()
   const [logIn, setlogIn] = useState("")
   const [role, setRole] = useState([])
