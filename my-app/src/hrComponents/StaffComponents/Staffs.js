@@ -3,7 +3,7 @@ import axios from 'axios'
 import '../../styling/main.css';
 import StaffMember from './StaffMember';
 
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 
 export default function Staffs() {
@@ -13,10 +13,31 @@ export default function Staffs() {
   const [cc, setCCs] = useState([])
   const [hod, setHODs] = useState([])
   const [ta, setTAs] = useState([])
-
+  let history = useHistory()
 
 
   useEffect(() => {
+
+    const checkToken = async()=>{
+      if(localStorage.getItem('token')){
+        console.log("TOKENS")
+        await axios
+        .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+        .then(res => {
+        if(!res.data.includes('HR members')) {
+          history.push('/error')
+        } 
+        });
+      }
+      else{
+        console.log("NOT TOKENS")
+        history.push('/')
+  
+      }
+
+  }
+  checkToken()
+
     const fetchHR = async () => {
       await
         axios.get('http://localhost:8000/hr/viewHR', { headers: { 'token': localStorage.getItem('token') } })

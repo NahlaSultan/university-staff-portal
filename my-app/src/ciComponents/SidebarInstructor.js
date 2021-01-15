@@ -7,7 +7,7 @@ import * as BiIcons from "react-icons/bi";
 export const SidebarInstructor = [
   {
     title: 'Home',
-    path: '/StaffProfile',
+    path: '/sm/staffProfile',
     // icon: <AiIcons.AiFillHome />,
     cName: 'nav-text'
   },

@@ -167,7 +167,7 @@ export default function App() {
                     <Route exact path='/academic/Requests/CancelSlotLinking' component={CancelSlotLinking} />
                     <Route exact path='/academic/Requests/CancelLeaveRequest' component={CancelLeaveRequest} />
                     <Route exact path='/academic/Bell' component={Bell} />
-                    <Route component={coordinatorProfile} exact path="/coordinatorProfile" />
+                   
                     {/* ci and staff members */}
 
           <Route exact path='/ci/assignSlots' component={AssignSlot} />
@@ -189,11 +189,10 @@ export default function App() {
           <Route exact path='/sm/resetPassword' component={ResetPassword} />
           <Route exact path='/ci/courseStaff' component={CourseStaff} />
     <Route exact path='/monthAttendance' component={MonthAttendance} />
-          <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
+          <Route exact path='/sm/viewMonthAttendance' component={ViewMonthAttendance} />
           <Route exact path='/sm/updateProfile' component={UpdateProfile} />
 
                     {/* hod components */}
-                    <Route exact path='/homeHOD' component={HodProfile} />
                     <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
                     <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
                     <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />
