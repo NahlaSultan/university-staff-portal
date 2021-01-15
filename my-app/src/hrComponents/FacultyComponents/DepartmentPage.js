@@ -2,7 +2,7 @@ import React, { useState ,useEffect} from 'react'
 import '../../styling/main.css';
 import '../../styling/tables.css';
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import { useLocation } from "react-router-dom";
 import Department from './Department'
@@ -11,11 +11,29 @@ function DepartmentPage() {
     let locationReact=useLocation()
     const facultyName = locationReact.state.facultyName
     const [departmentArray,setDepartmentArray] = useState([])
-
+    let history = useHistory()
 
     useEffect(() => {
-        // Update the document title using the browser API
+      const checkToken = async()=>{
+        if(localStorage.getItem('token')){
+          console.log("TOKENS")
+          await axios
+          .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+          .then(res => {
+          if(!res.data.includes('HR members')) {
+            history.push('/error')
+          } 
+          });
+        }
+        else{
+          console.log("NOT TOKENS")
+          history.push('/')
     
+        }
+  
+    }
+    checkToken()
+
         const fetchData = async () => {
           await
             axios

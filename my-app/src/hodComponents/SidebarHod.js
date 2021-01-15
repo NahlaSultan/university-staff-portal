@@ -4,12 +4,7 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 
 export const SidebarHod = [
-  {
-    title: 'Home',
-    path: '/homeHOD',
-    icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text'
-  },
+
   {
     title: 'Assign Instructor',
     path: '/hod/assignInstructor',
