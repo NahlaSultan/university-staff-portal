@@ -1,19 +1,43 @@
-import React from 'react'
-import { useLocation ,Link} from "react-router-dom";
+import React, {useEffect} from 'react'
+import { useLocation ,Link, useHistory} from "react-router-dom";
 import Course from './Course'
-
+import axios from 'axios'
     
 function CoursePage() {
+    let history = useHistory()
+    useEffect(() => {
+        const checkToken = async()=>{
+            if(localStorage.getItem('token')){
+              console.log("TOKENS")
+              await axios
+              .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+              .then(res => {
+              if(!res.data.includes('HR members')) {
+                history.push('/error')
+              } 
+              });
+            }
+            else{
+              console.log("NOT TOKENS")
+              history.push('/')
+        
+            }
+    
+        }
+        checkToken()
+    },[]);
+
     let locationReact=useLocation()
     const facultyName = locationReact.state.facultyName
     const dep = locationReact.state.dep
-
-    // function backtodep(){
-    //     history.push({
-    //         pathname: '/hr/departmentsPage',
-    //         state: { facultyName: fac.facultyName }
-    //        })
-    // }
+   
+    function backtodep(){
+        console.log("back to dep")
+        history.push({
+            pathname: '/hr/departmentsPage',
+            state: { facultyName: facultyName }
+           })
+    }
 
 
     return (
@@ -22,7 +46,11 @@ function CoursePage() {
 
 <>
 <br/>
-<Link to='/hr/departmentsPage' className="linkPrev">&laquo;</ Link> <br/>
+<button onClick={backtodep} className="linkPrev">
+<Link  >&laquo;</ Link> 
+    </button>
+    
+    <br/>
 
 <h2>{facultyName}    </h2>
 <h2>{dep.name} courses </h2>

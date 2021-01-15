@@ -17,6 +17,7 @@ export default function SubmitLeaveRequest() {
     const [counter, setCounter] = useState(0)
     const [toggle, setToggle] = useState(true)
     const [SlotToView, setTheSlot] = useState([])
+    const [requestHeader, setRequestHeader] = useState("")
     function HandleChoice(e) {
         setType(e.target.value)
         console.log(type)
@@ -32,6 +33,10 @@ export default function SubmitLeaveRequest() {
 
         }
     });
+    function HandleBack() {
+        setType("")
+        setRequestHeader("")
+    }
     //set type"" once you submit the leave request
     function submitAnnualLeave() {
         const body = { type: "Annual", start: DateRef.current.value, replacementRequestID: "5fe6476ba4f2e5bb7c04fe25" }
@@ -43,7 +48,7 @@ export default function SubmitLeaveRequest() {
                 console.log(res.data)
                 if (res.data == "Successfully submitted") {
                     setType("")
-                    setHeaderText("")
+                    // setHeaderText("")
                 }
                 else {
                     setHeaderText(res.data)
@@ -124,6 +129,7 @@ export default function SubmitLeaveRequest() {
     }
     function HandleReplacementID(e) {
         setReplacementID(e.target.value)
+        setRequestHeader('Request Chosen: ' + e.target.value)
     }
     function HandleViewAttendance(e) {
         if (toggle) {
@@ -150,6 +156,7 @@ export default function SubmitLeaveRequest() {
     if (type == "") {
         return (
             <div>
+                <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
                 <button value="Compensation" className="btn" onClick={HandleChoice} >Compensation Leaves</button>
                 <button value="Maternity" className="btn" onClick={HandleChoice} >Maternity Leaves</button>
                 <button value="Sick" className="btn" onClick={HandleChoice} >Sick Leaves</button>
@@ -161,8 +168,10 @@ export default function SubmitLeaveRequest() {
     else if (type == "Compensation") {
         return (
             <div>
-                {/* <div> */}
                 <h1>{headerText}</h1>
+                <button className='btn' onClick={HandleBack}> Back </button>
+                {/* <div> */}
+
                 <h2>Start Date : </h2>
                 <input ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" required />
                 <br></br>
@@ -182,7 +191,7 @@ export default function SubmitLeaveRequest() {
     else if (type == "Maternity") {
         return (
             <div>
-                {/* <div> */}
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
                 <h2>Start Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
@@ -204,7 +213,7 @@ export default function SubmitLeaveRequest() {
     else if (type == "Sick") {
         return (
             <div>
-                {/* <div> */}
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
                 <h2>Sick Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
@@ -228,7 +237,7 @@ export default function SubmitLeaveRequest() {
 
         return (
             <div>
-                {/* <div> */}
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
                 <h2>Start Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
@@ -246,11 +255,14 @@ export default function SubmitLeaveRequest() {
     else if (type == "Annual") {
         return (
             <div>
+                <button className='btn' onClick={HandleBack}> Back </button>
                 <h1>{headerText}</h1>
+
                 <h1>Choose a replacement request if you want: </h1>
                 <div>
                     <h1>Request Sent:</h1>
                     <ul>
+                        <h2>{requestHeader}</h2>
                         {replacementSent.map((item, i) => {
                             return <li key={i}>
                                 <h1>Request: </h1>
@@ -258,6 +270,7 @@ export default function SubmitLeaveRequest() {
                                 <h4 className="elemntsInside">Accepted: {item.accepted + ""}</h4>
                                 <h4 className="elemntsInside">ReceiverID: {item.receiverId}</h4>
                                 <h4 className="elemntsInside">Date: {item.date}</h4>
+                                <h4 className="elementInside">Request ID: {item._id}</h4>
                                 <br></br>
                                 <div className="divider">
                                     <button value={item.slot} className="btn" onClick={HandleViewAttendance}>

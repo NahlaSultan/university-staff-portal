@@ -5,12 +5,6 @@ import * as IoIcons from 'react-icons/io';
 
 export const SidebarCoordinator = [
   {
-    title: 'Home',
-    path: '/coordinatorProfile',
-    icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text'
-  },
-  {
     title: 'Add Slot',
     path: '/coordinator/addSlot',
     icon: <IoIcons.IoIosPaper />,
@@ -28,5 +22,8 @@ export const SidebarCoordinator = [
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
-
+  {
+    title: '',
+    cName: 'nav-text'
+  },
 ];

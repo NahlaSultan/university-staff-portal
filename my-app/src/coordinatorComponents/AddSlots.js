@@ -64,26 +64,28 @@ export default function AddSlots() {
 
 
     // Update the document title using the browser API
-    axios
-        .get('http://localhost:8000/viewLocations')
-        .then(res => {
-            setLocations(res.data)
+    useEffect(() => {
 
-        });
-    axios
-        .get('http://localhost:8000/viewLocations')
-        .then(res => {
-            setLocations(res.data)
+        axios
+            .get('http://localhost:8000/viewLocations')
+            .then(res => {
+                setLocations(res.data)
 
-        });
+            });
+        axios
+            .get('http://localhost:8000/viewLocations')
+            .then(res => {
+                setLocations(res.data)
 
-    axios
-        .get('http://localhost:8000/coordinator/viewCourseCoordinators', { headers: { 'token': localStorage.getItem('token') } })
-        .then(res => {
-            setCourses(res.data)
+            });
 
-        });
+        axios
+            .get('http://localhost:8000/coordinator/viewCourseCoordinators', { headers: { 'token': localStorage.getItem('token') } })
+            .then(res => {
+                setCourses(res.data)
 
+            });
+    }, [])
 
     return (
         <>

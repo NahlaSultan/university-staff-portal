@@ -257,11 +257,14 @@ router.route('/viewStatusDayOff')
         const staff = await staff_members_models.findOne({ _id: staffId })
         var resArr = []
         if (staff) {
-            const dayOffRequest = await dayOffRequest_model.findOne({ senderId: staff.dayOffRequestSent })
-            if (dayOffRequest)
+            const dayOffRequest = await dayOffRequest_model.find({ senderId: staff.dayOffRequestSent })
+            for (let i = 0; i < dayOffRequest.length; i++) {
                 resArr.push(
-                    dayOffRequest
+                    dayOffRequest[i]
                 )
+            }
+
+
             return res.send(resArr)
         }
         else {
@@ -609,7 +612,8 @@ router.route('/viewPendingReplacementRequestReceived')
             res.send(sentArray)
 
         }
-        res.send("Invalid staff member")
+        else
+            res.send("Invalid staff member")
 
     })
 router.route('/viewPendingdReplacementRequestSent')
@@ -1245,10 +1249,11 @@ router.route('/viewReplacementRequestSent')
                 lastIndex++
             }
 
-            res.send(sentArray)
+            return res.send(sentArray)
 
         }
-        res.send("Invalid staff member")
+        else
+            return res.send("Invalid staff member")
 
     })
 router.route('/viewReplacementRequestReceived')
@@ -1399,7 +1404,7 @@ router.route('/sendChangeDayOff')
             const staff = await staff_members_models.findOne({ _id: senderId })
             if (staff) {
                 const requests = await dayOffRequest_model.findOne({ senderId: staff.memberID })
-                if (requests) {
+                if (requests && requests.pending == true) {
                     res.send("You should cancel the request you have already sent and then send another one")
                 }
                 else {
@@ -1432,7 +1437,7 @@ router.route('/sendChangeDayOff')
                                 }
                             )
                             if (req.body.reason != null && req.body.reason != "") {
-                                request.comment = req.body.reason
+                                request.commentWhyNeeded = req.body.reason
                             }
 
 
@@ -1442,8 +1447,8 @@ router.route('/sendChangeDayOff')
                             catch (Err) {
                                 return res.send("Mongo error")
                             }
-
-                            hod.dayOffRequestsHOD.push(staff.memberID)
+                            if (!(hod.dayOffRequestsHOD.includes(staff.memberID)))
+                                hod.dayOffRequestsHOD.push(staff.memberID)
                             staff.dayOffRequestSent = staff.memberID
                             try {
                                 await hod.save()
@@ -2218,14 +2223,19 @@ router.route('/notified')
             result.push(slotLinkingArr)
         if (leaveArr.length != 0)
             result.push(leaveArr)
-        var notification = new notification_model({
-            staff: staff.memberID,
-            dayOff: dayOff,
-            replacement: replacementArr,
-            slotLinking: slotLinkingArr,
-            leave: leaveArr
-        })
-        notification.save()
+
+        if (result.length != 0) {
+            console.log("I entered here")
+            var notification = new notification_model({
+                staff: staff.memberID,
+                dayOff: dayOff,
+                replacement: replacementArr,
+                slotLinking: slotLinkingArr,
+                leave: leaveArr
+            })
+            notification.save()
+        }
+
         res.send(result)
     })
 router.route('/viewNotificaitons')
@@ -2234,12 +2244,42 @@ router.route('/viewNotificaitons')
         const staff = await staff_members_models.findOne({ _id: senderId })
         const notfications = await notification_model.find({ staff: staff.memberID })
         var arr = []
-        console.log(notfications[0])
-        arr.push(notfications[0].staff)
-        arr.push(notfications[0].dayOff)
-        arr.push(notfications[0].replacement)
-        arr.push(notfications[0].slotLinking)
-        arr.push(notfications[0].leave)
+        var dayOffArr = []
+        var replacementArr = []
+        var slotLinkingArr = []
+        var leaveArr = []
+        for (let i = 0; i < notfications.length; i++) {
+            console.log(notfications[i])
+            //  arr.push(notfications[i].staff)
+
+            console.log(notfications[i].leave[0])
+
+            if (notfications[i].dayOff.length != 0) {
+                dayOffArr.push(notfications[i].dayOff[0])
+            }
+            if (notfications[i].replacement.length != 0) {
+                for (var j = 0; j < notfications[i].replacement.length; j++) {
+                    replacementArr.push(notfications[i].replacement[j])
+                }
+            }
+            if (notfications[i].slotLinking.length != 0) {
+                for (var j = 0; j < notfications[i].slotLinking.length; j++) {
+                    slotLinkingArr.push(notfications[i].slotLinking[j])
+                }
+
+            }
+            if (notfications[i].leave.length != 0) {
+                for (var j = 0; j < notfications[i].leave.length; j++) {
+                    leaveArr.push(notfications[i].leave[j])
+                }
+            }
+
+        }
+        arr.push(dayOffArr)
+        arr.push(replacementArr)
+        arr.push(slotLinkingArr)
+        arr.push(leaveArr)
+
 
         //  console.log(arr)
         return res.send(arr)

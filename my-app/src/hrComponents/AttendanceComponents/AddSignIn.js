@@ -6,6 +6,29 @@ import { Link ,useHistory} from 'react-router-dom'
 
 export default function AddSignIn() {
 let history = useHistory()
+
+useEffect(() => {
+    const checkToken = async()=>{
+        if(localStorage.getItem('token')){
+          console.log("TOKENS")
+          await axios
+          .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+          .then(res => {
+          if(!res.data.includes('HR members')) {
+            history.push('/error')
+          } 
+          });
+        }
+        else{
+          console.log("NOT TOKENS")
+          history.push('/')
+    
+        }
+
+    }
+    checkToken()
+},[]);
+
     const [staffs, setStaffs] = useState([])
     const [date, setDate] = useState("")
     const [record, setRecord] = useState([])
@@ -36,13 +59,6 @@ let history = useHistory()
 
     }
 
-
-    //   "id": "ac-3",
-    //   "month": 12,
-    //   "day": 5,
-    //   "year": 2020,
-    //   "hour": 5,
-    //   "minute": 10
 
 
     async function HandleAddSignIn() {
@@ -138,36 +154,6 @@ let history = useHistory()
             <div class="alert">
             {message2}
             </div>
-            {/* <div >
-					<label >Year: </label>
-                    <select className='dropbtn' name="types"  onChange={ChooseYear}>
-                        <option value="">Choose Year</option>
-						<option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                    </select>
-                        <br/><br/>
-					</div>
-
-                    <label >Month: </label>
-                    <select className='dropbtn' name="types"  onChange={ChooseYear}>
-                        <option value="">Choose Month</option>
-						<option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                    </select>
-                        <br/><br/>
-					</div>
-       
-					<div >
-					<label >Day: </label>
-                    <select className='dropbtn' name="types"  onChange={ChooseDay}>
-                        <option value="">Choose Day </option>
-						<option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option> */}
-
 
 
             <div className="container-login100-form-btn" >

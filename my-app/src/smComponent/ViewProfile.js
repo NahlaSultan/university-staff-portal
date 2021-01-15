@@ -1,16 +1,28 @@
 import React,{useRef, useState, useEffect} from 'react'
 import axios from 'axios'
 import '../styling/main.css';
+import { useHistory } from 'react-router-dom';
 export default function ViewProfile() {
     const [staff, setStaff] = useState([])
+    const [role, setRole] = useState([])
 
+    let history = useHistory()
   useEffect(() => {
+    
+    if(localStorage.getItem('token')){
+      console.log("TOKENS")
+    }
+    else{
+      console.log("NOT TOKENS")
+      history.push('/')
+
+    }
     axios   
     .get('http://localhost:8000/viewProfile', {headers:{'token':localStorage.getItem('token')}})
     .then(res => {
         setStaff(res.data)
        
-      });  });
+      });  },[]);
 
     return (
 
@@ -29,6 +41,8 @@ export default function ViewProfile() {
                 <ul> Department: {item.department} </ul> 
                 <ul> Office: {item.officeLocation} </ul> 
                 <ul> Salary: {item.salary} </ul> 
+                <ul> Salary this month: {item.monthSalary} </ul> 
+
                 <br/>
                 
                 

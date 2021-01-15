@@ -49,7 +49,7 @@ return (
               <br></br>
           <br></br>
           <div className='whole'>
-          <label className='textDown'>Choose a course: </label>
+          <label className='textDown'>Choose a Course: </label>
                     <select className='dropbtn' name="types" id="type" onChange={HandleCourses}>
                         <option value="">Choose a Course</option>
                         {courses.map(item => (

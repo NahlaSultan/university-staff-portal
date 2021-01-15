@@ -1,8 +1,8 @@
-import React, { useRef,useEffect ,useState} from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
 import '../../styling/main.css';
 import { useLocation } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 
 
@@ -11,46 +11,51 @@ export default function UpdateDepartment() {
     const NameRef = useRef()
     const [hod, setHod] = useState("")
     const [newFac, setNewFac] = useState("")
-    const [faculties,setFaculties]= useState([])
-    const [acs,setAcs]= useState([])
+    const [faculties, setFaculties] = useState([])
+    const [acs, setAcs] = useState([])
     const locationReact = useLocation();
     const facultyName = locationReact.state.facultyName
     const departmentName = locationReact.state.dep.name
     const dep = locationReact.state.dep
+    let history = useHistory()
+    const [res, setRes] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
             await
-            axios   
-            .get('http://localhost:8000/hr/viewFaculties',{ headers: { 'token': localStorage.getItem('token') } })
-            .then(res => {
-                setFaculties(res.data)
-              });  
-          };
-          fetchData();
-          
-          const fetchStaff = async () => {
+                axios
+                    .get('http://localhost:8000/hr/viewFaculties', { headers: { 'token': localStorage.getItem('token') } })
+                    .then(res => {
+                        setFaculties(res.data)
+                    });
+        };
+        fetchData();
+
+        const fetchStaff = async () => {
             await
-            axios   
-            .get('http://localhost:8000/hr/viewAC',{ headers: { 'token': localStorage.getItem('token') } })
-            .then(res => {
-              setAcs(res.data)
-              });  
-          };
-          fetchStaff();
-        
-    
-        
-        
-        },[]);
-
- 
+                axios
+                    .get('http://localhost:8000/hr/viewAC', { headers: { 'token': localStorage.getItem('token') } })
+                    .then(res => {
+                        setAcs(res.data)
+                    });
+        };
+        fetchStaff();
 
 
 
-    //   function ClearTxtfields(){
-    //     document.getElementById('nameInput').value = ''
-    //   }
+
+    }, []);
+
+
+
+
+    function backtodep() {
+        console.log("back to dep")
+        history.push({
+            pathname: '/hr/departmentsPage',
+            state: { facultyName: facultyName }
+        })
+    }
 
     function ChooseHod(e) {
         setHod(e.target.value)
@@ -67,21 +72,33 @@ export default function UpdateDepartment() {
             departmentName: departmentName,
             newName: NameRef.current.value,
             hod: hod,
-            newFaculty:newFac
+            newFaculty: newFac
         }
 
         console.log(body)
 
-       await  axios
+        await axios
             .post('http://localhost:8000/hr/updateDepartment', body, { headers: { 'token': localStorage.getItem('token') } })
-            .then(res => console.log(res.data));
+            .then(res => {
+                console.log(res.data)
+                if (res.data == "success")
+                    history.push('/hr/faculties')
+                setRes(res.data)
+
+
+            });
 
     }
 
     return (
         <>
             <div className="addStaff">
+                <br />
+                <button onClick={backtodep} className="linkPrev">
+                    <Link  >&laquo;</ Link>
+                </button>
 
+                <br />
 
                 <span className="login100-form-title">
                     Update {departmentName}
@@ -99,8 +116,8 @@ export default function UpdateDepartment() {
 
                 <div >
                     <label >HOD: {dep.headOfDepartment} </label>
-                    
-                    <select className='dropbtn' name="types"  onChange={ChooseHod}>
+
+                    <select className='dropbtn' name="types" onChange={ChooseHod}>
                         <option value="">New HOD</option>
                         {acs.map(item => (
                             <option key={item.memberID} value={item.memberID}>{item.memberID}</option>
@@ -110,13 +127,13 @@ export default function UpdateDepartment() {
                 </div>
 
 
-                    <label >Faculty: {facultyName} </label>
-                <select className='dropbtn' name="types"  onChange={ChooseFac}>
-                        <option value="">New Faculty</option>
-                        {faculties.map(item => (
-                            <option key={item.facultyName} value={item.facultyName}>{item.facultyName}</option>
-                        ))}
-                    </select>
+                <label >Faculty: {facultyName} </label>
+                <select className='dropbtn' name="types" onChange={ChooseFac}>
+                    <option value="">New Faculty</option>
+                    {faculties.map(item => (
+                        <option key={item.facultyName} value={item.facultyName}>{item.facultyName}</option>
+                    ))}
+                </select>
 
 
 
@@ -127,6 +144,9 @@ export default function UpdateDepartment() {
 
 
 
+                <div className="alert">
+                    {res}
+                </div>
 
             </div>
 

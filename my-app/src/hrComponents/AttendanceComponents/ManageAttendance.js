@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import '../../styling/main.css';
 
@@ -7,15 +7,29 @@ import '../../styling/main.css';
 
 export default function ManageAttendane() {
   const [staffs, setStaffs] = useState([])
+  let history = useHistory()
+  useEffect(() => {
+    
+    const checkToken = async()=>{
+      if(localStorage.getItem('token')){
+        console.log("TOKENS")
+        await axios
+        .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+        .then(res => {
+        if(!res.data.includes('HR members')) {
+          history.push('/error')
+        } 
+        });
+      }
+      else{
+        console.log("NOT TOKENS")
+        history.push('/')
+  
+      }
 
-  // useEffect(() => {
-  //   // Update the document title using the browser API
-  //   axios
-  //     .get('http://localhost:8000/hr/viewStaffs', { headers: { 'token': localStorage.getItem('token') } })
-  //     .then(res => {
-  //       setStaffs(res.data)
-  //     });
-  // }, []);
+  }
+  checkToken()
+},[]);
 
 
 
@@ -23,47 +37,40 @@ export default function ManageAttendane() {
   return (
     <>
       <div >
-        <h1>Manage Attendace:</h1>
-        <ul><button className='btn' >
+        <h1>Manage Staff Attendace</h1>
+        <br />
+        <ul><button className='btn' style={{ height: "40px" }}>
           <Link to='/hr/AddSignIn'>
-            SignIn
+            Add Sign In Record
             </Link>  </button> </ul>
+        <br />
 
-        <ul><button className='btn' >
+        <ul><button className='btn' style={{ height: "40px" }}>
           <Link to='/hr/AddSignOut'>
-            <li > SignOut  </li>
+                         Add Sign Out Record 
           </Link>  </button> </ul>
+        <br />
 
-        <ul><button className='btn' >
+        <ul><button className='btn' style={{ height: "40px" }}>
           <Link to='/hr/viewAttendance'>
-            <li > View Attendace  </li>
+             View Attendance   
           </Link>  </button> </ul>
-        
-          <ul><button className='btn' >
+        <br />
+
+        <ul><button className='btn' style={{ height: "40px" }}>
           <Link to='/hr/viewMissingHours'>
-            <li > View Staff Members with Missing Hours  </li>
+             View Staff Members with Missing Hours 
           </Link>  </button> </ul>
+        <br />
 
-          <ul><button className='btn' >
+        <ul><button className='btn' style={{ height: "40px" }}>
           <Link to='/hr/viewMissingDays'>
-            <li >  View Staff Members with Missing Days  </li>
+             View Staff Members with Missing Days 
           </Link>  </button> </ul>
 
       </div>
 
-      <div >
-        <h2>GUC Staff Members:</h2>
-        <ul >
-          {staffs.map((st, i) => {
-            return <li key={st._id}>
-              <h4>   {st.memberID}</h4>
-              <li>{st.name}</li>
-            </li>
-          })}
-          <br /><br />
-        </ul>
 
-      </div>
 
     </>
 

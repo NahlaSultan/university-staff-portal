@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -11,6 +12,7 @@ export default function SendSlotLinkingRequest() {
     const [buttonHeader, setButtonHeader] = useState("")
 
     useEffect(() => {
+        //     console.log("I m here")
         axios
             .get('http://localhost:8000/viewUnassignedSlots', { headers: { 'token': localStorage.getItem('token') } })
             .then(res => {
@@ -25,7 +27,7 @@ export default function SendSlotLinkingRequest() {
         setButtonHeader("You have chosen Slot: " + e.target.value)
     }
 
-    function HandleSubmitRequest() {
+    async function HandleSubmitRequest() {
         const body = { slotId: chosenSlot }
         console.log(body)
         axios
@@ -38,6 +40,7 @@ export default function SendSlotLinkingRequest() {
     }
     return (
         <div>
+            <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
             <h1>{headerText}</h1>
             <h2>Time to send a SlotLinking Request</h2>
             <br></br>
