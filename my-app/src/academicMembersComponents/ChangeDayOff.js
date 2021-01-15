@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Link, Switch, Route, Redirect,useHistory } from 'react-router-dom'
+import { Link, Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -62,7 +62,6 @@ export default function ChangeDayOff() {
     return (
         <div>
             <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
-            <h1>{headerText}</h1>
             <h1>Current DayOff : {dayOff}</h1>
             <br></br>
             <br></br>
@@ -88,6 +87,7 @@ export default function ChangeDayOff() {
                     Submit Request
 						</button>
             </div>
+            <h1>{headerText}</h1>
             <br></br>
             <br></br>
         </div>

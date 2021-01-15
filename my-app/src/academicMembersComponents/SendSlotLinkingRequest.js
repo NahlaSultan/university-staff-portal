@@ -63,17 +63,17 @@ export default function SendSlotLinkingRequest() {
     return (
         <div>
             <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
-            <h1>{headerText}</h1>
             <h2>Time to send a SlotLinking Request</h2>
             <br></br>
             <h3>Kindly choose a slot you would like to teach</h3>
             <br></br>
-            <h2>{buttonHeader}</h2>
+           
             <div>
                 <ul>
                     {slot.map((item, i) => {
                         return <li key={i}>
                             <h3 className="get">SLOT ID: {item.numberID}</h3>
+                            <h2 style={{ color: 'red' }}>{buttonHeader}</h2>
                             <br></br>
                             <h3 className="elemntsInside">Type: {item.type}</h3>
                             <h4 className="elemntsInside">Location: {item.location}</h4>
@@ -99,11 +99,13 @@ export default function SendSlotLinkingRequest() {
             <br></br>
             <br></br>
             <br></br>
+            <r1>{headerText}</r1>
             <div className="buttons">
                 <button onClick={HandleSubmitRequest} className="buttons">
                     Submit Request
 						</button>
             </div>
+            <br></br>
             <br></br>
             <br></br>
         </div>

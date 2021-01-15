@@ -58,7 +58,6 @@ export default function CangelDayOff() {
     return (
         <div>
             <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
-            <h1>{headerText}</h1>
             <h1>{dayOffHeader}</h1>
             <ul>
                 {DayOffRequest.map((item, i) => {
@@ -77,6 +76,7 @@ export default function CangelDayOff() {
                     </li>
                 })}
             </ul>
+            <r1>{headerText}</r1>
         </div>
     )
 }
