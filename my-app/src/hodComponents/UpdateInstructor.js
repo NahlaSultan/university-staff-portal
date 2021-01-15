@@ -1,4 +1,6 @@
 import React,{useState,useEffect } from 'react'
+import {useHistory } from 'react-router-dom'
+
 import axios from 'axios'
 export default function UpdateInstructor() {
     const [Course,setCourse]=useState()
@@ -7,9 +9,33 @@ export default function UpdateInstructor() {
     const [courses,setCrs]= useState([])
     const [insts,setInst]= useState([])
     const [resp, setRes] = useState()
+    let history = useHistory()
 
 
     useEffect(() => {
+
+        const checkToken = async()=>{
+            if(localStorage.getItem('token')){
+              console.log("TOKENS")
+              await axios
+              .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+              .then(res => {
+              if(!res.data.includes('headOfdepartments')) {
+                history.push('/error')
+              } 
+              });
+            }
+            else{
+              console.log("NOT TOKENS")
+              history.push('/')
+        
+            }
+      
+        }
+      
+        checkToken()
+      
+
         const fetchData = async () => {
           await
           axios   

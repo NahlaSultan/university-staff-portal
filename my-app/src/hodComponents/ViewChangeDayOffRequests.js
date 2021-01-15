@@ -1,4 +1,6 @@
 import React,{useRef, useState, useEffect} from 'react'
+import {useHistory } from 'react-router-dom'
+
 import axios from 'axios'
 import '../styling/main.css';
 // import { request } from 'express';
@@ -9,9 +11,32 @@ export default function ViewChangeDayOffRequests() {
   const [StaffIDRef,setID]=useState()
   const CommentRef=useRef()
   const [resp, setRes] = useState() 
+  let history = useHistory()
 
   useEffect(() => {
     // Update the document title using the browser API
+
+    const checkToken = async()=>{
+      if(localStorage.getItem('token')){
+        console.log("TOKENS")
+        await axios
+        .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+        .then(res => {
+        if(!res.data.includes('headOfdepartments')) {
+          history.push('/error')
+        } 
+        });
+      }
+      else{
+        console.log("NOT TOKENS")
+        history.push('/')
+  
+      }
+
+  }
+
+  checkToken()
+
     axios   
     .get('http://localhost:8000/hod/viewChangeDayOffRequests',{headers:{'token': localStorage.getItem('token')}})
     .then(res => {
@@ -19,7 +44,7 @@ export default function ViewChangeDayOffRequests() {
 
       });  
     // setRes("")
-  });
+  },[]);
 
       function HandleRejectReq(){
         const body={staffId:StaffIDRef, comment:CommentRef.current.value}
