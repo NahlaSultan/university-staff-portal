@@ -41,8 +41,9 @@ export default function RemoveAssignedCourse() {
         axios
             .post('http://localhost:8000/ci/removeAssignedCourse', body, { headers: { 'token': localStorage.getItem('token') } })
 
-            .then(res => setMessage(res.data));
-        // callAPI()
+            .then(res => {
+                console.log(res.data)
+                setMessage(res.data)});
     }
     axios
         .get('http://localhost:8000/ci/loadCourses', { headers: { 'token': localStorage.getItem('token') } })

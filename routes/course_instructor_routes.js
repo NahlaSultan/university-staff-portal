@@ -123,10 +123,12 @@ router.route('/assignCourseCoordinator')
         if(!coordinator.role.includes("courseCoordinators")){
             if(coordinator.course.includes(req.body.courseName) ){
                 course.courseCoordinator=coordinator.memberID
+                coordinator.coordinatorCourse.push(req.body.courseName)
                 //console.log(coordinator._id)
                 coordinator.role.push("courseCoordinators")
                 //coordinator.course.push(course.courseName)
                 course.save()
+                //staff.save()
                 coordinator.save()
                 res.send("Successfully assigned")
         }
@@ -146,38 +148,60 @@ res.send("This coordinator id is invalid")
 //remove assigned course from an academic member
 router.route('/removeAssignedCourse')
 .post(async(req,res,)=>{
+    console.log("ana da5alt")
     const staffId=req.user._id;
     const staff = await staff_members_models.findOne({ _id: staffId })
-    const academicMember = await staff_members_models.findOne({ memberID: req.body.memberID })
+    const academicMember1 = await staff_members_models.findOne({ memberID: req.body.memberID })
+    //console.log(academicMember)
     if(staff){  
-        const course = await course_model.findOne({ courseName: req.body.courseName })
-        if(academicMember.course.includes(req.body.courseName)){
+        console.log("ana da5alt2")
+       // const course = await course_model.findOne({ courseName: req.body.courseName })
+        if(academicMember1.course.includes(req.body.courseName)){
+            console.log("ana da5alt3")
             if(staff.course.includes(req.body.courseName)){
-        for(let i=0;i<academicMember.course.length;i++){
-            if(academicMember.course[i]==req.body.courseName)
-            academicMember.course.splice(i,1)
+                console.log("ana da5alt4")
+        for(let i=0;i<academicMember1.course.length;i++){
+            if(academicMember1.course[i]==req.body.courseName)
+            console.log("ana da5alt5")
+            academicMember1.course.splice(i,1)
 
         }
         var slot;
-        for(let i=0;i<academicMember.slotsAssigned.length;i++){
-            slot= await slots_model.findOne({numberID:academicMember.slotsAssigned[i]})
+        for(let i=0;i<academicMember1.slotsAssigned.length;i++){
+            console.log("etzana2t")
+            slot= await slots_model.findOne({numberID:academicMember1.slotsAssigned[i]})
             if (slot.courseTaught==req.body.courseName){
+                console.log("ana da5alt6")
                 slot.assignedFlag=false
-                academicMember.slotsAssigned.splice(i,1)
+                academicMember1.slotsAssigned.splice(i,1)
+                slot.academicMember=""
             }
 
         }
-        slot.academicMember=null
-        slot.save()
-        academicMember.save()
-        res.send("Successfully removed")}
+        try {
+            // slot.markModified();
+            // academicMember.markModified();
+            academicMember1.save()
+            slot.save()
+        
+        } catch (error) {
+            console.log("error")
+        }
+        
+        //res.send(academicMember)
+        console.log("ana da5alt7")
+        
+        res.send("Successfully removed")
+    }
         else{
+           // console.log("ana da5alt8")
             res.send("This course is not yours. You can't change in ")
         }
     }
         else{
             res.send("This member is not assigned to this course")
         }
+        //res.send("hi")
     
 }
 
