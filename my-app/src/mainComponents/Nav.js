@@ -152,7 +152,7 @@ await Alert(message,'Sign In')
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='sm/logout' > Log out </Link>
+              <Link to='/sm/logout' > Log out </Link>
               </button>   
             </div>
           </li>
