@@ -13,7 +13,7 @@ import Login from './mainComponents/Login'
 import Logout from './mainComponents/Logout';
 import HRprofile from './hrComponents/HRprofile'
 import Staffs from './hrComponents/StaffComponents/Staffs';
-
+import NoAccess from './mainComponents/NoAccess'
 import './styling/App.css'
 import './styling/main.css'
 import addLocation from './hrComponents/LocationComponents/AddLocation';
@@ -122,12 +122,12 @@ export default function App() {
                 <Route path='/sm' component={SideNav} />
                 <Switch>
                     <Route exact path='/staffProfile' component={StaffProfile} />
-
+                    <Route path='/error' component={NoAccess} />
                     <Route path='/hr/addStaff' component={AddStaff} />
                     <Route path='/hr/locations' component={Locations} />
                     <Route path='/hr/staffs' component={Staffs} />
                     <Route path='/hr/faculties' component={Faculties} />
-                    <Route path='/logout' component={Logout} />
+                    <Route path='/sm/logout' component={Logout} />
                     <Route path='/hr/home' component={HRprofile} />
                     <Route path='/hr/addLocation' component={addLocation} />
                     <Route path='/hr/addDepartment' component={addDepartment} />
