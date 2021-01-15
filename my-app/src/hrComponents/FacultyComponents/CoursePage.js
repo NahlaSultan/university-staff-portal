@@ -1,15 +1,36 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useLocation ,Link, useHistory} from "react-router-dom";
 import Course from './Course'
-
+import axios from 'axios'
     
 function CoursePage() {
     let history = useHistory()
+    useEffect(() => {
+        const checkToken = async()=>{
+            if(localStorage.getItem('token')){
+              console.log("TOKENS")
+              await axios
+              .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+              .then(res => {
+              if(!res.data.includes('HR members')) {
+                history.push('/error')
+              } 
+              });
+            }
+            else{
+              console.log("NOT TOKENS")
+              history.push('/')
+        
+            }
+    
+        }
+        checkToken()
+    },[]);
+
     let locationReact=useLocation()
     const facultyName = locationReact.state.facultyName
     const dep = locationReact.state.dep
-     
-
+   
     function backtodep(){
         console.log("back to dep")
         history.push({

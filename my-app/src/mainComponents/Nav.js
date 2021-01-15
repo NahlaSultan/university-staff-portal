@@ -89,7 +89,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignIn}>
-              <Link to="sm/signIn" >Sign In</Link>
+              <Link to="/sm/signIn" >Sign In</Link>
 
               </button>   
             </div>
@@ -99,7 +99,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn"onClick={HandleSignOut} >
-              <Link to="sm/signOut" >Sign Out</Link>
+              <Link to="/sm/signOut" >Sign Out</Link>
               </button>   
             </div>
           </li>
@@ -111,7 +111,7 @@ export default function Nav() {
               <div class="navdropdown-content" >
               <Link to='/sm/viewProfile' > view profile </Link>
               <Link to='/sm/resetPassword' > Reset Password </Link>
-              <Link to='/logout' > </Link>
+              <Link to='/sm/logout' > </Link>
 
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='sm/logout' > Log out </Link>
+              <Link to='/sm/logout' > Log out </Link>
               </button>   
             </div>
           </li>
