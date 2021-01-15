@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
 import '../styling/main.css';
 import MonthAttendance from './MonthAttendance'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export default function ViewMonthAttendance() {
     const [attendance, setAttendance] = useState([])
