@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { Link, Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -13,6 +13,29 @@ export default function ViewReplacementRequest() {
     const [SlotToView, setTheSlot] = useState([])
     const [SlotToView1, setTheSlot1] = useState([])
     const [headerText, setHeaderText] = useState("")
+    let history = useHistory()
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (res.data.includes('HR members')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
+
     useEffect(() => {
         if (counter <= 20) {
             setCounter(counter + 1)
@@ -29,6 +52,7 @@ export default function ViewReplacementRequest() {
                 });
         }
     });
+
     function HandleViewAttendance(e) {
         if (toggle) {
             console.log("Entered")

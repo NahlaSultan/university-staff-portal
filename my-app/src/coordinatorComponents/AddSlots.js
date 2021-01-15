@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { Link, Switch, Route, Redirect,useHistory } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -15,6 +16,7 @@ export default function AddSlots() {
     const [courses, setCourses] = useState([])
     const [course, setCourse] = useState("")
     const locs = ['1', '2', '3']
+    let history = useHistory()
     // var headerText=""
     //if the course is not found (azabtha fl backend)
     const CourseTaughtRef = useRef()
@@ -86,7 +88,27 @@ export default function AddSlots() {
 
             });
     }, [])
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (!res.data.includes('courseCoordinators')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
 
+            }
+
+        }
+        checkToken()
+    }, []);
     return (
         <>
             <div >

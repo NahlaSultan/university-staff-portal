@@ -4,12 +4,14 @@ import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/App.css';
 import Slot from '../academicMembersComponents/ViewSlots'
+import { Link, Switch, Route, Redirect, useHistory } from 'react-router-dom'
 export default function ManageLinkingRequest() {
     const [SlotToView, setTheSlot] = useState([])
     const [SlotLinkingRequest, setSlotLinkingRequest] = useState([])
     const [slotLinkingHeader, setSlotLinkingHeader] = useState("")
     const [toggle, setToggle] = useState(true)
     const [headerText, setHeaderText] = useState("")
+    let history = useHistory()
     useEffect(() => {
         axios
             .get('http://localhost:8000/coordinator/viewSlotLinkingRequest', { headers: { 'token': localStorage.getItem('token') } })
@@ -23,7 +25,29 @@ export default function ManageLinkingRequest() {
                     setSlotLinkingHeader("No requests")
                 }
             });
-    },[])
+    }, [])
+
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (!res.data.includes('courseCoordinators')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
 
     function HandleViewAttendance(e) {
         if (toggle) {

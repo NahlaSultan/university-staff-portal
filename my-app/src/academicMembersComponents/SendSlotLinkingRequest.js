@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { Link, Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import '../styling/main.css';
 import '../styling/dropDown.css';
@@ -10,7 +10,7 @@ export default function SendSlotLinkingRequest() {
     const [chosenSlot, setChosenSlot] = useState("")
     const [headerText, setHeaderText] = useState("")
     const [buttonHeader, setButtonHeader] = useState("")
-
+    let history = useHistory()
     useEffect(() => {
         //     console.log("I m here")
         axios
@@ -20,7 +20,29 @@ export default function SendSlotLinkingRequest() {
             });
 
 
-    });
+    }, []);
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (res.data.includes('HR members')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
+
 
     function HandleChoice(e) {
         setChosenSlot(e.target.value)

@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { Link, Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/App.css';
 import Slot from './ViewSlots'
 import Replacements from './ViewReplacement'
 export default function CancelLeaveRequest() {
+    let history = useHistory()
     const [ReplacementToView, setTheReplacement] = useState([])
     const [LeaveRequests, setLeaveRequests] = useState([])
     const [toggleReplacement, setToggleReplacement] = useState(true)
@@ -39,6 +40,27 @@ export default function CancelLeaveRequest() {
         //  console.log(toggle)
     }
     useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (res.data.includes('HR members')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    });
+    useEffect(() => {
 
 
         axios
@@ -50,6 +72,9 @@ export default function CancelLeaveRequest() {
                 }
             });
     }, [])
+
+
+
     function HandleCancel(e) {
         const body = { requestId: e.target.value }
         // console.log(body)
