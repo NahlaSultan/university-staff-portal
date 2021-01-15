@@ -82,11 +82,6 @@ await Alert(message,'Sign In')
 
   return (
 
-    <>
-      {/* <r1>{message}</r1> */}
-      <div className='nav'>
-
-
     
     
 
@@ -119,11 +114,6 @@ await Alert(message,'Sign In')
               </button>   
             </div>
           </li>
-
-
-                  <Link to='/sm/viewProfile' >View Profile </Link>
-                  <Link to='/sm/resetPassword' > Reset Password </Link>
-                  <Link to='/logout' > </Link>
 
 
           <li>
@@ -162,7 +152,7 @@ await Alert(message,'Sign In')
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='sm/logout' > Log out </Link>
+              <Link to='/sm/logout' > Log out </Link>
               </button>   
             </div>
           </li>
