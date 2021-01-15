@@ -83,7 +83,7 @@ export default function Nav() {
 
   return (
     <>
-      <r1>{message}</r1>
+      {/* <r1>{message}</r1> */}
       <div className='nav'>
 
         <div >
@@ -123,7 +123,7 @@ export default function Nav() {
                 </button>
                 <div class="navdropdown-content" >
 
-                  <Link to='/sm/viewProfile' > view profile </Link>
+                  <Link to='/sm/viewProfile' >View Profile </Link>
                   <Link to='/sm/resetPassword' > Reset Password </Link>
                   <Link to='/logout' > </Link>
 

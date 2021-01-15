@@ -189,7 +189,7 @@ export default function App() {
           <Route exact path='/sm/resetPassword' component={ResetPassword} />
           <Route exact path='/ci/courseStaff' component={CourseStaff} />
     <Route exact path='/monthAttendance' component={MonthAttendance} />
-          <Route exact path='/viewMonthAttendance' component={ViewMonthAttendance} />
+          <Route exact path='/sm/viewMonthAttendance' component={ViewMonthAttendance} />
           <Route exact path='/sm/updateProfile' component={UpdateProfile} />
 
                     {/* hod components */}
