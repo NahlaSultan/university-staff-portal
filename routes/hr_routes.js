@@ -1629,6 +1629,7 @@ router.route('/addSignIn')
                 newMonth = true
               
             }
+            if(day1!=day2)
             missingDays(staff, day1, day2, month1, month2, year1, firstEntry)
             // staff.save()
             res.send("success")
