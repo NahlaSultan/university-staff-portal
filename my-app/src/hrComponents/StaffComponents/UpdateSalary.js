@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from "react-router-dom";
 import {Link} from 'react-router-dom'
-import {useRef} from 'react'
+import {useRef,useEffect} from 'react'
 import axios from 'axios'
 import { useHistory } from "react-router-dom";
 import '../../styling/main.css';
@@ -13,6 +13,29 @@ function UpdateSalary() {
 
     const locationReact = useLocation();
     let history = useHistory();
+
+    useEffect(() => {
+        
+      const checkToken = async()=>{
+          if(localStorage.getItem('token')){
+            console.log("TOKENS")
+            await axios
+            .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+            .then(res => {
+            if(!res.data.includes('HR members')) {
+              history.push('/error')
+            } 
+            });
+          }
+          else{
+            console.log("NOT TOKENS")
+            history.push('/')
+      
+          }
+  
+      }
+      checkToken()
+  },[]);
 
     function HandleUpdateSalary(){
         const body={id:locationReact.state.memberID, salary: SalaryRef.current.value, monthSalary: MonthSalaryRef.current.value}

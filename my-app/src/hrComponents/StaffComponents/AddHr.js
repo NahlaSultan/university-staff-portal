@@ -14,6 +14,27 @@ export default function AddHr() {
 	let history = useHistory()
 	const [res, setRes] = useState("")
 	useEffect(() => {
+
+		const checkToken = async()=>{
+			if(localStorage.getItem('token')){
+			  console.log("TOKENS")
+			  await axios
+			  .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+			  .then(res => {
+			  if(!res.data.includes('HR members')) {
+				history.push('/error')
+			  } 
+			  });
+			}
+			else{
+			  console.log("NOT TOKENS")
+			  history.push('/')
+		
+			}
+	  
+		}
+		checkToken()
+		
 		// Update the document title using the browser API
 		const fetchOffices = async () => {
 			await
