@@ -193,7 +193,6 @@ export default function App() {
           <Route exact path='/sm/updateProfile' component={UpdateProfile} />
 
                     {/* hod components */}
-                    <Route exact path='/homeHOD' component={HodProfile} />
                     <Route exact path='/hod/viewAllStaff' component={ViewAllStaff} />
                     <Route exact path='/hod/viewStaffinCourse' component={ViewStaffinCourse} />
                     <Route exact path='/hod/viewDayOffAllStaff' component={ViewDayOffAllStaff} />

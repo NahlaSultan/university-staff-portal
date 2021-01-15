@@ -6,6 +6,7 @@ import axios from 'axios'
 function CoursePage() {
     let history = useHistory()
     useEffect(() => {
+        
         const checkToken = async()=>{
             if(localStorage.getItem('token')){
               console.log("TOKENS")
