@@ -16,6 +16,11 @@ npm install
 npm start
 ```
 
+## DEPLOYED APP
+```sh
+https://app.netlify.com/sites/zen-lewin-d5a924/deploys/60015e12f0a0cbdc86c76853
+```
+
 ## UML
 https://drive.google.com/file/d/1WPWap3Ugs9aUj_pZEs6rPmgMuE81hGA1/view?usp=sharing
 
