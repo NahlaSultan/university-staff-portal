@@ -4,12 +4,7 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 
 export const SidebarCoordinator = [
-  {
-    title: 'Coordinator Home',
-    path: '/coordinatorProfile',
-    icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text'
-  },
+
   {
     title: 'Add Slot',
     path: '/coordinator/addSlot',
