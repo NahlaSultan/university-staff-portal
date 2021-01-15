@@ -104,6 +104,10 @@ export default function Nav() {
 
                 </button>
 
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn" onClick={HandleSignIn}>
+              <Link to="/sm/signIn" >Sign In</Link>
               </div>
             </li>
 
@@ -127,12 +131,34 @@ export default function Nav() {
                   <Link to='/sm/resetPassword' > Reset Password </Link>
                   <Link to='/logout' > </Link>
 
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn"onClick={HandleSignOut} >
+              <Link to="/sm/signOut" >Sign Out</Link>
+              </button>   
+            </div>
+          </li>
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn">
+              <Link> My Profile</Link>
+              </button>
+              <div class="navdropdown-content" >
+              <Link to='/sm/viewProfile' > view profile </Link>
+              <Link to='/sm/resetPassword' > Reset Password </Link>
+              <Link  > </Link>
+
 
                 </div>
               </div>
             </li>
 
 
+          <li>
+            <div class="navdropdown" >
+              <button class="navdropbtn">
+              <Link to='/sm/logout' > Log out </Link>
+              </button>   
             <div style={{ marginTop: '1%' }} className="Bell">
               <button onClick={HandleClick} >
                 <Link to='/academic/Bell'>
