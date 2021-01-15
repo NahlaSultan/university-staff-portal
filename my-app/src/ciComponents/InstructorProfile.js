@@ -1,8 +1,33 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import '../styling/App.css';
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import axios from 'axios'
 
 export default function InstructorProfile() {
+
+    let history = useHistory()
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (!res.data.includes('courseInstructors')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
     return (
         <>
             <div className='App'>

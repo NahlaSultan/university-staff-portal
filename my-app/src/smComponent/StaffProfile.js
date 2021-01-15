@@ -1,30 +1,26 @@
-import React,{useRef, useState, useEffect} from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
 import '../styling/App.css';
-import { Link } from 'react-router-dom'
 import SideNav from '../mainComponents/SideNav';
 import Nav from '../mainComponents/Nav';
+import { Link, useHistory } from 'react-router-dom'
 export default function StaffProfile() {
-    // const [message, setMessage] = useState("")
-    // const [message2, setMessage2] = useState("")
-    // function HandleSignIn(){
-    
-    //    axios   
-    //    .get('http://localhost:8000/signIn', {headers:{'token':localStorage.getItem('token')}})
-       
-    //    .then(res=>setMessage(res.data));
-    //    setMessage2("")
-    
-    // }
-    // function HandleSignOut(){
-    
-    //     axios   
-    //     .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
-        
-    //     .then(res=>setMessage2(res.data));
-    //     setMessage("")
-     
-    //  }
+    let history = useHistory()
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
     return (
         <>
 
