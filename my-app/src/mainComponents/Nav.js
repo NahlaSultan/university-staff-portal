@@ -1,5 +1,3 @@
-
-
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
@@ -11,12 +9,15 @@ import useSound from 'use-sound';
 import { Alert } from 'react-st-modal';
 import boopSfx from './bell.mp3';
 
+
 export default function Nav() {
   const [bellHeader, setButtonHeader] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [play, setPlay] = useState("")
   const [message, setMessage] = useState()
-    const [message2, setMessage2] = useState()
+  const [message2, setMessage2] = useState()
+  
+
   const [playOff] = useSound(
     './bell.mp3',
     { volume: 0.25 }
@@ -38,12 +39,28 @@ export default function Nav() {
  
      await axios   
      .get('http://localhost:8000/signOut', {headers:{'token':localStorage.getItem('token')}})
-     
-     .then(res=>setMessage2(res.data)).then(async () => {
-      const result = await Alert(message2,'Signing out:');
-    })
+  
+     .then(res=>setMessage2(res.data))
+
+
   
   }
+
+
+  useEffect(async() => {
+
+if (message!=null)
+await Alert(message,'Sign In')
+
+  },[message]);
+
+  
+  useEffect(async() => {
+
+    if (message2!=null)
+    await Alert(message2,'Sign Out')
+    
+      },[message2]);
   useEffect(() => {
     console.log("I entered")
     axios
@@ -64,6 +81,9 @@ export default function Nav() {
 
 
   return (
+
+    
+    
 
     <div className='nav'>
 
@@ -89,7 +109,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignIn}>
-              <Link to="/sm/signIn" >Sign In</Link>
+              <Link to="sm/signIn" >Sign In</Link>
 
               </button>   
             </div>
@@ -99,7 +119,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn"onClick={HandleSignOut} >
-              <Link to="/sm/signOut" >Sign Out</Link>
+              <Link to="sm/signOut" >Sign Out</Link>
               </button>   
             </div>
           </li>
@@ -111,7 +131,7 @@ export default function Nav() {
               <div class="navdropdown-content" >
               <Link to='/sm/viewProfile' > view profile </Link>
               <Link to='/sm/resetPassword' > Reset Password </Link>
-              <Link to='/sm/logout' > </Link>
+              <Link to='/logout' > </Link>
 
               </div>
             </div>
@@ -132,7 +152,7 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn">
-              <Link to='/sm/logout' > Log out </Link>
+              <Link to='sm/logout' > Log out </Link>
               </button>   
             </div>
           </li>
