@@ -3,7 +3,7 @@ import axios from 'axios'
 import '../styling/App.css'
 import '../styling/dropDown.css'
 import Slot from './ViewSlots'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 export default function SubmitLeaveRequest() {
     const [type, setType] = useState("")
     const [headerText, setHeaderText] = useState("")
@@ -18,6 +18,7 @@ export default function SubmitLeaveRequest() {
     const [toggle, setToggle] = useState(true)
     const [SlotToView, setTheSlot] = useState([])
     const [requestHeader, setRequestHeader] = useState("")
+    let history = useHistory()
     function HandleChoice(e) {
         setType(e.target.value)
         console.log(type)
@@ -33,6 +34,28 @@ export default function SubmitLeaveRequest() {
 
         }
     });
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (res.data.includes('HR members')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
+
     function HandleBack() {
         setType("")
         setRequestHeader("")

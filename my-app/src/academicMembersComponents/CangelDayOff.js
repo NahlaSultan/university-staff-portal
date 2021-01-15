@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { Link, Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import '../styling/main.css';
 import '../styling/dropDown.css';
 import '../styling/App.css';
@@ -8,6 +8,7 @@ export default function CangelDayOff() {
     const [dayOffHeader, setDayOffHeader] = useState("")
     const [DayOffRequest, setDayOff] = useState([])
     const [headerText, setHeaderText] = useState("")
+    let history = useHistory()
     useEffect(() => {
         axios
             .get('http://localhost:8000/academicMembers/viewStatusDayOff', { headers: { 'token': localStorage.getItem('token') } })
@@ -21,6 +22,28 @@ export default function CangelDayOff() {
                 }
             });
     }, [])
+    useEffect(() => {
+        const checkToken = async () => {
+            if (localStorage.getItem('token')) {
+                console.log("TOKENS")
+                await axios
+                    .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token') })
+                    .then(res => {
+                        if (res.data.includes('HR members')) {
+                            history.push('/error')
+                        }
+                    });
+            }
+            else {
+                console.log("NOT TOKENS")
+                history.push('/')
+
+            }
+
+        }
+        checkToken()
+    }, []);
+
     function HandleDayOff(e) {
         const body = {}
         // console.log(body)
