@@ -66,6 +66,7 @@ router.route('/signIn')
                 newMonth = true
                 //calcSalary(staff)
             }
+           // if(day1!=day2)
             missingDays(staff, day1, day2, month1, month2, year1, firstEntry)
             // staff.save()
             res.send("SIGNED IN")
