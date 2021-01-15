@@ -4,6 +4,7 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 
 export const SidebarCoordinator = [
+
   {
     title: 'Add Slot',
     path: '/coordinator/addSlot',
