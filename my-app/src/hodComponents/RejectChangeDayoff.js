@@ -1,10 +1,38 @@
-import React,{useRef, useState} from 'react'
+import React,{useEffect, useRef, useState} from 'react'
+import {useHistory } from 'react-router-dom'
+
 import axios from 'axios'
 export default function RejectChangeDayoff() {
   const StaffIDRef=useRef()
   const CommentRef=useRef()
+  let history = useHistory()
 
   const [resp, setRes] = useState()
+
+
+useEffect(()=>{
+    const checkToken = async()=>{
+        if(localStorage.getItem('token')){
+          console.log("TOKENS")
+          await axios
+          .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+          .then(res => {
+          if(!res.data.includes('headOfdepartments')) {
+            history.push('/error')
+          } 
+          });
+        }
+        else{
+          console.log("NOT TOKENS")
+          history.push('/')
+    
+        }
+  
+    }
+  
+    checkToken()
+  
+},[])
 
   function HandleReject(){
     const body={staffId:StaffIDRef.current.value, comment:CommentRef.current.value}

@@ -23,7 +23,7 @@ export default function Nav() {
       .get('http://localhost:8000/signIn', { headers: { 'token': localStorage.getItem('token') } })
 
       .then(res => setMessage(res.data))
-    var temp = message
+  //  var temp = message
 
 
   }
@@ -32,9 +32,11 @@ export default function Nav() {
     await axios
       .get('http://localhost:8000/signOut', { headers: { 'token': localStorage.getItem('token') } })
 
-      .then(res => setMessage2(res.data))
+      .then(res =>{
+        setMessage2(res.data)
+        console.log(res.data)
 
-
+      } )
 
   }
 
@@ -101,7 +103,9 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignIn}>
-                <Link to="sm/signIn" >Sign In</Link>
+
+                <Link  >Sign In</Link>
+
 
               </button>
             </div>
@@ -111,7 +115,9 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignOut} >
-                <Link to="sm/signOut" >Sign Out</Link>
+
+                <Link  >Sign Out</Link>
+
               </button>
             </div>
           </li>

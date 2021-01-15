@@ -16,11 +16,16 @@ npm install
 npm start
 ```
 
+## DEPLOYED APP
+https://60015e12f0a0cbdc86c76853--zen-lewin-d5a924.netlify.app
+
+
 ## UML
 https://drive.google.com/file/d/1WPWap3Ugs9aUj_pZEs6rPmgMuE81hGA1/view?usp=sharing
 
 
 ## Functionalities and Routes
+
 
 <h4>Seeding the database: </h4>
 
@@ -288,7 +293,7 @@ Functionality: delete a certain location from the system
 <strong>Route:<code> /hr/deleteLocation</code></strong>
 
 <p>
-Request type: DELETE 
+Request type: post 
 </p>
 <p>
 Request body: 
@@ -348,7 +353,7 @@ Functionality: delete a certain faculty from the system
 <strong>Route: <code>/hr/deleteFaculty</code></strong>
 
 <p>
-Request type: DELETE 
+Request type: post 
 </p>
 <p>
 Request body: 
@@ -409,7 +414,7 @@ Functionality: delete a certain department from a certain faculty in the system
 <strong>Route: <code>/hr/deleteDepartment</code></strong>
 
 <p>
-Request type: DELETE 
+Request type: post 
 </p>
 <p>
 Request body: 
@@ -473,7 +478,7 @@ Functionality: delete a course from a certain department
 <strong>Route: <code>/hr/deleteCourse</code></strong>
 
 <p>
-Request type: DELETE 
+Request type: POST 
 </p>
 <p>
 Request body: 
@@ -575,7 +580,7 @@ Functionality: deletes a staff member entirely from the system. If it’s an aca
 <strong>Route: <code>/hr/deleteStaffMember</code></strong>
 
 <p>
-Request type: DELETE 
+Request type: post
 </p>
 <p>
 Request body: 
@@ -633,7 +638,7 @@ Functionality: view the attendance record of a certain staff member
 <strong>Route: <code>/hr/viewAttendance</code></strong>
 
 <p>
-Request type: GET 
+Request type: post
 </p>
 <p>
 Request body: 
@@ -713,6 +718,36 @@ Request body:
 
 <p>
 Response: the detailed attendance record of this staff member
+</p>
+<p>
+<strong>-hr can view staff members with missing hours</strong>
+</p>
+<p>
+Functionality:View all the staff members who have missing hours
+</p>
+<p>
+<strong>Route</strong>: /hr/viewMissingHours
+</p>
+<p>
+Request type:post
+</p>
+<p>
+Response: array of staff members ids that have missing hours, and their corresponding missing hours this month
+</p>
+<p>
+<strong>-hr can view staff members with missing days</strong>
+</p>
+<p>
+Functionality:View all staff members who have missing days
+</p>
+<p>
+<strong>Route</strong>: /hr/viewMissingDays
+</p>
+<p>
+Request type:post 
+</p>
+<p>
+Response: array of staff members ids that have missing days, and their corresponding missing days this month
 </p>
 <p>
 <strong>-View  profile</strong>
@@ -1077,6 +1112,33 @@ Parameters: memberId from token
 </p>
 <p>
 Response: Array of staff members
+</p>
+<p>
+<strong>- View Course Staff</strong>
+</p>
+<p>
+Functionality:
+</p>
+<p>
+view staff of a specific course
+</p>
+<p>
+<strong>Route: <code>/ci/viewCourseStaff</code></strong>
+
+<p>
+Request
+</p>
+<p>
+type: POST 
+</p>
+<p>
+Request
+</p>
+<p>
+body: { courseName: cs1}
+</p>
+<p>
+Response: all staff who teaches this course
 </p>
 <p>
 <strong>-Remove an assigned member from a course</strong>
@@ -2277,7 +2339,7 @@ Functionality: get all staff in course
 <strong>Route</strong>: /hod/viewStaffinCourse
 </p>
 <p>
-Request type: GET
+Request type: post
 </p>
 <p>
 Request body: <code>{"courseName":"cs2"}</code>
@@ -2339,7 +2401,7 @@ Functionality: get day off of single staff in his department
 Route: /hod/viewDayOffSingleStaff
 </p>
 <p>
-Request type: GET
+Request type: post
 </p>
 <p>
 Request body: <code>{"staffId":"ac-7"}</code> 
@@ -2503,7 +2565,7 @@ Functionality: view the coverage of a course in his department
 <strong>Route</strong>: /hod/viewCourseCoverage
 </p>
 <p>
-Request type: GET
+Request type: post
 </p>
 <p>
 Request body: 
@@ -2527,7 +2589,7 @@ Functionality: view the teaching assignments of a course in his department
 <strong>Route</strong>: /hod/viewTeachingAssignments
 </p>
 <p>
-Request type: GET
+Request type: post
 </p>
 <p>
 Request body: 
@@ -2597,6 +2659,36 @@ Parameters: memberId from token
 </p>
 <p>
 Response:attendanceTable
+</p>
+<p>
+ 
+</p>
+<p>
+<strong>- View Month Attendance</strong>
+</p>
+<p>
+Functionality:
+</p>
+<p>
+view attendance of a specific month
+</p>
+<p>
+<strong>Route: <code>/viewMonthAttendance</code></strong>
+
+<p>
+Request
+</p>
+<p>
+type: POST 
+</p>
+<p>
+Request
+</p>
+<p>
+body: { month: 1}
+</p>
+<p>
+Response: attendance of a the chosen month
 </p>
 <p>
 <strong>-view missing days</strong>
