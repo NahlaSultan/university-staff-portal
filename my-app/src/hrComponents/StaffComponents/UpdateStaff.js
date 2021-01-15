@@ -26,6 +26,27 @@ export default function UpdateStaff() {
 
 
 	useEffect(() => {
+
+		const checkToken = async()=>{
+			if(localStorage.getItem('token')){
+			  console.log("TOKENS")
+			  await axios
+			  .post('http://localhost:8000/getRoleFromToken', { token: localStorage.getItem('token')})
+			  .then(res => {
+			  if(!res.data.includes('HR members')) {
+				history.push('/error')
+			  } 
+			  });
+			}
+			else{
+			  console.log("NOT TOKENS")
+			  history.push('/')
+		
+			}
+	  
+		}
+		checkToken()
+		
 		const fetchOffices = async () => {
 			await axios
 				.get('http://localhost:8000/hr/viewOffices', { headers: { 'token': localStorage.getItem('token') } })
