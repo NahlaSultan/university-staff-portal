@@ -17,7 +17,7 @@ npm start
 ```
 
 ## DEPLOYED APP
-https://app.netlify.com/sites/zen-lewin-d5a924/deploys/60015e12f0a0cbdc86c76853
+https://60015e12f0a0cbdc86c76853--zen-lewin-d5a924.netlify.app
 
 
 ## UML
