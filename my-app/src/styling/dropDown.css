@@ -126,7 +126,7 @@
 .navdropbtn {
   background-color:#060b26;
   color: white;
-  padding: 16px;
+  padding: 20px;
   font-size: 16px;
   border: none;
   cursor: pointer;
@@ -135,14 +135,14 @@
 .navdropdown {
   position: relative;
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .navdropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
+  /* min-width: 160px; */
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }

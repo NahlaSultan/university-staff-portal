@@ -108,17 +108,17 @@ export default function App() {
             <div className='App'>
 
                 <Route path='/' exact component={Login} />
-                <Route path='/hr' component={Nav} />
+                {/* <Route path='/hr' component={Nav} /> */}
                 <Route path='/hr' component={SideNav} />
-                <Route path='/ci' component={Nav} />
+                {/* <Route path='/ci' component={Nav} /> */}
                 <Route path='/ci' component={SideNav} />
-                <Route path='/academic' component={Nav} />
+                {/* <Route path='/academic' component={Nav} /> */}
                 <Route path='/academic' component={SideNav} />
-                <Route path='/coordinator' component={Nav} />
+                {/* <Route path='/coordinator' component={Nav} /> */}
                 <Route path='/coordinator' component={SideNav} />
-                <Route path='/hod' component={Nav} />
+                {/* <Route path='/hod' component={Nav} /> */}
                 <Route path='/hod' component={SideNav} />
-                <Route path='/sm' component={Nav} />
+                {/* <Route path='/sm' component={Nav} /> */}
                 <Route path='/sm' component={SideNav} />
                 <Switch>
                     <Route exact path='/staffProfile' component={StaffProfile} />
