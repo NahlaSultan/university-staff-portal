@@ -22,11 +22,8 @@ export default function Nav() {
     await axios
       .get('http://localhost:8000/signIn', { headers: { 'token': localStorage.getItem('token') } })
 
-      .then(res =>{
-        setMessage(res.data)
-        console.log(res.data)
-
-      } )
+      .then(res => setMessage(res.data))
+  //  var temp = message
 
 
   }
@@ -106,7 +103,9 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignIn}>
-                <Link >Sign In</Link>
+
+                <Link  >Sign In</Link>
+
 
               </button>
             </div>
@@ -116,7 +115,9 @@ export default function Nav() {
           <li>
             <div class="navdropdown" >
               <button class="navdropbtn" onClick={HandleSignOut} >
-                <Link >Sign Out</Link>
+
+                <Link  >Sign Out</Link>
+
               </button>
             </div>
           </li>
