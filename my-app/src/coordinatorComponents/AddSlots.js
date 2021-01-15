@@ -112,7 +112,6 @@ export default function AddSlots() {
     return (
         <>
             <div >
-                <h1>{headerText}</h1>
                 <span className="login100-form-title">
                     Add Slot
                 </span>
@@ -180,6 +179,9 @@ export default function AddSlots() {
                 <br></br>
                 <br></br>
                 <br></br>
+                <br></br>
+                <br></br>
+                <r1>{headerText}</r1>
                 <br></br>
                 <br></br>
                 <div className="buttons">
