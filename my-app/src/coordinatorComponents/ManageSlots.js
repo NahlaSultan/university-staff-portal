@@ -249,6 +249,7 @@ export default function ManageSlots() {
                             </div>
                             <br></br>
                             <br></br>
+                            
                             <div className="divider">
                                 <button value={item.numberID} className="btn" onClick={HandleSubmit}>
                                     Submit Update

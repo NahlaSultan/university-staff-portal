@@ -39,7 +39,7 @@ export default function CancelLeaveRequest() {
         setToggleReplacement(!toggleReplacement);
         //  console.log(toggle)
     }
-      useEffect(() => {
+    useEffect(() => {
         const checkToken = async () => {
             if (localStorage.getItem('token')) {
                 console.log("TOKENS")
@@ -73,7 +73,7 @@ export default function CancelLeaveRequest() {
             });
     }, [])
 
-  
+
 
     function HandleCancel(e) {
         const body = { requestId: e.target.value }
@@ -90,7 +90,7 @@ export default function CancelLeaveRequest() {
     return (
         <div>
             <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
-            <h1>{headerText}</h1>
+            <r1>{headerText}</r1>
             <h1>{leaveRequestHeader}</h1>
             <br></br>
             <ul>

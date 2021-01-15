@@ -83,7 +83,7 @@ export default function CancelSlotLinking() {
     }
     return (
         <div>
-            <h1>{headerText}</h1>
+            <r1>{headerText}</r1>
             <h1>{slotLinkingHeader}</h1>
             <ul>
                 {SlotLinkingRequest.map((item, i) => {
