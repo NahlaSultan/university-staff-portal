@@ -9,15 +9,6 @@ export default function Logout() {
 
   useEffect(() => {
 
-    const fetchData = async () => {
-      await
-        axios
-          .get('http://localhost:8000/logOut', { headers: { 'token': localStorage.getItem('token') } })
-          .then(res => {
-            console.log(res.data)
-          });
-    };
-    fetchData();
 
     
     history.push('/')

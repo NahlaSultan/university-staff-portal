@@ -191,7 +191,6 @@ export default function SubmitLeaveRequest() {
     else if (type == "Compensation") {
         return (
             <div>
-                <h1>{headerText}</h1>
                 <button className='btn' onClick={HandleBack}> Back </button>
                 {/* <div> */}
 
@@ -206,6 +205,7 @@ export default function SubmitLeaveRequest() {
                 <div>
                     <button value="Annual" className="buttons" onClick={submitCompensation} >Submit Compensation Request</button>
                 </div>
+                <r1>{headerText}</r1>
             </div >
         )
 
@@ -215,7 +215,6 @@ export default function SubmitLeaveRequest() {
         return (
             <div>
                 <button className='btn' onClick={HandleBack}> Back </button>
-                <h1>{headerText}</h1>
                 <h2>Start Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
                 <br></br>
@@ -229,6 +228,7 @@ export default function SubmitLeaveRequest() {
                 <div>
                     <button value="Annual" className="buttons" onClick={submitMaternity} >Submit Maternity Request</button>
                 </div>
+                <r1>{headerText}</r1>
             </div >
         )
 
@@ -237,7 +237,6 @@ export default function SubmitLeaveRequest() {
         return (
             <div>
                 <button className='btn' onClick={HandleBack}> Back </button>
-                <h1>{headerText}</h1>
                 <h2>Sick Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
                 <br></br>
@@ -251,6 +250,7 @@ export default function SubmitLeaveRequest() {
                 <div>
                     <button value="Annual" className="buttons" onClick={submitSickLeave} >Submit Sick Request</button>
                 </div>
+                <r1>{headerText}</r1>
             </div >
         )
 
@@ -261,7 +261,6 @@ export default function SubmitLeaveRequest() {
         return (
             <div>
                 <button className='btn' onClick={HandleBack}> Back </button>
-                <h1>{headerText}</h1>
                 <h2>Start Date : </h2>
                 <input required ref={DateRef} className="input100" type="date" name="email" placeholder="Date Of Leave" />
                 <br></br>
@@ -271,6 +270,7 @@ export default function SubmitLeaveRequest() {
                 <div>
                     <button value="Annual" className="buttons" onClick={submitAccidental} >Submit Accidential Request</button>
                 </div>
+                <r1>{headerText}</r1>
             </div >
         )
 
@@ -279,16 +279,16 @@ export default function SubmitLeaveRequest() {
         return (
             <div>
                 <button className='btn' onClick={HandleBack}> Back </button>
-                <h1>{headerText}</h1>
 
                 <h1>Choose a replacement request if you want: </h1>
                 <div>
                     <h1>Request Sent:</h1>
                     <ul>
-                        <h2>{requestHeader}</h2>
                         {replacementSent.map((item, i) => {
                             return <li key={i}>
                                 <h1>Request: </h1>
+                                <h2 style={{ color: 'red' }}>{requestHeader}</h2>
+                                <br></br>
                                 <h3 className="elemntsInside">Pending: {item.pending + ""}</h3>
                                 <h4 className="elemntsInside">Accepted: {item.accepted + ""}</h4>
                                 <h4 className="elemntsInside">ReceiverID: {item.receiverId}</h4>
@@ -325,8 +325,9 @@ export default function SubmitLeaveRequest() {
                     </span>
                     <br />
                 </div>
+                <r1>{headerText}</r1>
                 <button value="Annual" className="buttons" onClick={submitAnnualLeave} >Submit Annual Request</button>
-
+               <br></br>
             </div>
         )
 

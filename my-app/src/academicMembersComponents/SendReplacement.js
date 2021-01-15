@@ -71,7 +71,6 @@ export default function SendReplacement() {
     return (
         <div>
             <Link to='/academic/Requests' className="linkPrev">&laquo;</ Link> <br />
-            <h1>{headerText}</h1>
             <h2>Time to send a replacement request to a collegue</h2>
             <br></br>
             <h3>Kindly choose a slot to be replaced first</h3>
@@ -126,6 +125,8 @@ export default function SendReplacement() {
                     Submit Request
 						</button>
             </div>
+            <br></br>
+            <r1>{headerText}</r1>
             <br></br>
             <br></br>
         </div>
