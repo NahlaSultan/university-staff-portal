@@ -137,7 +137,7 @@ function ChooseCourse(e){
   <br></br>
   <br></br>
       </div>
-      <ul className='viewStaff'> {resp} </ul>
+      <rl className='viewStaff'> {resp} </rl>
       <br></br><br></br>
   </div>
 

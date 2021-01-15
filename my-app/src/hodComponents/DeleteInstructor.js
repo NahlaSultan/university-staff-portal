@@ -61,6 +61,7 @@ export default function DeleteInstructor() {
    
    .then(res=>{
      setRes(res.data)
+     console.log("response: "+res.data);
     });
 }
 
@@ -118,7 +119,7 @@ return (
   <br></br>
   <br></br>
       </div>
-      <ul className='viewStaff'> {resp} </ul>
+      <r1 className='viewStaff'> {resp} </r1>
       <br></br><br></br>
   </div>
 
