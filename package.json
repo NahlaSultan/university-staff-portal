@@ -32,7 +32,6 @@
     "server": "nodemon index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run client\" \"npm run server\"",
     "client:build": "cd my-app && npm run build"
-
   },
   "author": "",
   "license": "ISC"

@@ -13,6 +13,8 @@ const hod_routes = require('./routes/hod_routes')
 const course_instructor_routes = require('./routes/course_instructor_routes')
 var bodyParser = require('body-parser');
 const tokens_model=require('./models/tokens_model').model
+const path = require('path');
+
 var cors=require("cors")
 //app.use(bodyParser.json());
 ///app.use(bodyParser.urlencoded({ extended: false }));
