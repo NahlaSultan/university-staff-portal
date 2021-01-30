@@ -149,7 +149,7 @@ function Login() {
 
 
               <span className="login100-form-title">
-                GUC Staff Login
+                GUC Login 
               </span>
 
               <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
