@@ -3,10 +3,7 @@ const express = require('express')
 const app = express()
 const jwt=require("jsonwebtoken")
 require("dotenv").config()
-//access body of request
-//so that body of the request isn't undefined
 app.use(express.json())
-//lama ted5ol gowa roh 3ala /register
 const staff_member_routes = require('./routes/staff_member_routes')
 const authentication_routes = require('./routes/authentication_routes')
 const academic_members_routes = require('./routes/academic_members_routes')
@@ -20,6 +17,15 @@ var cors=require("cors")
 //app.use(bodyParser.json());
 ///app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+
+// This middleware informs the express application to serve our compiled React files
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+    app.use(express.static(path.join(__dirname, 'my-app/build')));
+
+    app.get('*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'my-app/build', 'index.html'));
+    });
+};
 app.use('',authentication_routes)
 
 app.use(async(req, res, next) => {
