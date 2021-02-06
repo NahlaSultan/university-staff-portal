@@ -3,7 +3,12 @@ const express = require('express')
 const app = express()
 const jwt=require("jsonwebtoken")
 require("dotenv").config()
+const path = require('path');
+
+//access body of request
+//so that body of the request isn't undefined
 app.use(express.json())
+//lama ted5ol gowa roh 3ala /register
 const staff_member_routes = require('./routes/staff_member_routes')
 const authentication_routes = require('./routes/authentication_routes')
 const academic_members_routes = require('./routes/academic_members_routes')
@@ -11,23 +16,22 @@ const coordinator=require('./routes/coordinator_routes')
 const hr_routes = require('./routes/hr_routes')
 const hod_routes = require('./routes/hod_routes')
 const course_instructor_routes = require('./routes/course_instructor_routes')
+
 var bodyParser = require('body-parser');
 const tokens_model=require('./models/tokens_model').model
-const path = require('path');
-
 var cors=require("cors")
 //app.use(bodyParser.json());
 ///app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 // This middleware informs the express application to serve our compiled React files
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-    app.use(express.static(path.join(__dirname, 'my-app/build')));
+// if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+//     app.use(express.static(path.join(__dirname, 'my-app/build')));
 
-    app.get('*', function (req, res) {
-        res.sendFile(path.join(__dirname, 'my-app/build', 'index.html'));
-    });
-};
+//     app.get('*', function (req, res) {
+//         res.sendFile(path.join(__dirname, 'my-app/build', 'index.html'));
+//     });
+// };
 app.use('',authentication_routes)
 
 app.use(async(req, res, next) => {

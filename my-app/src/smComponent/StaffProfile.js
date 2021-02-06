@@ -25,7 +25,6 @@ export default function StaffProfile() {
         <>
 
             <div className='App'>
-                <h1>Homepage</h1>
             </div>
             {/* <ul className='link_list'>
                 <Link className='a' to='/sm/viewProfile'>

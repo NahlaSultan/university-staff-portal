@@ -127,7 +127,6 @@
   background-color:#060b26;
   color: white;
   padding: 20px;
-  font-size: 16px;
   border: none;
   cursor: pointer;
 }
@@ -135,7 +134,6 @@
 .navdropdown {
   position: relative;
   display: inline-block;
-  margin-top: 30px;
 }
 
 .navdropdown-content {
@@ -143,19 +141,20 @@
   position: absolute;
   background-color: #f9f9f9;
   /* min-width: 160px; */
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+  /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+  /* z-index: 1; */
 }
 
 .navdropdown-content a {
-  color: black;
+  background-color: #060b26;
+  color: rgb(255, 255, 255);
   padding: 12px 16px;
   text-decoration: none;
   display: block;
   font-size: 14pt;
 }
 
-.navdropdown-content a:hover {background-color: #f1f1f1;}
+.navdropdown-content a:hover {background-color: #254E58; }
 .navdropdown:hover .navdropdown-content {display: block;}
 .navdropdown:hover .navdropbtn {  background: #136275;
 }

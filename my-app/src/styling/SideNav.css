@@ -1,17 +1,33 @@
-.navbar {
-    background-color: #060b26;
-    height: 40px;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-  }
+.nav-pic {
+  width: 40px;
+}
+
+.navList{
+  width: 100%;
+  display: flex;
+} 
+.navList li{
+  padding-top: 1%;
+
+} 
+
+.navList li:nth-child(2) {
+  padding-bottom: 1%;
+}
+
+.navList li:nth-child(3) {
+  padding-left: 23%;
+}
+
+
   
   .menu-bars {
     margin-left: 2rem;
     font-size: 2rem;
     background: none;
   }
-  
+
+
   .nav-menu {
     
     background-color: #060b26;

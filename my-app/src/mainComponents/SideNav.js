@@ -18,7 +18,6 @@ import { Alert } from 'react-st-modal';
 export default function SideNav() {
 
   const [bellHeader, setButtonHeader] = useState(false)
-  const [clicked, setClicked] = useState(false)
   const [play, setPlay] = useState("")
   const [message, setMessage] = useState()
   const [message2, setMessage2] = useState()
@@ -31,12 +30,9 @@ export default function SideNav() {
       .get('http://localhost:8000/signIn', { headers: { 'token': localStorage.getItem('token') } })
 
       .then(res => setMessage(res.data))
-  //  var temp = message
-
-
   }
-  async function HandleSignOut() {
 
+  async function HandleSignOut() {
     await axios
       .get('http://localhost:8000/signOut', { headers: { 'token': localStorage.getItem('token') } })
 
@@ -45,7 +41,6 @@ export default function SideNav() {
         console.log(res.data)
 
       } )
-
   }
 
 
@@ -58,13 +53,12 @@ export default function SideNav() {
 
 
   useEffect(async () => {
-
     if (message2 != null)
       await Alert(message2, 'Sign Out')
 
   }, [message2]);
+
   useEffect(() => {
-    console.log("I entered")
     axios
       .get('http://localhost:8000/academicMembers/notified', { headers: { 'token': localStorage.getItem('token') } })
       .then(res => {
@@ -86,8 +80,8 @@ export default function SideNav() {
   const showSidebar = () => setSidebar(!sidebar);
 
 const array = JSON.parse(localStorage.getItem('navArray'))
-console.log(array)
-  return (
+
+return (
     <>
 <div >
 <IconContext.Provider value={{ color: '#fff' }}>
@@ -97,9 +91,13 @@ console.log(array)
 <div >
 
   <ul className="navList">
+
+  <li >
   <Link to='#' className='menu-bars'>
       <FaIcons.FaBars onClick={showSidebar} />
     </Link>
+    </li>
+  
 
     <li >
       <Link to='/sm/staffProfile' >
@@ -153,18 +151,13 @@ console.log(array)
       </div>
     </li>
 
-
-
-    <div style={{ marginTop: '1%' }} className="Bell">
+    <li  className="Bell">
       <button onClick={HandleClick} >
         <Link to='/academic/Bell'>
           <BellIcon className="bell" width='40' active={bellHeader} animate={bellHeader} color='#fff' />
         </Link>
       </button>
-    </div>
-
-
-
+    </li>
     <li>
       <div class="navdropdown" >
         <button class="navdropbtn">
@@ -172,6 +165,12 @@ console.log(array)
         </button>
       </div>
     </li>
+
+
+
+
+
+  
 
 
   </ul>
@@ -192,27 +191,9 @@ console.log(array)
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-             {/* Start SOFIA */}
-            {/* {SidebarInstructor.map((item, index) => { */}
-            {/* end SOFIA */}
-
-            {/* start nahla */}
-
 
             {array.map((item, index) => {
-
-
-
-            {/* end nahla */}
-            {/* /////////////////////////////////////////////// */}
-            {/* start sara */}
-            {/* Start sara coor */}
-            {/* {SidebarCoordinator.map((item, index) => { */}
-              {/* end sara coor */ } 
-
-
-              // end sara academic
-              ///////////////////////////////////////////////////////              
+           
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>
@@ -229,22 +210,3 @@ console.log(array)
     </>
   );
 }
-
-
-
-
-// import { IconContext } from 'react-icons';
-
-// export default function Nav() {
-
-
-
-//   return (
-
-
-
-
- 
-
-//   )
-// }
