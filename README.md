@@ -1,8 +1,5 @@
-<h1 align="center">Welcome to our ACL Project </h1>
-
-
-
-TEAM 38
+<h1 align="center">University Staff Portal </h1>
+A Website implemented in MERN stack
 
 ## Install
 
@@ -23,7 +20,92 @@ https://zen-lewin-d5a924.netlify.app/
 https://drive.google.com/file/d/1WPWap3Ugs9aUj_pZEs6rPmgMuE81hGA1/view?usp=sharing
 
 
-## Functionalities and Routes
+
+Various functionalites for all staff members: Proffessors, Teaching Assistants, Heads of Departments, Course Coordinators, and HR Members
+
+## All GUC staff members can do the following:				
+
+*   Log in with a unique email and a password. • Log out from the system.
+*   View their profile. 	 	 	 					
+*   Update their profile except for the id and the name. Academic members can’t update their salary, faculty and department.
+*   Reset their passwords.
+*   Sign in. This should simulate a staff signing in(entering the campus).
+*   Sign out. This should simulate a staff signing out(leaving the campus).
+*   View all their attendance records, or they can specify exactly which month to view.
+*   View if they have missing days. Missing days are days where the staff member don’t have any attendance record, is not a Friday nor his/her day off, and there is no accepted leave for this day.
+*   View if they are having missing hours or extra hours. 
+
+	
+
+##HR members can do the following:				
+
+*   Add/update/delete a location (for example, adding C7.203 which is a lab that can take 25 students. Locations can also be tutorial rooms, lecture halls or offices).
+*   Add/update/delete a faculty.
+*   Add/update/delete a department under a faculty.
+*   Add/update/delete a course under a department.	
+*   Update/delete already existing staff members. 
+*   Manually add missing signin/signout record of a staff member except for himself/herself. 
+*   View any staff member attendance record.
+*    View staff members with missing hours/days
+*    Update the salary of a staff member. 					
+*   HR can add a new staff member to the system. For all staff members, HR should add id, name, email, salary and office location.
+
+ –  Any extra personal information details is acceptable.					 \
+ –  Emails are unique. \
+ –  Staff member ids are unique. The first academic staff member should have id “ac-1”, and the first hr member should have id “hr-1”. The system should automatically increment ids when adding a new staff member.			 			 \
+–  Once a staff member is added to the system, his/her password should is set to a default value: “123456”.
+–  HR can’t assign an office location that already has full capacity. \
+–  HR does not assign a course to a new academic staff member. \
+–  All HR members have Saturday as their day off, and they can’t change it. \
+ 							 \
+				
+
+
+## Any Head Of Department can do the following: 			
+
+*   Assign/delete/update a course instructor for each course in his department.
+*   View all the staff in his/her department or per course along with their profiles.
+*   View the day off of all the staff/ a single staff in his/her department.
+*   View all the requests “change day off/leave” sent by staff members in his/her department.
+*   Accept a request. if a request is accepted, appropriate logic should be executed to handle this request.
+*   Reject a request, and optionally leave a comment as to why this request was rejected. View the coverage of each course in his/her department.
+*   View teaching assignments (which staff members teach which slots) of course offered by his department. 
+			
+
+##Any Course Instructor (professor) can do the following: 			
+
+*   View the coverage of course(s) he/she is assigned to.
+*   View the slots’ assignment of course(s) he/she is assigned to.
+*   View all the staff in his/her department or per course along with their profiles. Assign an academic member to an unassigned slots in course(s) he/she is assigned to.
+*   Update/delete assignment of academic member in course(s) he/she is assigned to.
+*   Remove an assigned academic member in course(s) he/she is assigned to.
+*   Assign an academic member in each of his/her course(s) to be a course coordinator. 
+
+				
+
+##Any Course Coordinator can do the following: 		
+*   View “slot linking” request(s) from academic members linked to his/her course.
+*   Accept/reject “slot linking” requests from academic members linked to his/her course. Note that once a “slot linking” request is accepted, it should be automatically added to the sender’s schedule.
+*   Add/update/delete course slot(s) in his/her course. 
+
+	
+
+##Any Academic Member can do the following: 							
+
+*   View their schedule. Schedule should show teaching activities and replacements if present. Send/view “replacement” request(s).						
+*   Send a “slot linking” request (automatically sent to course coordinator). A “slot linking” request is a request done by the academic member to indicate their desire to teach a slot.
+*   Change their day off by sending a “change day off” request (automatically sent to HOD), and optionally leave a reason.
+*   Submit any type of “leave” request (automatically sent to HOD). “Compensation” leave must have a reason. For any other leave, academic members can optionally write a brief reason behind it. Accepted leaves are not calculated as missing hours or missing days.
+*   Notified whenever their requests are accepted or rejected.
+*   View the status of all submitted requests. They can also view only the accepted requests, only the pending requests or only the rejected requests.
+*   Cancel a still pending request or a request whose day is yet to come.  \
+
+
+
+
+
+
+## Backend Routes
 
 port 8000
 
