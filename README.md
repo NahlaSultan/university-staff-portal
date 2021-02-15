@@ -22,6 +22,10 @@ https://drive.google.com/file/d/1WPWap3Ugs9aUj_pZEs6rPmgMuE81hGA1/view?usp=shari
 
 
 Various functionalites for all staff members: Proffessors, Teaching Assistants, Heads of Departments, Course Coordinators, and HR Members
+![Screen Shot 2021-02-15 at 6 57 43 PM](https://user-images.githubusercontent.com/46445279/107975568-f8974800-6fc0-11eb-9e07-15ce43b2c96d.png)
+![Screen Shot 2021-02-15 at 7 05 43 PM](https://user-images.githubusercontent.com/46445279/107975579-faf9a200-6fc0-11eb-83d8-60f5efc59747.png)
+![Screen Shot 2021-02-15 at 7 06 24 PM](https://user-images.githubusercontent.com/46445279/107975586-fd5bfc00-6fc0-11eb-8792-6022ff2e9035.png)
+
 
 ## All GUC staff members can do the following:				
 
