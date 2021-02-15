@@ -37,7 +37,7 @@ Various functionalites for all staff members: Proffessors, Teaching Assistants, 
 
 	
 
-##HR members can do the following:				
+## HR members can do the following:				
 
 *   Add/update/delete a location (for example, adding C7.203 which is a lab that can take 25 students. Locations can also be tutorial rooms, lecture halls or offices).
 *   Add/update/delete a faculty.
@@ -72,7 +72,7 @@ Various functionalites for all staff members: Proffessors, Teaching Assistants, 
 *   View teaching assignments (which staff members teach which slots) of course offered by his department. 
 			
 
-##Any Course Instructor (professor) can do the following: 			
+## Any Course Instructor (professor) can do the following: 			
 
 *   View the coverage of course(s) he/she is assigned to.
 *   View the slots’ assignment of course(s) he/she is assigned to.
@@ -83,14 +83,14 @@ Various functionalites for all staff members: Proffessors, Teaching Assistants, 
 
 				
 
-##Any Course Coordinator can do the following: 		
+## Any Course Coordinator can do the following: 		
 *   View “slot linking” request(s) from academic members linked to his/her course.
 *   Accept/reject “slot linking” requests from academic members linked to his/her course. Note that once a “slot linking” request is accepted, it should be automatically added to the sender’s schedule.
 *   Add/update/delete course slot(s) in his/her course. 
 
 	
 
-##Any Academic Member can do the following: 							
+## Any Academic Member can do the following: 							
 
 *   View their schedule. Schedule should show teaching activities and replacements if present. Send/view “replacement” request(s).						
 *   Send a “slot linking” request (automatically sent to course coordinator). A “slot linking” request is a request done by the academic member to indicate their desire to teach a slot.
