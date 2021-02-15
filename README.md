@@ -191,7 +191,7 @@ His password is automatically set to “123456”
 Functionality: Add a sample hr member
 </p>
 <p>
-<strong>Route: <code>/hr/login</code></strong>
+<strong>Route: <code>/login</code></strong>
 
 <p>
 Request type: POST 
