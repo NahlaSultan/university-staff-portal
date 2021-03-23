@@ -1,5 +1,5 @@
 <h1 align="center">University Staff Portal </h1>
-A Website implemented in MERN stack with various functionalites for all university staff members: Proffessors, Teaching Assistants, Heads of Departments, Course Coordinators, and HR Members
+A Website implemented in MERN stack with various functionalites for all university staff members: Professors, Teaching Assistants, Heads of Departments, Course Coordinators, and HR Members
 
 
 ## Install
